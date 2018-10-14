@@ -72,34 +72,34 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 /*
  * Build a function for calling the functions.
  */
-#define xrite_void 0
-#define xrite(type) PRIMITIVE_CAT(xrite_, type)
+#define NOT_VOID_void 0
+#define NOT_VOID(type) PRIMITIVE_CAT(NOT_VOID_, type)
 
-#define M(type) \
-  WHEN(xrite(type)) ( \
+#define READ_VAL(type) \
+  WHEN(NOT_VOID(type)) ( \
     readVal<type>())
 
-#define S(head, tail...) \
+#define SEPARATOR(head, tail...) \
   WHEN(head) ( \
     ,)
 
-#define W(type, ...) \
-  IF(xrite(type)) ( \
+#define WRITE_VAL(type, ...) \
+  IF(NOT_VOID(type)) ( \
     writeVal(__VA_ARGS__), \
     __VA_ARGS__)
 
-#define reduce_id() reduce
-#define reduce(type, tail...) \
+#define READ_ARGS_ID() READ_ARGS
+#define READ_ARGS(type, tail...) \
     WHEN(type) ( \
-      M(type)S(tail) \
-      OBSTRUCT(reduce_id)()(tail))
+      READ_VAL(type)SEPARATOR(tail) \
+      OBSTRUCT(READ_ARGS_ID)()(tail))
 
 #define INTERFACE(type, name, args...) \
   case __COUNTER__: \
-    W(type, name(EVAL(reduce(args, 0)))); \
+    WRITE_VAL(type, name(EVAL(READ_ARGS(args, 0)))); \
     break;
 
-void caller(void) {
+void serialInterface(void) {
   int i;
 
   if (Serial.available()) {
