@@ -72,17 +72,12 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 /*
  * Build a function for calling the functions.
  */
-#define parse_void
-#define parse_float Serial.parseFloat()
-#define parse_int Serial.parseInt()
-#define parse(type) PRIMITIVE_CAT(parse_, type)
-
 #define xrite_void 0
 #define xrite(type) PRIMITIVE_CAT(xrite_, type)
 
 #define M(type) \
-  WHEN(type) ( \
-    parse(type))
+  WHEN(xrite(type)) ( \
+    readVal<type>())
 
 #define S(head, tail...) \
   WHEN(head) ( \
@@ -90,7 +85,7 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 
 #define W(type, ...) \
   IF(xrite(type)) ( \
-    Serial.write(__VA_ARGS__), \
+    writeVal(__VA_ARGS__), \
     __VA_ARGS__)
 
 #define reduce_id() reduce
@@ -125,47 +120,3 @@ void caller(void) {
 }
 
 #undef INTERFACE
-
-
-/*
- * Serial communication functions.
- */
-/*
-void readValue(byte *data, int size) {
-  int i;
-
-  for (i = 0; i < size; i++) {
-    Serial.readBytes((char *)&data[i], 1);
-  }
-}
-*/
-
-/*
-void writeValue(byte *data, int size) {
-  int i;
-
-  for (i = 0; i < size; i++) {
-    Serial.write(data[i]);
-  }
-}
-
-#define SERIALREAD(type) \
-  type serialread_ ##type(void) { \
-    type data; \
-    readValue((byte *)&data, sizeof(type)); \
-    return data; \
-  }
-
-#define SERIALWRITE(type) \
-  void serialwrite_ ##type(type data) { \
-    writeValue((byte *)&data, sizeof(type)); \
-  }
-
-SERIALREAD(int)
-SERIALREAD(float)
-SERIALREAD(char)
-
-SERIALWRITE(int)
-SERIALWRITE(float)
-SERIALWRITE(char)
-*/
