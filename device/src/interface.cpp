@@ -53,9 +53,9 @@ const Method methods[] = {
   #include "functions.h"
 };
 
-const int numberOfMethods = sizeof(methods) / sizeof(Method);
-
 #undef INTERFACE
+
+const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 
 
 /*
@@ -104,15 +104,68 @@ const int numberOfMethods = sizeof(methods) / sizeof(Method);
     W(type, name(EVAL(reduce(args, 0)))); \
     break;
 
-
 void caller(void) {
-  int i = 0;
+  int i;
 
-  switch (i) {
-    case 0xff:
-      break;
-    #include "functions.h"
+  if (Serial.available()) {
+    switch (Serial.read()) {
+      #include "functions.h"
+      default:
+        Serial.write(numberOfMethods);
+        for (i = 0; i < numberOfMethods; i++) {
+          Serial.print(methods[i].type);
+          Serial.print(" ");
+          Serial.print(methods[i].name);
+          Serial.print(" ");
+          Serial.println(methods[i].args);
+        }
+        break;
+    }
   }
 }
 
 #undef INTERFACE
+
+
+/*
+ * Serial communication functions.
+ */
+/*
+void readValue(byte *data, int size) {
+  int i;
+
+  for (i = 0; i < size; i++) {
+    Serial.readBytes((char *)&data[i], 1);
+  }
+}
+*/
+
+/*
+void writeValue(byte *data, int size) {
+  int i;
+
+  for (i = 0; i < size; i++) {
+    Serial.write(data[i]);
+  }
+}
+
+#define SERIALREAD(type) \
+  type serialread_ ##type(void) { \
+    type data; \
+    readValue((byte *)&data, sizeof(type)); \
+    return data; \
+  }
+
+#define SERIALWRITE(type) \
+  void serialwrite_ ##type(type data) { \
+    writeValue((byte *)&data, sizeof(type)); \
+  }
+
+SERIALREAD(int)
+SERIALREAD(float)
+SERIALREAD(char)
+
+SERIALWRITE(int)
+SERIALWRITE(float)
+SERIALWRITE(char)
+*/
