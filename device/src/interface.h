@@ -10,8 +10,11 @@ typedef struct {
 extern const Method methods[];
 extern const byte numberOfMethods;
 
-void caller(void);
+void serialInterface(void);
 
+/**
+ * Read a value from serial.
+ */
 template<typename T> T readVal(void) {
   T data;
   int i;
@@ -23,6 +26,9 @@ template<typename T> T readVal(void) {
   return data;
 }
 
+/**
+ * Write a value to serial.
+ */
 template<typename T> void writeVal(T data) {
   int i;
 
