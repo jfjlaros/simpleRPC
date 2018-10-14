@@ -31,5 +31,4 @@ template<typename T> void writeVal(T data) {
   }
 }
 
-
 #endif
