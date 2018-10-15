@@ -6,9 +6,12 @@
 
 class LED {
   public:
+    LED(void) {};
     LED(int);
-    void setBrightness(byte),
-         blink(int),
+    void on(void),
+         off(void),
+         setBrightness(byte),
+         pulse(int, int),
          signal(byte);
   private:
     int _pin;

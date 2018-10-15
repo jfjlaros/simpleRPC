@@ -8,17 +8,33 @@
 /**
  * Constructor.
  *
- * @arg {int} pin - Analog output pin.
+ * @arg {int} pin - Output pin.
  */
 LED::LED(int pin) {
   _pin = pin;
 
   pinMode(_pin, OUTPUT);
-  setBrightness(0);
+  off();
+}
+
+/**
+ * Turn the LED on.
+ */
+void LED::on(void) {
+  digitalWrite(_pin, HIGH);
+}
+
+/**
+ * Turn the LED off.
+ */
+void LED::off(void) {
+  digitalWrite(_pin, LOW);
 }
 
 /**
  * Set the brightness.
+ *
+ * Note that this only works for analogue output pins.
  *
  * @arg {int} brightness - Brightness.
  */
@@ -27,16 +43,17 @@ void LED::setBrightness(byte brightness) {
 }
 
 /**
- * Blink.
+ * Pulse.
  *
- * @arg {int} duration - LED on duration.
+ * @arg {int} durationOn - LED on duration.
+ * @arg {int} durationOff - LED off duration.
  */
-void LED::blink(int duration) {
-  digitalWrite(_pin, HIGH);
-  delay(duration);
-  digitalWrite(_pin, LOW);
+void LED::pulse(int durationOn, int durationOff) {
+  on();
+  delayMicroseconds(durationOn);
+  off();
+  delayMicroseconds(durationOff);
 }
-
 
 /**
  * Convert a byte of data to a series of LED pulses.
@@ -48,11 +65,10 @@ void LED::signal(byte data) {
 
   for (i = 7; i >= 0; i--) {
     if (data & (1 << i)) {
-      blink(LED_LONG);
+      pulse(LED_LONG, LED_SHORT);
     }
     else {
-      blink(LED_SHORT);
+      pulse(LED_SHORT, LED_SHORT);
     }
-    delay(LED_SHORT);
   }
 }
