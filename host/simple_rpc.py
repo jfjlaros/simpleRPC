@@ -51,17 +51,21 @@ class Interface(object):
         """
         if name not in self.methods:
             raise ValueError('invalid method name: {}'.format(name))
-
         method = self.methods[name]
+
         m_args = method['args']
+        if len(args) != len(m_args):
+            raise ValueError(
+                'got {} parameters for method {}, expected {}'.format(
+                    len(args), name, len(m_args)))
+
         self._connection.write(pack('B', method['index']))
-        if m_args and _types[m_args[0]][0] != 'x':
+        if m_args and m_args[0] != 'void':
             for index, a_type in enumerate(m_args):
                 fmt, cast = _types[a_type]
                 self._connection.write(pack(fmt, cast(args[index])))
 
-        fmt = _types[method['type']][0]
-        if fmt != 'x':
+        if method['type'] != 'void':
+            fmt = _types[method['type']][0]
             return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
-
         return None
