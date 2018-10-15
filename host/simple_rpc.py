@@ -33,7 +33,7 @@ class Interface(object):
         self.methods = {}
         sleep(1)
 
-        # Any invalid method index results in an interface description.
+        # Any invalid method index returns an interface description.
         self._connection.write(pack('B', 0xff))
         for index in range(ord(self._connection.read(1))):
             m_type, m_name, m_args = self._connection.readline(
@@ -59,12 +59,16 @@ class Interface(object):
                 'got {} parameters for method {}, expected {}'.format(
                     len(args), name, len(m_args)))
 
+        # Call the method.
         self._connection.write(pack('B', method['index']))
+
+        # Provide parameters (if any).
         if m_args and m_args[0] != 'void':
             for index, a_type in enumerate(m_args):
                 fmt, cast = _types[a_type]
                 self._connection.write(pack(fmt, cast(args[index])))
 
+        # Read return value (if any).
         if method['type'] != 'void':
             fmt = _types[method['type']][0]
             return unpack(fmt, self._connection.read(calcsize(fmt)))[0]

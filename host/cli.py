@@ -6,6 +6,11 @@ from simple_rpc import Interface
 
 
 def rpc_list(handle, device):
+    """List the device methods.
+
+    :arg stream handle: Output handle.
+    :arg str device: Serial device.
+    """
     interface = Interface(device)
 
     handle.write('Available methods:\n\n')
@@ -16,6 +21,13 @@ def rpc_list(handle, device):
 
 
 def rpc_cmd(handle, device, name, args):
+    """Execute a method.
+
+    :arg stream handle: Output handle.
+    :arg str device: Serial device.
+    :arg str name: Method name.
+    :arg list args: Method parameters.
+    """
     interface = Interface(device)
 
     result = interface.cmd(name, *args)
@@ -24,12 +36,13 @@ def rpc_cmd(handle, device, name, args):
 
 
 def main():
+    """Main entry point."""
     usage = ['', '']
 
     common_parser = ArgumentParser(add_help=False)
     common_parser.add_argument(
         '-d', dest='device', type=str, default='/dev/ttyACM0',
-        help='serial file (%(type)s default="%(default)s")')
+        help='serial device (%(type)s default="%(default)s")')
     common_parser.add_argument(
         '-o', dest='handle', metavar='OUTPUT', type=FileType('w'),
         default=stdout, help='output file')
