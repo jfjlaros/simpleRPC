@@ -1,6 +1,5 @@
 from serial import Serial
 from struct import calcsize, pack, unpack
-from sys import stdout
 from time import sleep
 
 
@@ -25,17 +24,17 @@ _types = {
 
 
 class Interface(object):
-    def __init__(self, device, handle=stdout):
+    def __init__(self, device):
+        """Initialise the class.
+
+        :arg str device: Serial device name.
+        """
         self._connection = Serial(device)
-        self._handle = handle
         self.methods = {}
-
         sleep(1)
-        self._build()
 
-    def _build(self):
+        # Any invalid method index results in an interface description.
         self._connection.write(pack('B', 0xff))
-
         for index in range(ord(self._connection.read(1))):
             m_type, m_name, m_args = self._connection.readline(
                 ).strip().split(' ', 2)
@@ -43,17 +42,26 @@ class Interface(object):
                 'index': index, 'type': m_type, 'args': m_args.split(', ')}
 
     def cmd(self, name, *args):
+        """Execute a method.
+
+        :arg str name: Method name.
+        :arg list *args: Method parameters.
+
+        :returns any: Return value of the method.
+        """
+        if name not in self.methods:
+            raise ValueError('invalid method name: {}'.format(name))
+
         method = self.methods[name]
-
+        m_args = method['args']
         self._connection.write(pack('B', method['index']))
-        if method['args'] and _types[method['args'][0]][0] != 'x':
-            for index, m_arg in enumerate(method['args']):
-                self._connection.write(
-                    pack(_types[m_arg][0],
-                    _types[m_arg][1](args[index])))
+        if m_args and _types[m_args[0]][0] != 'x':
+            for index, a_type in enumerate(m_args):
+                fmt, cast = _types[a_type]
+                self._connection.write(pack(fmt, cast(args[index])))
 
-        if _types[method['type']][0] != 'x':
-            fmt = _types[method['type']][0]
+        fmt = _types[method['type']][0]
+        if fmt != 'x':
             return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
 
         return None
