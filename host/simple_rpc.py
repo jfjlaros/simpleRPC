@@ -1,6 +1,7 @@
 from serial import Serial
 from struct import calcsize, pack, unpack
 from time import sleep
+from types import MethodType
 
 
 _types = {
@@ -40,6 +41,14 @@ class Interface(object):
                 ).strip().split(' ', 2)
             self.methods[m_name] = {
                 'index': index, 'type': m_type, 'args': m_args.split(', ')}
+
+        for name in self.methods:
+            setattr(self, name, MethodType(self._wrap(name), self))
+
+    def _wrap(self, name, *args):
+        def wrap(self, *args):
+            return self.cmd(name, *args)
+        return wrap
 
     def cmd(self, name, *args):
         """Execute a method.
