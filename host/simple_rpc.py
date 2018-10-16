@@ -54,6 +54,8 @@ class Interface(object):
         method = self.methods[name]
 
         m_args = method['args']
+        if m_args[0] == 'void':
+            m_args = []
         if len(args) != len(m_args):
             raise ValueError(
                 'got {} parameters for method {}, expected {}'.format(
@@ -63,7 +65,7 @@ class Interface(object):
         self._connection.write(pack('B', method['index']))
 
         # Provide parameters (if any).
-        if m_args and m_args[0] != 'void':
+        if m_args:
             for index, a_type in enumerate(m_args):
                 fmt, cast = _types[a_type]
                 self._connection.write(pack(fmt, cast(args[index])))
