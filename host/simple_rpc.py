@@ -27,13 +27,13 @@ _types = {
 def _make_help(method):
     help_text = '{}'.format(method['doc']['name'])
 
-    if method['parameters'][0] != 'void':
+    if method['parameters']:
         help_text += '\n'
         for index, parameter in enumerate(method['parameters']):
             help_text += '\n:arg {}: {}'.format(
                 parameter, method['doc']['parameters'][index])
 
-    if method['type'] != 'void':
+    if method['type']:
         help_text += '\n\n:returns {}: {}'.format(
             method['type'], method['doc']['type'])
 
@@ -58,14 +58,22 @@ def _parse_doc(doc):
     return documentation
 
 
+def _strip_void(obj):
+    if obj == 'void':
+        return ''
+    if obj == ['void']:
+        return []
+    return obj
+
+
 def _parse_line(index, line):
     line_parts = line.strip().split(';', 3)
 
     return {
         'index': index,
-        'type': line_parts[0],
+        'type': _strip_void(line_parts[0]),
         'name': line_parts[1],
-        'parameters': line_parts[2].split(', '),
+        'parameters': _strip_void(line_parts[2].split(', ')),
         'doc': _parse_doc(line_parts[3])}
 
 
@@ -84,19 +92,16 @@ class Interface(object):
         for method in methods:
             setattr(self, method['name'], MethodType(self._wrap(method), self))
 
-        # TODO: rewrite
-        self.methods = {}
-        # Any invalid method index returns an interface description.
-        self._connection.write(pack('B', 0xff))
-        for index in range(ord(self._connection.read(1))):
-            m_type, m_name, m_args, m_doc = self._connection.readline(
-                ).strip().split(';', 3)
-            self.methods[m_name] = {
-                'index': index, 'type': m_type, 'args': m_args.split(', ')}
-        # TODO: /rewrite
-
     def _select(self, index):
         self._connection.write(pack('B', index))
+
+    def _write_parameter(self, param_type, param_value):
+        fmt, cast = _types[param_type]
+        self._connection.write(pack(fmt, cast(param_value)))
+
+    def _read_value(self, return_type):
+        fmt = _types[return_type][0]
+        return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
 
     def _get_methods(self):
         self._select(0xff)
@@ -110,12 +115,12 @@ class Interface(object):
 
     def _wrap(self, method, *args):
         def wrap(self, *args):
-            return self.cmd(method['name'], *args)
+            return self.call_method(method['name'], *args)
         wrap.__doc__ = _make_help(method)
 
         return wrap
 
-    def cmd(self, name, *args):
+    def call_method(self, name, *args):
         """Execute a method.
 
         :arg str name: Method name.
@@ -123,29 +128,25 @@ class Interface(object):
 
         :returns any: Return value of the method.
         """
-        if name not in self.methods:
+        if name not in self._methods:
             raise ValueError('invalid method name: {}'.format(name))
-        method = self.methods[name]
+        method = self._methods[name]
 
-        m_args = method['args']
-        if m_args[0] == 'void':
-            m_args = []
-        if len(args) != len(m_args):
+        parameters = method['parameters']
+        if len(args) != len(parameters):
             raise ValueError(
                 'got {} parameters for method {}, expected {}'.format(
-                    len(args), name, len(m_args)))
+                    len(args), name, len(parameters)))
 
         # Call the method.
         self._select(method['index'])
 
         # Provide parameters (if any).
-        if m_args:
-            for index, a_type in enumerate(m_args):
-                fmt, cast = _types[a_type]
-                self._connection.write(pack(fmt, cast(args[index])))
+        if method['parameters']:
+            for param_type, param_value in zip(method['parameters'], args):
+                self._write_parameter(param_type, param_value)
 
         # Read return value (if any).
-        if method['type'] != 'void':
-            fmt = _types[method['type']][0]
-            return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
+        if method['type']:
+            return self._read_value(method['type'])
         return None
