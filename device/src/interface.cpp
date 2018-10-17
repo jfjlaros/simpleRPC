@@ -46,8 +46,8 @@
 /*
  * Build a static array of function signatures.
  */
-#define INTERFACE(type, name, args...) \
-  {(char *)QUOTE(name), (char *)QUOTE(type), (char *)QUOTE(args)},
+#define INTERFACE(doc, type, name, args...) \
+  {(char *)QUOTE(name), (char *)QUOTE(type), (char *)QUOTE(args), (char *)doc},
 
 const Method methods[] = {
   #include "functions.h"
@@ -61,7 +61,7 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 /*
  * Make the functions available for the caller() function.
  */
-#define INTERFACE(type, name, args...) \
+#define INTERFACE(doc, type, name, args...) \
   extern type name(args);
 
 #include "functions.h"
@@ -94,7 +94,7 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
       READ_VAL(type)SEPARATOR(tail) \
       OBSTRUCT(READ_ARGS_ID)()(tail))
 
-#define INTERFACE(type, name, args...) \
+#define INTERFACE(doc, type, name, args...) \
   case __COUNTER__: \
     WRITE_VAL(type, name(EVAL(READ_ARGS(args, 0)))); \
     break;
@@ -109,10 +109,12 @@ void serialInterface(void) {
         Serial.write(numberOfMethods);
         for (i = 0; i < numberOfMethods; i++) {
           Serial.print(methods[i].type);
-          Serial.print(" ");
+          Serial.print(";");
           Serial.print(methods[i].name);
-          Serial.print(" ");
-          Serial.println(methods[i].args);
+          Serial.print(";");
+          Serial.print(methods[i].args);
+          Serial.print(";");
+          Serial.println(methods[i].doc);
         }
         break;
     }

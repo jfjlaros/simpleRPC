@@ -24,6 +24,51 @@ _types = {
     'double': ['<f', float]}
 
 
+def _make_help(method):
+    help_text = '{}'.format(method['doc']['name'])
+
+    if method['parameters'][0] != 'void':
+        help_text += '\n'
+        for index, parameter in enumerate(method['parameters']):
+            help_text += '\n:arg {}: {}'.format(
+                parameter, method['doc']['parameters'][index])
+
+    if method['type'] != 'void':
+        help_text += '\n\n:returns {}: {}'.format(
+            method['type'], method['doc']['type'])
+
+    return help_text
+
+
+def _parse_doc(doc):
+    doc_parts = doc.split(' @')
+
+    documentation = {
+        'name': doc_parts[0],
+        'parameters': [],
+        'type': ''}
+
+    for item in doc_parts[1:]:
+        doc_type, doc_text = item.split(':', 1)
+        if doc_type == 'P':
+            documentation['parameters'].append(doc_text)
+        if doc_type == 'R':
+            documentation['type'] = doc_text
+
+    return documentation
+
+
+def _parse_line(index, line):
+    line_parts = line.strip().split(';', 3)
+
+    return {
+        'index': index,
+        'type': line_parts[0],
+        'name': line_parts[1],
+        'parameters': line_parts[2].split(', '),
+        'doc': _parse_doc(line_parts[3])}
+
+
 class Interface(object):
     def __init__(self, device):
         """Initialise the class.
@@ -31,23 +76,43 @@ class Interface(object):
         :arg str device: Serial device name.
         """
         self._connection = Serial(device)
-        self.methods = {}
         sleep(1)
 
+        methods = self._get_methods()
+        self._methods = dict(map(lambda x: (x['name'], x), methods))
+
+        for method in methods:
+            setattr(self, method['name'], MethodType(self._wrap(method), self))
+
+        # TODO: rewrite
+        self.methods = {}
         # Any invalid method index returns an interface description.
         self._connection.write(pack('B', 0xff))
         for index in range(ord(self._connection.read(1))):
-            m_type, m_name, m_args = self._connection.readline(
-                ).strip().split(' ', 2)
+            m_type, m_name, m_args, m_doc = self._connection.readline(
+                ).strip().split(';', 3)
             self.methods[m_name] = {
                 'index': index, 'type': m_type, 'args': m_args.split(', ')}
+        # TODO: /rewrite
 
-        for name in self.methods:
-            setattr(self, name, MethodType(self._wrap(name), self))
+    def _select(self, index):
+        self._connection.write(pack('B', index))
 
-    def _wrap(self, name, *args):
+    def _get_methods(self):
+        self._select(0xff)
+        number_of_methods = ord(self._connection.read(1))
+
+        methods = []
+        for index in range(number_of_methods):
+            methods.append(_parse_line(index, self._connection.readline()))
+
+        return methods
+
+    def _wrap(self, method, *args):
         def wrap(self, *args):
-            return self.cmd(name, *args)
+            return self.cmd(method['name'], *args)
+        wrap.__doc__ = _make_help(method)
+
         return wrap
 
     def cmd(self, name, *args):
@@ -71,7 +136,7 @@ class Interface(object):
                     len(args), name, len(m_args)))
 
         # Call the method.
-        self._connection.write(pack('B', method['index']))
+        self._select(method['index'])
 
         # Provide parameters (if any).
         if m_args:

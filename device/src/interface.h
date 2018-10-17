@@ -4,7 +4,8 @@
 typedef struct {
   char *name,
        *type,
-       *args;
+       *args,
+       *doc;
 } Method;
 
 extern const Method methods[];
