@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "simpleRPC.h"
 
 
 int testInt(void) {
@@ -23,5 +23,5 @@ void setup(void) {
 }
 
 void loop(void) {
-  serialInterface();
+  interface();
 }
