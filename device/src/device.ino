@@ -1,11 +1,12 @@
 #include "interface.h"
-#include "led.h"
-
-LED led(13);
 
 
-int bla(void) {
+int testInt(void) {
   return 1;
+}
+
+float testFloat(void) {
+  return 1.6180339887;
 }
 
 int add(int a, int b) {
@@ -13,12 +14,11 @@ int add(int a, int b) {
 }
 
 void setLed(int brightness) {
-  led.setBrightness((byte)brightness);
+  analogWrite(13, brightness);
 }
 
 
 void setup(void) {
-  led.setBrightness(40);
   Serial.begin(9600);
 }
 
