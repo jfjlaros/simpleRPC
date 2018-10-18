@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "simpleRPC.h"
 
 /*
  * https://stackoverflow.com/questions/319328
@@ -48,7 +48,7 @@
   {(char *)QUOTE(name), (char *)QUOTE(type), (char *)QUOTE(args), (char *)doc},
 
 const Method methods[] = {
-  #include "functions.h"
+  #include "methods.h"
 };
 
 #undef INTERFACE
@@ -62,7 +62,7 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 #define INTERFACE(doc, type, name, args...) \
   extern type name(args);
 
-#include "functions.h"
+#include "methods.h"
 
 #undef INTERFACE
 
@@ -107,7 +107,7 @@ void interface(void) {
 
   if (Serial.available()) {
     switch (Serial.read()) {
-      #include "functions.h"
+      #include "methods.h"
       default:
         Serial.write(numberOfMethods);
         for (i = 0; i < numberOfMethods; i++) {
