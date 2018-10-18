@@ -24,23 +24,13 @@ _types = {
     'double': ['<f', float]}
 
 
-def _make_help(method):
-    help_text = '{}'.format(method['doc']['name'])
-
-    if method['parameters']:
-        help_text += '\n'
-        for index, parameter in enumerate(method['parameters']):
-            help_text += '\n:arg {}: {}'.format(
-                parameter, method['doc']['parameters'][index])
-
-    if method['type']:
-        help_text += '\n\n:returns {}: {}'.format(
-            method['type'], method['doc']['type'])
-
-    return help_text
-
-
 def _parse_doc(doc):
+    """Parse the method documentation string.
+
+    :arg str doc: Method documentation string.
+
+    :returns dict: Method documentation.
+    """
     doc_parts = doc.split(' @')
 
     documentation = {
@@ -59,6 +49,12 @@ def _parse_doc(doc):
 
 
 def _strip_void(obj):
+    """Remove void types.
+
+    :arg any obj: Type or list of types.
+
+    :returns any: Type or list of types without void types.
+    """
     if obj == 'void':
         return ''
     if obj == ['void']:
@@ -67,6 +63,13 @@ def _strip_void(obj):
 
 
 def _parse_line(index, line):
+    """Parse a method definition line.
+
+    :arg int index: Line number.
+    :arg str line: Method definition.
+
+    :returns dict: Method dictionary.
+    """
     line_parts = line.strip().split(';', 3)
 
     return {
@@ -75,6 +78,28 @@ def _parse_line(index, line):
         'name': line_parts[1],
         'parameters': _strip_void(line_parts[2].split(', ')),
         'doc': _parse_doc(line_parts[3])}
+
+
+def _make_docstring(method):
+    """Make a docstring for a function.
+
+    :arg dict method: Method dictionary.
+
+    :returns str: Function docstring.
+    """
+    help_text = '{}'.format(method['doc']['name'])
+
+    if method['parameters']:
+        help_text += '\n'
+        for index, parameter in enumerate(method['parameters']):
+            help_text += '\n:arg {}: {}'.format(
+                parameter, method['doc']['parameters'][index])
+
+    if method['type']:
+        help_text += '\n\n:returns {}: {}'.format(
+            method['type'], method['doc']['type'])
+
+    return help_text
 
 
 class Interface(object):
@@ -86,26 +111,44 @@ class Interface(object):
         self._connection = Serial(device)
         sleep(1)
 
-        methods = self._get_methods()
-        self._methods = dict(map(lambda x: (x['name'], x), methods))
-
-        for method in methods:
-            setattr(self, method['name'], MethodType(self._wrap(method), self))
+        self.methods = dict(map(lambda x: (x['name'], x), self._get_methods()))
+        for method in self.methods.values():
+            setattr(self, method['name'], MethodType(self._call(method), self))
 
     def _select(self, index):
+        """Initiate a remote procedure call, select the method.
+
+        :arg int index: Method index.
+        """
         self._connection.write(pack('B', index))
 
     def _write_parameter(self, param_type, param_value):
+        """Provide parameters for a remote procedure call.
+
+        :arg str param_type: Type of the parameter.
+        :arg str param_value: Value of the parameter.
+        """
         fmt, cast = _types[param_type]
         self._connection.write(pack(fmt, cast(param_value)))
 
     def _read_value(self, return_type):
+        """Read a return value from a remote procedure call.
+
+        :arg str return_type: Return type.
+
+        :returns any: Return value.
+        """
         fmt = _types[return_type][0]
+
         return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
 
     def _get_methods(self):
+        """Get a list of remote procedure call methods.
+
+        :returns dict: Method dictionary.
+        """
         self._select(0xff)
-        number_of_methods = ord(self._connection.read(1))
+        number_of_methods = self._read_value('unsigned char')
 
         methods = []
         for index in range(number_of_methods):
@@ -113,12 +156,19 @@ class Interface(object):
 
         return methods
 
-    def _wrap(self, method, *args):
-        def wrap(self, *args):
-            return self.call_method(method['name'], *args)
-        wrap.__doc__ = _make_help(method)
+    def _call(self, method, *args):
+        """Make a member function for a method.
 
-        return wrap
+        :arg dict method: Method dictionary.
+        :arg any *args: Parameters for the method.
+
+        :returns function: New member function.
+        """
+        def call(self, *args):
+            return self.call_method(method['name'], *args)
+        call.__doc__ = _make_docstring(method)
+
+        return call
 
     def call_method(self, name, *args):
         """Execute a method.
@@ -128,9 +178,9 @@ class Interface(object):
 
         :returns any: Return value of the method.
         """
-        if name not in self._methods:
+        if name not in self.methods:
             raise ValueError('invalid method name: {}'.format(name))
-        method = self._methods[name]
+        method = self.methods[name]
 
         parameters = method['parameters']
         if len(args) != len(parameters):

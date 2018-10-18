@@ -5,6 +5,45 @@ from sys import stdout
 from simple_rpc import Interface
 
 
+def _describe_parameters(method):
+    """Make parameter data (types and documentation) human readable.
+
+    :arg dict method: Method dictionary.
+
+    :returns str: Parameter data in readable form.
+    """
+    args = []
+    description = []
+
+    for index, parameter in enumerate(method['parameters']):
+        args.append('arg{}'.format(index))
+        description.append('    arg{}: {} (type {})'.format(
+            index, method['doc']['parameters'][index], parameter))
+
+    return args, description
+
+
+def _describe_method(method):
+    """Make a human readable description of a method.
+
+    :arg dict method: Method dictionary.
+
+    :returns str: Method data in readable form.
+    """
+    description = '{}'.format(method['name'])
+
+    args, parameter_description = _describe_parameters(method)
+    if (args):
+        description += ' {}\n\n{}'.format(
+            ' '.join(args), '\n'.join(parameter_description))
+
+    if method['type']:
+        description += '\n\n    returns: {} (type {})'.format(
+            method['doc']['type'], method['type'])
+
+    return description
+
+
 def rpc_list(handle, device):
     """List the device methods.
 
@@ -13,14 +52,12 @@ def rpc_list(handle, device):
     """
     interface = Interface(device)
 
-    handle.write('Available methods:\n\n')
-    for name, values in interface.methods.items():
-        handle.write('    {} {}({})\n'.format(
-            values['type'], name, ', '.join(values['args'])))
-    handle.write('\n')
+    handle.write('Available methods:\n\n\n')
+    for method in interface.methods.values():
+        handle.write(_describe_method(method) + '\n\n\n')
 
 
-def rpc_cmd(handle, device, name, args):
+def rpc_call(handle, device, name, args):
     """Execute a method.
 
     :arg stream handle: Output handle.
@@ -30,7 +67,7 @@ def rpc_cmd(handle, device, name, args):
     """
     interface = Interface(device)
 
-    result = interface.cmd(name, *args)
+    result = interface.call_method(name, *args)
     if result != None:
         handle.write('{}\n'.format(result))
 
@@ -59,9 +96,9 @@ def main():
     subparser.set_defaults(func=rpc_list)
 
     subparser = subparsers.add_parser(
-        'cmd', parents=[common_parser],
-        description='') #doc_split(rpc_cmd))
-    subparser.set_defaults(func=rpc_cmd)
+        'call', parents=[common_parser],
+        description='') #doc_split(rpc_call))
+    subparser.set_defaults(func=rpc_call)
     subparser.add_argument(
         'name', metavar='NAME', type=str, help='command name')
     subparser.add_argument(
