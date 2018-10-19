@@ -1,3 +1,2 @@
 device/.build/
-device/lib/
-docs/micro.png
+simple_rpc/__pycache__/
