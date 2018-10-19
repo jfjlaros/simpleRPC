@@ -152,7 +152,8 @@ class Interface(object):
 
         methods = []
         for index in range(number_of_methods):
-            methods.append(_parse_line(index, self._connection.readline()))
+            methods.append(_parse_line(
+                index, self._connection.readline().decode('utf-8')))
 
         return methods
 
@@ -166,6 +167,7 @@ class Interface(object):
         """
         def call(self, *args):
             return self.call_method(method['name'], *args)
+        call.__name__ = method['name']
         call.__doc__ = _make_docstring(method)
 
         return call

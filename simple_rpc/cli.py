@@ -2,7 +2,8 @@ from argparse import ArgumentParser, FileType, RawDescriptionHelpFormatter
 from time import sleep
 from sys import stdout
 
-from simple_rpc import Interface
+from . import doc_split, usage, version
+from .simple_rpc import Interface
 
 
 def _describe_parameters(method):
@@ -74,8 +75,6 @@ def rpc_call(handle, device, name, args):
 
 def main():
     """Main entry point."""
-    usage = ['', '']
-
     common_parser = ArgumentParser(add_help=False)
     common_parser.add_argument(
         '-d', dest='device', type=str, default='/dev/ttyACM0',
@@ -87,17 +86,19 @@ def main():
     parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
         description=usage[0], epilog=usage[1])
+    parser.add_argument(
+        '-v', action='version', version=version(parser.prog))
     subparsers = parser.add_subparsers(dest='subcommand')
     subparsers.required = True
 
     subparser = subparsers.add_parser(
         'list', parents=[common_parser],
-        description='') #doc_split(rpc_list))
+        description=doc_split(rpc_list))
     subparser.set_defaults(func=rpc_list)
 
     subparser = subparsers.add_parser(
         'call', parents=[common_parser],
-        description='') #doc_split(rpc_call))
+        description=doc_split(rpc_call))
     subparser.set_defaults(func=rpc_call)
     subparser.add_argument(
         'name', metavar='NAME', type=str, help='command name')
