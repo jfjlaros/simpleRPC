@@ -9,4 +9,5 @@
    introduction
    installation
    usage
+   protocol
    credits
