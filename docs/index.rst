@@ -7,7 +7,9 @@
    :caption: Contents:
 
    introduction
-   installation
-   usage
+   install_device
+   install_host
+   usage_device
+   usage_host
    protocol
    credits
