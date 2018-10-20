@@ -44,8 +44,8 @@ by a list of method descriptions delimited by an end of line signature
      - 
      - Documentation string.
 
-The format of the documentation string is described in Table
-`Documentation string.`_.
+The format of the documentation string is described in Section
+:doc:`usage_device`.
 
 Remote procedure call
 ---------------------

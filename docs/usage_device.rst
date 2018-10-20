@@ -37,16 +37,16 @@ does not take any parameters, the type ``void`` should be used.
 .. list-table:: Interface macro parameters.
    :header-rows: 1
 
-    * - parameter
-      - description
-    * - 0
-      - Documentation string.
-    * - 1
-      - Return type.
-    * - 2
-      - Method name.
-    * - 3 ..
-      - Parameter types.
+   * - parameter
+     - description
+   * - 0
+     - Documentation string.
+   * - 1
+     - Return type.
+   * - 2
+     - Method name.
+   * - 3 ..
+     - Parameter types.
 
 The documentation string consists of one field containing the method
 description. If applicable, a list of parameter descriptions and a return value
@@ -56,14 +56,14 @@ respectively.
 .. list-table:: Documentation string.
    :header-rows: 1
 
-    * - field prefix
-      - description
-    * -
-      - Method description (first field).
-    * - ``@P:``
-      - Parameter description.
-    * - ``@R:``
-      - Return value description.
+   * - field prefix
+     - description
+   * -
+     - Method description (first field).
+   * - ``@P:``
+     - Parameter description.
+   * - ``@R:``
+     - Return value description.
 
 Example
 ^^^^^^^
