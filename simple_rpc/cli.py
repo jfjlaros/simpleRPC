@@ -18,8 +18,8 @@ def _describe_parameters(method):
 
     for index, parameter in enumerate(method['parameters']):
         args.append('arg{}'.format(index))
-        description.append('    arg{}: {} (type {})'.format(
-            index, method['doc']['parameters'][index], parameter))
+        description.append('    arg{} (type {}): {}'.format(
+            index, parameter, method['doc']['parameters'][index]))
 
     return args, description
 
@@ -35,12 +35,15 @@ def _describe_method(method):
 
     args, parameter_description = _describe_parameters(method)
     if (args):
-        description += ' {}\n\n{}'.format(
-            ' '.join(args), '\n'.join(parameter_description))
+        description += ' {}'.format(' '.join(args))
+
+    description += '\n    {}'.format(method['doc']['name'])
+    if (args):
+        description += '\n\n{}'.format('\n'.join(parameter_description))
 
     if method['type']:
-        description += '\n\n    returns: {} (type {})'.format(
-            method['doc']['type'], method['type'])
+        description += '\n\n    returns (type {}): {}'.format(
+            method['type'], method['doc']['type'])
 
     return description
 
