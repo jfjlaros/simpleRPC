@@ -28,21 +28,21 @@ by a list of method descriptions delimited by an end of line signature
 .. list-table:: Method description fields.
    :header-rows: 1
 
-    * - field
-      - delimiter
-      - description
-    * - 0
-      - ``;``
-      - Return type.
-    * - 1
-      - ``;``
-      - Method name.
-    * - 2
-      - ``;``
-      - List of ``, `` separated parameters.
-    * - 3
-      - 
-      - Documentation string.
+   * - field
+     - delimiter
+     - description
+   * - 0
+     - ``;``
+     - Return type.
+   * - 1
+     - ``;``
+     - Method name.
+   * - 2
+     - ``;``
+     - List of ``, `` separated parameters.
+   * - 3
+     - 
+     - Documentation string.
 
 The format of the documentation string is described in Table
 `Documentation string.`_.
