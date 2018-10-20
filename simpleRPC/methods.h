@@ -1,3 +1,5 @@
+INTERFACE("Receive a value and echo it back. @P: Value. @R:Value.",
+  int, ping, int)
 INTERFACE("Test function. @R:The number 1.",
   int, testInt, void)
 INTERFACE("Test function. @R:The constant phi.",

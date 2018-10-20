@@ -125,3 +125,10 @@ void interface(void) {
 }
 
 #undef INTERFACE
+
+/**
+ * Test function.
+ */
+int ping(int x) {
+  return x;
+}
