@@ -3,7 +3,7 @@ Protocol
 
 In this section we describe the serial protocol.
 
-Every exported method defined in ``methods.h`` (See `Device library`_) is
+Every exported method defined in ``methods.h`` (See :doc:`usage_device`) is
 assigned a number between 0 and 254 in order of appearance. The number 0 maps
 to the first method, the number 1 maps to the second method, etc.
 
@@ -25,17 +25,24 @@ The device will respond with one byte containing the number of methods followed
 by a list of method descriptions delimited by an end of line signature
 (``0x0d0a``).
 
-+---------+-------------+----------------------------------------+
-| field   | delimiter   | description                            |
-+=========+=============+========================================+
-| 0       | ``;``       | Return type.                           |
-+---------+-------------+----------------------------------------+
-| 2       | ``;``       | Method name.                           |
-+---------+-------------+----------------------------------------+
-| 3       | ``;``       | List of ``, `` separated parameters.   |
-+---------+-------------+----------------------------------------+
-| 4       |             | Documentation string.                  |
-+---------+-------------+----------------------------------------+
+.. list-table:: Method description fields.
+   :header-rows: 1
+
+    * - field
+      - delimiter
+      - description
+    * - 0
+      - ``;``
+      - Return type.
+    * - 1
+      - ``;``
+      - Method name.
+    * - 2
+      - ``;``
+      - List of ``, `` separated parameters.
+    * - 3
+      - 
+      - Documentation string.
 
 The format of the documentation string is described in Table
 `Documentation string.`_.
