@@ -3,9 +3,9 @@ Protocol
 
 In this section we describe the serial protocol.
 
-Every exported method defined in ``methods.h`` (See :doc:`usage_device`) is
-assigned a number between 0 and 254 in order of appearance. The number 0 maps
-to the first method, the number 1 maps to the second method, etc.
+Every exported method defined in ``methods.h`` (See the :doc:`usage_device`
+section) is assigned a number between 0 and 254 in order of appearance. The
+number 0 maps to the first method, the number 1 maps to the second method, etc.
 
 There are two types of calls to the device: the method discovery call and a
 remote procedure call. In both cases, the communication is initiated by the
@@ -44,8 +44,26 @@ by a list of method descriptions delimited by an end of line signature
      - 
      - Documentation string.
 
-The format of the documentation string is described in Section
-:doc:`usage_device`.
+The format of the documentation string is described in the :doc:`usage_device`
+section.
+
 
 Remote procedure call
 ---------------------
+
+A remote procedure call is initiated by the host by writing one byte to the
+serial device. The value of this byte maps to one of the exported methods
+(i.e., 0 maps to the first method, 1 to the second, etc.). If this method takes
+any parameters, their values are written to the serial device. After the
+parameter values have been received, the device executes the method and writes
+the return value of the method (if any) back to the serial device.
+
+All types are native C types (``int``, ``float``, ``double``, etc.). All values
+are little-endian. The sizes of the different types can be found in the
+Arduino_ documentation. The host is responsible for packing and unpacking of
+the variables. An example conversion table named ``_types`` can be found In the
+file simple_rpc.py_.
+
+
+.. _Arduino: https://www.arduino.cc/reference/en/#variables
+.. _simple_rpc.py: https://github.com/jfjlaros/simpleRPC/blob/master/simple_rpc/simple_rpc.py
