@@ -34,24 +34,27 @@ parameters of the method. For each method, we provide a name, a documentation
 string, a return type and a list of parameter types. Note that if the method
 does not take any parameters, the type ``void`` should be used.
 
-+-------------+-------------------------+
-| parameter   | description             |
-+=============+=========================+
-| 0           | Documentation string.   |
-+-------------+-------------------------+
-| 1           | Return type.            |
-+-------------+-------------------------+
-| 2           | Method name.            |
-+-------------+-------------------------+
-| 3 ..        | Parameter types.        |
-+-------------+-------------------------+
+.. list-table:: Interface macro parameters.
+   :header-rows: 1
+
+    * - parameter
+      - description
+    * - 0
+      - Documentation string.
+    * - 1
+      - Return type.
+    * - 2
+      - Method name.
+    * - 3 ..
+      - Parameter types.
 
 The documentation string consists of one field containing the method
 description. If applicable, a list of parameter descriptions and a return value
 description can be provided by using the ``@P:`` and ``@R:`` prefix
 respectively.
 
-.. list-table:: Documentation string
+.. list-table:: Documentation string.
+   :header-rows: 1
 
     * - field prefix
       - description
