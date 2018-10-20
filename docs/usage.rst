@@ -1,5 +1,5 @@
 Device library
-=============
+==============
 
 Include the header file to use the device library.
 
@@ -51,15 +51,16 @@ description. If applicable, a list of parameter descriptions and a return value
 description can be provided by using the ``@P:`` and ``@R:`` prefix
 respectively.
 
-+----------------+-------------------------------------+
-| field prefix   | description                         |
-+================+=====================================+
-|                | Method description (first field).   |
-+----------------+-------------------------------------+
-| ``@P:``        | Parameter description.              |
-+----------------+-------------------------------------+
-| ``@R:``        | Return value description.           |
-+----------------+-------------------------------------+
+.. list-table:: Documentation string
+
+    * - field prefix
+      - description
+    * -
+      - Method description (first field).
+    * - ``@P:``
+      - Parameter description.
+    * - ``@R:``
+      - Return value description.
 
 Example
 ^^^^^^^
