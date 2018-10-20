@@ -8,7 +8,7 @@ Download
 --------
 
 Latest release
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Navigate to the `latest release`_ and either download the ``.zip`` or the
 ``.tar.gz`` file.
@@ -17,7 +17,7 @@ Unpack the downloaded archive.
 
 
 From source
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 The source is hosted on GitHub_, to install the latest development version, use
 the following command.
@@ -31,7 +31,7 @@ Installation
 ------------
 
 Arduino IDE
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 In the Arduino IDE, a library can be added to the list of standard libraries by
 clicking through the following menu options.
@@ -54,7 +54,7 @@ following menu options.
 
 
 Ino
-~~~
+^^^
 
 Ino_ is an easy way of working with Arduino hardware from the command line.
 Adding libraries is also easy, simply place the library in the ``lib``

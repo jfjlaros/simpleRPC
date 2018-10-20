@@ -62,7 +62,7 @@ respectively.
 +----------------+-------------------------------------+
 
 Example
-~~~~~~~
+^^^^^^^
 
 Suppose we want to add a method that takes two parameters and returns one value
 like the following one.
@@ -105,7 +105,7 @@ Every exported method will show up as a class method of the ``interface``
 class instance. These methods can be used like any normal class methods.
 
 Example
-~~~~~~~
+^^^^^^^
 
 In our example we have exported the ``add`` method, which is now present as a
 class method of the ``interface`` class instance.
@@ -135,7 +135,7 @@ the ``-h`` option.
     simple_rpc -h
 
 Example
-~~~~~~~
+^^^^^^^
 
 In our example, the ``list`` subcommand will show a description of the ``add``
 method.
