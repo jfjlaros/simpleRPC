@@ -24,11 +24,8 @@ void interface(void);
  */
 template<typename T> T readVal(void) {
   T data;
-  unsigned int i;
 
-  for (i = 0; i < sizeof(T); i++) {
-    Serial.readBytes((char *)&(((byte *)&data)[i]), 1);
-  }
+  Serial.readBytes((char *)&data, sizeof(T));
 
   return data;
 }
@@ -39,11 +36,7 @@ template<typename T> T readVal(void) {
  * @arg {T} data - Value.
  */
 template<typename T> void writeVal(T data) {
-  unsigned int i;
-
-  for (i = 0; i < sizeof(T); i++) {
-    Serial.write(((byte *)&data)[i]);
-  }
+  Serial.write((byte *)&data, sizeof(T));
 }
 
 #endif
