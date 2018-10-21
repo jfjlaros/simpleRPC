@@ -102,7 +102,7 @@ protocol.
 SimpleRPC
 ---------
 
-SimpleRPC makes it easy for a programmer to export Arduino methods as remote
+SimpleRPC makes it easy for a programmer to export Arduino functions as remote
 procedure calls. The exported method definitions are communicated to the host,
 which is then able to generate an API interface.
 
