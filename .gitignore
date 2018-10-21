@@ -1,2 +1,3 @@
-device/.build/
+arduino_simple_rpc.egg-info/
+dist/
 simple_rpc/__pycache__/
