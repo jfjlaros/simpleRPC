@@ -22,9 +22,9 @@ Simple RPC implementation for Arduino.
 
 ----
 
-This library provides a simple way for programmers to export Arduino_ functions
-as remote procedure calls. The exported method definitions are communicated to
-the host, which is then able to generate an API interface.
+This library provides a simple way to export Arduino_ functions as remote
+procedure calls. The exported method definitions are communicated to the host,
+which is then able to generate an API interface.
 
 For each method, only one additional line of code is needed for exporting. On
 the host, only one function call is needed to perform a remote procedure call.

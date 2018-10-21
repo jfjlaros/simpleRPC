@@ -29,8 +29,8 @@ an unique value. The Arduino reads one byte from the serial device and it uses
 this to call the appropriated function.
 
 If a function takes parameters, their values need to be read from the serial
-device before calling the function. Any return value, needs to be written to
-the serial device after calling the function.
+device before calling the function. Any return value needs to be written to the
+serial device after calling the function.
 
 A typical implementation of such an approach is shown below.
 
