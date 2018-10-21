@@ -99,8 +99,6 @@ const byte numberOfMethods = sizeof(methods) / sizeof(Method);
 
 /**
  * Receiver for incoming RPC calls.
- *
- * TODO: Explain protocol.
  */
 void interface(void) {
   int i;
