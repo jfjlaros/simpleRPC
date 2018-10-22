@@ -22,11 +22,13 @@ function in the ``loop()`` body.
       interface();
     }
 
-To export a method, we need to modify the file ``methods.h`` which can be found
-in the library code.
+To export a method, we need to modify the file ``methods.inc`` which can be
+found in the library code.
 
-- Arduino IDE: ``libraries/simpleRPC/methods.h`` in the ``sketchbook`` folder.
-- Ino: ``lib/simpleRPC/simpleRPC/methods.h`` in the root of the project folder.
+- Arduino IDE: ``libraries/simpleRPC/methods.inc`` in the ``sketchbook``
+  folder.
+- Ino: ``lib/simpleRPC/simpleRPC/methods.inc`` in the root of the project
+  folder.
 
 In this file, we use the ``INTERFACE()`` macro to make a method definition.
 This macro takes three or more parameters, depending on the number of
@@ -77,7 +79,7 @@ like the following one.
       return a + b;
     }
 
-The method definition in ``methods.h`` looks as follows.
+The method definition in ``methods.inc`` looks as follows.
 
 .. code:: cpp
 
