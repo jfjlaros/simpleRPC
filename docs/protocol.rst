@@ -3,7 +3,7 @@ Protocol
 
 In this section we describe the serial protocol.
 
-Every exported method defined in ``methods.h`` (see the :doc:`usage_device`
+Every exported method defined in ``methods.inc`` (see the :doc:`usage_device`
 section) is assigned a number between 0 and 254 in order of appearance. The
 number 0 maps to the first method, the number 1 maps to the second method, etc.
 
