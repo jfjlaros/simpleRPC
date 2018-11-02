@@ -53,7 +53,7 @@ Example
 ^^^^^^^
 
 In our example, the ``list`` subcommand will show a description of the ``add``
-method.
+method and the ``set_led`` method.
 
 .. code::
 
@@ -69,7 +69,14 @@ method.
 
         returns (type int): Sum of a and b.
 
-This method can be called by using the ``call`` subcommand.
+
+    set_led arg0
+        Set LED brightness.
+    
+        arg0 (type unsigned char): Brightness.
+
+
+A method can be called by using the ``call`` subcommand.
 
 .. code::
 

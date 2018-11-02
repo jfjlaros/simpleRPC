@@ -29,6 +29,7 @@ def _parse_doc(doc):
 
     :returns dict: Method documentation.
     """
+    # TODO: Allow for missing or malformed documentation strings.
     doc_parts = doc.split(' @')
 
     documentation = {
@@ -109,6 +110,7 @@ class Interface(object):
 
         :arg str device: Serial device name.
         """
+        # TODO: Add protocol version.
         self._connection = Serial(device)
         sleep(1)
 
