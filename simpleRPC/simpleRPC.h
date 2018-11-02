@@ -114,20 +114,20 @@ void _call(T (*f)(Args...)) {
 
 
 /**
- * Write the signature and description of a function to serial.
+ * Write the signature and documentation of a function to serial.
  *
  * NOTE: Be careful with __PRETTY_FUNCTION__ when changing the signature of
  * this function. The offset will likely change.
  *
  * @arg {F} f - Function pointer.
- * @arg {const char *} description - Function description.
+ * @arg {const char *} doc - Function documentation.
  */
 template<class F>
-void _writeDescription(F f, const char *description) {
+void _writeDescription(F f, const char *doc) {
   Serial.print("[");
   Serial.print(&__PRETTY_FUNCTION__[49]);
   Serial.print(" ");
-  Serial.println(description);
+  Serial.println(doc);
 }
 
 
@@ -139,17 +139,17 @@ void _describe(void) {}
 /**
  * Describe a list of functions.
  *
- * We isolate the first two parameters {f} and {description}, pass these to
+ * We isolate the first two parameters {f} and {doc}, pass these to
  * {__writeDescription} and make a recursive call to process the remaining
  * parameters.
  *
  * @arg {F} f - Function pointer.
- * @arg {const char *} description - Function description.
+ * @arg {const char *} doc - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class... Args>
-void _describe(F f, const char *description, Args... args) {
-  _writeDescription(f, description);
+void _describe(F f, const char *doc, Args... args) {
+  _writeDescription(f, doc);
   _describe(args...);
 }
 
@@ -162,20 +162,18 @@ void _select(byte number, byte depth) {}
 /**
  * Select and call a function indexed by {number}.
  *
- * We isolate the first two parameters {f} and {description}. If we have
- * arrived at the selected function (i.e., if {depth} equals {number}, we call
- * function {f}. Otherwise, we make a recursive call, discarding {f} and
- * {description}.
+ * We isolate the first two parameters {f} and {doc}. If we have arrived at the
+ * selected function (i.e., if {depth} equals {number}, we call function {f}.
+ * Otherwise, we make a recursive call, discarding {f} and {doc}.
  *
  * @arg {byte} number - Function index.
  * @arg {byte} depth - Current index.
  * @arg {F} f - Function pointer.
- * @arg {const char *} description - Function description.
+ * @arg {const char *} doc - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class... Args>
-void _select(
-    byte number, byte depth, F f, const char *description, Args... args) {
+void _select(byte number, byte depth, F f, const char *doc, Args... args) {
   if (depth == number) {
     _call(f);
     return;
@@ -187,14 +185,14 @@ void _select(
 /**
  * RPC interface.
  *
- * This function expects a list of tuples (function pointer, description) as
+ * This function expects a list of tuples (function pointer, documentation) as
  * parameters.
  *
  * Read one byte from serial into {command}, if the value is {_LIST_REQ}, we
  * describe the list of functions. Otherwise, we call the function indexed by
  * {command}.
  *
- * @arg {Args...} args - Tuples of (function pointer, description) parameters.
+ * @arg {Args...} args - Tuples of (function pointer, documentation).
  */
 template<class... Args>
 void interface(Args... args) {
