@@ -18,8 +18,8 @@ communication at 9600 baud in the ``setup()`` body.
     }
 
 Methods are exported by calling the ``interface()`` function from the
-``loop()`` body. This function accepts a list of tuples (function, description)
-as parameters.
+``loop()`` body. This function accepts a list of tuples (function,
+documentation string) as parameters.
 
 .. list-table:: Interface function parameters.
    :header-rows: 1
@@ -48,7 +48,7 @@ prefix respectively.
      - description
    * -
      - Method name.
-   * - ``: ``
+   * - ``:``
      - Method description.
    * - ``@P:``
      - Parameter description.
