@@ -9,10 +9,8 @@ appearance. The number 0 maps to the first method, the number 1 maps to the
 second method, etc.
 
 There are two types of calls to the device: the method discovery call and a
-remote procedure call. In both cases, the communication is initiated by the
-host by writing one byte to the serial device. If this byte maps to an exported
-method, a remote procedure call is initiated, the method discovery procedure is
-executed otherwise.
+remote procedure call. In both cases, communication is initiated by the host by
+writing one byte to the serial device.
 
 
 Method discovery
@@ -25,20 +23,20 @@ The device will respond with a list of method descriptions delimited by an end
 of line signature (``0x0d0a``). The list is terminated by an additional end of
 line signature.
 
-Each method description consists of a function signature enclosed in brackets,
-followed by a documentation string. The format of the documentation string is
-described in the :doc:`usage_device` section.
+Each method description consists of a C-style function signature enclosed in
+brackets followed by a documentation string. The format of the documentation
+string is described in the :doc:`usage_device` section.
 
 
 Remote procedure call
 ---------------------
 
 A remote procedure call is initiated by the host by writing one byte to the
-serial device. The value of this byte maps to one of the exported methods
-(i.e., 0 maps to the first method, 1 to the second, etc.). If this method takes
-any parameters, their values are written to the serial device. After the
-parameter values have been received, the device executes the method and writes
-the return value of the method (if any) back to the serial device.
+serial device of which the value maps to one of the exported methods (i.e., 0
+maps to the first method, 1 to the second, etc.). If this method takes any
+parameters, their values are written to the serial device. After the parameter
+values have been received, the device executes the method and writes the return
+value of the method (if any) back to the serial device.
 
 All types are native C types (``int``, ``float``, ``double``, etc.). All values
 are little-endian. The sizes of the different types can be found in the
