@@ -7,19 +7,15 @@ from types import MethodType
 _types = {
     'void': ['x', None],
     'char': ['c', str],
-    'signed char': ['b', int],
     'unsigned char': ['B', int],
     'byte': ['B', str],
     'bool': ['?', bool],
-    'short': ['<h', int],
-    'signed short': ['<h', int],
-    'unsigned short': ['<H', int],
+    'short int': ['<h', int],
+    'short unsigned int': ['<H', int],
     'int': ['<h', int],
-    'signed int': ['<h', int],
     'unsigned int': ['<H', int],
-    'long': ['<l', int],
-    'signed long': ['<l', int],
-    'unsigned long': ['<L', int],
+    'long int': ['<l', int],
+    'long unsigned int': ['<L', int],
     'float': ['<f', float],
     'double': ['<f', float]}
 
@@ -70,14 +66,17 @@ def _parse_line(index, line):
 
     :returns dict: Method dictionary.
     """
-    line_parts = line.strip().split(';', 3)
+    signature, description = line[1:].strip().split('] ', 2)
+    r_type, tail = signature.split(' (*)')
+    p_types = tail.strip('()').split(', ')
+    name, doc = description.split(': ', 2)
 
     return {
         'index': index,
-        'type': _strip_void(line_parts[0]),
-        'name': line_parts[1],
-        'parameters': _strip_void(line_parts[2].split(', ')),
-        'doc': _parse_doc(line_parts[3])}
+        'type': _strip_void(r_type),
+        'name': name,
+        'parameters': _strip_void(p_types),
+        'doc': _parse_doc(doc)}
 
 
 def _make_docstring(method):
@@ -148,12 +147,15 @@ class Interface(object):
         :returns dict: Method dictionary.
         """
         self._select(0xff)
-        number_of_methods = self._read_value('unsigned char')
 
         methods = []
-        for index in range(number_of_methods):
-            methods.append(_parse_line(
-                index, self._connection.readline().decode('utf-8')))
+        index = 0
+        while True:
+            line = self._connection.readline().decode('utf-8')
+            if line == '\r\n':
+                break
+            methods.append(_parse_line(index, line))
+            index += 1
 
         return methods
 
