@@ -92,6 +92,7 @@ void call(R (*f)(Args...)) {
 
 template<class F>
 void writeDescription(F f, const char *description) {
+  Serial.print("[");
   Serial.print(&__PRETTY_FUNCTION__[48]);
   Serial.print(" ");
   Serial.println(description);
@@ -121,13 +122,18 @@ void select(byte number, byte depth, F f, const char *description, Args... args)
 
 template<class... Args>
 void interface(Args... args) {
-  byte command = Serial.read();
+  byte command;
+  
+  if (Serial.available()) {
+    command = Serial.read();
 
-  if (command == 0xff) {
-    describe(args...);
-    return;
+    if (command == 0xff) {
+      describe(args...);
+      Serial.println(); // List terminator.
+      return;
+    }
+    select(command, 0, args...);
   }
-  select(command, 0, args...);
 }
 
 #endif
