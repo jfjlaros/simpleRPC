@@ -35,6 +35,7 @@ documentation string) as parameters.
    * - 3
      - Documentation string of method two.
    * - ...
+     - ...
 
 A documentation string consists of a method name and a field containing the
 method description. If applicable, a list of parameter descriptions and a
@@ -46,14 +47,19 @@ prefix respectively.
 
    * - field prefix
      - description
+     - field suffix
    * -
      - Method name.
-   * - ``:``
+     - ``:``
+   * -
      - Method description.
+     -
    * - ``@P:``
      - Parameter description.
+     -
    * - ``@R:``
      - Return value description.
+     -
 
 Example
 ^^^^^^^
