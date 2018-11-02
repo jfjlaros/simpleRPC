@@ -14,19 +14,18 @@
 /**
  * Execute a function and write return value to serial.
  *
- * All parameters have been parsed since function pointer {*f_} has no
- * parameter types. Function pointer {*f} now equals the original function
- * pointer and all values are now present in the {args} parameter pack.
+ * All parameters have been collected since function pointer {*f_} has no
+ * parameter types. All values are now present in the {args} parameter pack.
  *
- * We use the return type {R} of function pointer {*f} to instantiate the
+ * We use the return type {T} of function pointer {*f} to instantiate the
  * variable {data}, which receives the result of {f(args...}. This result is
- * written in {sizeof(R)} bytes to the serial stream.
+ * written in {sizeof(T)} bytes to the serial stream.
  */
-template<class R, class... Args>
-void call(void (*f_)(void), R (*f)(Args...), Args... args) {
-  R data = f(args...);
+template<class T, class... Args>
+void call(void (*f_)(void), T (*f)(Args...), Args... args) {
+  T data = f(args...);
 
-  Serial.write((byte *)&data, sizeof(R));
+  Serial.write((byte *)&data, sizeof(T));
 }
 
 /**
@@ -35,26 +34,28 @@ void call(void (*f_)(void), R (*f)(Args...), Args... args) {
  * We isolate the first parameter type {T} from function pointer {*f_}. This
  * type is used to instantiate the variable {data}, which is used to receive
  * {sizeof(T)} bytes from the serial stream. This value is passed recursively
- * to {call}, adding it to the {args} parameter pack.
- *
- * The first parameter type {T} is removed from function pointer {*f_} and
- * added to function pointer {*f}.
+ * to {call}, adding it to the {args} parameter pack. The first parameter type
+ * {T} is removed from function pointer {*f_} in the recursive call.
  */
-template<class R, class T, class... Tail, class... Args, class... LArgs>
-void call(void (*f_)(T, Tail...), R (*f)(Args...), LArgs... args) {
-  // TODO: Try to get rid of building parameters for {f}.
+template<class T, class... Tail, class F, class... Args>
+void call(void (*f_)(T, Tail...), F f, Args... args) {
   T data;
 
   Serial.readBytes((char *)&data, sizeof(T));
-  call((void (*)(Tail...))f_, (R (*)(T, Args...))f, data, args...);
+  call((void (*)(Tail...))f_, f, args..., data);
 }
 
 /**
- * 
+ * Set up function parameter collection, execution and writing to serial.
+ *
+ * We prepare a dummy function pointer, referred to as {f_} in the template
+ * functions above, which will be used to isolate parameter types. The return
+ * type of this function pointer is removed to avoid unneeded template
+ * expansion.
  */
 template<class R, class... Args>
 void call(R (*f)(Args...)) {
-  call((void (*)(Args...))f, (R (*)(void))f);
+  call((void (*)(Args...))f, f);
 }
 
 
