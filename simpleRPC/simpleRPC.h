@@ -11,6 +11,37 @@
 #include <Arduino.h>
 
 
+/*
+ * The following three template functions are requires because the template
+ * function in this comment causes an ambiguity. The same overloading seems to
+ * work for the setup template function {call} though.
+ *
+ * See the {call} function family for documentation.
+ *
+template<class... Args>
+void call(void (*f_)(void), void (*f)(Args...), Args... args) {
+  f(args...);
+}
+ */
+
+template<class... Args>
+void call_void(void (*f_)(void), void (*f)(Args...), Args... args) {
+  f(args...);
+}
+
+template<class T, class... Tail, class F, class... Args>
+void call_void(void (*f_)(T, Tail...), F f, Args... args) {
+  T data;
+
+  Serial.readBytes((char *)&data, sizeof(T));
+  call_void((void (*)(Tail...))f_, f, args..., data);
+}
+
+template<class... Args>
+void call(void (*f)(Args...)) {
+  call_void(f, f);
+}
+
 /**
  * Execute a function and write return value to serial.
  *
