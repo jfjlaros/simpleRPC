@@ -25,7 +25,7 @@
 
 
 /*
- * The following three template functions are requires because the template
+ * The following three template functions are required because the template
  * function in this comment causes an ambiguity. The same overloading seems to
  * work for the setup template function {_call} though.
  *
