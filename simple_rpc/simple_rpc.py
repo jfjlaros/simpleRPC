@@ -4,11 +4,13 @@ from time import sleep
 from types import MethodType
 
 
+_list_req = 0xff
+_end_of_list = '\r\n'
+
 _types = {
     'void': ['x', None],
     'char': ['c', str],
     'unsigned char': ['B', int],
-    'byte': ['B', str],
     'bool': ['?', bool],
     'short int': ['<h', int],
     'short unsigned int': ['<H', int],
@@ -146,13 +148,13 @@ class Interface(object):
 
         :returns dict: Method dictionary.
         """
-        self._select(0xff)
+        self._select(_list_req)
 
         methods = []
         index = 0
         while True:
             line = self._connection.readline().decode('utf-8')
-            if line == '\r\n':
+            if line == _end_of_list:
                 break
             methods.append(_parse_line(index, line))
             index += 1
