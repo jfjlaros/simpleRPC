@@ -37,10 +37,10 @@ documentation string) as parameters.
    * - ...
      - ...
 
-A documentation string consists of a method name and a field containing the
-method description. If applicable, a list of parameter descriptions and a
-return value description can be provided by using the ``@P:`` and ``@R:``
-prefix respectively.
+A documentation string consists of a method name followed by a ``:`` and a
+field containing the method description. If applicable, a list of parameter
+descriptions and a return value description can be provided by using the
+``@P:`` and ``@R:`` prefix respectively.
 
 .. list-table:: Documentation string.
    :header-rows: 1
