@@ -14,32 +14,32 @@
 /*
  * The following three template functions are requires because the template
  * function in this comment causes an ambiguity. The same overloading seems to
- * work for the setup template function {call} though.
+ * work for the setup template function {_call} though.
  *
- * See the {call} function family for documentation.
+ * See the {_call} function family for documentation.
  *
 template<class... Args>
-void call(void (*f_)(void), void (*f)(Args...), Args... args) {
+void _call(void (*f_)(void), void (*f)(Args...), Args... args) {
   f(args...);
 }
  */
 
 template<class... Args>
-void call_void(void (*f_)(void), void (*f)(Args...), Args... args) {
+void _call_void(void (*f_)(void), void (*f)(Args...), Args... args) {
   f(args...);
 }
 
 template<class T, class... Tail, class F, class... Args>
-void call_void(void (*f_)(T, Tail...), F f, Args... args) {
+void _call_void(void (*f_)(T, Tail...), F f, Args... args) {
   T data;
 
   Serial.readBytes((char *)&data, sizeof(T));
-  call_void((void (*)(Tail...))f_, f, args..., data);
+  _call_void((void (*)(Tail...))f_, f, args..., data);
 }
 
 template<class... Args>
-void call(void (*f)(Args...)) {
-  call_void(f, f);
+void _call(void (*f)(Args...)) {
+  _call_void(f, f);
 }
 
 /**
@@ -53,7 +53,7 @@ void call(void (*f)(Args...)) {
  * written in {sizeof(T)} bytes to the serial stream.
  */
 template<class T, class... Args>
-void call(void (*f_)(void), T (*f)(Args...), Args... args) {
+void _call(void (*f_)(void), T (*f)(Args...), Args... args) {
   T data = f(args...);
 
   Serial.write((byte *)&data, sizeof(T));
@@ -65,15 +65,15 @@ void call(void (*f_)(void), T (*f)(Args...), Args... args) {
  * We isolate the first parameter type {T} from function pointer {*f_}. This
  * type is used to instantiate the variable {data}, which is used to receive
  * {sizeof(T)} bytes from the serial stream. This value is passed recursively
- * to {call}, adding it to the {args} parameter pack. The first parameter type
+ * to {_call}, adding it to the {args} parameter pack. The first parameter type
  * {T} is removed from function pointer {*f_} in the recursive call.
  */
 template<class T, class... Tail, class F, class... Args>
-void call(void (*f_)(T, Tail...), F f, Args... args) {
+void _call(void (*f_)(T, Tail...), F f, Args... args) {
   T data;
 
   Serial.readBytes((char *)&data, sizeof(T));
-  call((void (*)(Tail...))f_, f, args..., data);
+  _call((void (*)(Tail...))f_, f, args..., data);
 }
 
 /**
@@ -85,13 +85,13 @@ void call(void (*f_)(T, Tail...), F f, Args... args) {
  * expansion.
  */
 template<class R, class... Args>
-void call(R (*f)(Args...)) {
-  call((void (*)(Args...))f, f);
+void _call(R (*f)(Args...)) {
+  _call((void (*)(Args...))f, f);
 }
 
 
 template<class F>
-void writeDescription(F f, const char *description) {
+void _writeDescription(F f, const char *description) {
   Serial.print("[");
   Serial.print(&__PRETTY_FUNCTION__[48]);
   Serial.print(" ");
@@ -99,24 +99,25 @@ void writeDescription(F f, const char *description) {
 }
 
 
-void describe(void) {}
+void _describe(void) {}
 
 template<class F, class... Args>
-void describe(F f, const char *description, Args... args) {
-  writeDescription(f, description);
-  describe(args...);
+void _describe(F f, const char *description, Args... args) {
+  _writeDescription(f, description);
+  _describe(args...);
 }
 
 
-void select(byte number, byte depth) {}
+void _select(byte number, byte depth) {}
 
 template<class F, class... Args>
-void select(byte number, byte depth, F f, const char *description, Args... args) {
+void _select(
+    byte number, byte depth, F f, const char *description, Args... args) {
   if (depth == number) {
-    call(f);
+    _call(f);
     return;
   }
-  select(number, depth + 1, args...);
+  _select(number, depth + 1, args...);
 }
 
 
@@ -128,11 +129,11 @@ void interface(Args... args) {
     command = Serial.read();
 
     if (command == 0xff) {
-      describe(args...);
+      _describe(args...);
       Serial.println(); // List terminator.
       return;
     }
-    select(command, 0, args...);
+    _select(command, 0, args...);
   }
 }
 
