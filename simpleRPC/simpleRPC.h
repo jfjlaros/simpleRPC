@@ -16,6 +16,7 @@
  * sizes. We could also communicate the latter to the client.
  *
  * TODO: Add protocol version.
+ * TODO: Add support for multiple serial devices.
  */
 
 #include <Arduino.h>
@@ -115,13 +116,16 @@ void _call(T (*f)(Args...)) {
 /**
  * Write the signature and description of a function to serial.
  *
+ * NOTE: Be careful with __PRETTY_FUNCTION__ when changing the signature of
+ * this function. The offset will likely change.
+ *
  * @arg {F} f - Function pointer.
  * @arg {const char *} description - Function description.
  */
 template<class F>
 void _writeDescription(F f, const char *description) {
   Serial.print("[");
-  Serial.print(&__PRETTY_FUNCTION__[48]);
+  Serial.print(&__PRETTY_FUNCTION__[49]);
   Serial.print(" ");
   Serial.println(description);
 }

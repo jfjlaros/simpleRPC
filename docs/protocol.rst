@@ -3,9 +3,10 @@ Protocol
 
 In this section we describe the serial protocol.
 
-Every exported method defined in ``methods.inc`` (see the :doc:`usage_device`
-section) is assigned a number between 0 and 254 in order of appearance. The
-number 0 maps to the first method, the number 1 maps to the second method, etc.
+Every exported method defined using the ``interface()`` function (see the
+:doc:`usage_device` section) is assigned a number between 0 and 254 in order of
+appearance. The number 0 maps to the first method, the number 1 maps to the
+second method, etc.
 
 There are two types of calls to the device: the method discovery call and a
 remote procedure call. In both cases, the communication is initiated by the
@@ -17,35 +18,16 @@ executed otherwise.
 Method discovery
 ----------------
 
-Method discovery is initiated by the host by writing one byte to the serial
-device. The value of this byte should not map to an exported method. The
-preferred value is ``0xff``.
+Method discovery is initiated by the host by writing one byte with the value
+``0xff`` to the serial device.
 
-The device will respond with one byte containing the number of methods followed
-by a list of method descriptions delimited by an end of line signature
-(``0x0d0a``).
+The device will respond with a list of method descriptions delimited by an end
+of line signature (``0x0d0a``). The list is terminated by an additional end of
+line signature.
 
-.. list-table:: Method description fields.
-   :header-rows: 1
-
-   * - field
-     - delimiter
-     - description
-   * - 0
-     - ``;``
-     - Return type.
-   * - 1
-     - ``;``
-     - Method name.
-   * - 2
-     - ``;``
-     - List of ``, `` separated parameters.
-   * - 3
-     - 
-     - Documentation string.
-
-The format of the documentation string is described in the :doc:`usage_device`
-section.
+Each method description consists of a function signature enclosed in brackets,
+followed by a documentation string. The format of the documentation string is
+described in the :doc:`usage_device` section.
 
 
 Remote procedure call
