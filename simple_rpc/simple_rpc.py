@@ -56,7 +56,7 @@ def _strip_void(obj):
     """
     if obj == 'void':
         return ''
-    if obj == ['void']:
+    if obj in [['void'], ['']]:
         return []
     return obj
 
