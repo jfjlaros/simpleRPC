@@ -15,11 +15,12 @@
  * NOTE: We currently rely on the client knowing the native types and type
  * sizes. We could also communicate the latter to the client.
  *
- * TODO: Add protocol version.
  * TODO: Add support for multiple serial devices.
  */
 
 #include <Arduino.h>
+
+#define _VERSION 1
 
 #define _LIST_REQ 0xff
 
@@ -199,6 +200,14 @@ void _select(byte number, byte depth, F f, const char *doc, Args... args) {
 }
 
 
+byte _version(void) {
+  return _VERSION;
+}
+
+byte _ping(byte data) {
+  return data;
+}
+
 /**
  * RPC interface.
  *
@@ -212,7 +221,7 @@ void _select(byte number, byte depth, F f, const char *doc, Args... args) {
  * @arg {Args...} args - Tuples of (function pointer, documentation).
  */
 template<class... Args>
-void interface(Args... args) {
+void _interface(Args... args) {
   byte command;
 
   if (Serial.available()) {
@@ -225,6 +234,20 @@ void interface(Args... args) {
     }
     _select(command, 0, args...);
   }
+}
+
+/**
+ * RPC interface wrapper.
+ *
+ * This function is used to spike in any default methods we want to expose. See
+ * the {_interface} template function for documentation.
+ */
+template<class... Args>
+void interface(Args... args) {
+  _interface(
+    _version, "version: Protocol version. @R:Version number.",
+    _ping, "ping: Receive a value and echo it back. @P:Value. @R:Value.",
+    args...);
 }
 
 #endif
