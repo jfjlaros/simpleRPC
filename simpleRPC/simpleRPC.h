@@ -24,6 +24,26 @@
 #define _LIST_REQ 0xff
 
 
+/**
+ * Recursion terminator for {_print}.
+ */
+void _print(void) {
+  Serial.println();
+}
+
+/**
+ * Print a list of parameters to serial.
+ *
+ * @arg {T} arg - Parameter to be printed.
+ * @arg {Args...} args... - Remaining parameters.
+ */
+template<class T, class... Args>
+void _print(T arg, Args... args) {
+  Serial.print(arg);
+  _print(args...);
+}
+
+
 /*
  * The following three template functions are required because the template
  * function in this comment causes an ambiguity. The same overloading seems to
@@ -124,10 +144,7 @@ void _call(T (*f)(Args...)) {
  */
 template<class F>
 void _writeDescription(F f, const char *doc) {
-  Serial.print("[");
-  Serial.print(&__PRETTY_FUNCTION__[49]);
-  Serial.print(" ");
-  Serial.println(doc);
+  _print("[", &__PRETTY_FUNCTION__[49], " ", doc);
 }
 
 
@@ -203,7 +220,7 @@ void interface(Args... args) {
 
     if (command == _LIST_REQ) {
       _describe(args...);
-      Serial.println(); // List terminator.
+      _print(); // List terminator.
       return;
     }
     _select(command, 0, args...);
