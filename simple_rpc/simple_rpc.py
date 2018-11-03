@@ -4,6 +4,8 @@ from time import sleep
 from types import MethodType
 
 
+_version = 1
+
 _list_req = 0xff
 _end_of_list = '\r\n'
 
@@ -117,6 +119,12 @@ class Interface(object):
         self.methods = dict(map(lambda x: (x['name'], x), self._get_methods()))
         for method in self.methods.values():
             setattr(self, method['name'], MethodType(self._call(method), self))
+
+        device_version = self.call_method('version')
+        if device_version != _version:
+            raise ValueError(
+                'version mismatch (device: {}, client: {})'.format(
+                    device_version, _version))
 
     def _select(self, index):
         """Initiate a remote procedure call, select the method.
