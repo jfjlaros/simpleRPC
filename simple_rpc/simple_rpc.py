@@ -107,13 +107,14 @@ def _make_docstring(method):
 
 
 class Interface(object):
-    def __init__(self, device):
+    def __init__(self, device, baudrate=9600):
         """Initialise the class.
 
         :arg str device: Serial device name.
+        :arg int baudrate: Baud rate.
         """
         # TODO: Add protocol version.
-        self._connection = Serial(device)
+        self._connection = Serial(device, baudrate)
         sleep(1)
 
         self.methods = dict(map(lambda x: (x['name'], x), self._get_methods()))
