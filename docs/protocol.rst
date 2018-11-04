@@ -45,5 +45,46 @@ the variables. An example conversion table named ``_types`` can be found In the
 file simple_rpc.py_.
 
 
+Overhead
+--------
+
+There does not seem to be any noticeable overhead of the library. We tested the
+throughput by calling the ``ping()`` function repeatedly at baud rates ranging
+from 600 baud to 115200 baud.
+
+.. list-table:: Throughput statistics.
+   :header-rows: 1
+
+   * - baud rate
+     - calls per second
+   * - 600
+     - 30
+   * - 1200
+     - 60
+   * - 2400
+     - 120
+   * - 4800
+     - 239
+   * - 9600
+     - 480
+   * - 14400
+     - 718
+   * - 19200
+     - 959
+   * - 28800
+     - 1447
+   * - 31250
+     - 1559
+   * - 38400
+     - 1918
+   * - 57600
+     - 2919
+   * - 115200
+     - 5769
+
+The number of calls per second scales linearly with the baud rate, even at the
+highest speed, there is no measurable overhead.
+
+
 .. _Arduino: https://www.arduino.cc/reference/en/#variables
 .. _simple_rpc.py: https://github.com/jfjlaros/simpleRPC/blob/master/simple_rpc/simple_rpc.py
