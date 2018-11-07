@@ -7,8 +7,8 @@
 /*
  * Type encoding functions.
  *
- * See https://docs.python.org/2/library/struct.html for an explanation of the
- * encoding.
+ * For moren information about the encoding:
+ * https://docs.python.org/2/library/struct.html#format-characters
  */
 
 const char *_typeof(char) {
@@ -31,14 +31,6 @@ const char *_typeof(unsigned short int) {
   return "<H";
 }
 
-const char *_typeof(int) {
-  return "<i";
-}
-
-const char *_typeof(unsigned int) {
-  return "<I";
-}
-
 const char *_typeof(long int) {
   return "<l";
 }
@@ -59,7 +51,28 @@ const char *_typeof(float) {
   return "<f";
 }
 
+/*
+ * The {int} and {double} type sizes vary between boards, see:
+ * https://www.arduino.cc/reference/en/language/variables/data-types/
+ */
+const char *_typeof(int) {
+  if (sizeof(int) == 2) {
+    return "<h";
+  }
+  return "<i";
+}
+
+const char *_typeof(unsigned int) {
+  if (sizeof(int) == 2) {
+    return "<H";
+  }
+  return "<I";
+}
+
 const char *_typeof(double) {
+  if (sizeof(int) == 4) {
+    return "<f";
+  }
   return "<d";
 }
 
