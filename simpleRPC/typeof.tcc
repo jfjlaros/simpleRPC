@@ -7,7 +7,7 @@
 /*
  * Type encoding functions.
  *
- * For moren information about the encoding:
+ * For more information about the encoding:
  * https://docs.python.org/2/library/struct.html#format-characters
  */
 
@@ -120,11 +120,11 @@ void describeSignature(void (*f)(Args...)) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
- * @arg {R (*)(Args...)} f - Function pointer.
+ * @arg {T (*)(Args...)} f - Function pointer.
  */
-template<class R, class... Args>
-void describeSignature(R (*f)(Args...)) {
-  R data;
+template<class T, class... Args>
+void describeSignature(T (*f)(Args...)) {
+  T data;
 
   _print(_typeof(data), ":");
   _writeParameterTypes((void (*)(Args...))f);
