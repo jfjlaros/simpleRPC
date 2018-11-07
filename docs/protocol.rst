@@ -16,16 +16,18 @@ writing one byte to the serial device.
 Method discovery
 ----------------
 
-Method discovery is initiated by the host by writing one byte with the value
+Method discovery is initiated by the host by writing one byte with value
 ``0xff`` to the serial device.
 
 The device will respond with a list of method descriptions delimited by an end
-of line signature (``0x0d0a``). The list is terminated by an additional end of
-line signature.
+of line signature (``\n``). The list is terminated by an additional end of line
+signature.
 
-Each method description consists of a C-style function signature enclosed in
-brackets followed by a documentation string. The format of the documentation
-string is described in the :doc:`usage_device` section.
+Each method description consists of a struct_ formatted function signature and
+a documentation string separated by a ``;``. The function signature starts with
+a struct formatted return type (if any), followed by a ``:`` and a space
+delimited list of struct formatted parameter types. The format of the
+documentation string is described in the :doc:`usage_device` section.
 
 
 Remote procedure call
@@ -38,11 +40,30 @@ parameters, their values are written to the serial device. After the parameter
 values have been received, the device executes the method and writes the return
 value of the method (if any) back to the serial device.
 
-All types are native C types (``int``, ``float``, ``double``, etc.). All values
-are little-endian. The sizes of the different types can be found in the
-Arduino_ documentation. The host is responsible for packing and unpacking of
-the variables. An example conversion table named ``_types`` can be found In the
-file simple_rpc.py_.
+All native C types (``int``, ``float``, ``double``, etc.) are currently
+supported.  All values are little-endian. The host is responsible for packing
+and unpacking of the values.
+
+There are currently two built-in functions.
+
+.. list-table:: Built-in functions.
+   :header-rows: 1
+
+   * - index
+     - name
+     - description
+     - parameters
+     - returns
+   * - 0
+     - version
+     - Protocol version.
+     -
+     - Version number.
+   * - 1
+     - ping
+     - Receive a value and echo it back.
+     - Value.
+     - Value.
 
 
 Overhead
@@ -76,15 +97,14 @@ from 600 baud to 115200 baud.
    * - 31250
      - 1559
    * - 38400
-     - 1918
+     - 1920
    * - 57600
-     - 2919
+     - 2924
    * - 115200
-     - 5769
+     - 5838
 
 The number of calls per second scales linearly with the baud rate, even at the
 highest speed, there is no measurable overhead.
 
 
-.. _Arduino: https://www.arduino.cc/reference/en/#variables
-.. _simple_rpc.py: https://github.com/jfjlaros/simpleRPC/blob/master/simple_rpc/simple_rpc.py
+.. _struct: https://docs.python.org/2/library/struct.html#format-characters
