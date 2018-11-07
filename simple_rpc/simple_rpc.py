@@ -4,24 +4,28 @@ from time import sleep
 from types import MethodType
 
 
-_version = 1
+_version = 2
 
 _list_req = 0xff
-_end_of_list = '\r\n'
+_end_of_list = '\n'
 
-_types = {
-    'void': ['x', None],
-    'char': ['c', str],
-    'unsigned char': ['B', int],
-    'bool': ['?', bool],
-    'short int': ['<h', int],
-    'short unsigned int': ['<H', int],
-    'int': ['<h', int],
-    'unsigned int': ['<H', int],
-    'long int': ['<l', int],
-    'long unsigned int': ['<L', int],
-    'float': ['<f', float],
-    'double': ['<f', float]}
+
+def _cast(c_type):
+    """Select the appropriate casting function given a C type.
+
+    :arg str c_type: C type.
+
+    :returns obj: Casting function.
+    """
+    if c_type[-1] == 'c':
+        return str
+    if c_type[-1] in ['f', 'd']:
+        return float
+    return int
+
+
+def type_name(c_type):
+    return _cast(c_type).__name__
 
 
 def _parse_doc(doc):
@@ -49,20 +53,6 @@ def _parse_doc(doc):
     return documentation
 
 
-def _strip_void(obj):
-    """Remove void types.
-
-    :arg any obj: Type or list of types.
-
-    :returns any: Type or list of types without void types.
-    """
-    if obj == 'void':
-        return ''
-    if obj in [['void'], ['']]:
-        return []
-    return obj
-
-
 def _parse_line(index, line):
     """Parse a method definition line.
 
@@ -71,16 +61,16 @@ def _parse_line(index, line):
 
     :returns dict: Method dictionary.
     """
-    signature, description = line[1:].strip().split('] ', 2)
-    r_type, tail = signature.split(' (*)')
-    p_types = tail.strip('()').split(', ')
-    name, doc = description.split(': ', 2)
+    signature, description = line.strip().split('; ', 1)
+    r_type, tail = signature.split(':')
+    p_types = tail.split()
+    name, doc = description.split(': ', 1)
 
     return {
         'index': index,
-        'type': _strip_void(r_type),
+        'type': r_type,
         'name': name,
-        'parameters': _strip_void(p_types),
+        'parameters': p_types,
         'doc': _parse_doc(doc)}
 
 
@@ -97,11 +87,11 @@ def _make_docstring(method):
         help_text += '\n'
         for index, parameter in enumerate(method['parameters']):
             help_text += '\n:arg {}: {}'.format(
-                parameter, method['doc']['parameters'][index])
+                type_name(parameter), method['doc']['parameters'][index])
 
     if method['type']:
         help_text += '\n\n:returns {}: {}'.format(
-            method['type'], method['doc']['type'])
+            type_name(method['type']), method['doc']['type'])
 
     return help_text
 
@@ -113,7 +103,6 @@ class Interface(object):
         :arg str device: Serial device name.
         :arg int baudrate: Baud rate.
         """
-        # TODO: Add protocol version.
         self._connection = Serial(device, baudrate)
         sleep(1)
 
@@ -140,8 +129,8 @@ class Interface(object):
         :arg str param_type: Type of the parameter.
         :arg str param_value: Value of the parameter.
         """
-        fmt, cast = _types[param_type]
-        self._connection.write(pack(fmt, cast(param_value)))
+        self._connection.write(
+            pack(param_type, _cast(param_type)(param_value)))
 
     def _read_value(self, return_type):
         """Read a return value from a remote procedure call.
@@ -150,9 +139,8 @@ class Interface(object):
 
         :returns any: Return value.
         """
-        fmt = _types[return_type][0]
-
-        return unpack(fmt, self._connection.read(calcsize(fmt)))[0]
+        return unpack(
+            return_type, self._connection.read(calcsize(return_type)))[0]
 
     def _get_methods(self):
         """Get a list of remote procedure call methods.

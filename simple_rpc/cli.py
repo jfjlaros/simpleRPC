@@ -3,7 +3,7 @@ from time import sleep
 from sys import stdout
 
 from . import doc_split, usage, version
-from .simple_rpc import Interface
+from .simple_rpc import Interface, type_name
 
 
 def _describe_parameters(method):
@@ -18,8 +18,8 @@ def _describe_parameters(method):
 
     for index, parameter in enumerate(method['parameters']):
         args.append('arg{}'.format(index))
-        description.append('    arg{} (type {}): {}'.format(
-            index, parameter, method['doc']['parameters'][index]))
+        description.append('    {} arg{}: {}'.format(
+            type_name(parameter), index, method['doc']['parameters'][index]))
 
     return args, description
 
@@ -42,8 +42,8 @@ def _describe_method(method):
         description += '\n\n{}'.format('\n'.join(parameter_description))
 
     if method['type']:
-        description += '\n\n    returns (type {}): {}'.format(
-            method['type'], method['doc']['type'])
+        description += '\n\n    returns {}: {}'.format(
+            type_name(method['type']), method['doc']['type'])
 
     return description
 

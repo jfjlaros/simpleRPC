@@ -2,7 +2,7 @@ from os.path import dirname, abspath
 
 from configparser import ConfigParser
 
-from .simple_rpc import Interface
+from .simple_rpc import Interface, type_name
 
 
 config = ConfigParser()
