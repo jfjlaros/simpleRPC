@@ -77,13 +77,13 @@ const char *_typeof(double) {
 }
 
 
-/*
- * Recursion terminator for {_getParameterTypes}.
+/**
+ * Recursion terminator for {_writeParameterTypes}.
  */
-void _getParameterTypes(void (*)(void)) {}
+void _writeParameterTypes(void (*)(void)) {}
 
 /**
- * Get the types of all function parameters.
+ * Write the types of all function parameters to serial.
  *
  * We isolate the first parameter type {T} from function pointer {*f_}. This
  * type is used to instantiate the variable {data}, which is passed to
@@ -93,27 +93,27 @@ void _getParameterTypes(void (*)(void)) {}
  * @arg {void (*)(T, Args...)} f_ - Dummy function pointer.
  */
 template<class T, class... Args>
-void _getParameterTypes(void (*f_)(T, Args...)) {
+void _writeParameterTypes(void (*f_)(T, Args...)) {
   T data;
 
   _print(" ", _typeof(data));
-  _getParameterTypes((void (*)(Args...))f_);
+  _writeParameterTypes((void (*)(Args...))f_);
 }
 
 
 /**
- * Get the signature of a function that does not return a value.
+ * Describe the signature of a function that does not return a value.
  *
  * @arg {void (*)(Args...)} f - Function pointer.
  */
 template<class... Args>
-void signature(void (*f)(Args...)) {
+void describeSignature(void (*f)(Args...)) {
   _print(":");
-  _getParameterTypes(f);
+  _writeParameterTypes(f);
 }
 
 /**
- * Get the signature of a function that does return a value.
+ * Describe the signature of a function that does return a value.
  *
  * We prepare a dummy function pointer, referred to as {f_} in the template
  * functions above, which will be used to isolate parameter types. The return
@@ -123,11 +123,11 @@ void signature(void (*f)(Args...)) {
  * @arg {R (*)(Args...)} f - Function pointer.
  */
 template<class R, class... Args>
-void signature(R (*f)(Args...)) {
+void describeSignature(R (*f)(Args...)) {
   R data;
 
   _print(_typeof(data), ":");
-  _getParameterTypes((void (*)(Args...))f);
+  _writeParameterTypes((void (*)(Args...))f);
 }
 
 #endif

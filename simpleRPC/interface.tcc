@@ -120,7 +120,7 @@ void _call(T (*f)(Args...)) {
  */
 template<class F>
 void _writeDescription(F f, const char *doc) {
-  signature(f);
+  describeSignature(f);
   _print("; ", doc, "\n");
 }
 
