@@ -35,13 +35,13 @@
  * See the {_call} function family for documentation.
  *
 template<class... Args>
-void _call(void (*f_)(void), void (*f)(Args...), Args... args) {
+void _call(void (*)(void), void (*f)(Args...), Args... args) {
   f(args...);
 }
  */
 
 template<class... Args>
-void _call_void(void (*f_)(void), void (*f)(Args...), Args... args) {
+void _call_void(void (*)(void), void (*f)(Args...), Args... args) {
   f(args...);
 }
 
@@ -68,12 +68,12 @@ void _call(void (*f)(Args...)) {
  * variable {data}, which receives the result of {f(args...}. This result is
  * written in {sizeof(T)} bytes to the serial stream.
  *
- * @arg {void (*)(void)} f_ - Dummy function pointer.
+ * @arg {void (*)(void)} - Dummy function pointer.
  * @arg {T (*)(Args...)} f - Function pointer.
  * @arg {Args...} args... - Parameter pack for {f}.
  */
 template<class T, class... Args>
-void _call(void (*f_)(void), T (*f)(Args...), Args... args) {
+void _call(void (*)(void), T (*f)(Args...), Args... args) {
   T data = f(args...);
 
   Serial.write((byte *)&data, sizeof(T));
@@ -122,11 +122,11 @@ void _call(T (*f)(Args...)) {
  * NOTE: Be careful with __PRETTY_FUNCTION__ when changing the signature of
  * this function. The offset will likely change.
  *
- * @arg {F} f - Function pointer.
+ * @arg {F} - Function pointer.
  * @arg {const char *} doc - Function documentation.
  */
 template<class F>
-void _writeDescription(F f, const char *doc) {
+void _writeDescription(F, const char *doc) {
   _print("[", &__PRETTY_FUNCTION__[49], " ", doc);
 }
 
@@ -157,7 +157,7 @@ void _describe(F f, const char *doc, Args... args) {
 /**
  * Recursion terminator for {_select}.
  */
-void _select(byte number, byte depth) {}
+void _select(byte, byte) {}
 
 /**
  * Select and call a function indexed by {number}.
@@ -169,11 +169,11 @@ void _select(byte number, byte depth) {}
  * @arg {byte} number - Function index.
  * @arg {byte} depth - Current index.
  * @arg {F} f - Function pointer.
- * @arg {const char *} doc - Function documentation.
+ * @arg {const char *} - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class... Args>
-void _select(byte number, byte depth, F f, const char *doc, Args... args) {
+void _select(byte number, byte depth, F f, const char *, Args... args) {
   if (depth == number) {
     _call(f);
     return;
