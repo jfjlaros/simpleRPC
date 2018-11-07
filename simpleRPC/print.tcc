@@ -7,9 +7,7 @@
 /**
  * Recursion terminator for {_print}.
  */
-void _print(void) {
-  Serial.println();
-}
+void _print(void) {}
 
 /**
  * Print a list of parameters to serial.

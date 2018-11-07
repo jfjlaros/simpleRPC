@@ -9,12 +9,6 @@
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/
  * https://en.cppreference.com/w/cpp/language/parameter_pack
  *
- * NOTE: We use the __PRETTY_FUNCTION__ macro, we could do without at the
- * expense of defining a lot of functions (one per native type).
- *
- * NOTE: We currently rely on the client knowing the native types and type
- * sizes. We could also communicate the latter to the client.
- *
  * TODO: Use a namespace if possible.
  * TODO: Add support for multiple serial devices.
  * TODO: Add support for lists / strings.
@@ -23,8 +17,10 @@
 #include <Arduino.h>
 
 #include "print.tcc"
+#include "typeof.tcc"
 
 #define _LIST_REQ 0xff
+#define _END_OF_LIST "\n"
 
 
 /*
@@ -119,15 +115,13 @@ void _call(T (*f)(Args...)) {
 /**
  * Write the signature and documentation of a function to serial.
  *
- * NOTE: Be careful with __PRETTY_FUNCTION__ when changing the signature of
- * this function. The offset will likely change.
- *
- * @arg {F} - Function pointer.
+ * @arg {F} f - Function pointer.
  * @arg {const char *} doc - Function documentation.
  */
 template<class F>
-void _writeDescription(F, const char *doc) {
-  _print("[", &__PRETTY_FUNCTION__[49], " ", doc);
+void _writeDescription(F f, const char *doc) {
+  signature(f);
+  _print("; ", doc, "\n");
 }
 
 
@@ -203,7 +197,7 @@ void _interface(Args... args) {
 
     if (command == _LIST_REQ) {
       _describe(args...);
-      _print(); // List terminator.
+      _print(_END_OF_LIST);
       return;
     }
     _select(command, 0, args...);

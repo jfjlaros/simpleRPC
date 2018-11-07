@@ -3,7 +3,7 @@
 
 #include "interface.tcc"
 
-#define _VERSION 1
+#define _VERSION 2
 
 
 byte _version(void) {
