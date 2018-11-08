@@ -156,9 +156,9 @@ void _select(byte, byte) {}
 /**
  * Select and call a function indexed by {number}.
  *
- * We isolate the parameters {f} and {doc}. If we have arrived at the selected
- * function (i.e., if {depth} equals {number}, we call function {f}. Otherwise,
- * we make a recursive call, discarding {f} and {doc}.
+ * We isolate the parameter {f} and its documentation string, discarding the
+ * latter. If we have arrived at the selected function (i.e., if {depth} equals
+ * {number}, we call function {f}. Otherwise, we try again recursively.
  *
  * @arg {byte} number - Function index.
  * @arg {byte} depth - Current index.
