@@ -20,7 +20,7 @@
 #include "typeof.tcc"
 
 #define _LIST_REQ 0xff
-#define _END_OF_LIST "\n"
+#define _END_OF_LINE "\n"
 
 
 /*
@@ -197,7 +197,7 @@ void _interface(Args... args) {
 
     if (command == _LIST_REQ) {
       _describe(args...);
-      _print(_END_OF_LIST);
+      _print(_END_OF_LINE); // Empty line marks end of list.
       return;
     }
     _select(command, 0, args...);

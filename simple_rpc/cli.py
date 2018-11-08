@@ -6,22 +6,22 @@ from . import doc_split, usage, version
 from .simple_rpc import Interface, type_name
 
 
-def _describe_parameters(method):
-    """Make parameter data (types and documentation) human readable.
-
-    :arg dict method: Method dictionary.
-
-    :returns str: Parameter data in readable form.
-    """
-    args = []
-    description = []
-
-    for index, parameter in enumerate(method['parameters']):
-        args.append('arg{}'.format(index))
-        description.append('    {} arg{}: {}'.format(
-            type_name(parameter), index, method['doc']['parameters'][index]))
-
-    return args, description
+#def _describe_parameters(method):
+#    """Make parameter data (types and documentation) human readable.
+#
+#    :arg dict method: Method dictionary.
+#
+#    :returns str: Parameter data in readable form.
+#    """
+#    args = []
+#    description = []
+#
+#    for parameter in method['parameters']:
+#        args.append(parameter['name'])
+#        description.append('    {} {}: {}'.format(
+#            type_name(parameter['type']), parameter['name'], parameter['doc']))
+#
+#    return args, description
 
 
 def _describe_method(method):
@@ -31,19 +31,28 @@ def _describe_method(method):
 
     :returns str: Method data in readable form.
     """
-    description = '{}'.format(method['name'])
+    description = method['name']
 
-    args, parameter_description = _describe_parameters(method)
-    if (args):
-        description += ' {}'.format(' '.join(args))
+    for parameter in method['parameters']:
+        description += ' {}'.format(parameter['name'])
 
-    description += '\n    {}'.format(method['doc']['name'])
-    if (args):
-        description += '\n\n{}'.format('\n'.join(parameter_description))
+    #if method['doc']:
+    #    description += '\n    {}'.format(method['doc'])
 
-    if method['type']:
-        description += '\n\n    returns {}: {}'.format(
-            type_name(method['type']), method['doc']['type'])
+    if method['parameters']:
+        description += '\n'
+
+    for parameter in method['parameters']:
+        description += '\n    {} {}'.format(
+            type_name(parameter['type']), parameter['name'])
+        #if parameter['doc']:
+        #    description += ': {}'.format(parameter['doc'])
+
+    if method['return']['type']:
+        description += '\n\n    returns {}'.format(
+            type_name(method['return']['type']))
+        #if method['return']['doc']:
+        #    description += ': {}'.format(method['return']['doc'])
 
     return description
 
@@ -57,7 +66,6 @@ def rpc_list(handle, device, baudrate):
     """
     interface = Interface(device, baudrate)
 
-    handle.write('Available methods:\n\n\n')
     for method in interface.methods.values():
         handle.write(_describe_method(method) + '\n\n\n')
 
@@ -118,11 +126,11 @@ def main():
     except IOError as error:
         parser.error(error)
 
-    try:
-        args.func(**{k: v for k, v in vars(args).items()
-            if k not in ('func', 'subcommand')})
-    except ValueError as error:
-        parser.error(error)
+    #try:
+    args.func(**{k: v for k, v in vars(args).items()
+        if k not in ('func', 'subcommand')})
+    #except ValueError as error:
+    #    parser.error(error)
 
 
 if __name__ == '__main__':
