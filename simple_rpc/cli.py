@@ -3,25 +3,7 @@ from time import sleep
 from sys import stdout
 
 from . import doc_split, usage, version
-from .simple_rpc import Interface, type_name
-
-
-#def _describe_parameters(method):
-#    """Make parameter data (types and documentation) human readable.
-#
-#    :arg dict method: Method dictionary.
-#
-#    :returns str: Parameter data in readable form.
-#    """
-#    args = []
-#    description = []
-#
-#    for parameter in method['parameters']:
-#        args.append(parameter['name'])
-#        description.append('    {} {}: {}'.format(
-#            type_name(parameter['type']), parameter['name'], parameter['doc']))
-#
-#    return args, description
+from .simple_rpc import Interface
 
 
 def _describe_method(method):
@@ -36,23 +18,22 @@ def _describe_method(method):
     for parameter in method['parameters']:
         description += ' {}'.format(parameter['name'])
 
-    #if method['doc']:
-    #    description += '\n    {}'.format(method['doc'])
+    if method['doc']:
+        description += '\n    {}'.format(method['doc'])
 
     if method['parameters']:
         description += '\n'
-
     for parameter in method['parameters']:
         description += '\n    {} {}'.format(
-            type_name(parameter['type']), parameter['name'])
-        #if parameter['doc']:
-        #    description += ': {}'.format(parameter['doc'])
+            parameter['typename'], parameter['name'])
+        if parameter['doc']:
+            description += ': {}'.format(parameter['doc'])
 
-    if method['return']['type']:
+    if method['return']['fmt']:
         description += '\n\n    returns {}'.format(
-            type_name(method['return']['type']))
-        #if method['return']['doc']:
-        #    description += ': {}'.format(method['return']['doc'])
+            method['return']['typename'])
+        if method['return']['doc']:
+            description += ': {}'.format(method['return']['doc'])
 
     return description
 

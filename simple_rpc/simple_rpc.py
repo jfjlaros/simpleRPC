@@ -24,52 +24,74 @@ def _cast(c_type):
     return int
 
 
-def type_name(c_type):
+def _type_name(c_type):
+    """Python type name of a C type.
+
+    :arg str c_type: C type.
+
+    :returns str: Python type name.
+    """
+    if not c_type:
+        return ''
     return _cast(c_type).__name__
 
 
-#def _parse_doc(doc):
-#    """Parse the method documentation string.
-#
-#    :arg str doc: Method documentation string.
-#
-#    :returns dict: Method documentation.
-#    """
-#    # TODO: Allow for missing or malformed documentation strings.
-#    doc_parts = doc.split(' @')
-#
-#    documentation = {
-#        'name': doc_parts[0],
-#        'parameters': [],
-#        'type': ''}
-#
-#    for item in doc_parts[1:]:
-#        doc_type, doc_text = item.split(':', 1)
-#        if doc_type == 'P':
-#            documentation['parameters'].append(doc_text)
-#        if doc_type == 'R':
-#            documentation['type'] = doc_text
-#
-#    return documentation
+def _strip_split(string, delimiter):
+    return list(map(lambda x: x.strip(), string.strip().split(delimiter)))
 
 
 def _parse_signature(index, signature):
+    """Parse a C function signature string.
+
+    :arg int index: Function index.
+    :arg str signature" Function signature.
+
+    :returns dict: Method description.
+    """
     method = {
         'doc': '',
-        'index': index, # FIXME, not sure this should be here.
+        'index': index,
         'name': 'method{}'.format(index),
         'parameters': [],
         'return': {'doc': ''}}
 
-    method['return']['type'], parameters = signature.split(':')
+    method['return']['fmt'], parameters = signature.split(':')
+    method['return']['typename'] = _type_name(method['return']['fmt'])
 
     for i, type_ in enumerate(parameters.split()):
         method['parameters'].append({
             'doc': '',
             'name': 'arg{}'.format(i),
-            'type': type_})
+            'fmt': type_,
+            'typename': _type_name(type_)})
 
     return method
+
+
+def _add_doc(method, doc):
+    """Add documentation to a method.
+
+    :arg dict method: Method description.
+    :arg str doc: Method documentation.
+    """
+    parts = list(map(lambda x: _strip_split(x, ':'), _strip_split(doc, '@')))
+
+    if list(map(lambda x: len(x), parts)) != [2] * len(parts):
+        return
+
+    method['name'], method['doc'] = parts[0]
+
+    index = 0
+    for part in parts[1:]:
+        name, description = part
+
+        if name != 'return':
+            if index < len(method['parameters']):
+                method['parameters'][index]['name'] = name
+                method['parameters'][index]['doc'] = description
+            index += 1
+        else:
+            method['return']['doc'] = description
 
 
 def _parse_line(index, line):
@@ -80,20 +102,12 @@ def _parse_line(index, line):
 
     :returns dict: Method dictionary.
     """
-    #print(line)
-    signature, description = line.strip(_end_of_line).split('; ', 1)
+    signature, description = line.strip(_end_of_line).split(';', 1)
 
-    return _parse_signature(index, signature)
-    #r_type, tail = signature.split(':')
-    #p_types = tail.split()
-    #name, doc = description.split(': ', 1)
+    method = _parse_signature(index, signature)
+    _add_doc(method, description)
 
-    #return {
-    #    'index': index,
-    #    'type': r_type,
-    #    'name': name,
-    #    'parameters': p_types,
-    #    'doc': _parse_doc(doc)}
+    return method
 
 
 def _make_docstring(method):
@@ -103,17 +117,24 @@ def _make_docstring(method):
 
     :returns str: Function docstring.
     """
-    help_text = '{}'.format(method['name'])
+    help_text = ''
+
+    if method['doc']:
+        help_text += method['doc']
 
     if method['parameters']:
         help_text += '\n'
-        for parameter in method['parameters']:
-            help_text += '\n:{}: {}'.format(
-                type_name(parameter['type']), parameter['doc'])
 
-    if method['return']['type']:
-        help_text += '\n\n:returns {}: {}'.format(
-            type_name(method['return']['type']), method['return']['doc'])
+    for parameter in method['parameters']:
+        help_text += '\n:arg {} {}:'.format(
+            parameter['typename'], parameter['name'])
+        if parameter['doc']:
+            help_text += ' {}'.format(parameter['doc'])
+
+    if method['return']['fmt']:
+        help_text += '\n\n:returns {}:'.format(method['return']['typename'])
+        if method['return']['doc']:
+            help_text += ' {}'.format(method['return']['doc'])
 
     return help_text
 
@@ -128,15 +149,15 @@ class Interface(object):
         self._connection = Serial(device, baudrate)
         sleep(1)
 
-        self.methods = dict(map(lambda x: (x['name'], x), self._get_methods()))
+        self.methods = self._get_methods()
         for method in self.methods.values():
             setattr(self, method['name'], MethodType(self._call(method), self))
 
-        #device_version = self.call_method('version')
-        #if device_version != _version:
-        #    raise ValueError(
-        #        'version mismatch (device: {}, client: {})'.format(
-        #            device_version, _version))
+        device_version = self.call_method('version')
+        if device_version != _version:
+            raise ValueError(
+                'version mismatch (device: {}, client: {})'.format(
+                    device_version, _version))
 
     def _select(self, index):
         """Initiate a remote procedure call, select the method.
@@ -171,13 +192,14 @@ class Interface(object):
         """
         self._select(_list_req)
 
-        methods = []
+        methods = {}
         index = 0
         while True:
             line = self._connection.readline().decode('utf-8')
             if line == _end_of_line:
                 break
-            methods.append(_parse_line(index, line))
+            method = _parse_line(index, line)
+            methods[method['name']] = method
             index += 1
 
         return methods
@@ -192,6 +214,7 @@ class Interface(object):
         """
         def call(self, *args):
             return self.call_method(method['name'], *args)
+
         call.__name__ = method['name']
         call.__doc__ = _make_docstring(method)
 
@@ -211,20 +234,19 @@ class Interface(object):
 
         parameters = method['parameters']
         if len(args) != len(parameters):
-            raise ValueError(
-                'got {} parameters for method {}, expected {}'.format(
-                    len(args), name, len(parameters)))
+            raise TypeError(
+                '{} expected {} arguments, got {}'.format(
+                    name, len(parameters), len(args)))
 
         # Call the method.
         self._select(method['index'])
 
         # Provide parameters (if any).
         if method['parameters']:
-            #for param_type, param_value in zip(method['parameters'], args):
             for index, parameter in enumerate(method['parameters']):
-                self._write_parameter(parameter['type'], args[index])
+                self._write_parameter(parameter['fmt'], args[index])
 
         # Read return value (if any).
-        if method['return']['type']:
-            return self._read_value(method['return']['type'])
+        if method['return']['fmt']:
+            return self._read_value(method['return']['fmt'])
         return None

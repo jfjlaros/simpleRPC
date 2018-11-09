@@ -26,8 +26,8 @@ byte _ping(byte data) {
 template<class... Args>
 void interface(Args... args) {
   _interface(
-    _version, "version: Protocol version. @R:Version number.",
-    _ping, "ping: Receive a value and echo it back. @P:Value. @R:Value.",
+    _version, "version: Protocol version. @return: Version number.",
+    _ping, "ping: Echo a value. @data: Value. @return: Value of data.",
     args...);
 }
 
