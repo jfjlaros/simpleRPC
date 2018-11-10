@@ -9,7 +9,7 @@ from .simple_rpc import Interface
 def _describe_method(method):
     """Make a human readable description of a method.
 
-    :arg dict method: Method dictionary.
+    :arg dict method: Method object.
 
     :returns str: Method data in readable form.
     """
@@ -89,13 +89,11 @@ def main():
     subparsers.required = True
 
     subparser = subparsers.add_parser(
-        'list', parents=[common_parser],
-        description=doc_split(rpc_list))
+        'list', parents=[common_parser], description=doc_split(rpc_list))
     subparser.set_defaults(func=rpc_list)
 
     subparser = subparsers.add_parser(
-        'call', parents=[common_parser],
-        description=doc_split(rpc_call))
+        'call', parents=[common_parser], description=doc_split(rpc_call))
     subparser.set_defaults(func=rpc_call)
     subparser.add_argument(
         'name', metavar='NAME', type=str, help='command name')
@@ -107,11 +105,11 @@ def main():
     except IOError as error:
         parser.error(error)
 
-    #try:
-    args.func(**{k: v for k, v in vars(args).items()
-        if k not in ('func', 'subcommand')})
-    #except ValueError as error:
-    #    parser.error(error)
+    try:
+        args.func(**{k: v for k, v in vars(args).items()
+            if k not in ('func', 'subcommand')})
+    except (ValueError, IOError) as error:
+        parser.error(error)
 
 
 if __name__ == '__main__':

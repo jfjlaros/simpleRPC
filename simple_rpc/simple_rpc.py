@@ -1,7 +1,9 @@
-from serial import Serial
 from struct import calcsize, pack, unpack
 from time import sleep
 from types import MethodType
+
+from serial import Serial
+from serial.serialutil import SerialException
 
 
 _version = 2
@@ -44,9 +46,9 @@ def _parse_signature(index, signature):
     """Parse a C function signature string.
 
     :arg int index: Function index.
-    :arg str signature" Function signature.
+    :arg str signature: Function signature.
 
-    :returns dict: Method description.
+    :returns dict: Method object.
     """
     method = {
         'doc': '',
@@ -69,9 +71,9 @@ def _parse_signature(index, signature):
 
 
 def _add_doc(method, doc):
-    """Add documentation to a method.
+    """Add documentation to a method object.
 
-    :arg dict method: Method description.
+    :arg dict method: Method object.
     :arg str doc: Method documentation.
     """
     parts = list(map(lambda x: _strip_split(x, ':'), _strip_split(doc, '@')))
@@ -100,7 +102,7 @@ def _parse_line(index, line):
     :arg int index: Line number.
     :arg str line: Method definition.
 
-    :returns dict: Method dictionary.
+    :returns dict: Method object.
     """
     signature, description = line.strip(_end_of_line).split(';', 1)
 
@@ -113,7 +115,7 @@ def _parse_line(index, line):
 def _make_docstring(method):
     """Make a docstring for a function.
 
-    :arg dict method: Method dictionary.
+    :arg dict method: Method object.
 
     :returns str: Function docstring.
     """
@@ -146,7 +148,10 @@ class Interface(object):
         :arg str device: Serial device name.
         :arg int baudrate: Baud rate.
         """
-        self._connection = Serial(device, baudrate)
+        try:
+            self._connection = Serial(device, baudrate)
+        except SerialException as error:
+            raise IOError(error.strerror.split(':')[0])
         sleep(1)
 
         self.methods = self._get_methods()
@@ -186,9 +191,9 @@ class Interface(object):
             return_type, self._connection.read(calcsize(return_type)))[0]
 
     def _get_methods(self):
-        """Get a list of remote procedure call methods.
+        """Get remote procedure call methods.
 
-        :returns dict: Method dictionary.
+        :returns dict: Method objects indexed by name.
         """
         self._select(_list_req)
 
@@ -207,7 +212,7 @@ class Interface(object):
     def _call(self, method, *args):
         """Make a member function for a method.
 
-        :arg dict method: Method dictionary.
+        :arg dict method: Method object.
         :arg any *args: Parameters for the method.
 
         :returns function: New member function.
