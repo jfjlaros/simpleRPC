@@ -19,7 +19,7 @@ communication at 9600 baud in the ``setup()`` body.
 
 Methods are exported by calling the ``interface()`` function from the
 ``loop()`` body. This function accepts a list of tuples (function,
-documentation string) as parameters.
+documentation) as parameters.
 
 .. list-table:: Interface function parameters.
    :header-rows: 1
@@ -37,29 +37,41 @@ documentation string) as parameters.
    * - ...
      - ...
 
-A documentation string consists of a method name followed by a ``:`` and a
-field containing the method description. If applicable, a list of parameter
-descriptions and a return value description can be provided by using the
-``@P:`` and ``@R:`` prefix respectively.
+A documentation string consists of a list of key-value pairs in the form ``key:
+value`` delimited by the ``@`` character. The first pair in this list is
+reserved for the method name and its description, all subsequent pairs are used
+to name and describe parameters or to describe a return value.
 
 .. list-table:: Documentation string.
    :header-rows: 1
 
    * - field prefix
-     - description
-     - field suffix
+     - key
+     - value
    * -
      - Method name.
-     - ``:``
-   * -
      - Method description.
-     -
-   * - ``@P:``
+   * - ``@``
+     - Parameter name.
      - Parameter description.
-     -
-   * - ``@R:``
+   * - ``@``
+     - ``return``
      - Return value description.
-     -
+
+The documentation string may be incomplete or empty. The following defaults are
+used for missing keys. All descriptions may be empty.
+
+.. list-table:: Default names.
+   :header-rows: 1
+
+   * - key
+     - default
+   * - Method name.
+     - ``method`` followed by a number, e.g., ``method2``.
+   * - Parameter name.
+     - ``arg`` followed by a number, e.g., ``arg0``.
+   * - ``return``
+     - ``return``
 
 Example
 ^^^^^^^
@@ -73,8 +85,8 @@ method that takes two parameters and returns one value.
       analogWrite(13, brightness);
     }
 
-    int add(int a, int b) {
-      return a + b;
+    int inc(int a) {
+      return a + 1;
     }
 
 Exporting these methods in the ``loop()`` body looks as follows:
@@ -83,8 +95,8 @@ Exporting these methods in the ``loop()`` body looks as follows:
 
     void loop(void) {
       interface(
-        setLed, "set_led: Set LED brightness. @P:Brightness.",
-        add, "add: Add two integers. @P:Value a. @P:Value b. @R:Sum of a and b.");
+        inc, "inc: Increment a value. @a: Value. @return: a + 1.",
+        setLed, "set_led: Set LED brightness. @brightness: Brightness.");
     }
 
 We can now build and upload the sketch.
