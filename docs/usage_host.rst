@@ -22,20 +22,20 @@ class instance. These methods can be used like any normal class methods.
 Example
 ^^^^^^^
 
-In our example we have exported the ``add`` method, which is now present as a
+In our example we have exported the ``inc`` method, which is now present as a
 class method of the ``interface`` class instance.
 
 .. code:: python
 
-    >>> interface.add(1, 2)
-    3
+    >>> interface.inc(1)
+    2
 
 To get more information about this class method, the built-in ``help()``
 function can be used.
 
 .. code:: python
 
-    >>> help(interface.add)
+    >>> help(interface.inc)
 
 Command line interface
 ----------------------
@@ -52,7 +52,7 @@ the ``-h`` option.
 Example
 ^^^^^^^
 
-In our example, the ``list`` subcommand will show a description of the ``add``
+In our example, the ``list`` subcommand will show a description of the ``inc``
 method and the ``set_led`` method.
 
 .. code::
@@ -61,24 +61,23 @@ method and the ``set_led`` method.
     Available methods:
 
 
-    add arg0 arg1
-        Add two integers.
+    inc a
+        Increment a value.
 
-        arg0 (type int): Value a.
-        arg1 (type int): Value b.
+        int a: Value.
 
-        returns (type int): Sum of a and b.
+        returns int: a + 1.
 
 
-    set_led arg0
+    set_led brightness
         Set LED brightness.
-    
-        arg0 (type unsigned char): Brightness.
+
+        int brightness: Brightness.
 
 
 A method can be called by using the ``call`` subcommand.
 
 .. code::
 
-    $ simple_rpc call add 1 2
-    3
+    $ simple_rpc call inc 1
+    2
