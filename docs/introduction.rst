@@ -4,6 +4,7 @@ Introduction
 A remote procedure call to an Arduino device is a common way to read sensor
 values or to send control signals.
 
+
 Motivation
 ----------
 

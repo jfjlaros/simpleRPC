@@ -58,12 +58,12 @@ There are currently two built-in functions.
      - version
      - Protocol version.
      -
-     - Version number.
+     - int: Version number.
    * - 1
      - ping
-     - Receive a value and echo it back.
-     - Value.
-     - Value.
+     - Echo a value.
+     - int data: Value.
+     - int: Value of data.
 
 
 Overhead

@@ -4,6 +4,7 @@ Host library
 On the host, there are two ways to communicate with the device, either via the
 API library, or via the command line.
 
+
 API Library
 -----------
 
@@ -36,6 +37,7 @@ function can be used.
 .. code:: python
 
     >>> help(interface.inc)
+
 
 Command line interface
 ----------------------
