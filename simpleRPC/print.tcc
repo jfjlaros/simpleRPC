@@ -17,7 +17,7 @@ void _print(void) {}
  */
 template<class T, class... Args>
 void _print(T arg, Args... args) {
-  Serial.print(arg);
+  Serial.write(arg);
   _print(args...);
 }
 
