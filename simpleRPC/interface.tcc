@@ -11,7 +11,7 @@
  *
  * TODO: Use a namespace if possible.
  * TODO: Add support for multiple serial devices.
- * TODO: Add support for lists / strings.
+ * TODO: Add support for lists.
  * TODO: Add support for structs.
  */
 #include <Arduino.h>
