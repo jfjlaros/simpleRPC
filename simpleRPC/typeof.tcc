@@ -15,6 +15,14 @@ const char *_typeof(char) {
   return "c";
 }
 
+const char *_typeof(char *) {
+  return "s";
+}
+
+const char *_typeof(const char *) {
+  return "s";
+}
+
 const char *_typeof(signed char) {
   return "b";
 }
@@ -75,7 +83,6 @@ const char *_typeof(double) {
   }
   return "<d";
 }
-
 
 /**
  * Recursion terminator for {_writeParameterTypes}.

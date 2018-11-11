@@ -20,7 +20,8 @@
 #include "typeof.tcc"
 
 #define _LIST_REQ 0xff
-#define _END_OF_LINE "\n"
+#define _END_OF_LINE '\n'
+#define _END_OF_STRING '\0'
 
 
 /*
@@ -72,6 +73,10 @@ template<class T, class... Args>
 void _call(void (*)(void), T (*f)(Args...), Args... args) {
   T data = f(args...);
 
+  if (_typeof(data) == "s") {
+    _print(data, _END_OF_STRING);
+    return;
+  }
   Serial.write((byte *)&data, sizeof(T));
 }
 
@@ -94,6 +99,13 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
 
   Serial.readBytes((char *)&data, sizeof(T));
   _call((void (*)(Tail...))f_, f, args..., data);
+}
+
+template<class... Tail, class F, class... Args>
+void _call(void (*f_)(char *, Tail...), F f, Args... args) {
+  String data = Serial.readStringUntil(_END_OF_STRING);
+
+  _call((void (*)(Tail...))f_, f, args..., (char *)data.c_str());
 }
 
 /**
@@ -121,7 +133,7 @@ void _call(T (*f)(Args...)) {
 template<class F>
 void _writeDescription(F f, const char *doc) {
   describeSignature(f);
-  _print(";", doc, "\n");
+  _print(";", doc, _END_OF_LINE);
 }
 
 

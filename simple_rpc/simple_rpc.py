@@ -10,6 +10,7 @@ _version = 2
 
 _list_req = 0xff
 _end_of_line = '\n'
+_end_of_string = '\0'
 
 
 def _cast(c_type):
@@ -19,7 +20,7 @@ def _cast(c_type):
 
     :returns obj: Casting function.
     """
-    if c_type[0] == 'c':
+    if c_type[0] in ['c', 's']:
         return str
     if c_type[-1] in ['f', 'd']:
         return float
@@ -39,7 +40,7 @@ def _type_name(c_type):
 
 
 def _strip_split(string, delimiter):
-    return list(map(lambda x: x.strip(), string.strip().split(delimiter)))
+    return list(map(lambda x: x.strip(), string.split(delimiter)))
 
 
 def _parse_signature(index, signature):
@@ -76,7 +77,7 @@ def _add_doc(method, doc):
     :arg dict method: Method object.
     :arg str doc: Method documentation.
     """
-    parts = list(map(lambda x: _strip_split(x, ':'), _strip_split(doc, '@')))
+    parts = list(map(lambda x: _strip_split(x, ':'), doc.split('@')))
 
     if list(map(lambda x: len(x), parts)) != [2] * len(parts):
         return
@@ -164,6 +165,17 @@ class Interface(object):
                 'version mismatch (device: {}, client: {})'.format(
                     device_version, _version))
 
+    def _read_str(self):
+        data = ''
+
+        while True:
+            char = self._connection.read().decode('utf-8')
+            if char == _end_of_string:
+                break
+            data += char
+
+        return data
+
     def _select(self, index):
         """Initiate a remote procedure call, select the method.
 
@@ -177,6 +189,10 @@ class Interface(object):
         :arg str param_type: Type of the parameter.
         :arg str param_value: Value of the parameter.
         """
+        if param_type == 's':
+            self._connection.write(
+                (param_value + _end_of_string).encode('utf-8'))
+            return
         self._connection.write(
             pack(param_type, _cast(param_type)(param_value)))
 
@@ -187,6 +203,8 @@ class Interface(object):
 
         :returns any: Return value.
         """
+        if return_type == 's':
+            return self._read_str()
         return unpack(
             return_type, self._connection.read(calcsize(return_type)))[0]
 
