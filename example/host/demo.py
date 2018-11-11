@@ -32,6 +32,6 @@ for _ in range(cycles):
     stdout.flush()
 
 calls = 512 * cycles
-duration = interface.time() - start_time
+duration = (interface.time() - start_time) / 1000
 stdout.write('\n{} calls in {:.02f} seconds ({} calls/sec)\n'.format(
-    calls, duration / 1000 , int(calls * 1000 // duration)))
+    calls, duration, int(calls // duration)))
