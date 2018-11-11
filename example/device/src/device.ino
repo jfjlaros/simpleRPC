@@ -5,16 +5,12 @@ void setLed(byte brightness) {
   analogWrite(13, brightness);
 }
 
-int add(int a, int b) {
-  return a + b;
+unsigned long time(void) {
+  return millis();
 }
 
-char *str(void) {
-  return "abc";
-}
-
-const char *eat(const char *s) {
-  return s;
+int inc(int a) {
+  return a + 1;
 }
 
 
@@ -23,13 +19,8 @@ void setup(void) {
 }
 
 void loop(void) {
-  void (*f)(int, int);
-
   interface(
-    f, "f: @a: @b: @c: @return:",
-    str, "",
-    eat, "",
-    add, "add: Add two numbers. @a: Value. @b: Value. @return: Sum of a and b.",
-    setLed, "set_led: Set LED brightness. @brightness: Brightness."
-  );
+    inc, "inc: Increment a value. @a: Value. @return: a + 1.",
+    setLed, "set_led: Set LED brightness. @brightness: Brightness.",
+    time, "time: Report the system time. @return: System time.");
 }

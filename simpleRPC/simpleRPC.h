@@ -6,7 +6,7 @@
 #define _VERSION "2.0.1"
 
 
-char *_version(void) {
+const char *_version(void) {
   return _VERSION;
 }
 
@@ -26,7 +26,7 @@ byte _ping(byte data) {
 template<class... Args>
 void interface(Args... args) {
   _interface(
-    _version, "version: Protocol version. @return: Version number.",
+    _version, "version: Protocol version. @return: Version string.",
     _ping, "ping: Echo a value. @data: Value. @return: Value of data.",
     args...);
 }
