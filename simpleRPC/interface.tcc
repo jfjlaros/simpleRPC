@@ -20,7 +20,6 @@
 #include "typeof.tcc"
 
 #define _LIST_REQ 0xff
-#define _END_OF_LINE '\n'
 #define _END_OF_STRING '\0'
 
 
@@ -101,11 +100,21 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
+/*
+ * Parameter collection for strings.
+ */
 template<class... Tail, class F, class... Args>
 void _call(void (*f_)(char *, Tail...), F f, Args... args) {
-  String data = Serial.readStringUntil(_END_OF_STRING);
+  _call(
+    (void (*)(Tail...))f_, f, args...,
+    (char *)Serial.readStringUntil(_END_OF_STRING).c_str());
+}
 
-  _call((void (*)(Tail...))f_, f, args..., (char *)data.c_str());
+template<class... Tail, class F, class... Args>
+void _call(void (*f_)(const char *, Tail...), F f, Args... args) {
+  _call(
+    (void (*)(Tail...))f_, f, args...,
+    (const char *)Serial.readStringUntil(_END_OF_STRING).c_str());
 }
 
 /**
@@ -133,7 +142,7 @@ void _call(T (*f)(Args...)) {
 template<class F>
 void _writeDescription(F f, const char *doc) {
   describeSignature(f);
-  _print(";", doc, _END_OF_LINE);
+  _print(";", doc, _END_OF_STRING);
 }
 
 
@@ -209,7 +218,7 @@ void _interface(Args... args) {
 
     if (command == _LIST_REQ) {
       _describe(args...);
-      _print(_END_OF_LINE); // Empty line marks end of list.
+      _print(_END_OF_STRING); // Empty string marks end of list.
       return;
     }
     _select(command, 0, args...);

@@ -6,10 +6,9 @@ from serial import Serial
 from serial.serialutil import SerialException
 
 
-_version = 2
+_version = "2.0.1"
 
 _list_req = 0xff
-_end_of_line = '\n'
 _end_of_string = '\0'
 
 
@@ -105,7 +104,7 @@ def _parse_line(index, line):
 
     :returns dict: Method object.
     """
-    signature, description = line.strip(_end_of_line).split(';', 1)
+    signature, description = line.strip(_end_of_string).split(';', 1)
 
     method = _parse_signature(index, signature)
     _add_doc(method, description)
@@ -218,8 +217,8 @@ class Interface(object):
         methods = {}
         index = 0
         while True:
-            line = self._connection.readline().decode('utf-8')
-            if line == _end_of_line:
+            line = self._read_str()
+            if not line:
                 break
             method = _parse_line(index, line)
             methods[method['name']] = method

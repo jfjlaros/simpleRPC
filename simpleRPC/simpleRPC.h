@@ -3,10 +3,10 @@
 
 #include "interface.tcc"
 
-#define _VERSION 2
+#define _VERSION "2.0.1"
 
 
-byte _version(void) {
+char *_version(void) {
   return _VERSION;
 }
 
