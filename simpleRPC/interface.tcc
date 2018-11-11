@@ -141,7 +141,7 @@ void _call(T (*f)(Args...)) {
  */
 template<class F>
 void _writeDescription(F f, const char *doc) {
-  _print(describeSignature(f).c_str(), ";", doc, _END_OF_STRING);
+  _print(signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
 
 

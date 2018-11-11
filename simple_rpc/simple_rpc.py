@@ -6,7 +6,7 @@ from serial import Serial
 from serial.serialutil import SerialException
 
 
-_version = "2.0.1"
+_version = '2.0.1'
 
 _list_req = 0xff
 _end_of_string = '\0'
@@ -165,6 +165,10 @@ class Interface(object):
                     device_version, _version))
 
     def _read_str(self):
+        """Read a delimited string from serial.
+
+        :returns str: String.
+        """
         data = ''
 
         while True:

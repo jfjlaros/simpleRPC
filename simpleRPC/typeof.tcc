@@ -83,14 +83,14 @@ String _typeof(double) {
 }
 
 /**
- * Recursion terminator for {_writeParameterTypes}.
+ * Recursion terminator for {_parameterTypes}.
  */
-String _writeParameterTypes(void (*)(void)) {
+String _parameterTypes(void (*)(void)) {
   return "";
 }
 
 /**
- * Write the types of all function parameters to serial.
+ * Get the types of all function parameters to serial.
  *
  * We isolate the first parameter type {T} from function pointer {*f_}. This
  * type is used to instantiate the variable {data}, which is passed to
@@ -98,27 +98,31 @@ String _writeParameterTypes(void (*)(void)) {
  * function pointer {*f_} in the recursive call.
  *
  * @arg {void (*)(T, Args...)} f_ - Dummy function pointer.
+ *
+ * @return {String} - Space separated parameter types.
  */
 template<class T, class... Args>
-String _writeParameterTypes(void (*f_)(T, Args...)) {
+String _parameterTypes(void (*f_)(T, Args...)) {
   T data;
 
-  return " " + _typeof(data) + _writeParameterTypes((void (*)(Args...))f_);
+  return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
 
 /**
- * Describe the signature of a function that does not return a value.
+ * Get the signature of a function that does not return a value.
  *
  * @arg {void (*)(Args...)} f - Function pointer.
+ *
+ * @return {String} - Function signature.
  */
 template<class... Args>
-String describeSignature(void (*f)(Args...)) {
-  return ":" + _writeParameterTypes(f);
+String signature(void (*f)(Args...)) {
+  return ":" + _parameterTypes(f);
 }
 
 /**
- * Describe the signature of a function that does return a value.
+ * Get the signature of a function that returns a value.
  *
  * We prepare a dummy function pointer, referred to as {f_} in the template
  * functions above, which will be used to isolate parameter types. The return
@@ -126,12 +130,14 @@ String describeSignature(void (*f)(Args...)) {
  * expansion.
  *
  * @arg {T (*)(Args...)} f - Function pointer.
+ *
+ * @return {String} - Function signature.
  */
 template<class T, class... Args>
-String describeSignature(T (*f)(Args...)) {
+String signature(T (*f)(Args...)) {
   T data;
 
-  return _typeof(data) + ":" + _writeParameterTypes((void (*)(Args...))f);
+  return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
 #endif
