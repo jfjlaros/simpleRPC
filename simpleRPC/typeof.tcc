@@ -1,8 +1,6 @@
 #ifndef __SIMPLE_RPC_TYPEOF_TCC__
 #define __SIMPLE_RPC_TYPEOF_TCC__
 
-#include "print.tcc"
-
 
 /*
  * Type encoding functions.
@@ -11,51 +9,51 @@
  * https://docs.python.org/2/library/struct.html#format-characters
  */
 
-const char *_typeof(char) {
+String _typeof(char) {
   return "c";
 }
 
-const char *_typeof(char *) {
+String _typeof(char *) {
   return "s";
 }
 
-const char *_typeof(const char *) {
+String _typeof(const char *) {
   return "s";
 }
 
-const char *_typeof(signed char) {
+String _typeof(signed char) {
   return "b";
 }
 
-const char *_typeof(unsigned char) {
+String _typeof(unsigned char) {
   return "B";
 }
 
-const char *_typeof(short int) {
+String _typeof(short int) {
   return "<h";
 }
 
-const char *_typeof(unsigned short int) {
+String _typeof(unsigned short int) {
   return "<H";
 }
 
-const char *_typeof(long int) {
+String _typeof(long int) {
   return "<l";
 }
 
-const char *_typeof(unsigned long int) {
+String _typeof(unsigned long int) {
   return "<L";
 }
 
-const char *_typeof(long long int) {
+String _typeof(long long int) {
   return "<q";
 }
 
-const char *_typeof(unsigned long long int) {
+String _typeof(unsigned long long int) {
   return "<Q";
 }
 
-const char *_typeof(float) {
+String _typeof(float) {
   return "<f";
 }
 
@@ -63,21 +61,21 @@ const char *_typeof(float) {
  * The {int} and {double} type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
-const char *_typeof(int) {
+String _typeof(int) {
   if (sizeof(int) == 2) {
     return "<h";
   }
   return "<i";
 }
 
-const char *_typeof(unsigned int) {
+String _typeof(unsigned int) {
   if (sizeof(int) == 2) {
     return "<H";
   }
   return "<I";
 }
 
-const char *_typeof(double) {
+String _typeof(double) {
   if (sizeof(int) == 4) {
     return "<f";
   }
@@ -87,7 +85,9 @@ const char *_typeof(double) {
 /**
  * Recursion terminator for {_writeParameterTypes}.
  */
-void _writeParameterTypes(void (*)(void)) {}
+String _writeParameterTypes(void (*)(void)) {
+  return "";
+}
 
 /**
  * Write the types of all function parameters to serial.
@@ -100,11 +100,10 @@ void _writeParameterTypes(void (*)(void)) {}
  * @arg {void (*)(T, Args...)} f_ - Dummy function pointer.
  */
 template<class T, class... Args>
-void _writeParameterTypes(void (*f_)(T, Args...)) {
+String _writeParameterTypes(void (*f_)(T, Args...)) {
   T data;
 
-  _print(" ", _typeof(data));
-  _writeParameterTypes((void (*)(Args...))f_);
+  return " " + _typeof(data) + _writeParameterTypes((void (*)(Args...))f_);
 }
 
 
@@ -114,9 +113,8 @@ void _writeParameterTypes(void (*f_)(T, Args...)) {
  * @arg {void (*)(Args...)} f - Function pointer.
  */
 template<class... Args>
-void describeSignature(void (*f)(Args...)) {
-  _print(":");
-  _writeParameterTypes(f);
+String describeSignature(void (*f)(Args...)) {
+  return ":" + _writeParameterTypes(f);
 }
 
 /**
@@ -130,11 +128,10 @@ void describeSignature(void (*f)(Args...)) {
  * @arg {T (*)(Args...)} f - Function pointer.
  */
 template<class T, class... Args>
-void describeSignature(T (*f)(Args...)) {
+String describeSignature(T (*f)(Args...)) {
   T data;
 
-  _print(_typeof(data), ":");
-  _writeParameterTypes((void (*)(Args...))f);
+  return _typeof(data) + ":" + _writeParameterTypes((void (*)(Args...))f);
 }
 
 #endif
