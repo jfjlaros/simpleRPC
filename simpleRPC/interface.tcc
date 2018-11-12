@@ -23,37 +23,6 @@
 #define _END_OF_STRING '\0'
 
 
-/*
- * The following three template functions are required because the template
- * function in this comment causes an ambiguity. The same overloading seems to
- * work for the setup template function {_call} though.
- *
- * See the {_call} function family for documentation.
- *
-template<class... Args>
-void _call(void (*)(void), void (*f)(Args...), Args... args) {
-  f(args...);
-}
- */
-
-template<class... Args>
-void _call_void(void (*)(void), void (*f)(Args...), Args... args) {
-  f(args...);
-}
-
-template<class T, class... Tail, class F, class... Args>
-void _call_void(void (*f_)(T, Tail...), F f, Args... args) {
-  T data;
-
-  Serial.readBytes((char *)&data, sizeof(T));
-  _call_void((void (*)(Tail...))f_, f, args..., data);
-}
-
-template<class... Args>
-void _call(void (*f)(Args...)) {
-  _call_void(f, f);
-}
-
 /**
  * Execute a function and write return value to serial.
  *
@@ -65,11 +34,11 @@ void _call(void (*f)(Args...)) {
  * written in {sizeof(T)} bytes to the serial stream.
  *
  * @arg {void (*)(void)} - Dummy function pointer.
- * @arg {T (*)(Args...)} f - Function pointer.
+ * @arg {T (*)(Tail...)} f - Function pointer.
  * @arg {Args...} args... - Parameter pack for {f}.
  */
-template<class T, class... Args>
-void _call(void (*)(void), T (*f)(Args...), Args... args) {
+template<class T, class... Tail, class... Args>
+void _call(void (*)(void), T (*f)(Tail...), Args... args) {
   T data = f(args...);
 
   if (_typeof(data) == "s") {
@@ -77,6 +46,16 @@ void _call(void (*)(void), T (*f)(Args...), Args... args) {
     return;
   }
   Serial.write((byte *)&data, sizeof(T));
+}
+
+/**
+ * Execute a function that has no return value.
+ *
+ * See the function above for documentation.
+ */
+template<class... Tail, class... Args>
+void _call(void (*)(void), void (*f)(Tail...), Args... args) {
+  f(args...);
 }
 
 /**
@@ -102,6 +81,8 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
 
 /*
  * Parameter collection for strings.
+ *
+ * See the function above for documentation.
  */
 template<class... Tail, class F, class... Args>
 void _call(void (*f_)(char *, Tail...), F f, Args... args) {
