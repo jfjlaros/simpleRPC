@@ -129,13 +129,13 @@ String signature(void (*f)(Args...)) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
- * @arg {T (*)(Args...)} f - Function pointer.
+ * @arg {R (*)(Args...)} f - Function pointer.
  *
  * @return {String} - Function signature.
  */
-template<class T, class... Args>
-String signature(T (*f)(Args...)) {
-  T data;
+template<class R, class... Args>
+String signature(R (*f)(Args...)) {
+  R data;
 
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
