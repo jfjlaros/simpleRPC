@@ -29,23 +29,23 @@
  * All parameters have been collected since function pointer {*f_} has no
  * parameter types. All values are now present in the {args} parameter pack.
  *
- * We use the return type {T} of function pointer {*f} to instantiate the
+ * We use the return type {R} of function pointer {*f} to instantiate the
  * variable {data}, which receives the result of {f(args...}. This result is
- * written in {sizeof(T)} bytes to the serial stream.
+ * written in {sizeof(R)} bytes to the serial stream.
  *
  * @arg {void (*)(void)} - Dummy function pointer.
- * @arg {T (*)(Tail...)} f - Function pointer.
+ * @arg {R (*)(Tail...)} f - Function pointer.
  * @arg {Args...} args... - Parameter pack for {f}.
  */
-template<class T, class... Tail, class... Args>
-void _call(void (*)(void), T (*f)(Tail...), Args... args) {
-  T data = f(args...);
+template<class R, class... Tail, class... Args>
+void _call(void (*)(void), R (*f)(Tail...), Args... args) {
+  R data = f(args...);
 
   if (_typeof(data) == "s") {
     _print(data, _END_OF_STRING);
     return;
   }
-  Serial.write((byte *)&data, sizeof(T));
+  Serial.write((byte *)&data, sizeof(R));
 }
 
 /**
@@ -106,10 +106,10 @@ void _call(void (*f_)(const char *, Tail...), F f, Args... args) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
- * @arg {T (*)(Args...)} f - Function pointer.
+ * @arg {R (*)(Args...)} f - Function pointer.
  */
-template<class T, class... Args>
-void _call(T (*f)(Args...)) {
+template<class R, class... Args>
+void _call(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
