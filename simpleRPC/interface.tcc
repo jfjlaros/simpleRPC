@@ -12,16 +12,25 @@
  * TODO: Use a namespace if possible.
  * TODO: Add support for multiple serial devices.
  * TODO: Add support for lists.
- * TODO: Add support for structs.
  */
 #include <Arduino.h>
 
 #include "print.tcc"
+#include "tuple.tcc"
 #include "typeof.tcc"
 
 #define _LIST_REQ 0xff
 #define _END_OF_STRING '\0'
 
+
+template<class T>
+void _return(T data) {
+  if (_typeof(data) == "s") {
+    _print(data, _END_OF_STRING);
+    return;
+  }
+  Serial.write((byte *)&data, sizeof(T));
+}
 
 /**
  * Execute a function and write return value to serial.
@@ -39,13 +48,12 @@
  */
 template<class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args... args) {
-  R data = f(args...);
+  _return(f(args...));
+}
 
-  if (_typeof(data) == "s") {
-    _print(data, _END_OF_STRING);
-    return;
-  }
-  Serial.write((byte *)&data, sizeof(R));
+template<class C, class R, class... Tail, class... Args>
+void _call(void (*)(void), Tuple <C, R (C::*)(Tail...)>tuple, Args... args) {
+  _return(((tuple.head).*tuple.tail.head)(args...));
 }
 
 /**
@@ -56,6 +64,11 @@ void _call(void (*)(void), R (*f)(Tail...), Args... args) {
 template<class... Tail, class... Args>
 void _call(void (*)(void), void (*f)(Tail...), Args... args) {
   f(args...);
+}
+
+template<class C, class... Tail, class... Args>
+void _call(void (*)(void), Tuple <C, void (C::*)(Tail...)>tuple, Args... args) {
+  ((tuple.head).*tuple.tail.head)(args...);
 }
 
 /**
@@ -113,6 +126,14 @@ void _call(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
+/**
+ *
+ */
+template<class C, class R, class... Args>
+void _call(Tuple <C, R (C::*)(Args...)>tuple) {
+  _call((void (*)(Args...))(tuple.tail.head), tuple);
+}
+
 
 /**
  * Write the signature and documentation of a function to serial.
@@ -145,6 +166,15 @@ void _describe(void) {}
 template<class F, class... Args>
 void _describe(F f, const char *doc, Args... args) {
   _writeDescription(f, doc);
+  _describe(args...);
+}
+
+/**
+ * 
+ */
+template<class T, class U, class... Args>
+void _describe(Tuple <T, U>tuple, const char *doc, Args... args) {
+  _writeDescription(tuple.tail.head, doc);
   _describe(args...);
 }
 
