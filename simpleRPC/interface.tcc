@@ -23,6 +23,11 @@
 #define _END_OF_STRING '\0'
 
 
+/**
+ * Write a return value to serial.
+ *
+ * @arg {T} data - Data.
+ */
 template<class T>
 void _return(T data) {
   if (_typeof(data) == "s") {
@@ -33,14 +38,10 @@ void _return(T data) {
 }
 
 /**
- * Execute a function and write return value to serial.
+ * Execute a function.
  *
  * All parameters have been collected since function pointer {*f_} has no
  * parameter types. All values are now present in the {args} parameter pack.
- *
- * We use the return type {R} of function pointer {*f} to instantiate the
- * variable {data}, which receives the result of {f(args...}. This result is
- * written in {sizeof(R)} bytes to the serial stream.
  *
  * @arg {void (*)(void)} - Dummy function pointer.
  * @arg {R (*)(Tail...)} f - Function pointer.
@@ -51,24 +52,19 @@ void _call(void (*)(void), R (*f)(Tail...), Args... args) {
   _return(f(args...));
 }
 
-template<class C, class R, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C, R (C::*)(Tail...)>tuple, Args... args) {
-  _return(((tuple.head).*tuple.tail.head)(args...));
-}
-
-/**
- * Execute a function that has no return value.
- *
- * See the function above for documentation.
- */
 template<class... Tail, class... Args>
 void _call(void (*)(void), void (*f)(Tail...), Args... args) {
   f(args...);
 }
 
+template<class C, class R, class... Tail, class... Args>
+void _call(void (*)(void), Tuple <C, R (C::*)(Tail...)>t, Args... args) {
+  _return(((t.head).*t.tail.head)(args...));
+}
+
 template<class C, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C, void (C::*)(Tail...)>tuple, Args... args) {
-  ((tuple.head).*tuple.tail.head)(args...);
+void _call(void (*)(void), Tuple <C, void (C::*)(Tail...)>t, Args... args) {
+  ((t.head).*t.tail.head)(args...);
 }
 
 /**
@@ -92,11 +88,6 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
-/*
- * Parameter collection for strings.
- *
- * See the function above for documentation.
- */
 template<class... Tail, class F, class... Args>
 void _call(void (*f_)(char *, Tail...), F f, Args... args) {
   _call(
@@ -126,12 +117,9 @@ void _call(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
-/**
- *
- */
 template<class C, class R, class... Args>
-void _call(Tuple <C, R (C::*)(Args...)>tuple) {
-  _call((void (*)(Args...))(tuple.tail.head), tuple);
+void _call(Tuple <C, R (C::*)(Args...)>t) {
+  _call((void (*)(Args...))(t.tail.head), t);
 }
 
 
@@ -169,12 +157,9 @@ void _describe(F f, const char *doc, Args... args) {
   _describe(args...);
 }
 
-/**
- * 
- */
 template<class T, class U, class... Args>
-void _describe(Tuple <T, U>tuple, const char *doc, Args... args) {
-  _writeDescription(tuple.tail.head, doc);
+void _describe(Tuple <T, U>t, const char *doc, Args... args) {
+  _writeDescription(t.tail.head, doc);
   _describe(args...);
 }
 
