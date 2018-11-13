@@ -121,6 +121,11 @@ String signature(void (*f)(Args...)) {
   return ":" + _parameterTypes(f);
 }
 
+template<class C, class... Args>
+String signature(void (C::*f)(Args...)) {
+  return ":" + _parameterTypes((void (*)(Args...))f);
+}
+
 /**
  * Get the signature of a function that returns a value.
  *
@@ -135,6 +140,13 @@ String signature(void (*f)(Args...)) {
  */
 template<class R, class... Args>
 String signature(R (*f)(Args...)) {
+  R data;
+
+  return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
+}
+
+template<class C, class R, class... Args>
+String signature(R (C::*f)(Args...)) {
   R data;
 
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
