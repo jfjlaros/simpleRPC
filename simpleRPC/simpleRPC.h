@@ -25,7 +25,7 @@ byte _ping(byte data) {
  */
 template<class... Args>
 void interface(Args... args) {
-  _interface(
+  rpc_interface(
     _version, "version: Protocol version. @return: Version string.",
     _ping, "ping: Echo a value. @data: Value. @return: Value of data.",
     args...);

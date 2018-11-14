@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define _END_OF_STRING '\0'
+
 
 /**
  * Recursion terminator for {_print}.
