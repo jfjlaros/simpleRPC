@@ -1,6 +1,5 @@
-#ifndef __SIMPLE_RPC_TYPEOF_TCC__
-#define __SIMPLE_RPC_TYPEOF_TCC__
-
+#ifndef __SIMPLE_RPC_SIGNATURE_TCC__
+#define __SIMPLE_RPC_SIGNATURE_TCC__
 
 /*
  * Type encoding functions.
@@ -82,6 +81,7 @@ String _typeof(double) {
   return "<d";
 }
 
+
 /**
  * Recursion terminator for {_parameterTypes}.
  */
@@ -110,24 +110,7 @@ String _parameterTypes(void (*f_)(T, Args...)) {
 
 
 /**
- * Get the signature of a function that does not return a value.
- *
- * @arg {void (*)(Args...)} f - Function pointer.
- *
- * @return {String} - Function signature.
- */
-template<class... Args>
-String signature(void (*f)(Args...)) {
-  return ":" + _parameterTypes(f);
-}
-
-template<class C, class... Args>
-String signature(void (C::*f)(Args...)) {
-  return ":" + _parameterTypes((void (*)(Args...))f);
-}
-
-/**
- * Get the signature of a function that returns a value.
+ * Get the signature of a function.
  *
  * We prepare a dummy function pointer, referred to as {f_} in the template
  * functions above, which will be used to isolate parameter types. The return
@@ -145,11 +128,24 @@ String signature(R (*f)(Args...)) {
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
+// Void function.
+template<class... Args>
+String signature(void (*f)(Args...)) {
+  return ":" + _parameterTypes(f);
+}
+
+// Class member function.
 template<class C, class R, class... Args>
 String signature(R (C::*f)(Args...)) {
   R data;
 
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
+}
+
+// Void class member function.
+template<class C, class... Args>
+String signature(void (C::*f)(Args...)) {
+  return ":" + _parameterTypes((void (*)(Args...))f);
 }
 
 #endif
