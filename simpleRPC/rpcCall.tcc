@@ -1,11 +1,8 @@
-#ifndef __SIMPLE_RPC_CALL_TCC__
-#define __SIMPLE_RPC_CALL_TCC__
-
-#include <Arduino.h>
+#ifndef __SIMPLE_RPC_RPCCALL_TCC__
+#define __SIMPLE_RPC_RPCCALL_TCC__
 
 #include "print.tcc"
 #include "tuple.tcc"
-#include "signature.tcc"
 
 
 /**
@@ -20,12 +17,12 @@ void _return(T data) {
 
 // Write a return value of type {char *}.
 void _return(char *data) {
-  _print(data, _END_OF_STRING);
+  multiPrint(data, _END_OF_STRING);
 }
 
 // Write a return value of type {const char *}.
 void _return(const char *data) {
-  _print(data, _END_OF_STRING);
+  multiPrint(data, _END_OF_STRING);
 }
 
 /**
@@ -109,14 +106,14 @@ void _call(void (*f_)(const char *, Tail...), F f, Args... args) {
  * @arg {R (*)(Args...)} f - Function pointer.
  */
 template<class R, class... Args>
-void rpc_call(R (*f)(Args...)) {
+void rpcCall(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
 // Class member function.
 template<class C, class R, class... Args>
-void rpc_call(Tuple <C, R (C::*)(Args...)>t) {
-  _call((void (*)(Args...))(t.tail.head), t);
+void rpcCall(Tuple <C, R (C::*)(Args...)>t) {
+  _call((void (*)(Args...))t.tail.head, t);
 }
 
 #endif

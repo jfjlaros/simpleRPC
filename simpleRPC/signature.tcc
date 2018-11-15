@@ -90,7 +90,7 @@ String _parameterTypes(void (*)(void)) {
 }
 
 /**
- * Get the types of all function parameters to serial.
+ * Get the types of all function parameters.
  *
  * We isolate the first parameter type {T} from function pointer {*f_}. This
  * type is used to instantiate the variable {data}, which is passed to
@@ -135,7 +135,7 @@ String signature(void (*f)(Args...)) {
 }
 
 // Class member function.
-template<class C, class R, class... Args>
+template<class R, class C, class... Args>
 String signature(R (C::*f)(Args...)) {
   R data;
 

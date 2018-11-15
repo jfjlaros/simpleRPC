@@ -13,10 +13,7 @@
  * TODO: Add support for multiple serial devices.
  * TODO: Add support for lists.
  */
-#include <Arduino.h>
-
-#include "print.tcc"
-#include "rpc_call.tcc"
+#include "rpcCall.tcc"
 #include "signature.tcc"
 
 #define _LIST_REQ 0xff
@@ -30,7 +27,7 @@
  */
 template<class F>
 void _writeDescription(F f, const char *doc) {
-  _print(signature(f).c_str(), ";", doc, _END_OF_STRING);
+  multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
 
 
@@ -43,7 +40,7 @@ void _describe(void) {}
  * Describe a list of functions.
  *
  * We isolate the first two parameters {f} and {doc}, pass these to
- * {__writeDescription} and make a recursive call to process the remaining
+ * {_writeDescription} and make a recursive call to process the remaining
  * parameters.
  *
  * @arg {F} f - Function pointer.
@@ -57,8 +54,8 @@ void _describe(F f, const char *doc, Args... args) {
 }
 
 // Class member function.
-template<class T, class U, class... Args>
-void _describe(Tuple <T, U>t, const char *doc, Args... args) {
+template<class U, class V, class... Args>
+void _describe(Tuple <U, V>t, const char *doc, Args... args) {
   _writeDescription(t.tail.head, doc);
   _describe(args...);
 }
@@ -74,7 +71,7 @@ void _select(byte, byte) {}
  *
  * We isolate the parameter {f} and its documentation string, discarding the
  * latter. If we have arrived at the selected function (i.e., if {depth} equals
- * {number}, we call function {f}. Otherwise, we try again recursively.
+ * {number}), we call function {f}. Otherwise, we try again recursively.
  *
  * @arg {byte} number - Function index.
  * @arg {byte} depth - Current index.
@@ -85,7 +82,7 @@ void _select(byte, byte) {}
 template<class F, class... Args>
 void _select(byte number, byte depth, F f, const char *, Args... args) {
   if (depth == number) {
-    rpc_call(f);
+    rpcCall(f);
     return;
   }
   _select(number, depth + 1, args...);
@@ -95,17 +92,16 @@ void _select(byte number, byte depth, F f, const char *, Args... args) {
 /**
  * RPC interface.
  *
- * This function expects a list of tuples (function pointer, documentation) as
- * parameters.
+ * This function expects parameter pairs (function pointer, documentation).
  *
- * Read one byte from serial into {command}, if the value is {_LIST_REQ}, we
+ * One byte is read from serial into {command}, if the value is {_LIST_REQ}, we
  * describe the list of functions. Otherwise, we call the function indexed by
  * {command}.
  *
- * @arg {Args...} args - Tuples of (function pointer, documentation).
+ * @arg {Args...} args - Parameter pairs (function pointer, documentation).
  */
 template<class... Args>
-void rpc_interface(Args... args) {
+void rpcInterface(Args... args) {
   byte command;
 
   if (Serial.available()) {
@@ -113,7 +109,7 @@ void rpc_interface(Args... args) {
 
     if (command == _LIST_REQ) {
       _describe(args...);
-      _print(_END_OF_STRING); // Empty string marks end of list.
+      multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
     }
     _select(command, 0, args...);
