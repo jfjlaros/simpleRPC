@@ -18,14 +18,13 @@ byte _ping(byte data) {
 /**
  * RPC interface.
  *
- * This function expects a list of tuples (function pointer, documentation) as
- * parameters.
+ * This function expects parameter pairs (function pointer, documentation).
  *
- * @arg {Args...} args - Tuples of (function pointer, documentation).
+ * @arg {Args...} args - Parameter pairs (function pointer, documentation).
  */
 template<class... Args>
 void interface(Args... args) {
-  rpc_interface(
+  rpcInterface(
     _version, "version: Protocol version. @return: Version string.",
     _ping, "ping: Echo a value. @data: Value. @return: Value of data.",
     args...);

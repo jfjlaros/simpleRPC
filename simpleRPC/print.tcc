@@ -7,20 +7,20 @@
 
 
 /**
- * Recursion terminator for {_print}.
+ * Recursion terminator for {multiPrint}.
  */
-void _print(void) {}
+void multiPrint(void) {}
 
 /**
- * Print a list of parameters to serial.
+ * Write a list of parameters to serial.
  *
  * @arg {T} arg - Parameter to be printed.
  * @arg {Args...} args... - Remaining parameters.
  */
 template<class T, class... Args>
-void _print(T arg, Args... args) {
+void multiPrint(T arg, Args... args) {
   Serial.write(arg);
-  _print(args...);
+  multiPrint(args...);
 }
 
 #endif

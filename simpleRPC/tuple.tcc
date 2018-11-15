@@ -2,7 +2,7 @@
 #define __SIMPLE_RPC_TUPLE_TCC__
 
 /*
- * Base: empty class template.
+ * Empty tuple.
  */
 template<class... Args>
 struct Tuple {};
@@ -11,7 +11,7 @@ struct Tuple {};
  * Nested tuple.
  *
  * {T} head: First element.
- * {Args...} tail: Rest of the elements.
+ * {Args...} tail: Remaining elements.
  */
 template<class T, class... Args>
 struct Tuple<T, Args...> {
@@ -27,7 +27,7 @@ struct Tuple<T, Args...> {
  * @return {Tuple} - Nested tuple containing {args}.
  */
 template<class... Args>
-Tuple <Args...>makeTuple(Args... args) {
+Tuple <Args...>pack(Args... args) {
   Tuple <Args...>tuple = {args...};
 
   return tuple;
