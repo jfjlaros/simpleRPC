@@ -17,9 +17,13 @@ communication at 9600 baud in the ``setup()`` body.
       Serial.begin(9600);
     }
 
+
+Standard methods
+----------------
+
 Methods are exported by calling the ``interface()`` function from the
-``loop()`` body. This function accepts a list of tuples (function,
-documentation) as parameters.
+``loop()`` body. This function accepts (function, documentation) pairs as
+parameters.
 
 .. list-table:: Interface function parameters.
    :header-rows: 1
