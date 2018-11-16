@@ -100,3 +100,45 @@ Exporting these methods in the ``loop()`` body looks as follows:
     }
 
 We can now build and upload the sketch.
+
+
+Class methods
+-------------
+
+Class member functions are different from ordinary functions in the sense that
+they always operate on an object. This is why it is not possible to simply pass
+a function pointer, but to also provide a class instance for the function to
+operate on. To facilitate this, the ``pack()`` function can be used to combine
+a class instance and a function pointer before passing them to ``interface()``.
+
+For a class instance ``c`` of class ``C``, the class member function ``f()``
+can be packed as follows:
+
+.. code:: cpp
+
+    pack(c, &C::f)
+
+The result can be passed to ``interface()``.
+
+Example
+^^^^^^^
+
+Suppose we have a library named *led* which provides the class ``LED``. This
+class has a member function named ``setBrightness``.
+
+.. code:: cpp
+
+    #include "led.h"
+
+    LED led(13);
+
+
+Exporting this class method as a remote call goes as follows:
+
+.. code:: cpp
+
+      void loop(void) {
+        interface(
+          pack(led, &LED::setBrightness),
+            "set_led: Set LED brightness. @brightness: Brightness.");
+      }
