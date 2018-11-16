@@ -32,7 +32,7 @@ void _writeDescription(F f, const char *doc) {
 
 
 /**
- * Recursion terminator for {_describe}.
+ * Recursion terminator for {_describe()}.
  */
 void _describe(void) {}
 
@@ -62,7 +62,7 @@ void _describe(Tuple <U, V>t, const char *doc, Args... args) {
 
 
 /**
- * Recursion terminator for {_select}.
+ * Recursion terminator for {_select()}.
  */
 void _select(byte, byte) {}
 
