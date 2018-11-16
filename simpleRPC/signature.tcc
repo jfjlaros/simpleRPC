@@ -83,7 +83,25 @@ String _typeof(double) {
 
 
 /**
- * Recursion terminator for {_parameterTypes}.
+ * Recursion terminator for {_typeof(Tuple)}.
+ */
+String _typeof(Tuple <>) {
+  return "";
+}
+
+/**
+ * Get the types of all members of a tuple.
+ *
+ * @return {String} - Tuple member types.
+ */
+template<class... Args>
+String _typeof(Tuple <Args...>t) {
+  return _typeof(t.head) + _typeof(t.tail);
+}
+
+
+/**
+ * Recursion terminator for {_parameterTypes()}.
  */
 String _parameterTypes(void (*)(void)) {
   return "";

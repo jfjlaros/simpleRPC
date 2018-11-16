@@ -7,7 +7,7 @@
 
 
 /**
- * Recursion terminator for {multiPrint}.
+ * Recursion terminator for {multiPrint()}.
  */
 void multiPrint(void) {}
 

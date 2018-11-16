@@ -33,4 +33,18 @@ Tuple <Args...>pack(Args... args) {
   return tuple;
 }
 
+/**
+ * Cast a struct to a tuple.
+ *
+ * @arg {T} s - Struct.
+ *
+ * @return {Tuple} - Nested tuple representation of {s}.
+ */
+template<class... Args, class T>
+Tuple <Args...>castStruct(T s) {
+  Tuple <Args...>*t = (Tuple <Args...> *)&s;
+
+  return *t;
+}
+
 #endif
