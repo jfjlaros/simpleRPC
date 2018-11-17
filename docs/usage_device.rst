@@ -120,7 +120,7 @@ can be packed as follows:
 
 .. code:: cpp
 
-    pack(c, &C::f)
+    pack(&c, &C::f)
 
 The result can be passed to ``interface()``.
 
@@ -143,6 +143,6 @@ Exporting this class method as a remote call goes as follows:
 
       void loop(void) {
         interface(
-          pack(led, &LED::setBrightness),
+          pack(&led, &LED::setBrightness),
             "set_led: Set LED brightness. @brightness: Brightness.");
       }
