@@ -1,5 +1,3 @@
-# http://michal.karzynski.pl/blog/2016/06/19/building-beautiful-restful-apis-using-flask-swagger-ui-flask-restplus/
-
 from flask import Flask
 from flask_restplus import Resource, Api
 
@@ -16,7 +14,7 @@ code = '''
 class {name}(Resource):
     def get(self{args}):
         """{doc}"""
-        return interface.{name}({largs})
+        return interface.call_method('{name}'{args})
 '''
 
 
@@ -34,9 +32,7 @@ def add_call(method):
             lambda x: '<{}:{}>'.format(
                 _convert_type(x['typename']), x['name']),
             method['parameters'])),
-        args=''.join(map(lambda x: ', ' + x['name'], method['parameters'])),
-        largs=', '.join(map(lambda x: x['name'], method['parameters']))
-        ))
+        args=''.join(map(lambda x: ', ' + x['name'], method['parameters']))))
 
 
 if __name__ == '__main__':
