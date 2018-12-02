@@ -8,6 +8,10 @@
  * https://docs.python.org/2/library/struct.html#format-characters
  */
 
+String _typeof(bool) {
+  return "?";
+}
+
 String _typeof(char) {
   return "c";
 }
