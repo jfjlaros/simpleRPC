@@ -52,11 +52,13 @@ following:
 ## Code Style
 Please follow the coding style conventions detailed below:
 
+- [Arduino Style Guide for Writing Libraries][api].
 - For Python: [PEP 8 - Style Guide for Python Code][pep8].
 
 
 [email]: mailto:jlaros@fixedpoint.nl
-[issues]: https://github.com/jfjlaros/impleRPC/issues/new
-[compare]: https://github.com/jfjlaros/impleRPC/compare
-[pull]: https://github.com/jfjlaros/impleRPC/pulls
+[issues]: https://github.com/jfjlaros/simpleRPC/issues/new
+[compare]: https://github.com/jfjlaros/simpleRPC/compare
+[pull]: https://github.com/jfjlaros/simpleRPC/pulls
 [pep8]: https://www.python.org/dev/peps/pep-0008/
+[api]: https://www.arduino.cc/en/Reference/APIStyleGuide
