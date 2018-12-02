@@ -47,14 +47,14 @@ void _call(void (*)(void), void (*f)(Tail...), Args... args) {
 }
 
 // Class member function.
-template<class C, class R, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C *, R (C::*)(Tail...)>t, Args... args) {
+template<class C, class P, class R, class... Tail, class... Args>
+void _call(void (*)(void), Tuple <C *, R (P::*)(Tail...)>t, Args... args) {
   _return((*t.head.*t.tail.head)(args...));
 }
 
 // Void class member function.
-template<class C, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C *, void (C::*)(Tail...)>t, Args... args) {
+template<class C, class P, class... Tail, class... Args>
+void _call(void (*)(void), Tuple <C *, void (P::*)(Tail...)>t, Args... args) {
   (*t.head.*t.tail.head)(args...);
 }
 
@@ -111,8 +111,8 @@ void rpcCall(R (*f)(Args...)) {
 }
 
 // Class member function.
-template<class C, class R, class... Args>
-void rpcCall(Tuple <C *, R (C::*)(Args...)>t) {
+template<class C, class P ,class R, class... Args>
+void rpcCall(Tuple <C *, R (P::*)(Args...)>t) {
   _call((void (*)(Args...))t.tail.head, t);
 }
 
