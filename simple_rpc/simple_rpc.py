@@ -12,6 +12,13 @@ _list_req = 0xff
 _end_of_string = '\0'
 
 
+_method_template = '''
+def {name}(self{args}):
+    """{doc}"""
+    return self.call_method('{name}'{args})
+'''
+
+
 def _cast(c_type):
     """Select the appropriate casting function given a C type.
 
@@ -19,6 +26,8 @@ def _cast(c_type):
 
     :returns obj: Casting function.
     """
+    if c_type[0] == '?':
+        return bool
     if c_type[0] in ['c', 's']:
         return str
     if c_type[-1] in ['f', 'd']:
@@ -141,6 +150,26 @@ def _make_docstring(method):
     return help_text
 
 
+def _make_function(method):
+    """Make a member function for a method.
+
+    :arg dict method: Method object.
+
+    :returns function: New member function.
+    """
+    context = {}
+
+    exec(
+        _method_template.format(
+            name=method['name'],
+            doc=_make_docstring(method),
+            args=''.join(
+                map(lambda x: ', ' + x['name'], method['parameters']))),
+        context)
+
+    return context[method['name']]
+
+
 class Interface(object):
     def __init__(self, device, baudrate=9600):
         """Initialise the class.
@@ -156,7 +185,8 @@ class Interface(object):
 
         self.methods = self._get_methods()
         for method in self.methods.values():
-            setattr(self, method['name'], MethodType(self._call(method), self))
+            setattr(
+                self, method['name'], MethodType(_make_function(method), self))
 
         device_version = self.call_method('version')
         if device_version != _version:
@@ -190,7 +220,7 @@ class Interface(object):
         """Provide parameters for a remote procedure call.
 
         :arg str param_type: Type of the parameter.
-        :arg str param_value: Value of the parameter.
+        :arg any param_value: Value of the parameter.
         """
         if param_type == 's':
             self._connection.write(
@@ -229,22 +259,6 @@ class Interface(object):
             index += 1
 
         return methods
-
-    def _call(self, method, *args):
-        """Make a member function for a method.
-
-        :arg dict method: Method object.
-        :arg any *args: Parameters for the method.
-
-        :returns function: New member function.
-        """
-        def call(self, *args):
-            return self.call_method(method['name'], *args)
-
-        call.__name__ = method['name']
-        call.__doc__ = _make_docstring(method)
-
-        return call
 
     def call_method(self, name, *args):
         """Execute a method.
