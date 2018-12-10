@@ -72,14 +72,14 @@ String _typeof(int) {
 }
 
 String _typeof(unsigned int) {
-  if (sizeof(int) == 2) {
+  if (sizeof(unsigned int) == 2) {
     return "<H";
   }
   return "<I";
 }
 
 String _typeof(double) {
-  if (sizeof(int) == 4) {
+  if (sizeof(double) == 4) {
     return "<f";
   }
   return "<d";
