@@ -1,6 +1,8 @@
 #ifndef __SIMPLE_RPC_SIGNATURE_TCC__
 #define __SIMPLE_RPC_SIGNATURE_TCC__
 
+#include "tuple.tcc"
+
 /*
  * Type encoding functions.
  *
@@ -8,55 +10,47 @@
  * https://docs.python.org/2/library/struct.html#format-characters
  */
 
-String _typeof(bool) {
+inline String _typeof(bool) {
   return "?";
 }
 
-String _typeof(char) {
+inline String _typeof(char) {
   return "c";
 }
 
-String _typeof(char *) {
-  return "s";
-}
-
-String _typeof(const char *) {
-  return "s";
-}
-
-String _typeof(signed char) {
+inline String _typeof(signed char) {
   return "b";
 }
 
-String _typeof(unsigned char) {
+inline String _typeof(unsigned char) {
   return "B";
 }
 
-String _typeof(short int) {
+inline String _typeof(short int) {
   return "<h";
 }
 
-String _typeof(unsigned short int) {
+inline String _typeof(unsigned short int) {
   return "<H";
 }
 
-String _typeof(long int) {
+inline String _typeof(long int) {
   return "<l";
 }
 
-String _typeof(unsigned long int) {
+inline String _typeof(unsigned long int) {
   return "<L";
 }
 
-String _typeof(long long int) {
+inline String _typeof(long long int) {
   return "<q";
 }
 
-String _typeof(unsigned long long int) {
+inline String _typeof(unsigned long long int) {
   return "<Q";
 }
 
-String _typeof(float) {
+inline String _typeof(float) {
   return "<f";
 }
 
@@ -64,25 +58,37 @@ String _typeof(float) {
  * The {int} and {double} type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
-String _typeof(int) {
+inline String _typeof(int) {
   if (sizeof(int) == 2) {
     return "<h";
   }
   return "<i";
 }
 
-String _typeof(unsigned int) {
+inline String _typeof(unsigned int) {
   if (sizeof(unsigned int) == 2) {
     return "<H";
   }
   return "<I";
 }
 
-String _typeof(double) {
+inline String _typeof(double) {
   if (sizeof(double) == 4) {
     return "<f";
   }
   return "<d";
+}
+
+
+/*
+ * String types.
+ */
+inline String _typeof(char *) {
+  return "s";
+}
+
+inline String _typeof(const char *) {
+  return "s";
 }
 
 
@@ -107,7 +113,7 @@ String _typeof(T *) {
 /**
  * Recursion terminator for {_typeof(Tuple)}.
  */
-String _typeof(Tuple <>) {
+inline String _typeof(Tuple <>) {
   return "";
 }
 
@@ -125,7 +131,7 @@ String _typeof(Tuple <Args...>t) {
 /**
  * Recursion terminator for {_parameterTypes()}.
  */
-String _parameterTypes(void (*)(void)) {
+inline String _parameterTypes(void (*)(void)) {
   return "";
 }
 
