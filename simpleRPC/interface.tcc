@@ -34,7 +34,7 @@ void _writeDescription(F f, const char *doc) {
 /**
  * Recursion terminator for {_describe()}.
  */
-void _describe(void) {}
+inline void _describe(void) {}
 
 /**
  * Describe a list of functions.
@@ -64,7 +64,7 @@ void _describe(Tuple <U, V>t, const char *doc, Args... args) {
 /**
  * Recursion terminator for {_select()}.
  */
-void _select(byte, byte) {}
+inline void _select(byte, byte) {}
 
 /**
  * Select and call a function indexed by {number}.

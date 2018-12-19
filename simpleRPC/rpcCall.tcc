@@ -16,12 +16,12 @@ void _return(T data) {
 }
 
 // Write a return value of type {char *}.
-void _return(char *data) {
+inline void _return(char *data) {
   multiPrint(data, _END_OF_STRING);
 }
 
 // Write a return value of type {const char *}.
-void _return(const char *data) {
+inline void _return(const char *data) {
   multiPrint(data, _END_OF_STRING);
 }
 

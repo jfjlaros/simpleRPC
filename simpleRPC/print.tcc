@@ -9,7 +9,7 @@
 /**
  * Recursion terminator for {multiPrint()}.
  */
-size_t multiPrint(void) {
+inline size_t multiPrint(void) {
   return 0;
 }
 
