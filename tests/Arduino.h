@@ -11,10 +11,15 @@ typedef unsigned char byte;
 
 class HardwareSerial {
   public:
-    void readBytes(char *buf, size_t size);
+    HardwareSerial(void);
+    void reset(void),
+         readBytes(char *buf, size_t size);
     size_t write(byte *, size_t),
+           write(char),
            write(string);
     String readStringUntil(char);
+    size_t rx,
+           tx;
 };
 
 
