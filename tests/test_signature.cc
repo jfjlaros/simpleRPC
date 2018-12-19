@@ -80,7 +80,7 @@ TEST_CASE("Compound types", "[types]") {
   REQUIRE(_typeof(iiP) == "<i<i*");
 }
 
-TEST_CASE("Function pointer types", "[types]") {
+TEST_CASE("Function pointer types", "[signature]") {
   class C {
     public:
       short int f(char, float) {}
