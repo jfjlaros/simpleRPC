@@ -9,18 +9,21 @@
 /**
  * Recursion terminator for {multiPrint()}.
  */
-void multiPrint(void) {}
+size_t multiPrint(void) {
+  return 0;
+}
 
 /**
  * Write a list of parameters to serial.
  *
  * @arg {T} arg - Parameter to be printed.
  * @arg {Args...} args... - Remaining parameters.
+ *
+ * @return {size_t} - Number of bytes written.
  */
 template<class T, class... Args>
-void multiPrint(T arg, Args... args) {
-  Serial.write(arg);
-  multiPrint(args...);
+size_t multiPrint(T arg, Args... args) {
+  return Serial.write(arg) + multiPrint(args...);
 }
 
 #endif
