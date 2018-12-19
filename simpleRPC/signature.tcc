@@ -86,6 +86,24 @@ String _typeof(double) {
 }
 
 
+/*
+ * List types.
+ */
+template<class T>
+String _typeof(const T *) {
+  T x;
+
+  return _typeof(x) + "*";
+}
+
+template<class T>
+String _typeof(T *) {
+  T x;
+
+  return _typeof(x) + "*";
+}
+
+
 /**
  * Recursion terminator for {_typeof(Tuple)}.
  */
