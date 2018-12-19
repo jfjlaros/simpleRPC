@@ -1,11 +1,12 @@
 EXEC := tests
 MAIN := test_lib
-TESTS := test_types test_print
+TESTS := test_types test_print test_tuple
 FIXTURES := Arduino
 
 
 CC := g++
 INCLUDE_PATH := .
+CC_ARGS := -Wno-pmf-conversions
 
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
@@ -16,10 +17,10 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -I $(INCLUDE_PATH) -o $@ $(MAIN).cc $^
+	$(CC) -o $@ $(MAIN).cc $^
 
 %.o: %.cc
-	$(CC) -I $(INCLUDE_PATH) -c $<
+	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -c $<
 
 clean:
 	rm -f $(OBJS)
