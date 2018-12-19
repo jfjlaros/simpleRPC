@@ -14,13 +14,6 @@ _list_req = 0xff
 _end_of_string = '\0'
 
 
-_method_template = '''
-def {name}(self{args}):
-    """{doc}"""
-    return self.call_method('{name}'{args})
-'''
-
-
 def _cast(c_type):
     """Select the appropriate casting function given a C type.
 
