@@ -79,3 +79,19 @@ TEST_CASE("Compound types", "[types]") {
   REQUIRE(_typeof(iscul) == "<ib<L");
   REQUIRE(_typeof(iiP) == "<i<i*");
 }
+
+TEST_CASE("Function pointer types", "[types]") {
+  class C {
+    public:
+      short int f(char, float) {}
+      void g(char, float) {}
+  };
+
+  short int (*f)(char, float);
+  void (*g)(char, float);
+
+  REQUIRE(signature(f) == "<h: c <f");
+  REQUIRE(signature(g) == ": c <f");
+  REQUIRE(signature(&C::f) == "<h: c <f");
+  REQUIRE(signature(&C::g) == ": c <f");
+}
