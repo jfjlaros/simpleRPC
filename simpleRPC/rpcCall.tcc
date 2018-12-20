@@ -5,6 +5,15 @@
 #include "tuple.tcc"
 
 
+/*
+ * Prototypes needed for recursive definitions.
+ */
+template<class... Tail, class F, class... Args>
+  void _call(void (*)(char *, Tail...), F, Args...);
+template<class... Tail, class F, class... Args>
+  void _call(void (*)(const char *, Tail...), F, Args...);
+
+
 /**
  * Write a return value to serial.
  *

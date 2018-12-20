@@ -9,6 +9,10 @@ TEST_CASE("RPC call function", "[call]") {
     static short int g(int, char) {
       return 0;
     }
+    static void h(int, char *) {}
+    static void i(int, const char *) {}
+    static void j(char *, int) {}
+    static void k(const char *, int) {}
   };
 
   Serial.reset();
@@ -22,6 +26,30 @@ TEST_CASE("RPC call function", "[call]") {
 
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
+
+  Serial.reset();
+  rpcCall(S::h);
+
+  REQUIRE(Serial.rx == sizeof(int) + 3);
+  REQUIRE(Serial.tx == 0);
+
+  Serial.reset();
+  rpcCall(S::i);
+
+  REQUIRE(Serial.rx == sizeof(int) + 3);
+  REQUIRE(Serial.tx == 0);
+
+  Serial.reset();
+  rpcCall(S::j);
+
+  REQUIRE(Serial.rx == sizeof(int) + 3);
+  REQUIRE(Serial.tx == 0);
+
+  Serial.reset();
+  rpcCall(S::k);
+
+  REQUIRE(Serial.rx == sizeof(int) + 3);
+  REQUIRE(Serial.tx == 0);
 }
 
 TEST_CASE("RPC call class member functions", "[call]") {
