@@ -5,4 +5,6 @@ dist/
 example/device/.build/
 simple_rpc/*.pyc
 simple_rpc/__pycache__/
+tests/*.o
 tests/__pycache__/
+tests/tests
