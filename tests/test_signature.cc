@@ -18,6 +18,7 @@ TEST_CASE("Basic types 1", "[types]") {
   unsigned long long int ulli;
   float f;
 
+  // Basic types.
   REQUIRE(_typeof(b) == "?");
   REQUIRE(_typeof(c) == "c");
   REQUIRE(_typeof(sc) == "b");
@@ -36,6 +37,7 @@ TEST_CASE("Basic types 2", "[types]") {
   unsigned int ui;
   double d;
 
+  // Basic types of which the size may differ between platforms.
   if (sizeof(int) == 2) {
     REQUIRE(_typeof(i) == "<h");
     REQUIRE(_typeof(ui) == "<H");
@@ -56,6 +58,7 @@ TEST_CASE("String types", "[types]") {
   char *cP;
   const char *ccP;
 
+  // String types.
   REQUIRE(_typeof(cP) == "s");
   REQUIRE(_typeof(ccP) == "s");
 }
@@ -65,6 +68,7 @@ TEST_CASE("List types", "[types]") {
   const signed char *cscP;
   int *iP;
 
+  // Pointers.
   REQUIRE(_typeof(ucP) == "B*");
   REQUIRE(_typeof(cscP) == "b*");
   REQUIRE(_typeof(iP) == "<i*");
@@ -75,6 +79,7 @@ TEST_CASE("Compound types", "[types]") {
   Tuple <int, signed char, unsigned long>iscul;
   Tuple <int, int *>iiP;
 
+  // Tuples.
   REQUIRE(_typeof(ic) == "<ic");
   REQUIRE(_typeof(iscul) == "<ib<L");
   REQUIRE(_typeof(iiP) == "<i<i*");
@@ -90,6 +95,7 @@ TEST_CASE("Function pointer types", "[signature]") {
   short int (*f)(char, float);
   void (*g)(char, float);
 
+  // Function pointers.
   REQUIRE(signature(f) == "<h: c <f");
   REQUIRE(signature(g) == ": c <f");
   REQUIRE(signature(&C::f) == "<h: c <f");

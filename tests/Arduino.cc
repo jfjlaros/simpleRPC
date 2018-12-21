@@ -1,22 +1,33 @@
 #include "Arduino.h"
 
 
+/**
+ * Constructor.
+ */
 HardwareSerial::HardwareSerial(void) {
   reset();
 }
 
+/**
+ * Reset the internal counters.
+ */
 void HardwareSerial::reset(void) {
   rx = 0;
   tx = 0;
 }
 
-void HardwareSerial::readBytes(char *buf, size_t size) {
-  int i;
+/*
+ * Functions that record the number of bytes read or written.
+ */
 
-  for (i = 0; i < size; i++) {
-    buf[i] = 'x';
-    rx++;
-  }
+void HardwareSerial::readBytes(char *buf, size_t size) {
+  rx += size;
+}
+
+String HardwareSerial::readStringUntil(char) {
+  rx += 3;
+
+  return "xxx";
 }
 
 size_t HardwareSerial::write(byte *, size_t size) {
@@ -26,25 +37,15 @@ size_t HardwareSerial::write(byte *, size_t size) {
 }
 
 size_t HardwareSerial::write(char) {
-  tx += 1;
+  tx++;
 
   return 1;
 }
 
 size_t HardwareSerial::write(string s) {
-  int length = s.length();
+  tx += s.length();
 
-  tx += length;
-
-  return length;
-}
-
-String HardwareSerial::readStringUntil(char) {
-  String s = "xxx";
-
-  rx += s.length();
-
-  return s;
+  return s.length();
 }
 
 
