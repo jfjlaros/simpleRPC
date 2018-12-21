@@ -1,4 +1,4 @@
-EXEC := tests
+EXEC := run_tests
 MAIN := test_lib
 TESTS := test_print test_rpcCall test_signature test_tuple
 FIXTURES := Arduino
