@@ -15,11 +15,15 @@ class HardwareSerial {
     void reset(void),
          readBytes(char *buf, size_t size);
     String readStringUntil(char);
+    byte read(void);
     size_t write(byte *, size_t),
            write(char),
            write(string);
+    bool available(void);
     size_t rx,
            tx;
+    string rxBuf,
+           txBuf;
 };
 
 
