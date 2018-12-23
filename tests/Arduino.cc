@@ -1,3 +1,5 @@
+#include <valarray>
+
 #include "Arduino.h"
 
 
@@ -5,6 +7,9 @@
  * Constructor.
  */
 HardwareSerial::HardwareSerial(void) {
+  rxBuffer[_BUFFER_SIZE - 1] = '\0';
+  txBuffer[_BUFFER_SIZE - 1] = '\0';
+
   reset();
 }
 
@@ -14,50 +19,95 @@ HardwareSerial::HardwareSerial(void) {
 void HardwareSerial::reset(void) {
   rx = 0;
   tx = 0;
-  rxBuf = "";
-  txBuf = "";
 }
 
-/*
- * Functions that record the number of bytes read or written.
+/**
+ * Test for serial availability.
+ *
+ * @return {bool} - True;
  */
-
-void HardwareSerial::readBytes(char *buf, size_t size) {
-  rx += size;
+bool HardwareSerial::available(void) {
+  return true;
 }
 
-String HardwareSerial::readStringUntil(char) {
-  rx += 3;
-
-  return "xxx";
-}
-
+/**
+ * Read one byte from serial.
+ *
+ * @return {byte} - One byte;
+ */
 byte HardwareSerial::read(void) {
   rx++;
 
-  return 0x00;
+  return rxBuffer[rx - 1];
 }
 
-size_t HardwareSerial::write(byte *, size_t size) {
-  tx += size;
-
-  return size;
+/**
+ * Read a number of bytes from serial.
+ *
+ * @arg {char *} buffer - Buffer.
+ * @arg {size_t} size - Number of bytes to read.
+ */
+void HardwareSerial::readBytes(char *buffer, size_t size) {
+  strncpy(buffer, &rxBuffer[rx], size);
+  rx += size;
 }
 
-size_t HardwareSerial::write(char) {
+/**
+ * Read a string from serial.
+ *
+ * @arg {char} delimiter - String delimiter.
+ *
+ * @return {String} - A string.
+ */
+String HardwareSerial::readStringUntil(char delimiter) {
+  size_t size = &rxBuffer[rx] - strchr(&rxBuffer[rx], delimiter);
+
+  rx += size;
+
+  return ((String)rxBuffer).substr(rx - size, size);
+}
+
+/**
+ * Write one byte to serial.
+ *
+ * @return {size_t} - Number of bytes written.
+ */
+size_t HardwareSerial::write(char c) {
+  txBuffer[tx] = c;
   tx++;
 
   return 1;
 }
 
-size_t HardwareSerial::write(string s) {
-  tx += s.length();
+/**
+ * Write a number of bytes to serial.
+ *
+ * @arg {char *} buffer - Buffer.
+ * @arg {size_t} size - Number of bytes to read.
+ *
+ * @return {size_t} - Number of bytes written.
+ */
+size_t HardwareSerial::write(byte *buffer, size_t size) {
+  strncpy(&txBuffer[tx], (char *)buffer, size);
+  tx += size;
 
-  return s.length();
+  return size;
 }
 
-bool HardwareSerial::available(void) {
-  return true;
+/**
+ * Write a string to serial.
+ *
+ * @arg {String} s - A string.
+ *
+ * @return {size_t} - Number of bytes written.
+ */
+size_t HardwareSerial::write(String s) {
+  size_t size = s.length();
+
+  strncpy(&txBuffer[tx], s.c_str(), size);
+  tx += size;
+
+  return size;
 }
 
 
