@@ -23,6 +23,10 @@ class HardwareSerial {
     size_t write(char),
            write(byte *, size_t),
            write(string);
+    template<class T> T _read(void);
+    template<class T> size_t _write(T);
+    template<class T> T _inspect(void);
+    template<class T> size_t _prepare(T);
     size_t rx,
            tx;
     char rxBuffer[_BUFFER_SIZE],
@@ -31,19 +35,16 @@ class HardwareSerial {
 };
 
 
-extern HardwareSerial Serial;
-
-
 /**
  * Read from serial.
  *
  * @return {T} - Value.
  */
 template<class T>
-T _read(void) {
+T HardwareSerial::_read(void) {
   T data;
 
-  Serial.readBytes((char *)&data, sizeof(T));
+  readBytes((char *)&data, sizeof(T));
 
   return data;
 }
@@ -54,8 +55,29 @@ T _read(void) {
  * @arg {T} data - Value.
  */
 template<class T>
-size_t _write(T data) {
-  Serial.write((byte *)&data, sizeof(T));
+size_t HardwareSerial::_write(T data) {
+  return write((byte *)&data, sizeof(T));
 }
+
+template<class T>
+T HardwareSerial::_inspect(void) {
+  T data;
+
+  strncpy((char *)&data, &txBuffer[tx], sizeof(T));
+  tx += sizeof(T);
+
+  return data;
+}
+
+template<class T>
+size_t HardwareSerial::_prepare(T data) {
+  strncpy(&rxBuffer[rx], (char *)&data, sizeof(T));
+  rx += sizeof(T);
+
+  return sizeof(T);
+}
+
+
+extern HardwareSerial Serial;
 
 #endif

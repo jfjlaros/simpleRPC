@@ -60,11 +60,11 @@ void HardwareSerial::readBytes(char *buffer, size_t size) {
  * @return {String} - A string.
  */
 String HardwareSerial::readStringUntil(char delimiter) {
-  size_t size = &rxBuffer[rx] - strchr(&rxBuffer[rx], delimiter);
+  size_t size = strchr(&rxBuffer[rx], delimiter) - &rxBuffer[rx] + 1;
 
   rx += size;
 
-  return ((String)rxBuffer).substr(rx - size, size);
+  return ((String)&rxBuffer[rx - size]).substr(0, size - 1);
 }
 
 /**

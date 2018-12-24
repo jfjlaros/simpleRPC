@@ -26,9 +26,9 @@ TEST_CASE("Read different types", "[arduino]") {
   ((float *)&Serial.rxBuffer[offset])[0] = (float)3.14;
 
   // Test the readBytes() funcion.
-  REQUIRE(_read<char>() == 'x');
-  REQUIRE(_read<int>() == (int)1234);
-  REQUIRE(_read<float>() == (float)3.14);
+  REQUIRE(Serial._read<char>() == 'x');
+  REQUIRE(Serial._read<int>() == (int)1234);
+  REQUIRE(Serial._read<float>() == (float)3.14);
 }
 
 TEST_CASE("Read string", "[arduino]") {
@@ -56,9 +56,9 @@ TEST_CASE("Write different types", "[arduino]") {
 
   Serial.reset();
 
-  _write('x');
-  _write((int)1234);
-  _write((float)3.14);
+  Serial._write('x');
+  Serial._write((int)1234);
+  Serial._write((float)3.14);
 
   // Test the write(byte *, size_t) function.
   REQUIRE(Serial.txBuffer[offset] == 'x');
