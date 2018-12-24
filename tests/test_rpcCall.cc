@@ -6,8 +6,8 @@
 TEST_CASE("RPC call function", "[call]") {
   struct S {
     static void f(int, char) {}
-    static short int g(int, char) {
-      return 0;
+    static short int g(int i, char c) {
+      return i + c + 1;
     }
     static void h(int, char *) {}
     static void i(int, const char *) {}
@@ -30,23 +30,34 @@ TEST_CASE("RPC call function", "[call]") {
 
   // Non-void function.
   Serial.reset();
+  Serial._prepare<int>(12);
+  Serial._prepare<char>(0x03);
+  Serial.reset();
   rpcCall(S::g);
 
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
+  Serial.reset();
+  REQUIRE(Serial._inspect<short int>() == 16);
 
   // Second parameter is of type char *.
   Serial.reset();
+  Serial._prepare<int>(1234);
+  Serial._prepare<char>('x');
+  Serial._prepare<char>('x');
+  Serial._prepare<char>('x');
+  Serial._prepare<char>('\0');
+  Serial.reset();
   rpcCall(S::h);
 
-  REQUIRE(Serial.rx == sizeof(int) + 3);
+  REQUIRE(Serial.rx == sizeof(int) + 4);
   REQUIRE(Serial.tx == 0);
 
   // Second parameter is of type const char *.
   Serial.reset();
   rpcCall(S::i);
 
-  REQUIRE(Serial.rx == 3 + sizeof(int));
+  REQUIRE(Serial.rx == 4 + sizeof(int));
   REQUIRE(Serial.tx == 0);
 
   // First parameter is of type char *.
@@ -102,4 +113,21 @@ TEST_CASE("RPC call class member functions", "[call]") {
 
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
+}
+
+short int add(int i, char c) {
+  return i + c + 1;
+}
+
+TEST_CASE("Input and output", "[call]") {
+  Serial.reset();
+  Serial._prepare((int)1234);
+  Serial._prepare((char)0x03);
+  Serial.reset();
+  rpcCall(add);
+
+  REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
+  REQUIRE(Serial.tx == sizeof(short int));
+  Serial.reset();
+  REQUIRE(Serial._inspect<short int>() == 1238);
 }
