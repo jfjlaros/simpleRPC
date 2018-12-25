@@ -22,15 +22,20 @@ class HardwareSerial {
     String readStringUntil(char);
     size_t write(char),
            write(byte *, size_t),
-           write(string);
+           write(String);
     template<class T> T _read(void);
     template<class T> size_t _write(T);
-    template<class T> T _inspect(void);
-    template<class T> size_t _prepare(T);
+    template<class T> T inspect(void);
+    template<class... Args> size_t prepare(Args...);
     size_t rx,
            tx;
     char rxBuffer[_BUFFER_SIZE],
          txBuffer[_BUFFER_SIZE];
+  private:
+    template<class T> T _inspect(void);
+    inline size_t _prepare(void);
+    template<class... Args> size_t _prepare(const char *, Args...);
+    template<class T, class... Args> size_t _prepare(T, Args...);
 
 };
 
@@ -69,12 +74,55 @@ T HardwareSerial::_inspect(void) {
   return data;
 }
 
+template<>
+inline String HardwareSerial::_inspect(void) {
+  size_t size = strchr(txBuffer, '\0') - rxBuffer+ 1;
+
+  return ((String)txBuffer).substr(0, size - 1);
+}
+
 template<class T>
-size_t HardwareSerial::_prepare(T data) {
+T HardwareSerial::inspect(void) {
+  T data;
+
+  reset();
+  data = _inspect<T>();
+  reset();
+
+  return data;
+}
+
+inline size_t HardwareSerial::_prepare(void) {
+  return 0;
+}
+
+template<class... Args>
+size_t HardwareSerial::_prepare(const char *data, Args... args) {
+  size_t size = strlen(data);
+
+  strcpy(&rxBuffer[rx], data);
+  rx += size + 1;
+
+  return size + _prepare(args...);
+}
+
+template<class T, class... Args>
+size_t HardwareSerial::_prepare(T data, Args... args) {
   strncpy(&rxBuffer[rx], (char *)&data, sizeof(T));
   rx += sizeof(T);
 
-  return sizeof(T);
+  return sizeof(T) + _prepare(args...);
+}
+
+template<class... Args>
+size_t HardwareSerial::prepare(Args... args) {
+  size_t size;
+
+  reset();
+  size = _prepare(args...);
+  reset();
+
+  return size;
 }
 
 
