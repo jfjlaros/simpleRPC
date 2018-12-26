@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 #include "../simpleRPC/signature.tcc"
 

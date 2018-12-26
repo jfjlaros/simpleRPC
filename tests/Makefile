@@ -1,12 +1,11 @@
 EXEC := run_tests
 MAIN := test_lib
-TESTS := \
-  test_arduino test_interface test_print test_rpcCall test_signature test_tuple
-FIXTURES := Arduino
+TESTS := test_interface test_print test_rpcCall test_signature test_tuple
+FIXTURES := arduino-serial-fixture/src/Arduino
 
 
 CC := g++
-INCLUDE_PATH := .
+INCLUDE_PATH := arduino-serial-fixture/src
 CC_ARGS := -Wno-pmf-conversions
 
 
@@ -18,13 +17,13 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $(MAIN).cc $^
+	$(CC) -o $@ $(MAIN).cc $(notdir $^)
 
 %.o: %.cc
 	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -c $<
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(notdir $(OBJS))
 
 distclean: clean
 	rm -f $(EXEC)

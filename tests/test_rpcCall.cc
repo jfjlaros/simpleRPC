@@ -24,53 +24,37 @@ TEST_CASE("RPC call function", "[call]") {
   // Void function.
   Serial.reset();
   rpcCall(S::f);
-
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == 0);
 
   // Non-void function.
-  Serial.reset();
-  Serial._prepare<int>(12);
-  Serial._prepare<char>(0x03);
-  Serial.reset();
+  Serial.prepare(12, '\3');
   rpcCall(S::g);
-
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
-  Serial.reset();
-  REQUIRE(Serial._inspect<short int>() == 16);
+  REQUIRE(Serial.inspect<short int>() == 16);
 
   // Second parameter is of type char *.
-  Serial.reset();
-  Serial._prepare<int>(1234);
-  Serial._prepare<char>('x');
-  Serial._prepare<char>('x');
-  Serial._prepare<char>('x');
-  Serial._prepare<char>('\0');
-  Serial.reset();
+  Serial.prepare(1234, "xxx");
   rpcCall(S::h);
-
   REQUIRE(Serial.rx == sizeof(int) + 4);
   REQUIRE(Serial.tx == 0);
 
   // Second parameter is of type const char *.
   Serial.reset();
   rpcCall(S::i);
-
   REQUIRE(Serial.rx == 4 + sizeof(int));
   REQUIRE(Serial.tx == 0);
 
   // First parameter is of type char *.
   Serial.reset();
   rpcCall(S::j);
-
   REQUIRE(Serial.rx == 3 + sizeof(int));
   REQUIRE(Serial.tx == 0);
 
   // First parameter is of type const char *.
   Serial.reset();
   rpcCall(S::k);
-
   REQUIRE(Serial.rx == sizeof(int) + 3);
   REQUIRE(Serial.tx == 0);
 
@@ -120,14 +104,10 @@ short int add(int i, char c) {
 }
 
 TEST_CASE("Input and output", "[call]") {
-  Serial.reset();
-  Serial._prepare((int)1234);
-  Serial._prepare((char)0x03);
-  Serial.reset();
+  Serial.prepare(1234, '\3');
   rpcCall(add);
 
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
-  Serial.reset();
-  REQUIRE(Serial._inspect<short int>() == 1238);
+  REQUIRE(Serial.inspect<short int>() == 1238);
 }
