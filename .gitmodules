@@ -1,0 +1,3 @@
+[submodule "tests/arduino-serial-fixture"]
+	path = tests/arduino-serial-fixture
+	url = https://github.com/jfjlaros/arduino-serial-fixture.git
