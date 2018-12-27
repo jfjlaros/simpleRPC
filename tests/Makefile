@@ -17,13 +17,13 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $(MAIN).cc $(notdir $^)
+	$(CC) -o $@ $(MAIN).cc $^
 
 %.o: %.cc
-	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -c $<
+	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
 
 clean:
-	rm -f $(notdir $(OBJS))
+	rm -f $(OBJS)
 
 distclean: clean
 	rm -f $(EXEC)
