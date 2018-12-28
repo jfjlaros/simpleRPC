@@ -58,4 +58,53 @@ TEST_CASE("Multiple functions", "[describe]") {
   REQUIRE(Serial.inspect<String>() == ":;f");
 }
 
-// TODO: select and interface.
+TEST_CASE("Select by number", "[select]") {
+  struct S {
+    static short int f(void) {
+      return 1;
+    }
+    static short int g(void) {
+      return 2;
+    }
+  };
+
+  // Select first function.
+  Serial.reset();
+  _select(0, 0, S::f, "", S::g, "");
+  REQUIRE(Serial.inspect<short int>() == 1);
+
+  // Select second function.
+  Serial.reset();
+  _select(1, 0, S::f, "", S::g, "");
+  REQUIRE(Serial.inspect<short int>() == 2);
+}
+
+TEST_CASE("RPC interface", "[interface]") {
+  struct S {
+    static short int f(void) {
+      return 1;
+    }
+    static short int g(void) {
+      return 2;
+    }
+  };
+
+  // Describe interface.
+  Serial.reset();
+  Serial.prepare(_LIST_REQ);
+  rpcInterface(S::f, "f", S::g, "g");
+  REQUIRE(Serial.inspect<String>() == "<h:;f");
+  REQUIRE(Serial.inspect<String>() == "<h:;g");
+
+  // Select first function.
+  Serial.reset();
+  Serial.prepare((byte)0x00);
+  rpcInterface(S::f, "f", S::g, "g");
+  REQUIRE(Serial.inspect<short int>() == 1);
+
+  // Select second function.
+  Serial.reset();
+  Serial.prepare((byte)0x01);
+  rpcInterface(S::f, "f", S::g, "g");
+  REQUIRE(Serial.inspect<short int>() == 2);
+}
