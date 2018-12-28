@@ -16,7 +16,7 @@
 #include "rpcCall.tcc"
 #include "signature.tcc"
 
-#define _LIST_REQ 0xff
+#define _LIST_REQ (byte)0xff
 
 
 /**
