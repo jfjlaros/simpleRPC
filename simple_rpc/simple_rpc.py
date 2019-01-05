@@ -117,17 +117,18 @@ def _parse_line(index, line):
 
 
 class Interface(object):
-    def __init__(self, device, baudrate=9600):
+    def __init__(self, device, baudrate=9600, wait=1):
         """Initialise the class.
 
         :arg str device: Serial device name.
         :arg int baudrate: Baud rate.
+        :arg int wait: Time in seconds before communication starts.
         """
         try:
             self._connection = Serial(device, baudrate)
         except SerialException as error:
             raise IOError(error.strerror.split(':')[0])
-        sleep(1)
+        sleep(wait)
 
         self.methods = self._get_methods()
         for method in self.methods.values():

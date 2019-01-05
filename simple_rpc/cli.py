@@ -38,29 +38,31 @@ def _describe_method(method):
     return description
 
 
-def rpc_list(handle, device, baudrate):
+def rpc_list(handle, device, baudrate, wait):
     """List the device methods.
 
     :arg stream handle: Output handle.
     :arg str device: Serial device.
     :arg int baudrate: Baud rate.
+    :arg int wait: Time in seconds before communication starts.
     """
-    interface = Interface(device, baudrate)
+    interface = Interface(device, baudrate, wait)
 
     for method in interface.methods.values():
         handle.write(_describe_method(method) + '\n\n\n')
 
 
-def rpc_call(handle, device, baudrate, name, args):
+def rpc_call(handle, device, baudrate, wait, name, args):
     """Execute a method.
 
     :arg stream handle: Output handle.
     :arg str device: Serial device.
     :arg int baudrate: Baud rate.
+    :arg int wait: Time in seconds before communication starts.
     :arg str name: Method name.
     :arg list args: Method parameters.
     """
-    interface = Interface(device, baudrate)
+    interface = Interface(device, baudrate, wait)
 
     result = interface.call_method(name, *args)
     if result != None:
@@ -76,6 +78,9 @@ def main():
     common_parser.add_argument(
         '-b', dest='baudrate', type=int, default=9600,
         help='baud rate (%(type)s default=%(default)s)')
+    common_parser.add_argument(
+        '-w', dest='wait', type=int, default=1,
+        help='time before communication starts (%(type)s default=%(default)s)')
     common_parser.add_argument(
         '-o', dest='handle', metavar='OUTPUT', type=FileType('w'),
         default=stdout, help='output file')
