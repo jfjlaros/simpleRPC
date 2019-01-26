@@ -37,6 +37,14 @@ function can be used.
 .. code:: python
 
     >>> help(interface.inc)
+    Help on method inc:
+
+    inc(a) method of simple_rpc.simple_rpc.Interface instance
+        Increment a value.
+
+        :arg int a: Value.
+
+        :returns int: a + 1.
 
 
 Command line interface
