@@ -35,5 +35,68 @@ Python API library as a reference implementation.
 Please see ReadTheDocs_ for the latest documentation.
 
 
+Quick start
+-----------
+
+Export any function e.g., ``digitalRead()`` using the ``interface()`` function.
+
+.. code:: cpp
+
+    #include <simpleRPC.h>
+
+    void setup(void) {
+      Serial.begin(9600);
+    }
+
+    void loop(void) {
+      interface(digitalRead, "");
+    }
+
+This function is now available on the host under name ``method2()``.
+
+.. code:: python
+
+    >>> from simple_rpc import Interface
+    >>> 
+    >>> interface = Interface('/dev/ttyACM0')
+    >>> 
+    >>> interface.method2(8)
+    0
+
+The documentation string can be used to name and describe the method.
+
+.. code:: cpp
+
+    interface(
+      digitalRead,
+      "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.");
+
+This is reflected on the host.
+
+.. code:: python
+
+    >>> help(interface.digital_read)
+    Help on method digital_read:
+
+    digital_read(pin) method of simple_rpc.simple_rpc.Interface instance
+        Read digital pin.
+
+        :arg int pin: Pin number.
+
+        :returns int: Pin value.
+
+    >>> interface.digital_read(8)
+    0
+
+Please read :doc:`usage_device` for more information about exporting normal
+functions, class member functions and documentation conventions.
+
+For more information about the host library and other interfaces, please see
+the :doc:`usage_host` section.
+
+If you want to create your own host library implementation for other
+programming languages, the section :doc:`protocol` should help you on your way.
+
+
 .. _Arduino: https://www.arduino.cc
 .. _ReadTheDocs: https://simpleRPC.readthedocs.io/en/latest/index.html
