@@ -38,7 +38,8 @@ Please see ReadTheDocs_ for the latest documentation.
 Quick start
 -----------
 
-Export any function e.g., ``digitalRead()`` using the ``interface()`` function.
+Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
+``interface()`` function.
 
 .. code:: cpp
 
@@ -49,10 +50,11 @@ Export any function e.g., ``digitalRead()`` using the ``interface()`` function.
     }
 
     void loop(void) {
-      interface(digitalRead, "");
+      interface(digitalRead, "", digitalWrite, "");
     }
 
-This function is now available on the host under name ``method2()``.
+These functions are now available on the host under name ``method2()`` and
+``method3()``.
 
 .. code:: python
 
@@ -62,6 +64,7 @@ This function is now available on the host under name ``method2()``.
     >>> 
     >>> interface.method2(8)
     0
+    >>> interface.method3(13, True)
 
 The documentation string can be used to name and describe the method.
 
@@ -69,7 +72,9 @@ The documentation string can be used to name and describe the method.
 
     interface(
       digitalRead,
-      "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.");
+      "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.",
+      digitalWrite,
+      "digital_write: Write to a digital pin. @pin: Pin number. @value: Pin value.");
 
 This is reflected on the host.
 
@@ -87,6 +92,7 @@ This is reflected on the host.
 
     >>> interface.digital_read(8)
     0
+    >>> interface.digital_write(13, True)
 
 Please read :doc:`usage_device` for more information about exporting normal
 functions, class member functions and documentation conventions.
