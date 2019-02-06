@@ -81,7 +81,7 @@ Example
 ^^^^^^^
 
 Suppose we want to export a method that sets the brightness of an LED and a
-method that takes two parameters and returns one value.
+method that takes one parameter and returns a value.
 
 .. code:: cpp
 

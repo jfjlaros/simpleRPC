@@ -29,6 +29,15 @@ a struct formatted return type (if any), followed by a ``:`` and a space
 delimited list of struct formatted parameter types. The format of the
 documentation string is described in the :doc:`usage_device` section.
 
+For our example, the response for the method discovery request will look as
+follows.
+
+::
+
+    <h: <h;inc: Increment a value. @a: Value. @return: a + 1.
+    : B;set_led: Set LED brightness. @brightness: Brightness.
+    
+
 
 Remote procedure call
 ---------------------
@@ -37,8 +46,8 @@ A remote procedure call is initiated by the host by writing one byte to the
 serial device of which the value maps to one of the exported methods (i.e., 0
 maps to the first method, 1 to the second, etc.). If this method takes any
 parameters, their values are written to the serial device. After the parameter
-values have been received, the device executes the method and writes the return
-value of the method (if any) back to the serial device.
+values have been received, the device executes the method and writes its return
+value (if any) back to the serial device.
 
 All native C types (``int``, ``float``, ``double``, etc.) are currently
 supported.  All values are little-endian. The host is responsible for packing
