@@ -72,9 +72,9 @@ The documentation string can be used to name and describe the method.
 
     interface(
       digitalRead,
-      "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.",
+        "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.",
       digitalWrite,
-      "digital_write: Write to a digital pin. @pin: Pin number. @value: Pin value.");
+        "digital_write: Write to a digital pin. @pin: Pin number. @value: Pin value.");
 
 This is reflected on the host.
 
