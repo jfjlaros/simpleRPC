@@ -20,7 +20,7 @@ Method discovery is initiated by the host by writing one byte with value
 ``0xff`` to the serial device.
 
 The device will respond with a list of method descriptions delimited by an end
-of line signature (``\n``). The list is terminated by an additional end of line
+of string signature (``\0``). The list is terminated by an additional end of line
 signature.
 
 Each method description consists of a struct_ formatted function signature and
@@ -34,9 +34,9 @@ follows.
 
 ::
 
-    <h: <h;inc: Increment a value. @a: Value. @return: a + 1.
-    : B;set_led: Set LED brightness. @brightness: Brightness.
-    
+    <h: <h;inc: Increment a value. @a: Value. @return: a + 1.\0
+    : B;set_led: Set LED brightness. @brightness: Brightness.\0
+    \0
 
 
 Remote procedure call
