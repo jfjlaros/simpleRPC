@@ -67,7 +67,7 @@ There are currently two built-in functions.
      - version
      - Protocol version.
      -
-     - int: Version number.
+     - string: Version number.
    * - 1
      - ping
      - Echo a value.
