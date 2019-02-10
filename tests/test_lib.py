@@ -2,10 +2,17 @@ from simple_rpc import Interface
 from simple_rpc.simple_rpc import _version
 
 
-_interface = Interface('/dev/ttyACM0')
+_interface = Interface('/dev/ttyACM0', autoconnect=False)
 
 
 class TestLib(object):
+    def test_open(self):
+        assert not _interface.is_open()
+        assert _interface.methods == {}
+        _interface.open()
+        assert _interface.is_open()
+        assert _interface.methods != {}
+
     def test_version(self):
         assert _interface.version() == _version
 
@@ -49,3 +56,10 @@ class TestLib(object):
 
     def test_doc_4(self):
         assert _interface.methods['ping']['parameters'][0]['doc'] == 'Value.'
+
+    def test_close(self):
+        assert _interface.is_open()
+        assert _interface.methods != {}
+        _interface.close()
+        assert not _interface.is_open()
+        assert _interface.methods == {}

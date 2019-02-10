@@ -117,29 +117,28 @@ def _parse_line(index, line):
 
 
 class Interface(object):
-    def __init__(self, device, baudrate=9600, wait=1):
+    def __init__(self, device, baudrate=9600, wait=1, autoconnect=True):
         """Initialise the class.
 
         :arg str device: Serial device name.
         :arg int baudrate: Baud rate.
         :arg int wait: Time in seconds before communication starts.
+        :arg bool autoconnect: Automatically connect.
         """
-        try:
-            self._connection = Serial(device, baudrate)
-        except SerialException as error:
-            raise IOError(error.strerror.split(':')[0])
-        sleep(wait)
+        self._device = device
+        self._wait = wait
 
-        self.methods = self._get_methods()
-        for method in self.methods.values():
-            setattr(
-                self, method['name'], MethodType(_make_function(method), self))
+        self._connection = Serial(baudrate=baudrate)
+        self.methods = {}
 
-        device_version = self.call_method('version')
-        if device_version != _version:
-            raise ValueError(
-                'version mismatch (device: {}, client: {})'.format(
-                    device_version, _version))
+        if autoconnect:
+            self.open()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     def _read_str(self):
         """Read a delimited string from serial.
@@ -206,6 +205,46 @@ class Interface(object):
             index += 1
 
         return methods
+
+    def open(self):
+        """Connect to serial device."""
+        if self._connection.isOpen():
+            return
+
+        self._connection.port = self._device
+        try:
+            self._connection.open()
+        except SerialException as error:
+            raise IOError(error.strerror.split(':')[0])
+        sleep(self._wait)
+
+        self.methods = self._get_methods()
+        for method in self.methods.values():
+            setattr(
+                self, method['name'], MethodType(_make_function(method), self))
+
+        device_version = self.call_method('version')
+        if device_version != _version:
+            raise ValueError(
+                'version mismatch (device: {}, client: {})'.format(
+                    device_version, _version))
+
+    def close(self):
+        """Disconnect from serial device."""
+        if not self._connection.isOpen():
+            return
+
+        for method in self.methods:
+            delattr(self, method)
+
+        self.methods = {}
+
+        if (self._connection):
+            self._connection.close()
+
+    def is_open(self):
+        return self._connection.isOpen()
+
 
     def call_method(self, name, *args):
         """Execute a method.

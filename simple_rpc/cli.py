@@ -46,10 +46,9 @@ def rpc_list(handle, device, baudrate, wait):
     :arg int baudrate: Baud rate.
     :arg int wait: Time in seconds before communication starts.
     """
-    interface = Interface(device, baudrate, wait)
-
-    for method in interface.methods.values():
-        handle.write(_describe_method(method) + '\n\n\n')
+    with Interface(device, baudrate, wait) as interface:
+        for method in interface.methods.values():
+            handle.write(_describe_method(method) + '\n\n\n')
 
 
 def rpc_call(handle, device, baudrate, wait, name, args):
@@ -62,11 +61,11 @@ def rpc_call(handle, device, baudrate, wait, name, args):
     :arg str name: Method name.
     :arg list args: Method parameters.
     """
-    interface = Interface(device, baudrate, wait)
+    with Interface(device, baudrate, wait) as interface:
+        result = interface.call_method(name, *args)
 
-    result = interface.call_method(name, *args)
-    if result != None:
-        handle.write('{}\n'.format(result))
+        if result != None:
+            handle.write('{}\n'.format(result))
 
 
 def main():
