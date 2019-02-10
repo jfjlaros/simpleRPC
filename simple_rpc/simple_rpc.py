@@ -208,7 +208,7 @@ class Interface(object):
 
     def open(self):
         """Connect to serial device."""
-        if self._connection.isOpen():
+        if self.is_open():
             return
 
         self._connection.port = self._device
@@ -231,7 +231,7 @@ class Interface(object):
 
     def close(self):
         """Disconnect from serial device."""
-        if not self._connection.isOpen():
+        if not self.is_open():
             return
 
         for method in self.methods:
@@ -243,6 +243,7 @@ class Interface(object):
             self._connection.close()
 
     def is_open(self):
+        """Query serial device state."""
         return self._connection.isOpen()
 
 

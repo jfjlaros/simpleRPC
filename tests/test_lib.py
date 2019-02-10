@@ -6,9 +6,11 @@ _interface = Interface('/dev/ttyACM0', autoconnect=False)
 
 
 class TestLib(object):
-    def test_open(self):
+    def test_pre_open(self):
         assert not _interface.is_open()
         assert _interface.methods == {}
+
+    def test_open(self):
         _interface.open()
         assert _interface.is_open()
         assert _interface.methods != {}
@@ -61,5 +63,7 @@ class TestLib(object):
         assert _interface.is_open()
         assert _interface.methods != {}
         _interface.close()
+
+    def test_post_close(self):
         assert not _interface.is_open()
         assert _interface.methods == {}
