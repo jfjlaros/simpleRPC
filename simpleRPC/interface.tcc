@@ -25,8 +25,8 @@
  * @arg {F} f - Function pointer.
  * @arg {const char *} doc - Function documentation.
  */
-template<class F>
-void _writeDescription(F f, const char *doc) {
+template<class F, class D>
+void _writeDescription(F f, D doc) {
   multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
 
@@ -47,15 +47,15 @@ inline void _describe(void) {}
  * @arg {const char *} doc - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
-template<class F, class... Args>
-void _describe(F f, const char *doc, Args... args) {
+template<class F, class D, class... Args>
+void _describe(F f, D doc, Args... args) {
   _writeDescription(f, doc);
   _describe(args...);
 }
 
 // Class member function.
-template<class U, class V, class... Args>
-void _describe(Tuple <U, V>t, const char *doc, Args... args) {
+template<class U, class V, class D, class... Args>
+void _describe(Tuple <U, V>t, D doc, Args... args) {
   _writeDescription(t.tail.head, doc);
   _describe(args...);
 }
@@ -79,8 +79,9 @@ inline void _select(byte, byte) {}
  * @arg {const char *} - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
-template<class F, class... Args>
-void _select(byte number, byte depth, F f, const char *, Args... args) {
+template<class F, class D, class... Args>
+void _select(
+    byte number, byte depth, F f, D, Args... args) {
   if (depth == number) {
     rpcCall(f);
     return;
