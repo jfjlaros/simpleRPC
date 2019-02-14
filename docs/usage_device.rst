@@ -77,6 +77,10 @@ used for missing keys. All descriptions may be empty.
    * - ``return``
      - ``return``
 
+To reduce the memory footprint, the use of the ``F()`` macro is allowed in the
+``interface()`` function. This stores the documentation string in program
+memory instead of SRAM. For more information, see the progmem_ documentation.
+
 Example
 ^^^^^^^
 
@@ -146,3 +150,6 @@ Exporting this class method as a remote call goes as follows:
           pack(&led, &LED::setBrightness),
             "set_led: Set LED brightness. @brightness: Brightness.");
       }
+
+
+.. _progmem: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/

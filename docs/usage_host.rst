@@ -83,6 +83,32 @@ Additionally, the ``with`` statement is supported for easy opening and closing.
     >>> with Interface('/dev/ttyACM0') as interface:
     >>>     interface.version()
 
+The class instance has a public member variable named ``methods`` which
+contains the definitions of the exported methods.
+
+.. code:: python
+
+    >>> interface.methods.keys()
+    dict_keys(['inc', 'set_led'])
+    >>> interface.methods['inc']
+    {
+      'return': {
+        'doc': 'a + 1.',
+        'fmt': '<h',
+        'typename': 'int'},
+      'doc': 'Increment a value.',
+      'name': 'inc',
+      'index': 2,
+      'parameters': [
+        {
+          'doc': 'Value.',
+          'name': 'a',
+          'fmt': '<h',
+          'typename': 'int'
+        }
+      ]
+    }
+
 Example
 ^^^^^^^
 
