@@ -11,16 +11,19 @@ CC_ARGS := -Wno-pmf-conversions
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 
-.PHONY: clean distclean
+.PHONY: check clean distclean
 
 
 all: $(EXEC)
 
-$(EXEC): $(OBJS)
-	$(CC) -o $@ $(MAIN).cc $^
+$(EXEC): $(MAIN).cc $(OBJS)
+	$(CC) -o $@ $^
 
 %.o: %.cc
 	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
+
+check: all
+	./$(EXEC)
 
 clean:
 	rm -f $(OBJS)

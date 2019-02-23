@@ -3,6 +3,8 @@ Simple RPC implementation for Arduino.
 
 .. image:: https://img.shields.io/github/last-commit/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC/graphs/commit-activity
+.. image:: https://travis-ci.org/jfjlaros/simpleRPC.svg?branch=master
+   :target: https://travis-ci.org/jfjlaros/simpleRPC
 .. image:: https://readthedocs.org/projects/simplerpc/badge/?version=latest
    :target: https://simpleRPC.readthedocs.io/en/latest
 .. image:: https://img.shields.io/github/release-date/jfjlaros/simpleRPC.svg
