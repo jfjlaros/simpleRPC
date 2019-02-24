@@ -1,4 +1,4 @@
-compiler: g++
+language: cpp
 install:
     - sudo apt update
     - sudo apt install catch
