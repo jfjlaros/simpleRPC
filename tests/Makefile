@@ -6,7 +6,7 @@ FIXTURES := arduino-serial-fixture/src/Arduino
 
 CC := g++
 INCLUDE_PATH := arduino-serial-fixture/src
-CC_ARGS := -Wno-pmf-conversions
+CC_ARGS := -Wno-pmf-conversions -std=c++11
 
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
