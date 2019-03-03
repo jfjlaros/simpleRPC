@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "../simpleRPC/print.tcc"
+#include "../src/print.tcc"
 
 
 TEST_CASE("Print", "[print]") {

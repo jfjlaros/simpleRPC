@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "../simpleRPC/signature.tcc"
+#include "../src/signature.tcc"
 
 
 TEST_CASE("Basic types 1", "[types]") {

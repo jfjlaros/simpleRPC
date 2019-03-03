@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "../simpleRPC/interface.tcc"
+#include "../src/interface.tcc"
 
 
 TEST_CASE("Describe function", "[describe]") {

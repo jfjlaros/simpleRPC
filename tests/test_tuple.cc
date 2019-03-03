@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "../simpleRPC/tuple.tcc"
+#include "../src/tuple.tcc"
 
 
 TEST_CASE("Direct initialisation", "[tuple]") {

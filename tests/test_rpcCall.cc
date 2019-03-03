@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "../simpleRPC/rpcCall.tcc"
+#include "../src/rpcCall.tcc"
 
 
 TEST_CASE("RPC call function", "[call]") {
