@@ -34,7 +34,7 @@ which is then able to generate an API interface.
 - Support for all native C types and strings.
 - Support for arbitrary functions and class methods.
 - Optional function and parameter naming and documentation.
-- Support for PROGMEM's F() macro to reduce memory footprint.
+- Support for PROGMEM_'s ``F()`` macro to reduce memory footprint.
 
 The Arduino library is independent of any host implementation, we provide a
 Python API client_ library as a reference implementation.
@@ -90,6 +90,7 @@ programming languages, the section :doc:`protocol` should help you on your way.
 
 
 .. _Arduino: https://www.arduino.cc
+.. _PROGMEM: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/
 .. _ReadTheDocs: https://simpleRPC.readthedocs.io
 .. _client: https://arduino-simple-rpc.readthedocs.io
 .. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/#quick-start
