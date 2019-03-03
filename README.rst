@@ -11,8 +11,6 @@ Simple RPC implementation for Arduino.
    :target: https://github.com/jfjlaros/simpleRPC/releases
 .. image:: https://img.shields.io/github/release/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC/releases
-.. image:: https://img.shields.io/pypi/v/arduino-simple-rpc.svg
-   :target: https://pypi.org/project/arduino-simple-rpc/
 .. image:: https://img.shields.io/github/languages/code-size/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC
 .. image:: https://img.shields.io/github/languages/count/jfjlaros/simpleRPC.svg
@@ -28,11 +26,18 @@ This library provides a simple way to export Arduino_ functions as remote
 procedure calls. The exported method definitions are communicated to the host,
 which is then able to generate an API interface.
 
-For each method, only one additional line of code is needed for exporting. On
-the host, only one function call is needed to perform a remote procedure call.
+**Features:**
+
+- User friendly API library.
+- For each method, only one line of code is needed for exporting.
+- Automatic parameter- and return type inference.
+- Support for all native C types and strings.
+- Support for arbitrary functions and class methods.
+- Optional function and parameter naming and documentation.
+- Support for PROGMEM's F() macro to reduce memory footprint.
 
 The Arduino library is independent of any host implementation, we provide a
-Python API library as a reference implementation.
+Python API client_ library as a reference implementation.
 
 Please see ReadTheDocs_ for the latest documentation.
 
@@ -55,18 +60,8 @@ Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
       interface(digitalRead, "", digitalWrite, "");
     }
 
-These functions are now available on the host under name ``method2()`` and
+These functions are now available on the host under names ``method2()`` and
 ``method3()``.
-
-.. code:: python
-
-    >>> from simple_rpc import Interface
-    >>> 
-    >>> interface = Interface('/dev/ttyACM0')
-    >>> 
-    >>> interface.method2(8)
-    0
-    >>> interface.method3(13, True)
 
 The documentation string can be used to name and describe the method.
 
@@ -78,33 +73,23 @@ The documentation string can be used to name and describe the method.
       digitalWrite,
         "digital_write: Write to a digital pin. @pin: Pin number. @value: Pin value.");
 
-This is reflected on the host.
+This is reflected on the host, where the methods are now named
+``digital_read()`` and ``digital_write()`` and where the provided API
+documentation is also available. In our client reference implementation
+documentation, we show an example_ on how this works.
 
-.. code:: python
 
-    >>> help(interface.digital_read)
-    Help on method digital_read:
+Further reading
+---------------
 
-    digital_read(pin) method of simple_rpc.simple_rpc.Interface instance
-        Read digital pin.
-
-        :arg int pin: Pin number.
-
-        :returns int: Pin value.
-
-    >>> interface.digital_read(8)
-    0
-    >>> interface.digital_write(13, True)
-
-Please read :doc:`usage_device` for more information about exporting normal
+Please read :doc:`usage` for more information about exporting normal
 functions, class member functions and documentation conventions.
-
-For more information about the host library and other interfaces, please see
-the :doc:`usage_host` section.
 
 If you want to create your own host library implementation for other
 programming languages, the section :doc:`protocol` should help you on your way.
 
 
 .. _Arduino: https://www.arduino.cc
-.. _ReadTheDocs: https://simpleRPC.readthedocs.io/en/latest/index.html
+.. _ReadTheDocs: https://simpleRPC.readthedocs.io
+.. _client: https://arduino-simple-rpc.readthedocs.io
+.. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/#quick-start

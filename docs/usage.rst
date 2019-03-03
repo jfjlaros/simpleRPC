@@ -1,5 +1,5 @@
-Device library
-==============
+Library
+=======
 
 Include the header file to use the device library.
 
@@ -109,6 +109,9 @@ Exporting these methods in the ``loop()`` body looks as follows:
 
 We can now build and upload the sketch.
 
+The client reference documentation includes an example_ on how these methods
+can be accessed from the host.
+
 
 Class methods
 -------------
@@ -152,4 +155,5 @@ Exporting this class method as a remote call goes as follows:
       }
 
 
+.. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example
 .. _progmem: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/

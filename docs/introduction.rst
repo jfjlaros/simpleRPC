@@ -2,7 +2,8 @@ Introduction
 ============
 
 A remote procedure call to an Arduino device is a common way to read sensor
-values or to send control signals.
+values or to send control signals. This library provides a simple way to export
+any Arduino function, including API documentation.
 
 
 Motivation
@@ -98,18 +99,6 @@ such an approach are clear from the example:
 This is why we developed the simpleRPC library, like the implementation above,
 it only communicates values but has none of the downsides of an *ad hoc*
 protocol.
-
-
-SimpleRPC
----------
-
-SimpleRPC makes it easy for a programmer to export Arduino functions as remote
-procedure calls. The exported method definitions are communicated to the host,
-which is then able to generate an API interface.
-
-For each method, only one additional line of code is needed for exporting. On
-the host, only one function call is needed to perform a remote procedure call.
-See the :doc:`usage_device` section for a full explanation and an example.
 
 
 .. _struct: https://docs.python.org/2/library/struct.html
