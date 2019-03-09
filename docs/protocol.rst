@@ -116,4 +116,4 @@ The number of calls per second scales linearly with the baud rate, even at the
 highest speed, there is no measurable overhead.
 
 
-.. _struct: https://docs.python.org/2/library/struct.html#format-characters
+.. _struct: https://docs.python.org/3.5/library/struct.html#format-strings

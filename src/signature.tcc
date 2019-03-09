@@ -7,7 +7,7 @@
  * Type encoding functions.
  *
  * For more information about the encoding:
- * https://docs.python.org/2/library/struct.html#format-characters
+ * https://docs.python.org/3.5/library/struct.html#format-strings
  */
 
 inline String _typeof(bool) {
