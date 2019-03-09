@@ -3,6 +3,14 @@
 
 #include "tuple.tcc"
 
+
+/*
+ * Prototypes needed for recursive definitions.
+ */
+template<class T>
+  String _typeof(vector <T>);
+
+
 /*
  * Type encoding functions.
  *
@@ -125,6 +133,28 @@ inline String _typeof(Tuple <>) {
 template<class... Args>
 String _typeof(Tuple <Args...>t) {
   return _typeof(t.head) + _typeof(t.tail);
+}
+
+
+/**
+ * Get the types of all members of an object.
+ *
+ * @return {String} - Object member types.
+ */
+template<class... Args>
+String _typeof(Object <Args...>t) {
+  return "[" + _typeof(t.members) + "]";
+}
+
+
+/**
+ * Vector type.
+ */
+template<class T>
+String _typeof(vector <T>v) {
+  T x;
+
+  return "v" + _typeof(x);
 }
 
 

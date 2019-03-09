@@ -19,6 +19,18 @@ struct Tuple<T, Args...> {
   Tuple <Args...>tail;
 };
 
+
+/*
+ * Nested object.
+ *
+ * {Tuple} members: Nested tuple containing elements.
+ */
+template<class... Args>
+struct Object {
+  Tuple <Args...>members;
+};
+
+
 /**
  * Make a nested tuple from a list of parameters.
  *
