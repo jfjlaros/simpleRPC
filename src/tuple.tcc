@@ -10,8 +10,8 @@ struct Tuple {};
 /*
  * Nested tuple.
  *
- * {T} head: First element.
- * {Args...} tail: Remaining elements.
+ * {T} head - First element.
+ * {Args...} tail - Remaining elements.
  */
 template<class T, class... Args>
 struct Tuple<T, Args...> {
@@ -23,11 +23,24 @@ struct Tuple<T, Args...> {
 /*
  * Nested object.
  *
- * {Tuple} members: Nested tuple containing elements.
+ * {Tuple} members - Nested tuple containing elements.
  */
 template<class... Args>
 struct Object {
   Tuple <Args...>members;
+};
+
+
+/*
+ * Vector.
+ *
+ * {size_t} length - Number of elements in {data}.
+ * {T *} data - Elements.
+ */
+template<class T>
+struct Vector {
+  size_t length;
+  T *data;
 };
 
 

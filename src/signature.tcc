@@ -8,7 +8,7 @@
  * Prototypes needed for recursive definitions.
  */
 template<class T>
-  String _typeof(vector <T>);
+  String _typeof(Vector <T>);
 
 
 /*
@@ -17,7 +17,6 @@ template<class T>
  * For more information about the encoding:
  * https://docs.python.org/3.5/library/struct.html#format-strings
  */
-
 inline String _typeof(bool) {
   return "?";
 }
@@ -151,7 +150,7 @@ String _typeof(Object <Args...>t) {
  * Vector type.
  */
 template<class T>
-String _typeof(vector <T>v) {
+String _typeof(Vector <T>) {
   T x;
 
   return "v" + _typeof(x);
