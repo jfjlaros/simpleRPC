@@ -31,8 +31,12 @@ void _write(T data) {
  */
 template<class T>
 void _write(Vector <T>data) {
+  int i;
+
   _write(data.length);
-  Serial.write((byte *)&data.data, data.length * sizeof(T));
+  for (i = 0; i < data.length; i++) {
+    _write(data.data[i]);
+  }
 }
 
 /**

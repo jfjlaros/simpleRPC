@@ -50,19 +50,22 @@ T _read(T) {
 template<class T>
 Vector <T>_read(Vector <T>) {
   Vector <T>data;
+  int i;
 
   data.length = _read(data.length);
-  Serial.readBytes((char *)&data.data, data.length * sizeof(T));
+  data.data = (T *)malloc(data.length * sizeof(T));
+
+  for (i = 0; i < data.length; i++) {
+    data.data[i] = _read(data.data[i]);
+  }
+
+  return data;
 }
 
 /**
  * Recursion terminator for {_read(Tuple)}.
  */
-inline Tuple <>_read(Tuple <>) {
-  Tuple <>data;
-
-  return data;
-}
+inline Tuple <>_read(Tuple <>) {}
 
 /**
  * Read a value of type Tuple from serial.
