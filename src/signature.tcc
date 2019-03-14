@@ -1,5 +1,6 @@
 #ifndef __SIMPLE_RPC_SIGNATURE_TCC__
 #define __SIMPLE_RPC_SIGNATURE_TCC__
+// TODO: Isolate types.
 
 #include "tuple.tcc"
 
