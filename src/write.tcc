@@ -29,7 +29,7 @@ void _write(T data) {
 /**
  * Write a value of type Vector to serial.
  *
- * @arg {Vector <T>} - Vector.
+ * @arg {Vector <T>} data - Vector.
  */
 template<class T>
 void _write(Vector <T>data) {
@@ -49,7 +49,7 @@ inline void _write(Tuple <>) {}
 /**
  * Write a value of type Tuple to serial.
  *
- * @arg {Tuple <T, Args...>} - Tuple.
+ * @arg {Tuple <T, Args...>} data - Tuple.
  */
 template<class T, class... Args>
 void _write(Tuple <T, Args...>data) {
@@ -60,7 +60,7 @@ void _write(Tuple <T, Args...>data) {
 /**
  * Write a value of type Object to serial.
  *
- * @arg {Object <Args...>} - Object.
+ * @arg {Object <Args...>} data - Object.
  */
 template<class... Args>
 void _write(Object <Args...>data) {
