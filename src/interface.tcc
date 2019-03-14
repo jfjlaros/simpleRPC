@@ -23,7 +23,7 @@
  * Write the signature and documentation of a function to serial.
  *
  * @arg {F} f - Function pointer.
- * @arg {const char *} doc - Function documentation.
+ * @arg {D} doc - Function documentation.
  */
 template<class F, class D>
 void _writeDescription(F f, D doc) {
@@ -44,7 +44,7 @@ inline void _describe(void) {}
  * parameters.
  *
  * @arg {F} f - Function pointer.
- * @arg {const char *} doc - Function documentation.
+ * @arg {D} doc - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class D, class... Args>
@@ -76,7 +76,7 @@ inline void _select(byte, byte) {}
  * @arg {byte} number - Function index.
  * @arg {byte} depth - Current index.
  * @arg {F} f - Function pointer.
- * @arg {const char *} - Function documentation.
+ * @arg {D} - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class D, class... Args>
