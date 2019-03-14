@@ -1,6 +1,8 @@
 #ifndef __SIMPLE_RPC_WRITE_TCC__
 #define __SIMPLE_RPC_WRITE_TCC__
 
+#include <Arduino.h>
+
 #include "tuple.tcc"
 
 /*
