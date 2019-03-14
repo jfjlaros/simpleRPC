@@ -30,6 +30,7 @@ template<class... Args>
  * Read a value of basic type from serial.
  *
  * @arg {T} - Data type.
+ *
  * @return {T} - Data.
  */
 template<class T>
@@ -45,6 +46,7 @@ T _read(T) {
  * Read a value of type Vector from serial.
  *
  * @arg {Vector <T>} - Vector type.
+ *
  * @return {Vector <T>} - Vector.
  */
 template<class T>
@@ -71,6 +73,7 @@ inline Tuple <>_read(Tuple <>) {}
  * Read a value of type Tuple from serial.
  *
  * @arg {Tuple <T, Args...>} - Tuple type.
+ *
  * @return {Tuple <T, Args...>} - Tuple.
  */
 template<class T, class... Args>
@@ -87,6 +90,7 @@ Tuple <T, Args...>_read(Tuple <T, Args...>) {
  * Read a value of type Object from serial.
  *
  * @arg {Object <Args...>} - Object type.
+ *
  * @return {Object <Args...>} - Object.
  */
 template<class... Args>
