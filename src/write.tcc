@@ -42,7 +42,7 @@ void _write(Vector <T>data) {
 }
 
 /**
- * Recursion terminator for {_write(Tuple)}.
+ * Recursion terminator for {_write(Tuple)()}.
  */
 inline void _write(Tuple <>) {}
 

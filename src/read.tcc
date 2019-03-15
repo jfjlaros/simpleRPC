@@ -65,7 +65,7 @@ Vector <T>_read(Vector <T>) {
 }
 
 /**
- * Recursion terminator for {_read(Tuple)}.
+ * Recursion terminator for {_read(Tuple)()}.
  */
 inline Tuple <>_read(Tuple <>) {}
 
