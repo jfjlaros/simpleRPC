@@ -41,6 +41,7 @@ void _write(Vector <T>data) {
   }
 }
 
+
 /**
  * Recursion terminator for {_write(Tuple)()}.
  */
@@ -56,6 +57,7 @@ void _write(Tuple <T, Args...>data) {
   _write(data.head);
   _write(data.tail);
 }
+
 
 /**
  * Write a value of type Object to serial.
