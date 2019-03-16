@@ -1,0 +1,142 @@
+#ifndef __SIMPLE_RPC_TYPES_TCC__
+#define __SIMPLE_RPC_TYPES_TCC__
+
+#include "tuple.tcc"
+#include "vector.tcc"
+
+
+/*
+ * Prototypes needed for recursive definitions.
+ */
+template<class T>
+  String _typeof(Vector <T>);
+
+
+/*
+ * Type encoding functions.
+ *
+ * For more information about the encoding:
+ * https://docs.python.org/3.5/library/struct.html#format-strings
+ */
+inline String _typeof(bool) {
+  return "?";
+}
+
+inline String _typeof(char) {
+  return "c";
+}
+
+inline String _typeof(signed char) {
+  return "b";
+}
+
+inline String _typeof(unsigned char) {
+  return "B";
+}
+
+inline String _typeof(short int) {
+  return "<h";
+}
+
+inline String _typeof(unsigned short int) {
+  return "<H";
+}
+
+inline String _typeof(long int) {
+  return "<l";
+}
+
+inline String _typeof(unsigned long int) {
+  return "<L";
+}
+
+inline String _typeof(long long int) {
+  return "<q";
+}
+
+inline String _typeof(unsigned long long int) {
+  return "<Q";
+}
+
+inline String _typeof(float) {
+  return "<f";
+}
+
+/*
+ * The {int} and {double} type sizes vary between boards, see:
+ * https://www.arduino.cc/reference/en/language/variables/data-types/
+ */
+inline String _typeof(int) {
+  if (sizeof(int) == 2) {
+    return "<h";
+  }
+  return "<i";
+}
+
+inline String _typeof(unsigned int) {
+  if (sizeof(unsigned int) == 2) {
+    return "<H";
+  }
+  return "<I";
+}
+
+inline String _typeof(double) {
+  if (sizeof(double) == 4) {
+    return "<f";
+  }
+  return "<d";
+}
+
+
+/*
+ * String types.
+ */
+inline String _typeof(char *) {
+  return "s";
+}
+
+inline String _typeof(const char *) {
+  return "s";
+}
+
+
+/**
+ * Recursion terminator for {_typeof(Tuple)}.
+ */
+inline String _typeof(Tuple <>) {
+  return "";
+}
+
+/**
+ * Get the types of all members of a tuple.
+ *
+ * @return {String} - Tuple member types.
+ */
+template<class... Args>
+String _typeof(Tuple <Args...>t) {
+  return _typeof(t.head) + _typeof(t.tail);
+}
+
+
+/**
+ * Get the types of all members of an object.
+ *
+ * @return {String} - Object member types.
+ */
+template<class... Args>
+String _typeof(Object <Args...>t) {
+  return "[" + _typeof(t.members) + "]";
+}
+
+
+/**
+ * Vector type.
+ */
+template<class T>
+String _typeof(Vector <T>) {
+  T x;
+
+  return "v" + _typeof(x);
+}
+
+#endif
