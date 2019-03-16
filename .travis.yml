@@ -1,7 +1,7 @@
 language: cpp
 install:
-    - sudo apt update
-    - sudo apt install catch
-script:
+  - sudo apt update
+  - sudo apt install catch valgrind
   - cd tests
+script:
   - make check
