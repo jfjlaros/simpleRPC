@@ -8,8 +8,7 @@ TEST_CASE("Read basic types", "[read]") {
   char c;
 
   Serial.reset();
-  Serial.prepare((int)1234);
-  Serial.prepare((char)'x');
+  Serial.prepare(1234, 'x');
 
   _read(&i);
   _read(&c);
@@ -33,8 +32,7 @@ TEST_CASE("Read tuple", "[read]") {
   Tuple <int, char>t;
 
   Serial.reset();
-  Serial.prepare((int)1234);
-  Serial.prepare((char)'x');
+  Serial.prepare(1234, 'x');
 
   _read(&t);
 
@@ -46,10 +44,7 @@ TEST_CASE("Read vector", "[read]") {
   Vector <int>v;
 
   Serial.reset();
-  Serial.prepare((size_t)3);
-  Serial.prepare((int)1234);
-  Serial.prepare((int)2345);
-  Serial.prepare((int)3456);
+  Serial.prepare((size_t)3, 1234, 2345, 3456);
 
   _read(&v);
 
@@ -63,8 +58,7 @@ TEST_CASE("Read object", "[read]") {
   Object <int, char>o;
 
   Serial.reset();
-  Serial.prepare((int)1234);
-  Serial.prepare((char)'x');
+  Serial.prepare(1234, 'x');
 
   _read(&o);
 
@@ -76,13 +70,7 @@ TEST_CASE("Read nested vector", "[read]") {
   Vector <Vector <int>>v;
 
   Serial.reset();
-  Serial.prepare((size_t)2);
-  Serial.prepare((size_t)2);
-  Serial.prepare((int)1234);
-  Serial.prepare((int)2345);
-  Serial.prepare((size_t)2);
-  Serial.prepare((int)3456);
-  Serial.prepare((int)4567);
+  Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
 
   _read(&v);
 
@@ -96,11 +84,7 @@ TEST_CASE("Read complex vector", "[read]") {
   Vector <Object <int, Object<char>>>v;
 
   Serial.reset();
-  Serial.prepare((size_t)2);
-  Serial.prepare((int)1234);
-  Serial.prepare((char)'x');
-  Serial.prepare((int)2345);
-  Serial.prepare((char)'y');
+  Serial.prepare((size_t)2, 1234, 'x', 2345, 'y');
 
   _read(&v);
 
@@ -114,10 +98,7 @@ TEST_CASE("Read complex object", "[read]") {
   Object <Vector <int>, char>o;
 
   Serial.reset();
-  Serial.prepare((size_t)2);
-  Serial.prepare((int)1234);
-  Serial.prepare((int)2345);
-  Serial.prepare((char)'x');
+  Serial.prepare((size_t)2, 1234, 2345, 'x');
 
   _read(&o);
 
