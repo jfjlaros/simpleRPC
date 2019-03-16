@@ -47,7 +47,7 @@ Vector<T>::~Vector(void) {
  * This can be used for both retrieving as well as setting the content of an
  * element.
  *
- * @arg {sise_t} index - Index.
+ * @arg {size_t} index - Index.
  *
  * @return {T &} - Reference to element at index {index}.
  */
