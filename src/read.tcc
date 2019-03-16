@@ -33,13 +33,15 @@ void _read(T *data) {
  */
 template<class T>
 void _read(Vector <T> *data) {
+  size_t length;
   int i;
 
-  _read(&(*data).length);
-  (*data).data = (T *)malloc((*data).length * sizeof(T));
+
+  _read(&length);
+  (*data).setLength(length);
 
   for (i = 0; i < (*data).length; i++) {
-    _read(&(*data).data[i]);
+    _read(&(*data)[i]);
   }
 }
 

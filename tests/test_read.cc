@@ -11,8 +11,11 @@ TEST_CASE("Read basic types", "[read]") {
   Serial.prepare((int)1234);
   Serial.prepare((char)'x');
 
-  REQUIRE(_read(i) == 1234);
-  REQUIRE(_read(c) == 'x');
+  _read(&i);
+  _read(&c);
+
+  REQUIRE(i == 1234);
+  REQUIRE(c == 'x');
 }
 
 TEST_CASE("Read tuple", "[read]") {
@@ -22,7 +25,7 @@ TEST_CASE("Read tuple", "[read]") {
   Serial.prepare((int)1234);
   Serial.prepare((char)'x');
 
-  t = _read(t);
+  _read(&t);
 
   REQUIRE(t.head == 1234);
   REQUIRE(t.tail.head == 'x');
@@ -37,14 +40,12 @@ TEST_CASE("Read vector", "[read]") {
   Serial.prepare((int)2345);
   Serial.prepare((int)3456);
 
-  v = _read(v);
+  _read(&v);
 
   REQUIRE(v.length == 3);
-  REQUIRE(v.data[0] == 1234);
-  REQUIRE(v.data[1] == 2345);
-  REQUIRE(v.data[2] == 3456);
-
-  free(v.data);
+  REQUIRE(v[0] == 1234);
+  REQUIRE(v[1] == 2345);
+  REQUIRE(v[2] == 3456);
 }
 
 TEST_CASE("Read object", "[read]") {
@@ -54,7 +55,7 @@ TEST_CASE("Read object", "[read]") {
   Serial.prepare((int)1234);
   Serial.prepare((char)'x');
 
-  o = _read(o);
+  _read(&o);
 
   REQUIRE(o.members.head == 1234);
   REQUIRE(o.members.tail.head == 'x');
@@ -72,16 +73,12 @@ TEST_CASE("Read nested vector", "[read]") {
   Serial.prepare((int)3456);
   Serial.prepare((int)4567);
 
-  v = _read(v);
+  _read(&v);
 
-  REQUIRE(v.data[0].data[0] == 1234);
-  REQUIRE(v.data[0].data[1] == 2345);
-  REQUIRE(v.data[1].data[0] == 3456);
-  REQUIRE(v.data[1].data[1] == 4567);
-
-  free(v.data[0].data);
-  free(v.data[1].data);
-  free(v.data);
+  REQUIRE(v[0][0] == 1234);
+  REQUIRE(v[0][1] == 2345);
+  REQUIRE(v[1][0] == 3456);
+  REQUIRE(v[1][1] == 4567);
 }
 
 TEST_CASE("Read complex vector", "[read]") {
@@ -94,14 +91,12 @@ TEST_CASE("Read complex vector", "[read]") {
   Serial.prepare((int)2345);
   Serial.prepare((char)'y');
 
-  v = _read(v);
+  _read(&v);
 
-  REQUIRE(v.data[0].members.head == 1234);
-  REQUIRE(v.data[0].members.tail.head.members.head == 'x');
-  REQUIRE(v.data[1].members.head == 2345);
-  REQUIRE(v.data[1].members.tail.head.members.head == 'y');
-
-  free(v.data);
+  REQUIRE(v[0].members.head == 1234);
+  REQUIRE(v[0].members.tail.head.members.head == 'x');
+  REQUIRE(v[1].members.head == 2345);
+  REQUIRE(v[1].members.tail.head.members.head == 'y');
 }
 
 TEST_CASE("Read complex object", "[read]") {
@@ -113,11 +108,9 @@ TEST_CASE("Read complex object", "[read]") {
   Serial.prepare((int)2345);
   Serial.prepare((char)'x');
 
-  o = _read(o);
+  _read(&o);
 
-  REQUIRE(o.members.head.data[0] == 1234);
-  REQUIRE(o.members.head.data[1] == 2345);
+  REQUIRE(o.members.head[0] == 1234);
+  REQUIRE(o.members.head[1] == 2345);
   REQUIRE(o.members.tail.head == 'x');
-
-  free(o.members.head.data);
 }
