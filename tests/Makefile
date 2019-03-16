@@ -24,7 +24,7 @@ $(EXEC): $(MAIN).cc $(OBJS)
 	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
 
 check: all
-	./$(EXEC)
+	valgrind ./$(EXEC)
 
 clean:
 	rm -f $(OBJS)
