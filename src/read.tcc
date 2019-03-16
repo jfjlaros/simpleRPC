@@ -5,6 +5,7 @@
 
 #include "tuple.tcc"
 #include "vector.tcc"
+#include "print.tcc"
 
 /*
  * Prototypes needed for recursive definitions.
@@ -26,6 +27,24 @@ template<class T>
 void _read(T *data) {
   Serial.readBytes((char *)data, sizeof(T));
 }
+
+// Read a value of type {String *}.
+inline void _read(String *data) {
+  *data = Serial.readStringUntil(_END_OF_STRING);
+}
+
+/*
+// Read a value of type {char **}.
+inline void _read(char **data) {
+  *data = (char *)Serial.readStringUntil(_END_OF_STRING).c_str();
+}
+
+// Read a value of type {const char **}.
+inline void _read(const char **data) {
+  *data = (const char *)Serial.readStringUntil(_END_OF_STRING).c_str();
+}
+*/
+
 
 /**
  * Read a value of type Vector from serial.

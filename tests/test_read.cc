@@ -18,6 +18,17 @@ TEST_CASE("Read basic types", "[read]") {
   REQUIRE(c == 'x');
 }
 
+TEST_CASE("Read string", "[read]") {
+  String s;
+
+  Serial.reset();
+  Serial.prepare("xyz");
+
+  _read(&s);
+
+  REQUIRE(s == "xyz");
+}
+
 TEST_CASE("Read tuple", "[read]") {
   Tuple <int, char>t;
 

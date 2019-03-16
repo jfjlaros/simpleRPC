@@ -12,7 +12,7 @@ CC_ARGS := -Wno-pmf-conversions -std=c++11
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 
-.PHONY: check clean distclean
+.PHONY: all check clean distclean
 
 
 all: $(EXEC)

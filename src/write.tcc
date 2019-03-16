@@ -5,6 +5,7 @@
 
 #include "tuple.tcc"
 #include "vector.tcc"
+#include "print.tcc"
 
 /*
  * Prototypes needed for recursive definitions.
@@ -26,6 +27,24 @@ template<class T>
 void _write(T *data) {
   Serial.write((byte *)data, sizeof(T));
 }
+
+// Write a value of type {String *}.
+inline void _write(String *data) {
+  multiPrint(*data, _END_OF_STRING);
+}
+
+/*
+// Write a value of type {char **}.
+inline void _write(char **data) {
+  multiPrint(*data, _END_OF_STRING);
+}
+
+// Write a value of type {const char **}.
+inline void _write(const char **data) {
+  multiPrint(*data, _END_OF_STRING);
+}
+*/
+
 
 /**
  * Write a value of type Vector to serial.

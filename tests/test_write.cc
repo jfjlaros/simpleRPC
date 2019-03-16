@@ -16,6 +16,16 @@ TEST_CASE("Write basic types", "[write]") {
   REQUIRE(Serial.inspect<char>() == 'x');
 }
 
+TEST_CASE("Write string", "[write]") {
+  String s = "xyz";
+
+  Serial.reset();
+
+  _write(&s);
+
+  REQUIRE(Serial.inspect<String>() == "xyz");
+}
+
 TEST_CASE("Write tuple", "[write]") {
   Tuple <int, char>t = {1234, 'x'};
 
