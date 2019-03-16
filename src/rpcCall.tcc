@@ -1,38 +1,10 @@
 #ifndef __SIMPLE_RPC_RPCCALL_TCC__
 #define __SIMPLE_RPC_RPCCALL_TCC__
 
-#include "print.tcc"
+#include "read.tcc"
 #include "tuple.tcc"
+#include "write.tcc"
 
-
-/*
- * Prototypes needed for recursive definitions.
- */
-template<class... Tail, class F, class... Args>
-  void _call(void (*)(char *, Tail...), F, Args...);
-template<class... Tail, class F, class... Args>
-  void _call(void (*)(const char *, Tail...), F, Args...);
-
-
-/**
- * Write a return value to serial.
- *
- * @arg {T} data - Data.
- */
-template<class T>
-void _return(T data) {
-  Serial.write((byte *)&data, sizeof(T));
-}
-
-// Write a return value of type {char *}.
-inline void _return(char *data) {
-  multiPrint(data, _END_OF_STRING);
-}
-
-// Write a return value of type {const char *}.
-inline void _return(const char *data) {
-  multiPrint(data, _END_OF_STRING);
-}
 
 /**
  * Execute a function.
@@ -46,7 +18,9 @@ inline void _return(const char *data) {
  */
 template<class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args... args) {
-  _return(f(args...));
+  R data = f(args...);
+
+  _write(&data);
 }
 
 // Void function.
@@ -58,7 +32,9 @@ void _call(void (*)(void), void (*f)(Tail...), Args... args) {
 // Class member function.
 template<class C, class P, class R, class... Tail, class... Args>
 void _call(void (*)(void), Tuple <C *, R (P::*)(Tail...)>t, Args... args) {
-  _return((*t.head.*t.tail.head)(args...));
+  R data =(*t.head.*t.tail.head)(args...);
+
+  _write(&data);
 }
 
 // Void class member function.
@@ -66,6 +42,7 @@ template<class C, class P, class... Tail, class... Args>
 void _call(void (*)(void), Tuple <C *, void (P::*)(Tail...)>t, Args... args) {
   (*t.head.*t.tail.head)(args...);
 }
+
 
 /**
  * Collect parameters of a function from serial.
@@ -84,25 +61,10 @@ template<class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T, Tail...), F f, Args... args) {
   T data;
 
-  Serial.readBytes((char *)&data, sizeof(T));
+  _read(&data);
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
-// Parameter of type {char *}.
-template<class... Tail, class F, class... Args>
-void _call(void (*f_)(char *, Tail...), F f, Args... args) {
-  _call(
-    (void (*)(Tail...))f_, f, args...,
-    (char *)Serial.readStringUntil(_END_OF_STRING).c_str());
-}
-
-// Parameter of type {const char *}.
-template<class... Tail, class F, class... Args>
-void _call(void (*f_)(const char *, Tail...), F f, Args... args) {
-  _call(
-    (void (*)(Tail...))f_, f, args...,
-    (const char *)Serial.readStringUntil(_END_OF_STRING).c_str());
-}
 
 /**
  * Set up function parameter collection, execution and writing to serial.

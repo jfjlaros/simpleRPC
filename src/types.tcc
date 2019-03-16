@@ -62,6 +62,10 @@ inline String _typeof(float) {
   return "<f";
 }
 
+inline String _typeof(String) {
+  return "s";
+}
+
 /*
  * The {int} and {double} type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
@@ -85,18 +89,6 @@ inline String _typeof(double) {
     return "<f";
   }
   return "<d";
-}
-
-
-/*
- * String types.
- */
-inline String _typeof(char *) {
-  return "s";
-}
-
-inline String _typeof(const char *) {
-  return "s";
 }
 
 

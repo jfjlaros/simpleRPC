@@ -28,23 +28,14 @@ void _write(T *data) {
   Serial.write((byte *)data, sizeof(T));
 }
 
-// Write a value of type {String *}.
+/**
+ * Write a value of type String to serial.
+ *
+ * @arg {String *} data - String.
+ */
 inline void _write(String *data) {
   multiPrint(*data, _END_OF_STRING);
 }
-
-/*
-// Write a value of type {char **}.
-inline void _write(char **data) {
-  multiPrint(*data, _END_OF_STRING);
-}
-
-// Write a value of type {const char **}.
-inline void _write(const char **data) {
-  multiPrint(*data, _END_OF_STRING);
-}
-*/
-
 
 /**
  * Write a value of type Vector to serial.

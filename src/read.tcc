@@ -28,23 +28,14 @@ void _read(T *data) {
   Serial.readBytes((char *)data, sizeof(T));
 }
 
-// Read a value of type {String *}.
+/**
+ * Read a value of type String from serial.
+ *
+ * @arg {String *} data - String.
+ */
 inline void _read(String *data) {
   *data = Serial.readStringUntil(_END_OF_STRING);
 }
-
-/*
-// Read a value of type {char **}.
-inline void _read(char **data) {
-  *data = (char *)Serial.readStringUntil(_END_OF_STRING).c_str();
-}
-
-// Read a value of type {const char **}.
-inline void _read(const char **data) {
-  *data = (const char *)Serial.readStringUntil(_END_OF_STRING).c_str();
-}
-*/
-
 
 /**
  * Read a value of type Vector from serial.
@@ -69,7 +60,7 @@ void _read(Vector <T> *data) {
 /**
  * Recursion terminator for {_read(Tuple *)()}.
  */
-void _read(Tuple <> *) {}
+inline void _read(Tuple <> *) {}
 
 /**
  * Read a value of type Tuple from serial.

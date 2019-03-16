@@ -9,10 +9,8 @@ TEST_CASE("RPC call function", "[call]") {
     static void v_1(int) {}
     static void v_2(int, char) {}
     static void v_3(int, char, float) {}
-    static void v_c_1(char *, int) {}
-    static void v_cc_1(const char *, int) {}
-    static void v_c_2(int, char *) {}
-    static void v_cc_2(int, const char *) {}
+    static void v_str_1(String, int) {}
+    static void v_str_2(int, String) {}
     static short int s_0(void) {
       return 1;
     }
@@ -31,12 +29,10 @@ TEST_CASE("RPC call function", "[call]") {
     static float f_2(int, char) {
       return 3.0F;
     }
-    static char *c_0(void) {
-      return (char *)"xyz";
-    }
-    static const char *cc_0(void) {
+    static String str(void) {
       return "xyz";
     }
+    // TODO: Vectors, Tuples, Objects.
   };
 
   // Void function, no parameters.
@@ -63,31 +59,17 @@ TEST_CASE("RPC call function", "[call]") {
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char) + sizeof(float));
   REQUIRE(Serial.tx == 0);
 
-  // Void function, first parameter is of type char *.
+  // Void function, first parameter is of type String.
   Serial.reset();
   Serial.prepare("xyz", 1234);
-  rpcCall(S::v_c_1);
+  rpcCall(S::v_str_1);
   REQUIRE(Serial.rx == 4 + sizeof(int));
   REQUIRE(Serial.tx == 0);
 
-  // Void function, first parameter is of type const char *.
-  Serial.reset();
-  Serial.prepare("xyz", 1234);
-  rpcCall(S::v_cc_1);
-  REQUIRE(Serial.rx == 4 + sizeof(int));
-  REQUIRE(Serial.tx == 0);
-
-  // Void function, second parameter is of type char *.
+  // Void function, second parameter is of type String.
   Serial.reset();
   Serial.prepare(1234, "xxx");
-  rpcCall(S::v_c_2);
-  REQUIRE(Serial.rx == sizeof(int) + 4);
-  REQUIRE(Serial.tx == 0);
-
-  // Void function, second parameter is of type const char *.
-  Serial.reset();
-  Serial.prepare(1234, "xxx");
-  rpcCall(S::v_cc_2);
+  rpcCall(S::v_str_2);
   REQUIRE(Serial.rx == sizeof(int) + 4);
   REQUIRE(Serial.tx == 0);
 
@@ -133,16 +115,8 @@ TEST_CASE("RPC call function", "[call]") {
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(float));
 
-  // Function of type char *.
   Serial.reset();
-  rpcCall(S::c_0);
-  REQUIRE(Serial.inspect<String>() == "xyz");
-  REQUIRE(Serial.rx == 0);
-  REQUIRE(Serial.tx == 4);
-
-  // Function of type const char *.
-  Serial.reset();
-  rpcCall(S::cc_0);
+  rpcCall(S::str);
   REQUIRE(Serial.inspect<String>() == "xyz");
   REQUIRE(Serial.rx == 0);
   REQUIRE(Serial.tx == 4);

@@ -53,12 +53,10 @@ TEST_CASE("Basic types 2", "[types][basic]") {
   }
 }
 
-TEST_CASE("String types", "[types][string]") {
-  char *cP;
-  const char *ccP;
+TEST_CASE("String type", "[types][string]") {
+  String s;
 
-  REQUIRE(_typeof(cP) == "s");
-  REQUIRE(_typeof(ccP) == "s");
+  REQUIRE(_typeof(s) == "s");
 }
 
 TEST_CASE("Tuple types", "[types][tuple]") {

@@ -6,7 +6,7 @@
 #define _VERSION "2.0.1"
 
 
-const char *_version(void) {
+String _version(void) {
   return _VERSION;
 }
 
