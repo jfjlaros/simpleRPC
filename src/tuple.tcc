@@ -1,9 +1,6 @@
 #ifndef __SIMPLE_RPC_TUPLE_TCC__
 #define __SIMPLE_RPC_TUPLE_TCC__
 
-#include "vector.tcc"
-
-
 /*
  * Empty tuple.
  */
@@ -32,19 +29,6 @@ template<class... Args>
 struct Object {
   Tuple <Args...>members;
 };
-
-
-/*
- * Vector.
- *
- * {size_t} length - Number of elements in {data}.
- * {T *} data - Elements.
-template<class T>
-struct Vector {
-  size_t length;
-  T *data;
-};
- */
 
 
 /**
