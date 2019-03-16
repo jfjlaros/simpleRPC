@@ -136,7 +136,7 @@ template<class T>
 String _typeof(Vector <T>) {
   T x;
 
-  return "v" + _typeof(x);
+  return "(" + _typeof(x) + ")";
 }
 
 #endif
