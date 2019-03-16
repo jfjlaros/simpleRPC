@@ -28,7 +28,6 @@ which is then able to generate an API interface.
 
 **Features:**
 
-- User friendly API library.
 - For each method, only one line of code is needed for exporting.
 - Automatic parameter- and return type inference.
 - Support for all native C types and strings.
