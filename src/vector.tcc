@@ -59,7 +59,7 @@ T &Vector<T>::operator[](size_t index) {
 /**
  * Set the length of a vector.
  *
- * @arg {size_t} newLength - New size of the vector.
+ * @arg {size_t} newLength - New length of the vector.
  */
 template<class T>
 void Vector<T>::setLength(size_t newLength) {
