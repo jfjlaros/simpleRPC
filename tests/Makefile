@@ -18,7 +18,7 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 all: $(EXEC)
 
 $(EXEC): $(MAIN).cc $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) $(CC_ARGS) -o $@ $^
 
 %.o: %.cc
 	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
