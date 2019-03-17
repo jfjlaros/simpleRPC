@@ -9,9 +9,7 @@
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/
  * https://en.cppreference.com/w/cpp/language/parameter_pack
  *
- * TODO: Use a namespace if possible.
  * TODO: Add support for multiple serial devices.
- * TODO: Add support for lists.
  */
 #include "rpcCall.tcc"
 #include "signature.tcc"
