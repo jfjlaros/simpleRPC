@@ -30,6 +30,14 @@ String _parameterTypes(void (*f_)(T, Args...)) {
   return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
+// Parameter of type {T &}.
+template<class T, class... Args>
+String _parameterTypes(void (*f_)(T &, Args...)) {
+  T data;
+
+  return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
+}
+
 
 /**
  * Get the signature of a function.

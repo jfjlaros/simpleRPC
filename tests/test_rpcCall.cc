@@ -135,6 +135,7 @@ TEST_CASE("RPC call function with Tuple types", "[call]") {
 
       return t;
     }
+    static void p_tuple_3(Tuple <int, Vector <char>> &) {}
   };
 
   // Void function, parameter is of type Tuple.
@@ -151,11 +152,15 @@ TEST_CASE("RPC call function with Tuple types", "[call]") {
   REQUIRE(Serial.inspect<char>() == 'x');
   REQUIRE(Serial.rx == 0);
   REQUIRE(Serial.tx == sizeof(int) + sizeof(char));
+
+  Serial.reset();
+  Serial.prepare(1234, (size_t)2, 'x', 'y');
+  rpcCall(S::p_tuple_3);
 }
 
 TEST_CASE("RPC call function with Object types", "[call]") {
   struct S {
-    static void p_obj_1(Object <int, char>) {}
+    static void p_obj_1(Object <int, char> &) {}
     static Object <int, char>r_obj_2(void) {
       Object <int, char>o = {1234, 'x'};
 
@@ -181,8 +186,8 @@ TEST_CASE("RPC call function with Object types", "[call]") {
 
 TEST_CASE("RPC call function with Vector types", "[call]") {
   struct S {
-    static bool p_vect_1(Vector <int> *v) {
-      if ((*v).length != 2 || (*v)[0] != 1234 || (*v)[1] != 2345) {
+    static bool p_vect_1(Vector <int> &v) {
+      if (v.length != 2 || v[0] != 1234 || v[1] != 2345) {
         return false;
       }
       return true;
@@ -196,6 +201,7 @@ TEST_CASE("RPC call function with Vector types", "[call]") {
 
       return v;
     }
+    static void p_vect_3(Object <Vector <int>, char> &) {}
   };
 
   // Void function, parameter is of type Vector.
@@ -214,6 +220,10 @@ TEST_CASE("RPC call function with Vector types", "[call]") {
   REQUIRE(Serial.inspect<int>() == 2345);
   REQUIRE(Serial.rx == 0);
   REQUIRE(Serial.tx == sizeof(size_t) + 2 * sizeof(int));
+
+  Serial.reset();
+  Serial.prepare((size_t)2, 1234, 2345, 'c');
+  rpcCall(S::p_vect_3);
 }
 
 TEST_CASE("RPC call class member functions", "[call]") {
