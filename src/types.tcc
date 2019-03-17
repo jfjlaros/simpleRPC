@@ -131,4 +131,19 @@ String _typeof(Vector <T>) {
   return "(" + _typeof(x) + ")";
 }
 
+
+/**
+ * Determine endianness and type of {size_t}.
+ *
+ * @return {String} - Endianness and type of {size_t};
+ */
+inline String _hardwareDefs(void) {
+  size_t i = 0xff;
+
+  if (((unsigned char *)&i)[0] == 0xff) {
+    return "<" + _typeof(i);
+  }
+  return ">" + _typeof(i);
+}
+
 #endif

@@ -78,8 +78,7 @@ inline void _select(byte, byte) {}
  * @arg {Args...} args - Remaining parameters.
  */
 template<class F, class D, class... Args>
-void _select(
-    byte number, byte depth, F f, D, Args... args) {
+void _select(byte number, byte depth, F f, D, Args... args) {
   if (depth == number) {
     rpcCall(f);
     return;
@@ -107,6 +106,8 @@ void rpcInterface(Args... args) {
     command = Serial.read();
 
     if (command == _LIST_REQ) {
+      // TODO: Use _hardwareDefs and remove all '<' from types.tcc.
+      //multiPrint(_hardwareDefs());
       _describe(args...);
       multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
