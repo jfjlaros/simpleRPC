@@ -11,10 +11,9 @@
  *
  * TODO: Add support for multiple serial devices.
  */
+#include "print.tcc"
 #include "rpcCall.tcc"
 #include "signature.tcc"
-
-#define _LIST_REQ (byte)0xff
 
 
 /**

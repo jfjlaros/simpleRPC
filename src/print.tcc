@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
-#define _END_OF_STRING '\0'
+#include "defs.h"
 
 
 /*

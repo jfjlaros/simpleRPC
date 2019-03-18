@@ -1,9 +1,8 @@
 #ifndef __SIMPLE_RPC_H__
 #define __SIMPLE_RPC_H__
 
+#include "defs.h"
 #include "interface.tcc"
-
-#define _VERSION "2.0.1"
 
 
 String _version(void) {
