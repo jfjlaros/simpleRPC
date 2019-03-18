@@ -1,10 +1,6 @@
 #ifndef __SIMPLE_RPC_VECTOR_TCC__
 #define __SIMPLE_RPC_VECTOR_TCC__
 
-/*
- * Vector template library.
- */
-
 template<class T>
 class Vector {
   public:
