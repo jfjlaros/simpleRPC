@@ -35,31 +35,31 @@ inline String _typeof(unsigned char) {
 }
 
 inline String _typeof(short int) {
-  return "<h";
+  return "h";
 }
 
 inline String _typeof(unsigned short int) {
-  return "<H";
+  return "H";
 }
 
 inline String _typeof(long int) {
-  return "<l";
+  return "l";
 }
 
 inline String _typeof(unsigned long int) {
-  return "<L";
+  return "L";
 }
 
 inline String _typeof(long long int) {
-  return "<q";
+  return "q";
 }
 
 inline String _typeof(unsigned long long int) {
-  return "<Q";
+  return "Q";
 }
 
 inline String _typeof(float) {
-  return "<f";
+  return "f";
 }
 
 inline String _typeof(String) {
@@ -72,23 +72,23 @@ inline String _typeof(String) {
  */
 inline String _typeof(int) {
   if (sizeof(int) == 2) {
-    return "<h";
+    return "h";
   }
-  return "<i";
+  return "i";
 }
 
 inline String _typeof(unsigned int) {
   if (sizeof(unsigned int) == 2) {
-    return "<H";
+    return "H";
   }
-  return "<I";
+  return "I";
 }
 
 inline String _typeof(double) {
   if (sizeof(double) == 4) {
-    return "<f";
+    return "f";
   }
-  return "<d";
+  return "d";
 }
 
 

@@ -93,8 +93,10 @@ TEST_CASE("RPC interface", "[interface]") {
   Serial.reset();
   Serial.prepare(_LIST_REQ);
   rpcInterface(S::f0, "f", S::f1, "g");
-  REQUIRE(Serial.inspect<String>() == "<h:;f");
-  REQUIRE(Serial.inspect<String>() == "<h:;g");
+  REQUIRE(Serial.inspect<String>() == (String)_PROTOCOL + " " + _VERSION);
+  REQUIRE(Serial.inspect<String>() == _hardwareDefs());
+  REQUIRE(Serial.inspect<String>() == "h:;f");
+  REQUIRE(Serial.inspect<String>() == "h:;g");
 
   // Select first function.
   Serial.reset();

@@ -5,10 +5,6 @@
 #include "interface.tcc"
 
 
-String _version(void) {
-  return _VERSION;
-}
-
 byte _ping(byte data) {
   return data;
 }
@@ -24,7 +20,6 @@ byte _ping(byte data) {
 template<class... Args>
 void interface(Args... args) {
   rpcInterface(
-    _version, F("version: Protocol version. @return: Version string."),
     _ping, F("ping: Echo a value. @data: Value. @return: Value of data."),
     args...);
 }

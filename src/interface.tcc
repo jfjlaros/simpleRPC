@@ -105,8 +105,8 @@ void rpcInterface(Args... args) {
     command = Serial.read();
 
     if (command == _LIST_REQ) {
-      // TODO: Use _hardwareDefs and remove all '<' from types.tcc.
-      //multiPrint(_hardwareDefs());
+      multiPrint(_PROTOCOL, " ", _VERSION, _END_OF_STRING);
+      multiPrint(_hardwareDefs().c_str(), _END_OF_STRING);
       _describe(args...);
       multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
