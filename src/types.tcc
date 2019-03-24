@@ -117,7 +117,7 @@ String _typeof(Tuple <Args...>t) {
  */
 template<class... Args>
 String _typeof(Object <Args...>t) {
-  return "[" + _typeof(t.members) + "]";
+  return "(" + _typeof(t.members) + ")";
 }
 
 
@@ -128,7 +128,7 @@ template<class T>
 String _typeof(Vector <T>) {
   T x;
 
-  return "(" + _typeof(x) + ")";
+  return "[" + _typeof(x) + "]";
 }
 
 

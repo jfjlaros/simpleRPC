@@ -36,14 +36,14 @@ TEST_CASE("Objects", "[signature]") {
   void (*f0)(Object <int, char>, float);
   Object <int, char> (*f1)(float);
 
-  REQUIRE(signature(f0) == ": [ic] f");
-  REQUIRE(signature(f1) == "[ic]: f");
+  REQUIRE(signature(f0) == ": (ic) f");
+  REQUIRE(signature(f1) == "(ic): f");
 }
 
 TEST_CASE("Vectors", "[signature]") {
   void (*f0)(Vector <int>, float);
   Vector <int> (*f1)(float);
 
-  REQUIRE(signature(f0) == ": (i) f");
-  REQUIRE(signature(f1) == "(i): f");
+  REQUIRE(signature(f0) == ": [i] f");
+  REQUIRE(signature(f1) == "[i]: f");
 }
