@@ -44,14 +44,14 @@ inline void _read(String *data) {
  */
 template<class T>
 void _read(Vector <T> *data) {
-  size_t length;
+  size_t size;
   int i;
 
 
-  _read(&length);
-  (*data).setLength(length);
+  _read(&size);
+  (*data).resize(size);
 
-  for (i = 0; i < (*data).length; i++) {
+  for (i = 0; i < (*data).size; i++) {
     _read(&(*data)[i]);
   }
 }

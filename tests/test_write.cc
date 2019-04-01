@@ -40,7 +40,7 @@ TEST_CASE("Write tuple", "[write]") {
 TEST_CASE("Write vector", "[write]") {
   Vector <int>v;
 
-  v.setLength(2);
+  v.resize(2);
   v[0] = 1234;
   v[1] = 2345;
 
@@ -70,11 +70,11 @@ TEST_CASE("Write object", "[write]") {
 TEST_CASE("Write nested vector", "[write]") {
   Vector <Vector <int>>v;
 
-  v.setLength(2);
-  v[0].setLength(2);
+  v.resize(2);
+  v[0].resize(2);
   v[0][0] = 1234;
   v[0][1] = 2345;
-  v[1].setLength(2);
+  v[1].resize(2);
   v[1][0] = 3456;
   v[1][1] = 4567;
 
@@ -94,7 +94,7 @@ TEST_CASE("Write nested vector", "[write]") {
 TEST_CASE("Write complex vector", "[write]") {
   Vector <Object <int, Object<char>>>v;
 
-  v.setLength(2);
+  v.resize(2);
   v[0].members.head = 1234;
   v[0].members.tail.head.members.head = 'x';
   v[1].members.head = 2345;
@@ -114,7 +114,7 @@ TEST_CASE("Write complex vector", "[write]") {
 TEST_CASE("Write complex object", "[write]") {
   Object <Vector <int>, char>o;
 
-  o.members.head.setLength(2);
+  o.members.head.resize(2);
   o.members.head[0] = 1234;
   o.members.head[1] = 2345;
   o.members.tail.head = 'x';

@@ -48,7 +48,7 @@ TEST_CASE("Read vector", "[read]") {
 
   _read(&v);
 
-  REQUIRE(v.length == 3);
+  REQUIRE(v.size == 3);
   REQUIRE(v[0] == 1234);
   REQUIRE(v[1] == 2345);
   REQUIRE(v[2] == 3456);

@@ -46,8 +46,8 @@ template<class T>
 void _write(Vector <T> *data) {
   int i;
 
-  _write(&(*data).length);
-  for (i = 0; i < (*data).length; i++) {
+  _write(&(*data).size);
+  for (i = 0; i < (*data).size; i++) {
     _write(&(*data)[i]);
   }
 }
