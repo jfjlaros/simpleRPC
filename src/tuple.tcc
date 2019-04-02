@@ -5,7 +5,11 @@
  * Empty tuple.
  */
 template<class... Args>
-struct Tuple {};
+class Tuple {
+  public:
+    template<class R>
+      R &get(size_t);
+};
 
 /*
  * Nested tuple.
@@ -14,11 +18,13 @@ struct Tuple {};
  * {Args...} tail - Remaining elements.
  */
 template<class T, class... Args>
-struct Tuple<T, Args...> {
-  T head;
-  Tuple <Args...>tail;
+class Tuple<T, Args...> {
+  public:
+    template<class R>
+      R &get(size_t);
+    T head;
+    Tuple <Args...>tail;
 };
-
 
 /*
  * Nested object.
@@ -26,9 +32,55 @@ struct Tuple<T, Args...> {
  * {Tuple} members - Nested tuple containing elements.
  */
 template<class... Args>
-struct Object {
-  Tuple <Args...>members;
+class Object {
+  public:
+    template<class R>
+      R &get(size_t);
+    Tuple <Args...>members;
 };
+
+
+/**
+ * Recursion terminator for {Tuple::get()}.
+ */
+template<>
+template<class R>
+R &Tuple<>::get(size_t) {}
+
+/**
+ * Get a reference to an element.
+ *
+ * This can be used for both retrieving as well as setting the content of an
+ * element.
+ *
+ * @arg {size_t} index - Index.
+ *
+ * @return {R &} - Reference to element at index {index}.
+ */
+template<class T, class... Args>
+template<class R>
+R &Tuple<T, Args...>::get(size_t index) {
+  if (!index) {
+    return (R &)head;
+  }
+  return tail.get<R>(index - 1);
+}
+
+/**
+ * Get a reference to an element.
+ *
+ * This can be used for both retrieving as well as setting the content of an
+ * element.
+ *
+ * @arg {size_t} index - Index.
+ *
+ * @return {R &} - Reference to element at index {index}.
+ */
+template<class... Args>
+template<class R>
+R &Object<Args...>::get(size_t index) {
+  return members.get<R>(index);
+}
 
 
 /**

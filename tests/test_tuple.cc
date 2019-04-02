@@ -10,6 +10,26 @@ TEST_CASE("Direct initialisation", "[tuple]") {
   REQUIRE(t.tail.head == 1);
 }
 
+TEST_CASE("Indexing 1", "[tuple]") {
+  Tuple <char, int>t;
+
+  t.head = 'x';
+  t.tail.head = 1;
+
+  REQUIRE(t.get<char>(0) == 'x');
+  REQUIRE(t.get<int>(1) == 1);
+}
+
+TEST_CASE("Indexing 2", "[tuple]") {
+  Tuple <char, int>t;
+
+  t.get<char>(0) = 'x';
+  t.get<int>(1) = 1;
+
+  REQUIRE(t.head == 'x');
+  REQUIRE(t.tail.head == 1);
+}
+
 TEST_CASE("Pack values", "[tuple]") {
   Tuple <char, int>t = pack('x', 1);
 
