@@ -43,18 +43,18 @@ template<size_t, class>
 struct ElemTypeHolder;
 
 template<class T, class... Args>
-struct ElemTypeHolder<0, Tuple <T, Args...> > {
+struct ElemTypeHolder <0, Tuple <T, Args...> > {
   typedef T type;
 };
 
 template<size_t k, class T, class... Args>
-struct ElemTypeHolder<k, Tuple <T, Args...> > {
+struct ElemTypeHolder <k, Tuple <T, Args...> > {
   typedef typename ElemTypeHolder <k - 1, Tuple <Args...> >::type type;
 };
 
 
 /**
- * Get the {k}-the element in a Tuple.
+ * Get the {k}-th element in a Tuple.
  *
  * This can be used for both retrieving as well as setting the content of an
  * element.
@@ -72,7 +72,7 @@ typename enableIf<
 
 template<size_t k, class T, class... Args>
 typename enableIf<
-    k != 0, typename ElemTypeHolder<k, Tuple <T, Args...> >::type&>::type
+    k != 0, typename ElemTypeHolder <k, Tuple <T, Args...> >::type&>::type
     get(Tuple <T, Args...>&t) {
   return get<k - 1>(t.tail);
 }
