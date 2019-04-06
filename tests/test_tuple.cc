@@ -16,15 +16,15 @@ TEST_CASE("Indexing 1", "[tuple]") {
   t.head = 'x';
   t.tail.head = 1;
 
-  REQUIRE(t.get<char>(0) == 'x');
-  REQUIRE(t.get<int>(1) == 1);
+  REQUIRE(get<0>(t) == 'x');
+  REQUIRE(get<1>(t) == 1);
 }
 
 TEST_CASE("Indexing 2", "[tuple]") {
   Tuple <char, int>t;
 
-  t.get<char>(0) = 'x';
-  t.get<int>(1) = 1;
+  get<0>(t) = 'x';
+  get<1>(t) = 1;
 
   REQUIRE(t.head == 'x');
   REQUIRE(t.tail.head == 1);

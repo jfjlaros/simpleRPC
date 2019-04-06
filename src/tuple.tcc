@@ -1,6 +1,8 @@
 #ifndef __SIMPLE_RPC_TUPLE_TCC__
 #define __SIMPLE_RPC_TUPLE_TCC__
 
+#include "helper.tcc"
+
 /*
  * Empty tuple.
  */
@@ -32,46 +34,47 @@ struct Object : Tuple <Args...> {
 };
 
 
-/**
- * Recursion terminator for {Tuple::get()}.
+/*
+ * Access the type of the {k}-th element in a tuple.
+ *
+ * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
  */
-template<>
-template<class R>
-R &Tuple<>::get(size_t) {}
+template<size_t, class>
+struct ElemTypeHolder;
+
+template<class T, class... Args>
+struct ElemTypeHolder<0, Tuple <T, Args...> > {
+  typedef T type;
+};
+
+template<size_t k, class T, class... Args>
+struct ElemTypeHolder<k, Tuple <T, Args...> > {
+  typedef typename ElemTypeHolder <k - 1, Tuple <Args...> >::type type;
+};
+
 
 /**
- * Get a reference to an element.
+ * Get the {k}-the element in a Tuple.
  *
  * This can be used for both retrieving as well as setting the content of an
  * element.
  *
- * @arg {size_t} index - Index.
+ * @arg {Tuple} t - A tuple.
  *
- * @return {R &} - Reference to element at index {index}.
+ * @return {any &} - Reference to the {k}-th element in {t}.
  */
-template<class T, class... Args>
-template<class R>
-R &Tuple<T, Args...>::get(size_t index) {
-  if (!index) {
-    return (R &)head;
-  }
-  return tail.get<R>(index - 1);
+template<size_t k, class... Args>
+typename enableIf<
+    k == 0, typename ElemTypeHolder <0, Tuple <Args...> >::type&>::type
+    get(Tuple <Args...>&t) {
+  return t.head;
 }
 
-/**
- * Get a reference to an element.
- *
- * This can be used for both retrieving as well as setting the content of an
- * element.
- *
- * @arg {size_t} index - Index.
- *
- * @return {R &} - Reference to element at index {index}.
- */
-template<class... Args>
-template<class R>
-R &Object<Args...>::get(size_t index) {
-  return members.get<R>(index);
+template<size_t k, class T, class... Args>
+typename enableIf<
+    k != 0, typename ElemTypeHolder<k, Tuple <T, Args...> >::type&>::type
+    get(Tuple <T, Args...>&t) {
+  return get<k - 1>(t.tail);
 }
 
 
