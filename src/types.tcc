@@ -116,8 +116,8 @@ String _typeof(Tuple <Args...>t) {
  * @return {String} - Object member types.
  */
 template<class... Args>
-String _typeof(Object <Args...>t) {
-  return "(" + _typeof(t.members) + ")";
+String _typeof(Object <Args...>o) {
+  return "(" + _typeof((Tuple <Args...>)o) + ")";
 }
 
 

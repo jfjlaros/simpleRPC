@@ -56,8 +56,8 @@ TEST_CASE("Write vector", "[write]") {
 TEST_CASE("Write object", "[write]") {
   Object <int, char>o;
 
-  o.members.head = 1234;
-  o.members.tail.head = 'x';
+  o.head = 1234;
+  o.tail.head = 'x';
 
   Serial.reset();
 
@@ -95,10 +95,10 @@ TEST_CASE("Write complex vector", "[write]") {
   Vector <Object <int, Object<char>>>v;
 
   v.resize(2);
-  v[0].members.head = 1234;
-  v[0].members.tail.head.members.head = 'x';
-  v[1].members.head = 2345;
-  v[1].members.tail.head.members.head = 'y';
+  v[0].head = 1234;
+  v[0].tail.head.head = 'x';
+  v[1].head = 2345;
+  v[1].tail.head.head = 'y';
 
   Serial.reset();
 
@@ -114,10 +114,10 @@ TEST_CASE("Write complex vector", "[write]") {
 TEST_CASE("Write complex object", "[write]") {
   Object <Vector <int>, char>o;
 
-  o.members.head.resize(2);
-  o.members.head[0] = 1234;
-  o.members.head[1] = 2345;
-  o.members.tail.head = 'x';
+  o.head.resize(2);
+  o.head[0] = 1234;
+  o.head[1] = 2345;
+  o.tail.head = 'x';
 
   Serial.reset();
 

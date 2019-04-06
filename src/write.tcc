@@ -77,7 +77,7 @@ void _write(Tuple <T, Args...> *data) {
  */
 template<class... Args>
 void _write(Object <Args...> *data) {
-  _write(&(*data).members);
+  _write((Tuple <Args...>*)data);
 }
 
 #endif

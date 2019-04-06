@@ -62,8 +62,8 @@ TEST_CASE("Read object", "[read]") {
 
   _read(&o);
 
-  REQUIRE(o.members.head == 1234);
-  REQUIRE(o.members.tail.head == 'x');
+  REQUIRE(o.head == 1234);
+  REQUIRE(o.tail.head == 'x');
 }
 
 TEST_CASE("Read nested vector", "[read]") {
@@ -88,10 +88,10 @@ TEST_CASE("Read complex vector", "[read]") {
 
   _read(&v);
 
-  REQUIRE(v[0].members.head == 1234);
-  REQUIRE(v[0].members.tail.head.members.head == 'x');
-  REQUIRE(v[1].members.head == 2345);
-  REQUIRE(v[1].members.tail.head.members.head == 'y');
+  REQUIRE(v[0].head == 1234);
+  REQUIRE(v[0].tail.head.head == 'x');
+  REQUIRE(v[1].head == 2345);
+  REQUIRE(v[1].tail.head.head == 'y');
 }
 
 TEST_CASE("Read complex object", "[read]") {
@@ -102,7 +102,7 @@ TEST_CASE("Read complex object", "[read]") {
 
   _read(&o);
 
-  REQUIRE(o.members.head[0] == 1234);
-  REQUIRE(o.members.head[1] == 2345);
-  REQUIRE(o.members.tail.head == 'x');
+  REQUIRE(o.head[0] == 1234);
+  REQUIRE(o.head[1] == 2345);
+  REQUIRE(o.tail.head == 'x');
 }

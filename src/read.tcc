@@ -81,7 +81,7 @@ void _read(Tuple <T, Args...> *data) {
  */
 template<class... Args>
 void _read(Object <Args...> *data) {
-  _read(&(*data).members);
+  _read((Tuple <Args...>*)data);
 }
 
 #endif

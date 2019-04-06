@@ -5,11 +5,7 @@
  * Empty tuple.
  */
 template<class... Args>
-class Tuple {
-  public:
-    template<class R>
-      R &get(size_t);
-};
+struct Tuple {};
 
 /*
  * Nested tuple.
@@ -18,25 +14,21 @@ class Tuple {
  * {Args...} tail - Remaining elements.
  */
 template<class T, class... Args>
-class Tuple<T, Args...> {
-  public:
-    template<class R>
-      R &get(size_t);
-    T head;
-    Tuple <Args...>tail;
+struct Tuple<T, Args...> {
+  T head;
+  Tuple <Args...>tail;
 };
 
 /*
  * Nested object.
  *
- * {Tuple} members - Nested tuple containing elements.
+ * Preferably this would have been an alias, but this is not supported in the
+ * current version of Arduino C++.
  */
 template<class... Args>
-class Object {
-  public:
-    template<class R>
-      R &get(size_t);
-    Tuple <Args...>members;
+struct Object : Tuple <Args...> {
+  Object() = default;
+  Object(Args... args) : Tuple <Args...>({args...}) {}
 };
 
 
@@ -92,9 +84,9 @@ R &Object<Args...>::get(size_t index) {
  */
 template<class... Args>
 Tuple <Args...>pack(Args... args) {
-  Tuple <Args...>tuple = {args...};
+  Tuple <Args...>t = {args...};
 
-  return tuple;
+  return t;
 }
 
 /**
