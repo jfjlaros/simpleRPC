@@ -5,6 +5,25 @@ In this section we cover retrieval of the latest release or development version
 of the code and subsequent installation for an Arduino device.
 
 
+Arduino IDE
+-----------
+
+Installation via the `Arduino IDE`_ is probably the easiest way.
+
+First open the Library Manager.
+
+.. image:: step_1.png
+
+In the search bar, type "simpleRPC", click install and close the Library
+Manager.
+
+.. image:: step_2.png
+
+The simpleRPC library is now available in the "Contributed libraries" section.
+
+.. image:: step_3.png
+
+
 Download
 --------
 
@@ -31,8 +50,8 @@ the following command.
 Installation
 ------------
 
-Arduino IDE
-^^^^^^^^^^^
+Arduino IDE - manual installation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the Arduino IDE, a library can be added to the list of standard libraries by
 clicking through the following menu options.
@@ -42,7 +61,7 @@ clicking through the following menu options.
 - Add Library
 
 To add the library, navigate to the downloaded folder and select the subfolder
-named ``simpleRPC``.
+named ``src``.
 
 - Click OK.
 
@@ -68,6 +87,7 @@ subdirectory.
     git clone https://github.com/jfjlaros/simpleRPC.git
 
 
-.. _latest release: https://github.com/jfjlaros/simpleRPC/releases/latest
+.. _Arduino IDE: https://www.arduino.cc/en/Main/Software
 .. _GitHub: https://github.com/jfjlaros/simpleRPC.git
 .. _Ino: http://inotool.org
+.. _latest release: https://github.com/jfjlaros/simpleRPC/releases/latest

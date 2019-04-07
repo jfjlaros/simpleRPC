@@ -34,6 +34,8 @@ which is then able to generate an API interface.
 - Support for arbitrary functions and class methods.
 - Optional function and parameter naming and documentation.
 - Support for PROGMEM_'s ``F()`` macro to reduce memory footprint.
+- Support for compound data structures like Tuples, Objects (nested Tuples),
+  Vectors and arbitrary combinations of these.
 
 The Arduino library is independent of any host implementation, we provide a
 Python API client_ library as a reference implementation.
