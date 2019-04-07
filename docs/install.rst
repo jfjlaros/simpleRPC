@@ -13,25 +13,28 @@ Installation via the `Arduino IDE`_ is probably the easiest way.
 First open the Library Manager.
 
 .. image:: step_1.png
-    :width: 400px
+    :width: 500px
 
 In the search bar, type "simpleRPC", click install and close the Library
 Manager.
 
 .. image:: step_2.png
-    :width: 400px
+    :width: 500px
 
 The simpleRPC library is now available in the "Contributed libraries" section.
 
 .. image:: step_3.png
-    :width: 400px
+    :width: 500px
 
+
+Manual installation
+-------------------
 
 Download
---------
+^^^^^^^^
 
 Latest release
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Navigate to the `latest release`_ and either download the ``.zip`` or the
 ``.tar.gz`` file.
@@ -40,7 +43,7 @@ Unpack the downloaded archive.
 
 
 From source
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 The source is hosted on GitHub_, to install the latest development version, use
 the following command.
@@ -50,11 +53,11 @@ the following command.
     git clone https://github.com/jfjlaros/simpleRPC.git
 
 
-Manual installation
--------------------
+Installation
+^^^^^^^^^^^^
 
 Arduino IDE
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 In the Arduino IDE, a library can be added to the list of standard libraries by
 clicking through the following menu options.
@@ -77,12 +80,11 @@ following menu options.
 
 
 Ino
-^^^
+~~~
 
 Ino_ is an easy way of working with Arduino hardware from the command line.
 Adding libraries is also easy, simply place the library in the ``lib``
 subdirectory.
-
 
 ::
 
