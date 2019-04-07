@@ -13,15 +13,18 @@ Installation via the `Arduino IDE`_ is probably the easiest way.
 First open the Library Manager.
 
 .. image:: step_1.png
+    :width: 200px
 
 In the search bar, type "simpleRPC", click install and close the Library
 Manager.
 
 .. image:: step_2.png
+    :width: 200px
 
 The simpleRPC library is now available in the "Contributed libraries" section.
 
 .. image:: step_3.png
+    :width: 200px
 
 
 Download
