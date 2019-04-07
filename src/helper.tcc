@@ -1,3 +1,6 @@
+#ifndef __SIMPLE_RPC_HELPER_TCC__
+#define __SIMPLE_RPC_HELPER_TCC__
+
 /*
  * Compile-time switch for templates.
  *
@@ -10,3 +13,5 @@ template<class T>
 struct enableIf<true, T> {
   typedef T type;
 };
+
+#endif
