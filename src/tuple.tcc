@@ -29,7 +29,7 @@ struct Tuple<T, Args...> {
  */
 template<class... Args>
 struct Object : Tuple <Args...> {
-  Object() = default;
+  Object(void) {}
   Object(Args... args) : Tuple <Args...>({args...}) {}
 };
 
