@@ -87,8 +87,8 @@ contain a Tuple of which the first element is an other Object ``(hB)`` and
 the second element is a float ``f``.
 
 
-Remote procedure call
----------------------
+Remote procedure calls
+----------------------
 
 A remote procedure call is initiated by the host by writing one byte to the
 serial device of which the value maps to one of the exported methods (i.e., 0
