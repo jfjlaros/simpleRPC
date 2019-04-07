@@ -3,7 +3,7 @@
 #include "../src/rpcCall.tcc"
 
 
-TEST_CASE("RPC call function", "[call]") {
+TEST_CASE("RPC call function", "[call][basic]") {
   struct S {
     static void f0(void) {}
     static void f1(int) {}
@@ -96,7 +96,7 @@ TEST_CASE("RPC call function", "[call]") {
   REQUIRE(Serial.tx == sizeof(float));
 }
 
-TEST_CASE("RPC call function with String types", "[call]") {
+TEST_CASE("RPC call function with String types", "[call][string]") {
   struct S {
     static void f0(String, int) {}
     static void f1(int, String) {}
@@ -127,7 +127,7 @@ TEST_CASE("RPC call function with String types", "[call]") {
   REQUIRE(Serial.tx == 4);
 }
 
-TEST_CASE("RPC call function with Tuple types", "[call]") {
+TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   struct S {
     static void f0(Tuple <int, char>) {}
     static Tuple <int, char>f1(void) {
@@ -160,7 +160,7 @@ TEST_CASE("RPC call function with Tuple types", "[call]") {
   REQUIRE(Serial.tx == 0);
 }
 
-TEST_CASE("RPC call function with Object types", "[call]") {
+TEST_CASE("RPC call function with Object types", "[call][object]") {
   struct S {
     static void f0(Object <int, char> &) {}
     static Object <int, char>f1(void) {
@@ -186,7 +186,7 @@ TEST_CASE("RPC call function with Object types", "[call]") {
   REQUIRE(Serial.tx == sizeof(int) + sizeof(char));
 }
 
-TEST_CASE("RPC call function with Vector types", "[call]") {
+TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   struct S {
     static bool f0(Vector <int> &v) {
       if (v.size != 2 || v[0] != 1234 || v[1] != 2345) {
@@ -195,9 +195,8 @@ TEST_CASE("RPC call function with Vector types", "[call]") {
       return true;
     }
     static Vector <int>f1(void) {
-      Vector <int>v;
+      Vector <int>v(2);
 
-      v.resize(2);
       v[0] = 1234;
       v[1] = 2345;
 
@@ -230,7 +229,7 @@ TEST_CASE("RPC call function with Vector types", "[call]") {
   REQUIRE(Serial.tx == 0);
 }
 
-TEST_CASE("RPC call class member functions", "[call]") {
+TEST_CASE("RPC call class member functions", "[call][class]") {
   class C {
     public:
       void f0(int, char) {}

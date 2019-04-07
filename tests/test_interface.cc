@@ -3,7 +3,7 @@
 #include "../src/interface.tcc"
 
 
-TEST_CASE("Describe function", "[describe]") {
+TEST_CASE("Describe function", "[describe][basic]") {
   void (*f)(void);
 
   // Empty description.
@@ -17,7 +17,7 @@ TEST_CASE("Describe function", "[describe]") {
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
-TEST_CASE("Describe class member function", "[describe]") {
+TEST_CASE("Describe class member function", "[describe][class]") {
   class C {
     public:
       void f(void) {}
@@ -36,7 +36,7 @@ TEST_CASE("Describe class member function", "[describe]") {
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
-TEST_CASE("Multiple functions", "[describe]") {
+TEST_CASE("Multiple functions", "[describe][class]") {
   class C {
     public:
       void f(void) {}
@@ -58,7 +58,7 @@ TEST_CASE("Multiple functions", "[describe]") {
   REQUIRE(Serial.inspect<String>() == ":;f");
 }
 
-TEST_CASE("Select by number", "[select]") {
+TEST_CASE("Select by number", "[describe][select]") {
   struct S {
     static short int f0(void) {
       return 1;
@@ -79,7 +79,7 @@ TEST_CASE("Select by number", "[select]") {
   REQUIRE(Serial.inspect<short int>() == 2);
 }
 
-TEST_CASE("RPC interface", "[interface]") {
+TEST_CASE("RPC interface", "[describe][interface]") {
   struct S {
     static short int f0(void) {
       return 1;

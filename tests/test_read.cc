@@ -3,7 +3,7 @@
 #include "../src/read.tcc"
 
 
-TEST_CASE("Read basic types", "[read]") {
+TEST_CASE("Read basic types", "[read][basic]") {
   int i;
   char c;
 
@@ -17,7 +17,7 @@ TEST_CASE("Read basic types", "[read]") {
   REQUIRE(c == 'x');
 }
 
-TEST_CASE("Read string", "[read]") {
+TEST_CASE("Read string", "[read][string]") {
   String s;
 
   Serial.reset();
@@ -28,7 +28,7 @@ TEST_CASE("Read string", "[read]") {
   REQUIRE(s == "xyz");
 }
 
-TEST_CASE("Read tuple", "[read]") {
+TEST_CASE("Read tuple", "[read][tuple]") {
   Tuple <int, char>t;
 
   Serial.reset();
@@ -40,7 +40,19 @@ TEST_CASE("Read tuple", "[read]") {
   REQUIRE(t.tail.head == 'x');
 }
 
-TEST_CASE("Read vector", "[read]") {
+TEST_CASE("Read object", "[read][object]") {
+  Object <int, char>o;
+
+  Serial.reset();
+  Serial.prepare(1234, 'x');
+
+  _read(&o);
+
+  REQUIRE(o.head == 1234);
+  REQUIRE(o.tail.head == 'x');
+}
+
+TEST_CASE("Read vector", "[read][vector]") {
   Vector <int>v;
 
   Serial.reset();
@@ -54,19 +66,33 @@ TEST_CASE("Read vector", "[read]") {
   REQUIRE(v[2] == 3456);
 }
 
-TEST_CASE("Read object", "[read]") {
-  Object <int, char>o;
+TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
+  Tuple <Vector <int>, char>t;
 
   Serial.reset();
-  Serial.prepare(1234, 'x');
+  Serial.prepare((size_t)2, 1234, 2345, 'x');
+
+  _read(&t);
+
+  REQUIRE(t.head[0] == 1234);
+  REQUIRE(t.head[1] == 2345);
+  REQUIRE(t.tail.head == 'x');
+}
+
+TEST_CASE("Read complex object", "[read][object][complex]") {
+  Object <Vector <int>, char>o;
+
+  Serial.reset();
+  Serial.prepare((size_t)2, 1234, 2345, 'x');
 
   _read(&o);
 
-  REQUIRE(o.head == 1234);
+  REQUIRE(o.head[0] == 1234);
+  REQUIRE(o.head[1] == 2345);
   REQUIRE(o.tail.head == 'x');
 }
 
-TEST_CASE("Read nested vector", "[read]") {
+TEST_CASE("Read nested vector", "[read][vector][complex]") {
   Vector <Vector <int>>v;
 
   Serial.reset();
@@ -80,7 +106,7 @@ TEST_CASE("Read nested vector", "[read]") {
   REQUIRE(v[1][1] == 4567);
 }
 
-TEST_CASE("Read complex vector", "[read]") {
+TEST_CASE("Read complex vector", "[read][vector][complex]") {
   Vector <Object <int, Object<char>>>v;
 
   Serial.reset();
@@ -92,17 +118,4 @@ TEST_CASE("Read complex vector", "[read]") {
   REQUIRE(v[0].tail.head.head == 'x');
   REQUIRE(v[1].head == 2345);
   REQUIRE(v[1].tail.head.head == 'y');
-}
-
-TEST_CASE("Read complex object", "[read]") {
-  Object <Vector <int>, char>o;
-
-  Serial.reset();
-  Serial.prepare((size_t)2, 1234, 2345, 'x');
-
-  _read(&o);
-
-  REQUIRE(o.head[0] == 1234);
-  REQUIRE(o.head[1] == 2345);
-  REQUIRE(o.tail.head == 'x');
 }
