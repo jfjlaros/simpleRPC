@@ -155,5 +155,150 @@ Exporting this class method as a remote call goes as follows:
       }
 
 
+Tuples
+------
+
+Tuples can be used to group multiple objects of different types together. A
+Tuple has two members, ``head`` and ``tail``, where ``head`` is of any type,
+and ``tail`` is an other Tuple.
+
+Tuples can be initialised with a brace-initializer-list as follows.
+
+.. code:: cpp
+
+    Tuple <int, char>t = {10, 'c'};
+
+Elements of a Tuple can be retrieved in two ways, either via its ``head`` and
+``tail`` member variables, or with the ``get<>()`` helper function.
+
+.. code:: cpp
+
+    int i = t.head;
+    char c = t.tail.head;
+
+    int j = get<0>(t);
+    char d = get<1>(t)';
+
+Likewise, assignment of an element can be done via its member variables or with
+the ``get<>()`` helper function.
+
+.. code:: cpp
+
+    t.head = 11;
+    t.tail.head = 'd';
+
+    get<0>(t) = 11;
+    get<1>(t) = 'd';
+
+There are two additional helper functions available for Tuples: ``pack()`` and
+``castStruct()``. ``pack()`` can be used to create a temporary tuple to be used
+in a function call.
+
+.. code:: cpp
+
+    function(pack('a', 'b', 10));
+
+The ``castStruct()`` function can be used to convert a C struct to a Tuple.
+
+.. code:: cpp
+
+    struct S {
+      int i;
+      char c;
+    };
+
+    S s;
+    Tuple t = castStruct(s);
+
+Note that a Tuple, like any higher order data structure should be passed by
+reference.
+
+
+Objects
+-------
+
+Objects behave much like Tuples, but they are serialised differently (see the
+:doc:`protocol` section).
+
+Objects can be initialised via a constructor as follows.
+
+.. code:: cpp
+
+    Object <int, char>o(10, 'c');
+
+Element retrieval and assignment is identical to that of Tuples.
+
+Note that an Object, like any higher order data structure should be passed by
+reference.
+
+Vectors
+-------
+
+A Vector is a sequence container that implements storage of data elements. The
+type of the vector is given at initialisation time via a template parameter,
+e.g., ``int``.
+
+.. code:: cpp
+
+    Vector <int>v;
+    Vector <int>u(12);
+
+In this example, Vector ``v`` is of size 0 and ``u`` is of size 12. A Vector
+can also be initialised with a pointer to an allocated block of memory.
+
+.. code:: cpp
+
+    Vector <int>v(12, data);
+
+The memory block is freed when the Vector is destroyed. If this is not
+desirable, an additional flag ``destroy`` can be passed to the constructor as
+follows.
+
+.. code:: cpp
+
+    Vector <int>v(12, data, false);
+
+This behaviour can also be changed by manipulating the ``destroy`` member
+variable.
+
+A Vector can be resized using the ``resize`` method.
+
+.. code:: cpp
+
+    v.resize(20);
+
+The ``size`` member variable contains the current size of the Vector.
+
+Element retrieval and assignment is done in the usual way.
+
+.. code:: cpp
+
+    int i = v[10];
+
+    v[11] = 9;
+
+Note that a Vector, like any higher order data structure should be passed by
+reference.
+
+
+Complex objects
+---------------
+
+Arbitrary combinations of Tuples, Objects and Vectors can be made to construct
+complex objects.
+
+In the following example, we create a 2-dimensional matrix of integers, a
+Vector of Tuples and an Object containing an integer, a Vector and an other
+Object respectively.
+
+.. code:: cpp
+
+    Vector <Vector <int> >matrix;
+
+    Vector <Tuple <int, char> >v;
+
+    Object <int, Vector <int>, Object <char, long> >o;
+
+
 .. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example
 .. _progmem: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/
