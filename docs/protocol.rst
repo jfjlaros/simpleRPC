@@ -19,9 +19,34 @@ Method discovery
 Method discovery is initiated by the host by writing one byte with value
 ``0xff`` to the serial device.
 
-The device will respond with a list of method descriptions delimited by an end
-of string signature (``\0``). The list is terminated by an additional end of line
-signature.
+The device will respond with a header and a list of method descriptions
+delimited by an end of string signature (``\0``). The list is terminated by an
+additional end of line signature. The header format is given in the following
+table.
+
+.. list-table:: Header.
+   :header-rows: 1
+
+   * - size
+     - delimiter
+     - value
+     - description
+   * -
+     - ``\0``
+     - ``simpleRPC``
+     - Protocol identifier.
+   * - 3
+     -
+     - E.g., ``\3\0\0``
+     - Protocol version (major, minor, patch).
+   * - 1
+     -
+     - ``<`` or ``>``
+     - Endianness, ``<`` for little-endian, ``>`` for big-endian.
+   * - 1
+     -
+     - E.g., ``H``
+     - Type of ``size_t``, needed for indexing vectors.
 
 Each method description consists of a struct_ formatted function signature and
 a documentation string separated by a ``;``. The function signature starts with
@@ -34,9 +59,31 @@ follows.
 
 ::
 
-    <h: <h;inc: Increment a value. @a: Value. @return: a + 1.\0
+    h: h;inc: Increment a value. @a: Value. @return: a + 1.\0
     : B;set_led: Set LED brightness. @brightness: Brightness.\0
     \0
+
+For more complex objects, like Tuples, Objects and Vectors, some more syntax is
+used to communicate their internal structure to the host.
+
+Tuple types are encoded as compound types, e.g., ``hB`` (an 16-bit integer and
+a byte). They can be recognised by the absence of a space between the types.
+Note that concatenated or nested Tuple types can not be recognised, e.g.,
+``hB`` concatenated with ``ff`` is indistinguishable from ``hBff``
+
+Object types are compound types like Tuples, but with extra syntax to
+communicate internal structure. An Object type is enclosed in parentheses
+(``(`` and ``)``). This makes it possible to communicate any internal structure
+to the host, e.g., the concatenation of ``(hB)`` and ``(ff)`` will be
+``(hB)(ff)`` and the type of a nested Object may look like this ``((hB)(ff))``.
+
+Vector types are enclosed in brackets (``[`` and ``]``). So a vector of 16-bit
+integers will have as type signature ``[h]``.
+
+Finally, any arbitrary combination of Tuples, Objects and Vectors can be made,
+resulting in type signatures like ``[((hB)f)]``, i.e., a Vector of Objects that
+contain a Tuple of which the first element is an other Object (``(hB)``) and
+the second element is a float (``f``).
 
 
 Remote procedure call
@@ -53,7 +100,7 @@ All native C types (``int``, ``float``, ``double``, etc.) are currently
 supported.  All values are little-endian. The host is responsible for packing
 and unpacking of the values.
 
-There are currently two built-in functions.
+There is currently one built-in functions.
 
 .. list-table:: Built-in functions.
    :header-rows: 1
@@ -64,11 +111,6 @@ There are currently two built-in functions.
      - parameters
      - returns
    * - 0
-     - version
-     - Protocol version.
-     -
-     - string: Version number.
-   * - 1
      - ping
      - Echo a value.
      - int data: Value.
