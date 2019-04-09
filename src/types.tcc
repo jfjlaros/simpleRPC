@@ -8,7 +8,7 @@
  * Prototypes needed for recursive definitions.
  */
 template<class T>
-  String _typeof(Vector <T>);
+  String _typeof(Vector <T>&);
 
 
 /*
@@ -94,7 +94,7 @@ inline String _typeof(double) {
 /**
  * Recursion terminator for {_typeof(Tuple)}.
  */
-inline String _typeof(Tuple <>) {
+inline String _typeof(Tuple <>&) {
   return "";
 }
 
@@ -104,7 +104,7 @@ inline String _typeof(Tuple <>) {
  * @return {String} - Tuple member types.
  */
 template<class... Args>
-String _typeof(Tuple <Args...>t) {
+String _typeof(Tuple <Args...>&t) {
   return _typeof(t.head) + _typeof(t.tail);
 }
 
@@ -115,8 +115,8 @@ String _typeof(Tuple <Args...>t) {
  * @return {String} - Object member types.
  */
 template<class... Args>
-String _typeof(Object <Args...>o) {
-  return "(" + _typeof((Tuple <Args...>)o) + ")";
+String _typeof(Object <Args...>&o) {
+  return "(" + _typeof((Tuple <Args...>&)o) + ")";
 }
 
 
@@ -124,7 +124,7 @@ String _typeof(Object <Args...>o) {
  * Vector type.
  */
 template<class T>
-String _typeof(Vector <T>) {
+String _typeof(Vector <T>&) {
   T x;
 
   return "[" + _typeof(x) + "]";
