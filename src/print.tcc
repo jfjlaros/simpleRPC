@@ -6,7 +6,6 @@
 
 #include "defs.h"
 
-
 /*
  * Prototypes needed for recursive definitions.
  */

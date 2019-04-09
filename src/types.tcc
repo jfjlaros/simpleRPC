@@ -4,7 +4,6 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
-
 /*
  * Prototypes needed for recursive definitions.
  */
