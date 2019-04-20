@@ -198,7 +198,8 @@ in a function call.
 
     function(pack('a', 'b', 10));
 
-The ``castStruct()`` function can be used to convert a C struct to a Tuple.
+Likewise, the ``castStruct()`` function can be used to convert a C ``struct``
+to a Tuple.
 
 .. code:: cpp
 
@@ -208,7 +209,7 @@ The ``castStruct()`` function can be used to convert a C struct to a Tuple.
     };
 
     S s;
-    Tuple t = castStruct(s);
+    function(castStruct<int, char>(s));
 
 Note that a Tuple, like any higher order data structure should be passed by
 reference.
