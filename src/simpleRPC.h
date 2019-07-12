@@ -17,7 +17,7 @@ byte _ping(byte data) {
  *
  * @arg {Args...} args - Parameter pairs (function pointer, documentation).
  */
-template<class... Args>
+template <class... Args>
 void interface(Args... args) {
   rpcInterface(
     _ping, F("ping: Echo a value. @data: Value. @return: Value of data."),

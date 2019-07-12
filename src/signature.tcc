@@ -23,16 +23,16 @@ inline String _parameterTypes(void (*)(void)) {
  *
  * @return {String} - Space separated parameter types.
  */
-template<class T, class... Args>
+template <class T, class... Args>
 String _parameterTypes(void (*f_)(T, Args...)) {
   T data;
 
   return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
-// Parameter of type {T &}.
-template<class T, class... Args>
-String _parameterTypes(void (*f_)(T &, Args...)) {
+// Parameter of type {T&}.
+template <class T, class... Args>
+String _parameterTypes(void (*f_)(T&, Args...)) {
   T data;
 
   return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
@@ -51,7 +51,7 @@ String _parameterTypes(void (*f_)(T &, Args...)) {
  *
  * @return {String} - Function signature.
  */
-template<class R, class... Args>
+template <class R, class... Args>
 String signature(R (*f)(Args...)) {
   R data;
 
@@ -59,13 +59,13 @@ String signature(R (*f)(Args...)) {
 }
 
 // Void function.
-template<class... Args>
+template <class... Args>
 String signature(void (*f)(Args...)) {
   return ":" + _parameterTypes(f);
 }
 
 // Class member function.
-template<class R, class C, class... Args>
+template <class R, class C, class... Args>
 String signature(R (C::*f)(Args...)) {
   R data;
 
@@ -73,7 +73,7 @@ String signature(R (C::*f)(Args...)) {
 }
 
 // Void class member function.
-template<class C, class... Args>
+template <class C, class... Args>
 String signature(void (C::*f)(Args...)) {
   return ":" + _parameterTypes((void (*)(Args...))f);
 }

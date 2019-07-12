@@ -7,8 +7,8 @@
 /*
  * Prototypes needed for recursive definitions.
  */
-template<class T>
-  String _typeof(Vector <T>&);
+template <class T>
+  String _typeof(Vector<T>&);
 
 
 /*
@@ -92,9 +92,9 @@ inline String _typeof(double) {
 
 
 /**
- * Recursion terminator for {_typeof(Tuple)}.
+ * Recursion terminator for {_typeof(Tuple&)}.
  */
-inline String _typeof(Tuple <>&) {
+inline String _typeof(Tuple<>&) {
   return "";
 }
 
@@ -103,8 +103,8 @@ inline String _typeof(Tuple <>&) {
  *
  * @return {String} - Tuple member types.
  */
-template<class... Args>
-String _typeof(Tuple <Args...>&t) {
+template <class... Args>
+String _typeof(Tuple<Args...>& t) {
   return _typeof(t.head) + _typeof(t.tail);
 }
 
@@ -114,17 +114,17 @@ String _typeof(Tuple <Args...>&t) {
  *
  * @return {String} - Object member types.
  */
-template<class... Args>
-String _typeof(Object <Args...>&o) {
-  return "(" + _typeof((Tuple <Args...>&)o) + ")";
+template <class... Args>
+String _typeof(Object<Args...>& o) {
+  return "(" + _typeof((Tuple<Args...>&)o) + ")";
 }
 
 
 /**
  * Vector type.
  */
-template<class T>
-String _typeof(Vector <T>&) {
+template <class T>
+String _typeof(Vector<T>&) {
   T x;
 
   return "[" + _typeof(x) + "]";
@@ -139,7 +139,7 @@ String _typeof(Vector <T>&) {
 inline String _hardwareDefs(void) {
   size_t i = 0xff;
 
-  if (((unsigned char *)&i)[0] == 0xff) {
+  if (((unsigned char*)&i)[0] == 0xff) {
     return "<" + _typeof(i);
   }
   return ">" + _typeof(i);

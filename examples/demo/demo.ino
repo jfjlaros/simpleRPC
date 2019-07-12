@@ -13,8 +13,8 @@ int inc(int a) {
   return a + 1;
 }
 
-Object <char, Object<int, char> >object(Object <char, Object <int, char> >&o) {
-  Object <char, Object<int, char> >r;
+Object<char, Object<int, char> > object(Object<char, Object<int, char> >& o) {
+  Object<char, Object<int, char> > r;
 
   get<0>(r) = get<0>(o) + 1;
   get<0>(get<1>(r)) = get<0>(get<1>(o)) + 1;
@@ -23,8 +23,8 @@ Object <char, Object<int, char> >object(Object <char, Object <int, char> >&o) {
   return r;
 }
 
-Vector <float>vector(Vector <int>&v) {
-  Vector <float>r(v.size);
+Vector<float> vector(Vector<int>& v) {
+  Vector<float> r(v.size);
   int i;
 
   for (i = 0; i < v.size; i++) {

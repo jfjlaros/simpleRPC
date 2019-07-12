@@ -29,7 +29,7 @@ TEST_CASE("Read string", "[read][string]") {
 }
 
 TEST_CASE("Read tuple", "[read][tuple]") {
-  Tuple <int, char>t;
+  Tuple<int, char> t;
 
   Serial.reset();
   Serial.prepare(1234, 'x');
@@ -41,7 +41,7 @@ TEST_CASE("Read tuple", "[read][tuple]") {
 }
 
 TEST_CASE("Read object", "[read][object]") {
-  Object <int, char>o;
+  Object<int, char> o;
 
   Serial.reset();
   Serial.prepare(1234, 'x');
@@ -53,7 +53,7 @@ TEST_CASE("Read object", "[read][object]") {
 }
 
 TEST_CASE("Read vector", "[read][vector]") {
-  Vector <int>v;
+  Vector<int> v;
 
   Serial.reset();
   Serial.prepare((size_t)3, 1234, 2345, 3456);
@@ -67,7 +67,7 @@ TEST_CASE("Read vector", "[read][vector]") {
 }
 
 TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
-  Tuple <Vector <int>, char>t;
+  Tuple<Vector<int>, char> t;
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
@@ -80,7 +80,7 @@ TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
 }
 
 TEST_CASE("Read complex object", "[read][object][complex]") {
-  Object <Vector <int>, char>o;
+  Object<Vector<int>, char> o;
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
@@ -93,7 +93,7 @@ TEST_CASE("Read complex object", "[read][object][complex]") {
 }
 
 TEST_CASE("Read nested vector", "[read][vector][complex]") {
-  Vector <Vector <int>>v;
+  Vector<Vector<int>> v;
 
   Serial.reset();
   Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
@@ -107,7 +107,7 @@ TEST_CASE("Read nested vector", "[read][vector][complex]") {
 }
 
 TEST_CASE("Read complex vector", "[read][vector][complex]") {
-  Vector <Object <int, Object<char>>>v;
+  Vector<Object<int, Object<char>>> v;
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 'x', 2345, 'y');

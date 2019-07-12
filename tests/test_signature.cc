@@ -25,24 +25,24 @@ TEST_CASE("Class member function pointer types", "[signature][class]") {
 }
 
 TEST_CASE("Tuples", "[signature][tuple]") {
-  void (*f0)(Tuple <int, char>, float);
-  Tuple <int, char> (*f1)(float);
+  void (*f0)(Tuple<int, char>, float);
+  Tuple<int, char> (*f1)(float);
 
   REQUIRE(signature(f0) == ": ic f");
   REQUIRE(signature(f1) == "ic: f");
 }
 
 TEST_CASE("Objects", "[signature][object]") {
-  void (*f0)(Object <int, char>, float);
-  Object <int, char> (*f1)(float);
+  void (*f0)(Object<int, char>, float);
+  Object<int, char> (*f1)(float);
 
   REQUIRE(signature(f0) == ": (ic) f");
   REQUIRE(signature(f1) == "(ic): f");
 }
 
 TEST_CASE("Vectors", "[signature][vector]") {
-  void (*f0)(Vector <int>, float);
-  Vector <int> (*f1)(float);
+  void (*f0)(Vector<int>, float);
+  Vector<int> (*f1)(float);
 
   REQUIRE(signature(f0) == ": [i] f");
   REQUIRE(signature(f1) == "[i]: f");

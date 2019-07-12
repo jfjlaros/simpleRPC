@@ -14,9 +14,9 @@
  *
  * @arg {void (*)(void)} - Dummy function pointer.
  * @arg {R (*)(Tail...)} f - Function pointer.
- * @arg {Args...} args... - Parameter pack for {f}.
+ * @arg {Args&...} args... - Parameter pack for {f}.
  */
-template<class R, class... Tail, class... Args>
+template <class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
   R data = f(args...);
 
@@ -24,22 +24,22 @@ void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
 }
 
 // Void function.
-template<class... Tail, class... Args>
+template <class... Tail, class... Args>
 void _call(void (*)(void), void (*f)(Tail...), Args&... args) {
   f(args...);
 }
 
 // Class member function.
-template<class C, class P, class R, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C *, R (P::*)(Tail...)>t, Args&... args) {
+template <class C, class P, class R, class... Tail, class... Args>
+void _call(void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   R data =(*t.head.*t.tail.head)(args...);
 
   _write(&data);
 }
 
 // Void class member function.
-template<class C, class P, class... Tail, class... Args>
-void _call(void (*)(void), Tuple <C *, void (P::*)(Tail...)>t, Args&... args) {
+template <class C, class P, class... Tail, class... Args>
+void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 
@@ -57,7 +57,7 @@ void _call(void (*)(void), Tuple <C *, void (P::*)(Tail...)>t, Args&... args) {
  * @arg {F} f - Function pointer.
  * @arg {Args...} args... - Parameter pack for {f}.
  */
-template<class T, class... Tail, class F, class... Args>
+template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T, Tail...), F f, Args... args) {
   T data;
 
@@ -65,9 +65,9 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
-// Parameter of type {T &}.
-template<class T, class... Tail, class F, class... Args>
-void _call(void (*f_)(T &, Tail...), F f, Args... args) {
+// Parameter of type {T&}.
+template <class T, class... Tail, class F, class... Args>
+void _call(void (*f_)(T&, Tail...), F f, Args... args) {
   T data;
 
   _read(&data);
@@ -85,14 +85,14 @@ void _call(void (*f_)(T &, Tail...), F f, Args... args) {
  *
  * @arg {R (*)(Args...)} f - Function pointer.
  */
-template<class R, class... Args>
+template <class R, class... Args>
 void rpcCall(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
 // Class member function.
-template<class C, class P ,class R, class... Args>
-void rpcCall(Tuple <C *, R (P::*)(Args...)>t) {
+template <class C, class P ,class R, class... Args>
+void rpcCall(Tuple<C*, R (P::*)(Args...)> t) {
   _call((void (*)(Args...))t.tail.head, t);
 }
 

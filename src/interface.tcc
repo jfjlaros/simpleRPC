@@ -22,7 +22,7 @@
  * @arg {F} f - Function pointer.
  * @arg {D} doc - Function documentation.
  */
-template<class F, class D>
+template <class F, class D>
 void _writeDescription(F f, D doc) {
   multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
@@ -44,15 +44,15 @@ inline void _describe(void) {}
  * @arg {D} doc - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
-template<class F, class D, class... Args>
+template <class F, class D, class... Args>
 void _describe(F f, D doc, Args... args) {
   _writeDescription(f, doc);
   _describe(args...);
 }
 
 // Class member function.
-template<class U, class V, class D, class... Args>
-void _describe(Tuple <U, V>t, D doc, Args... args) {
+template <class U, class V, class D, class... Args>
+void _describe(Tuple<U, V> t, D doc, Args... args) { // TODO t&?
   _writeDescription(t.tail.head, doc);
   _describe(args...);
 }
@@ -76,7 +76,7 @@ inline void _select(byte, byte) {}
  * @arg {D} - Function documentation.
  * @arg {Args...} args - Remaining parameters.
  */
-template<class F, class D, class... Args>
+template <class F, class D, class... Args>
 void _select(byte number, byte depth, F f, D, Args... args) {
   if (depth == number) {
     rpcCall(f);
@@ -97,7 +97,7 @@ void _select(byte number, byte depth, F f, D, Args... args) {
  *
  * @arg {Args...} args - Parameter pairs (function pointer, documentation).
  */
-template<class... Args>
+template <class... Args>
 void rpcInterface(Args... args) {
   byte command;
 

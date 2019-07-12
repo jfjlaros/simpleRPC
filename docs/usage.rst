@@ -1,5 +1,5 @@
-Library
-=======
+Usage
+=====
 
 Include the header file to use the device library.
 
@@ -166,7 +166,7 @@ Tuples can be initialised with a brace-initializer-list as follows.
 
 .. code:: cpp
 
-    Tuple <int, char>t = {10, 'c'};
+    Tuple<int, char> t = {10, 'c'};
 
 Elements of a Tuple can be retrieved in two ways, either via its ``head`` and
 ``tail`` member variables, or with the ``get<>()`` helper function.
@@ -225,7 +225,7 @@ Objects can be initialised via a constructor as follows.
 
 .. code:: cpp
 
-    Object <int, char>o(10, 'c');
+    Object<int, char> o(10, 'c');
 
 Element retrieval and assignment is identical to that of Tuples.
 
@@ -241,15 +241,15 @@ e.g., ``int``.
 
 .. code:: cpp
 
-    Vector <int>v;
-    Vector <int>u(12);
+    Vector<int> v;
+    Vector<int> u(12);
 
 In this example, Vector ``v`` is of size 0 and ``u`` is of size 12. A Vector
 can also be initialised with a pointer to an allocated block of memory.
 
 .. code:: cpp
 
-    Vector <int>v(12, data);
+    Vector<int> v(12, data);
 
 The memory block is freed when the Vector is destroyed. If this is not
 desirable, an additional flag ``destroy`` can be passed to the constructor as
@@ -257,7 +257,7 @@ follows.
 
 .. code:: cpp
 
-    Vector <int>v(12, data, false);
+    Vector<int> v(12, data, false);
 
 This behaviour can also be changed by manipulating the ``destroy`` member
 variable.
@@ -294,11 +294,11 @@ Object respectively.
 
 .. code:: cpp
 
-    Vector <Vector <int> >matrix;
+    Vector<Vector<int> > matrix;
 
-    Vector <Tuple <int, char> >v;
+    Vector<Tuple<int, char> > v;
 
-    Object <int, Vector <int>, Object <char, long> >o;
+    Object<int, Vector<int>, Object<char, long> > o;
 
 
 .. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example

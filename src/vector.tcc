@@ -1,19 +1,19 @@
 #ifndef __SIMPLE_RPC_VECTOR_TCC__
 #define __SIMPLE_RPC_VECTOR_TCC__
 
-template<class T>
+template <class T>
 class Vector {
   public:
     Vector(void) {}
     Vector(size_t);
-    Vector(size_t, T *, bool=true);
+    Vector(size_t, T*, bool=true);
     ~Vector(void);
     void resize(size_t);
-    T &operator[](size_t);
+    T& operator[](size_t);
     size_t size = 0;
     bool destroy = true;
   private:
-    T *_data = NULL;
+    T* _data = NULL;
 };
 
 
@@ -22,7 +22,7 @@ class Vector {
  *
  * @arg {size_t} size - Size of the vector.
  */
-template<class T>
+template <class T>
 Vector<T>::Vector(size_t size) {
   resize(size);
 }
@@ -31,11 +31,11 @@ Vector<T>::Vector(size_t size) {
  * Constructor.
  *
  * @arg {size_t} size - Size of the vector.
- * @arg {T *} data - Pointer to data.
+ * @arg {T*} data - Pointer to data.
  * @arg {bool} destroy - Free {data} in the destructor.
  */
-template<class T>
-Vector<T>::Vector(size_t size, T *data, bool destroy) {
+template <class T>
+Vector<T>::Vector(size_t size, T* data, bool destroy) {
   this->size = size;
   this->destroy = destroy;
   _data = data;
@@ -44,7 +44,7 @@ Vector<T>::Vector(size_t size, T *data, bool destroy) {
 /**
  * Destructor.
  */
-template<class T>
+template <class T>
 Vector<T>::~Vector(void) {
   int i;
 
@@ -65,10 +65,10 @@ Vector<T>::~Vector(void) {
  *
  * @arg {size_t} index - Index.
  *
- * @return {T &} - Reference to element at index {index}.
+ * @return {T&} - Reference to element at index {index}.
  */
-template<class T>
-T &Vector<T>::operator[](size_t index) {
+template <class T>
+T& Vector<T>::operator[](size_t index) {
   return _data[index];
 }
 
@@ -77,7 +77,7 @@ T &Vector<T>::operator[](size_t index) {
  *
  * @arg {size_t} size - New size of the vector.
  */
-template<class T>
+template <class T>
 void Vector<T>::resize(size_t size) {
   int i;
 
@@ -85,7 +85,7 @@ void Vector<T>::resize(size_t size) {
     _data[i].T::~T();
   }
 
-  _data = (T *)realloc((void *)_data, size * sizeof(T));
+  _data = (T*)realloc((void*)_data, size * sizeof(T));
 
   for (i = this->size; i < size; i++) {
     _data[i] = T();

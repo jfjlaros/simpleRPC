@@ -129,13 +129,13 @@ TEST_CASE("RPC call function with String types", "[call][string]") {
 
 TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   struct S {
-    static void f0(Tuple <int, char>) {}
-    static Tuple <int, char>f1(void) {
-      Tuple <int, char>t = {1234, 'x'};
+    static void f0(Tuple<int, char>) {}
+    static Tuple<int, char> f1(void) {
+      Tuple<int, char> t = {1234, 'x'};
 
       return t;
     }
-    static void f2(Tuple <int, Vector <char>> &) {}
+    static void f2(Tuple<int, Vector<char>>&) {}
   };
 
   // Void function, parameter is of type Tuple.
@@ -162,9 +162,9 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
 
 TEST_CASE("RPC call function with Object types", "[call][object]") {
   struct S {
-    static void f0(Object <int, char> &) {}
-    static Object <int, char>f1(void) {
-      Object <int, char>o = {1234, 'x'};
+    static void f0(Object<int, char>&) {}
+    static Object<int, char> f1(void) {
+      Object<int, char> o = {1234, 'x'};
 
       return o;
     }
@@ -188,21 +188,21 @@ TEST_CASE("RPC call function with Object types", "[call][object]") {
 
 TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   struct S {
-    static bool f0(Vector <int> &v) {
+    static bool f0(Vector<int>& v) {
       if (v.size != 2 || v[0] != 1234 || v[1] != 2345) {
         return false;
       }
       return true;
     }
-    static Vector <int>f1(void) {
-      Vector <int>v(2);
+    static Vector<int> f1(void) {
+      Vector<int> v(2);
 
       v[0] = 1234;
       v[1] = 2345;
 
       return v;
     }
-    static void f2(Object <Vector <int>, char> &) {}
+    static void f2(Object<Vector<int>, char>&) {}
   };
 
   // Void function, parameter is of type Vector.

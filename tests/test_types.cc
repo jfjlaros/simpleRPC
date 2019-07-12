@@ -60,33 +60,33 @@ TEST_CASE("String type", "[types][string]") {
 }
 
 TEST_CASE("Tuple types", "[types][tuple]") {
-  Tuple <int, char>ic;
-  Tuple <int, signed char, unsigned long>iscul;
+  Tuple<int, char> ic;
+  Tuple<int, signed char, unsigned long> iscul;
 
   REQUIRE(_typeof(ic) == "ic");
   REQUIRE(_typeof(iscul) == "ibL");
 }
 
 TEST_CASE("Object types", "[types][object]") {
-  Object <Object<char, int>, unsigned long>o0;
-  Object <
-    Object <
-      Object <char, char, char>,
+  Object<Object<char, int>, unsigned long> o0;
+  Object<
+    Object<
+      Object<char, char, char>,
       char>,
     char,
-    Object <
-      Object <char, char>,
-      Object <char>>>o1;
+    Object<
+      Object<char, char>,
+      Object<char>>> o1;
 
   REQUIRE(_typeof(o0) == "((ci)L)");
   REQUIRE(_typeof(o1) == "(((ccc)c)c((cc)(c)))");
 }
 
 TEST_CASE("Vector", "[types][vector]") {
-  Vector <int>v0;
-  Vector <float>v1;
-  Vector <signed char>v2;
-  Vector <Vector <int>>v3;
+  Vector<int> v0;
+  Vector<float> v1;
+  Vector<signed char> v2;
+  Vector<Vector<int>> v3;
 
   REQUIRE(_typeof(v0) == "[i]");
   REQUIRE(_typeof(v1) == "[f]");
@@ -95,9 +95,9 @@ TEST_CASE("Vector", "[types][vector]") {
 }
 
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
-  Tuple <Vector <int>, char>t0;
-  Tuple <Tuple<int, char>, Tuple<unsigned char, float>>t1;
-  Tuple <Object<int, char>, Vector<int>>t2;
+  Tuple<Vector<int>, char> t0;
+  Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1;
+  Tuple<Object<int, char>, Vector<int>> t2;
 
   REQUIRE(_typeof(t0) == "[i]c");
   REQUIRE(_typeof(t1) == "icBf");
@@ -105,17 +105,17 @@ TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
 }
 
 TEST_CASE("Complex object types", "[types][object][complex]") {
-  Object <Vector <Object <int, char>>, Object<float>>o0;
-  Object <Tuple <int, char>, Object <char>>o1;
+  Object<Vector<Object<int, char>>, Object<float>> o0;
+  Object<Tuple<int, char>, Object<char>> o1;
 
   REQUIRE(_typeof(o0) == "([(ic)](f))");
   REQUIRE(_typeof(o1) == "(ic(c))");
 }
 
 TEST_CASE("Complex vector types", "[types][vector][complex]") {
-  Vector <Tuple <int, char>>v0;
-  Vector <Object <int, Vector <char>>>v1;
-  Vector <Tuple <char, Object <int, char>>>v2;
+  Vector<Tuple<int, char>> v0;
+  Vector<Object<int, Vector<char>>> v1;
+  Vector<Tuple<char, Object<int, char>>> v2;
 
   REQUIRE(_typeof(v0) == "[ic]");
   REQUIRE(_typeof(v1) == "[(i[c])]");

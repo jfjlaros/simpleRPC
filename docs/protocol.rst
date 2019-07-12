@@ -21,7 +21,7 @@ Method discovery is initiated by the host by writing one byte with value
 
 The device will respond with a header and a list of method descriptions
 delimited by an end of string signature (``\0``). The list is terminated by an
-additional end of line signature. The header format is given in the following
+additional end of string signature. The header format is given in the following
 table.
 
 .. list-table:: Header format.
@@ -52,7 +52,7 @@ Each method description consists of a struct_ formatted function signature and
 a documentation string separated by a ``;``. The function signature starts with
 a struct formatted return type (if any), followed by a ``:`` and a space
 delimited list of struct formatted parameter types. The format of the
-documentation string is described in the :doc:`usage_device` section.
+documentation string is described in the :doc:`usage` section.
 
 For our example, the response for the method discovery request will look as
 follows.
