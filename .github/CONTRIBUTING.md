@@ -53,6 +53,8 @@ following:
 Please follow the coding style conventions detailed below:
 
 - [Arduino Style Guide for Writing Libraries][api].
+- [Google C++ Style Guide][cppguide].
+- [Doxygen][doxygen].
 
 
 [email]: mailto:jlaros@fixedpoint.nl
@@ -60,3 +62,5 @@ Please follow the coding style conventions detailed below:
 [compare]: https://github.com/jfjlaros/simpleRPC/compare
 [pull]: https://github.com/jfjlaros/simpleRPC/pulls
 [api]: https://www.arduino.cc/en/Reference/APIStyleGuide
+[cppguide]: https://google.github.io/styleguide/cppguide.html
+[doxygen]: http://doxygen.nl/
