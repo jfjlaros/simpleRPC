@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_DEFS_H__
-#define __SIMPLE_RPC_DEFS_H__
+#ifndef SIMPLE_RPC_DEFS_H_
+#define SIMPLE_RPC_DEFS_H_
 
 #define _PROTOCOL "simpleRPC"
 #define _VERSION "\3\0\0"

@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_RPCCALL_TCC__
-#define __SIMPLE_RPC_RPCCALL_TCC__
+#ifndef SIMPLE_RPC_RPCCALL_TCC_
+#define SIMPLE_RPC_RPCCALL_TCC_
 
 #include "read.tcc"
 #include "tuple.tcc"

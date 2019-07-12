@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_READ_TCC__
-#define __SIMPLE_RPC_READ_TCC__
+#ifndef SIMPLE_RPC_READ_TCC_
+#define SIMPLE_RPC_READ_TCC_
 
 #include <Arduino.h>
 

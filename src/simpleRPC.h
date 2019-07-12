@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_H__
-#define __SIMPLE_RPC_H__
+#ifndef SIMPLE_RPC_H_
+#define SIMPLE_RPC_H_
 
 #include "defs.h"
 #include "interface.tcc"

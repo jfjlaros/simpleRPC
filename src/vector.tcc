@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_VECTOR_TCC__
-#define __SIMPLE_RPC_VECTOR_TCC__
+#ifndef SIMPLE_RPC_VECTOR_TCC_
+#define SIMPLE_RPC_VECTOR_TCC_
 
 template <class T>
 class Vector {

@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_TYPES_TCC__
-#define __SIMPLE_RPC_TYPES_TCC__
+#ifndef SIMPLE_RPC_TYPES_TCC_
+#define SIMPLE_RPC_TYPES_TCC_
 
 #include "tuple.tcc"
 #include "vector.tcc"

@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_TUPLE_TCC__
-#define __SIMPLE_RPC_TUPLE_TCC__
+#ifndef SIMPLE_RPC_TUPLE_TCC_
+#define SIMPLE_RPC_TUPLE_TCC_
 
 #include "helper.tcc"
 

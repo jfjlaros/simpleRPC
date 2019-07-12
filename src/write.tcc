@@ -1,5 +1,5 @@
-#ifndef __SIMPLE_RPC_WRITE_TCC__
-#define __SIMPLE_RPC_WRITE_TCC__
+#ifndef SIMPLE_RPC_WRITE_TCC_
+#define SIMPLE_RPC_WRITE_TCC_
 
 #include <Arduino.h>
 
