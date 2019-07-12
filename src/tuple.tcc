@@ -59,9 +59,9 @@ struct ElemTypeHolder<k, Tuple<T, Args...> > {
  * This can be used for both retrieving as well as setting the content of an
  * element.
  *
- * @arg {Tuple} t - A tuple.
+ * @param t A tuple.
  *
- * @return {any&} - Reference to the {k}-th element in {t}.
+ * @return Reference to the {k}-th element in {t}.
  */
 template <size_t k, class... Args>
 typename enableIf<
@@ -81,9 +81,9 @@ typename enableIf<
 /**
  * Make a nested tuple from a list of parameters.
  *
- * @arg {Args...} args - Values to store in a nested tuple.
+ * @param args Values to store in a nested tuple.
  *
- * @return {Tuple} - Nested tuple containing {args}.
+ * @return Nested tuple containing {args}.
  */
 template <class... Args>
 Tuple<Args...> pack(Args... args) {
@@ -95,9 +95,9 @@ Tuple<Args...> pack(Args... args) {
 /**
  * Cast a struct to a tuple.
  *
- * @arg {T&} s - Struct.
+ * @param s Struct.
  *
- * @return {Tuple} - Nested tuple representation of {s}.
+ * @return Nested tuple representation of {s}.
  */
 template <class... Args, class T>
 Tuple<Args...> castStruct(T& s) {

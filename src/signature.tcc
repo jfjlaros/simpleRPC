@@ -19,9 +19,9 @@ inline String _parameterTypes(void (*)(void)) {
  * {_typeof()} to encode its type. The first parameter type {T} is removed from
  * function pointer {*f_} in the recursive call.
  *
- * @arg {void (*)(T, Args...)} f_ - Dummy function pointer.
+ * @param f_ Dummy function pointer.
  *
- * @return {String} - Space separated parameter types.
+ * @return Space separated parameter types.
  */
 template <class T, class... Args>
 String _parameterTypes(void (*f_)(T, Args...)) {
@@ -47,9 +47,9 @@ String _parameterTypes(void (*f_)(T&, Args...)) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
- * @arg {R (*)(Args...)} f - Function pointer.
+ * @param f Function pointer.
  *
- * @return {String} - Function signature.
+ * @return Function signature.
  */
 template <class R, class... Args>
 String signature(R (*f)(Args...)) {

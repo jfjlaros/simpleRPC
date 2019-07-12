@@ -21,7 +21,7 @@ template <class... Args>
 /**
  * Write a value of basic type to serial.
  *
- * @arg {T*} data - Data.
+ * @param data Data.
  */
 template <class T>
 void _write(T* data) {
@@ -31,7 +31,7 @@ void _write(T* data) {
 /**
  * Write a value of type String to serial.
  *
- * @arg {String*} data - String.
+ * @param data String.
  */
 inline void _write(String* data) {
   multiPrint(*data, _END_OF_STRING);
@@ -40,7 +40,7 @@ inline void _write(String* data) {
 /**
  * Write a value of type Vector to serial.
  *
- * @arg {Vector<T>*} data - Vector.
+ * @param data Vector.
  */
 template <class T>
 void _write(Vector<T>* data) {
@@ -61,7 +61,7 @@ inline void _write(Tuple<>*) {}
 /**
  * Write a value of type Tuple to serial.
  *
- * @arg {Tuple<T, Args...>*} data - Tuple.
+ * @param data Tuple.
  */
 template <class T, class... Args>
 void _write(Tuple<T, Args...>* data) {
@@ -73,7 +73,7 @@ void _write(Tuple<T, Args...>* data) {
 /**
  * Write a value of type Object to serial.
  *
- * @arg {Object<Args...>*} data - Object.
+ * @param data Object.
  */
 template <class... Args>
 void _write(Object<Args...>* data) {

@@ -101,7 +101,7 @@ inline String _typeof(Tuple<>&) {
 /**
  * Get the types of all members of a tuple.
  *
- * @return {String} - Tuple member types.
+ * @return Tuple member types.
  */
 template <class... Args>
 String _typeof(Tuple<Args...>& t) {
@@ -112,7 +112,7 @@ String _typeof(Tuple<Args...>& t) {
 /**
  * Get the types of all members of an object.
  *
- * @return {String} - Object member types.
+ * @return Object member types.
  */
 template <class... Args>
 String _typeof(Object<Args...>& o) {
@@ -134,7 +134,7 @@ String _typeof(Vector<T>&) {
 /**
  * Determine endianness and type of {size_t}.
  *
- * @return {String} - Endianness and type of {size_t};
+ * @return Endianness and type of {size_t};
  */
 inline String _hardwareDefs(void) {
   size_t i = 0xff;

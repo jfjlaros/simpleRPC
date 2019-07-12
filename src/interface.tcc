@@ -19,8 +19,8 @@
 /**
  * Write the signature and documentation of a function to serial.
  *
- * @arg {F} f - Function pointer.
- * @arg {D} doc - Function documentation.
+ * @param f Function pointer.
+ * @param doc Function documentation.
  */
 template <class F, class D>
 void _writeDescription(F f, D doc) {
@@ -40,9 +40,9 @@ inline void _describe(void) {}
  * {_writeDescription} and make a recursive call to process the remaining
  * parameters.
  *
- * @arg {F} f - Function pointer.
- * @arg {D} doc - Function documentation.
- * @arg {Args...} args - Remaining parameters.
+ * @param f Function pointer.
+ * @param doc Function documentation.
+ * @param args Remaining parameters.
  */
 template <class F, class D, class... Args>
 void _describe(F f, D doc, Args... args) {
@@ -70,11 +70,11 @@ inline void _select(byte, byte) {}
  * latter. If we have arrived at the selected function (i.e., if {depth} equals
  * {number}), we call function {f}. Otherwise, we try again recursively.
  *
- * @arg {byte} number - Function index.
- * @arg {byte} depth - Current index.
- * @arg {F} f - Function pointer.
- * @arg {D} - Function documentation.
- * @arg {Args...} args - Remaining parameters.
+ * @param number Function index.
+ * @param depth Current index.
+ * @param f Function pointer.
+ * @param - Function documentation.
+ * @param args Remaining parameters.
  */
 template <class F, class D, class... Args>
 void _select(byte number, byte depth, F f, D, Args... args) {
@@ -95,7 +95,7 @@ void _select(byte number, byte depth, F f, D, Args... args) {
  * describe the list of functions. Otherwise, we call the function indexed by
  * {command}.
  *
- * @arg {Args...} args - Parameter pairs (function pointer, documentation).
+ * @param args Parameter pairs (function pointer, documentation).
  */
 template <class... Args>
 void rpcInterface(Args... args) {

@@ -20,7 +20,7 @@ class Vector {
 /**
  * Constructor.
  *
- * @arg {size_t} size - Size of the vector.
+ * @param size Size of the vector.
  */
 template <class T>
 Vector<T>::Vector(size_t size) {
@@ -30,9 +30,9 @@ Vector<T>::Vector(size_t size) {
 /**
  * Constructor.
  *
- * @arg {size_t} size - Size of the vector.
- * @arg {T*} data - Pointer to data.
- * @arg {bool} destroy - Free {data} in the destructor.
+ * @param size Size of the vector.
+ * @param data Pointer to data.
+ * @param destroy Free {data} in the destructor.
  */
 template <class T>
 Vector<T>::Vector(size_t size, T* data, bool destroy) {
@@ -63,9 +63,9 @@ Vector<T>::~Vector(void) {
  * This can be used for both retrieving as well as setting the content of an
  * element.
  *
- * @arg {size_t} index - Index.
+ * @param index Index.
  *
- * @return {T&} - Reference to element at index {index}.
+ * @return Reference to element at index {index}.
  */
 template <class T>
 T& Vector<T>::operator[](size_t index) {
@@ -75,7 +75,7 @@ T& Vector<T>::operator[](size_t index) {
 /**
  * Set the size of a vector.
  *
- * @arg {size_t} size - New size of the vector.
+ * @param size New size of the vector.
  */
 template <class T>
 void Vector<T>::resize(size_t size) {

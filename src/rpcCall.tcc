@@ -12,9 +12,9 @@
  * All parameters have been collected since function pointer {*f_} has no
  * parameter types. All values are now present in the {args} parameter pack.
  *
- * @arg {void (*)(void)} - Dummy function pointer.
- * @arg {R (*)(Tail...)} f - Function pointer.
- * @arg {Args&...} args... - Parameter pack for {f}.
+ * @param - Dummy function pointer.
+ * @param f Function pointer.
+ * @param args Parameter pack for {f}.
  */
 template <class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
@@ -53,9 +53,9 @@ void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
  * to {_call}, adding it to the {args} parameter pack. The first parameter type
  * {T} is removed from function pointer {*f_} in the recursive call.
  *
- * @arg {void (*)(T, Tail...)} f_ - Dummy function pointer.
- * @arg {F} f - Function pointer.
- * @arg {Args...} args... - Parameter pack for {f}.
+ * @param f_ Dummy function pointer.
+ * @param f Function pointer.
+ * @param args Parameter pack for {f}.
  */
 template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T, Tail...), F f, Args... args) {
@@ -83,7 +83,7 @@ void _call(void (*f_)(T&, Tail...), F f, Args... args) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
- * @arg {R (*)(Args...)} f - Function pointer.
+ * @param f Function pointer.
  */
 template <class R, class... Args>
 void rpcCall(R (*f)(Args...)) {

@@ -25,10 +25,10 @@ inline size_t multiPrint(void) {
 /**
  * Write a list of parameters to serial.
  *
- * @arg {T} arg - Parameter to be printed.
- * @arg {Args...} args... - Remaining parameters.
+ * @param arg Parameter to be printed.
+ * @param args Remaining parameters.
  *
- * @return {size_t} - Number of bytes written.
+ * @return Number of bytes written.
  */
 template <class T, class... Args>
 size_t multiPrint(T arg, Args... args) {

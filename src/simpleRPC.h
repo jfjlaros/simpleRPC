@@ -15,7 +15,7 @@ byte _ping(byte data) {
  *
  * This function expects parameter pairs (function pointer, documentation).
  *
- * @arg {Args...} args - Parameter pairs (function pointer, documentation).
+ * @param args Parameter pairs (function pointer, documentation).
  */
 template <class... Args>
 void interface(Args... args) {
