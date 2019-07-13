@@ -52,7 +52,7 @@ void _describe(F f, D doc, Args... args) {
 
 // Class member function.
 template <class U, class V, class D, class... Args>
-void _describe(Tuple<U, V> t, D doc, Args... args) { // TODO t&?
+void _describe(Tuple<U, V> t, D doc, Args... args) {
   _writeDescription(t.tail.head, doc);
   _describe(args...);
 }
