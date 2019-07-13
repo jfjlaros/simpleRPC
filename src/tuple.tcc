@@ -14,8 +14,8 @@ struct Tuple {};
 /*
  * Nested tuple.
  *
- * {T} head - First element.
- * {Args...} tail - Remaining elements.
+ * @a T @a head - First element.
+ * @a Args... @a tail - Remaining elements.
  */
 template <class T, class... Args>
 struct Tuple<T, Args...> {
@@ -37,7 +37,7 @@ struct Object : Tuple<Args...> {
 
 
 /*
- * Access the type of the {k}-th element in a tuple.
+ * Access the type of the @a k-th element in a tuple.
  *
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
  */
@@ -56,14 +56,14 @@ struct ElemTypeHolder<k, Tuple<T, Args...> > {
 
 
 /**
- * Get the {k}-th element in a Tuple.
+ * Get the @a k-th element in a Tuple.
  *
  * This can be used for both retrieving as well as setting the content of an
  * element.
  *
  * @param t A tuple.
  *
- * @return Reference to the {k}-th element in {t}.
+ * @return Reference to the @a k-th element in @a t.
  */
 template <size_t k, class... Args>
 typename enableIf<
@@ -85,7 +85,7 @@ typename enableIf<
  *
  * @param args Values to store in a nested tuple.
  *
- * @return Nested tuple containing {args}.
+ * @return Nested tuple containing @a args.
  */
 template <class... Args>
 Tuple<Args...> pack(Args... args) {
@@ -99,7 +99,7 @@ Tuple<Args...> pack(Args... args) {
  *
  * @param s Struct.
  *
- * @return Nested tuple representation of {s}.
+ * @return Nested tuple representation of @a s.
  */
 template <class... Args, class T>
 Tuple<Args...> castStruct(T& s) {

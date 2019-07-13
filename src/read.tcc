@@ -31,7 +31,7 @@ void _read(T* data) {
 }
 
 /**
- * Read a value of type String from serial.
+ * Read a value of type @a String from serial.
  *
  * @param data String.
  */
@@ -40,7 +40,7 @@ inline void _read(String* data) {
 }
 
 /**
- * Read a value of type Vector from serial.
+ * Read a value of type @a Vector from serial.
  *
  * @param data Vector.
  */
@@ -60,12 +60,12 @@ void _read(Vector<T>* data) {
 
 
 /**
- * Recursion terminator for {_read(Tuple*)()}.
+ * Recursion terminator for @a _read(Tuple*)().
  */
 inline void _read(Tuple<>*) {}
 
 /**
- * Read a value of type Tuple from serial.
+ * Read a value of type @a Tuple from serial.
  *
  * @param data Tuple.
  */
@@ -77,7 +77,7 @@ void _read(Tuple<T, Args...>* data) {
 
 
 /**
- * Read a value of type Object from serial.
+ * Read a value of type @a Object from serial.
  *
  * @param data Object.
  */

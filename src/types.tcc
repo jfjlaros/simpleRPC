@@ -68,7 +68,7 @@ inline String _typeof(String) {
 }
 
 /*
- * The {int} and {double} type sizes vary between boards, see:
+ * The @a int and @a double type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
 inline String _typeof(int) {
@@ -94,7 +94,7 @@ inline String _typeof(double) {
 
 
 /**
- * Recursion terminator for {_typeof(Tuple&)}.
+ * Recursion terminator for @a _typeof(Tuple&).
  */
 inline String _typeof(Tuple<>&) {
   return "";
@@ -134,9 +134,9 @@ String _typeof(Vector<T>&) {
 
 
 /**
- * Determine endianness and type of {size_t}.
+ * Determine endianness and type of @a size_t.
  *
- * @return Endianness and type of {size_t};
+ * @return Endianness and type of @a size_t;
  */
 inline String _hardwareDefs(void) {
   size_t i = 0xff;

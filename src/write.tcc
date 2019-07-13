@@ -31,7 +31,7 @@ void _write(T* data) {
 }
 
 /**
- * Write a value of type String to serial.
+ * Write a value of type @a String to serial.
  *
  * @param data String.
  */
@@ -40,7 +40,7 @@ inline void _write(String* data) {
 }
 
 /**
- * Write a value of type Vector to serial.
+ * Write a value of type @a Vector to serial.
  *
  * @param data Vector.
  */
@@ -56,12 +56,12 @@ void _write(Vector<T>* data) {
 
 
 /**
- * Recursion terminator for {_write(Tuple*)()}.
+ * Recursion terminator for @a _write(Tuple*)().
  */
 inline void _write(Tuple<>*) {}
 
 /**
- * Write a value of type Tuple to serial.
+ * Write a value of type @a Tuple to serial.
  *
  * @param data Tuple.
  */
@@ -73,7 +73,7 @@ void _write(Tuple<T, Args...>* data) {
 
 
 /**
- * Write a value of type Object to serial.
+ * Write a value of type @a Object to serial.
  *
  * @param data Object.
  */

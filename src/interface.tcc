@@ -31,15 +31,15 @@ void _writeDescription(F f, D doc) {
 
 
 /**
- * Recursion terminator for {_describe()}.
+ * Recursion terminator for @a _describe().
  */
 inline void _describe(void) {}
 
 /**
  * Describe a list of functions.
  *
- * We isolate the first two parameters {f} and {doc}, pass these to
- * {_writeDescription} and make a recursive call to process the remaining
+ * We isolate the first two parameters @a f and @a doc, pass these to
+ * @a _writeDescription and make a recursive call to process the remaining
  * parameters.
  *
  * @param f Function pointer.
@@ -61,16 +61,17 @@ void _describe(Tuple<U, V> t, D doc, Args... args) {
 
 
 /**
- * Recursion terminator for {_select()}.
+ * Recursion terminator for @a _select().
  */
 inline void _select(byte, byte) {}
 
 /**
- * Select and call a function indexed by {number}.
+ * Select and call a function indexed by @a number.
  *
- * We isolate the parameter {f} and its documentation string, discarding the
- * latter. If we have arrived at the selected function (i.e., if {depth} equals
- * {number}), we call function {f}. Otherwise, we try again recursively.
+ * We isolate the parameter @a f and its documentation string, discarding the
+ * latter. If we have arrived at the selected function (i.e., if @a depth
+ * equals @a number), we call function @a f. Otherwise, we try again
+ * recursively.
  *
  * @param number Function index.
  * @param depth Current index.
@@ -93,9 +94,9 @@ void _select(byte number, byte depth, F f, D, Args... args) {
  *
  * This function expects parameter pairs (function pointer, documentation).
  *
- * One byte is read from serial into {command}, if the value is {_LIST_REQ}, we
- * describe the list of functions. Otherwise, we call the function indexed by
- * {command}.
+ * One byte is read from serial into @a command, if the value equals
+ * @a _LIST_REQ, we describe the list of functions. Otherwise, we call the
+ * function indexed by @a command.
  *
  * @param args Parameter pairs (function pointer, documentation).
  */

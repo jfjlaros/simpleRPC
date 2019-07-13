@@ -18,7 +18,7 @@ template <class... Args>
 
 
 /**
- * Recursion terminator for {multiPrint()}.
+ * Recursion terminator for @a multiPrint().
  */
 inline size_t multiPrint(void) {
   return 0;
@@ -43,7 +43,7 @@ size_t multiPrint(String& arg, Args... args) {
   return Serial.write(arg.c_str()) + multiPrint(args...);
 }
 
-// F() macro support.
+// @a F() macro support.
 template <class... Args>
 size_t multiPrint(const __FlashStringHelper* arg, Args... args) {
   return Serial.print(arg) + multiPrint(args...);

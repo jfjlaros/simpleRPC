@@ -11,12 +11,12 @@
 /**
  * Execute a function.
  *
- * All parameters have been collected since function pointer {*f_} has no
- * parameter types. All values are now present in the {args} parameter pack.
+ * All parameters have been collected since function pointer @a *f_ has no
+ * parameter types. All values are now present in the @a args parameter pack.
  *
  * @param - Dummy function pointer.
  * @param f Function pointer.
- * @param args Parameter pack for {f}.
+ * @param args Parameter pack for @a f.
  */
 template <class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
@@ -49,15 +49,16 @@ void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
 /**
  * Collect parameters of a function from serial.
  *
- * We isolate the first parameter type {T} from function pointer {*f_}. This
- * type is used to instantiate the variable {data}, which is used to receive
- * {sizeof(T)} bytes from the serial stream. This value is passed recursively
- * to {_call}, adding it to the {args} parameter pack. The first parameter type
- * {T} is removed from function pointer {*f_} in the recursive call.
+ * We isolate the first parameter type @a T from function pointer @a *f_. This
+ * type is used to instantiate the variable @a data, which is used to receive
+ * @a sizeof(T) bytes from the serial stream. This value is passed recursively
+ * to @a _call() function, adding it to the @a args parameter pack. The first
+ * parameter type @a T is removed from function pointer @a *f_ in the recursive
+ * call.
  *
  * @param f_ Dummy function pointer.
  * @param f Function pointer.
- * @param args Parameter pack for {f}.
+ * @param args Parameter pack for @a f.
  */
 template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T, Tail...), F f, Args... args) {
@@ -67,7 +68,7 @@ void _call(void (*f_)(T, Tail...), F f, Args... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
-// Parameter of type {T&}.
+// Parameter of type @a T&.
 template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T&, Tail...), F f, Args... args) {
   T data;
@@ -80,7 +81,7 @@ void _call(void (*f_)(T&, Tail...), F f, Args... args) {
 /**
  * Set up function parameter collection, execution and writing to serial.
  *
- * We prepare a dummy function pointer, referred to as {f_} in the template
+ * We prepare a dummy function pointer, referred to as @a f_ in the template
  * functions above, which will be used to isolate parameter types. The return
  * type of this function pointer is removed to avoid unneeded template
  * expansion.

@@ -7,7 +7,7 @@
 
 
 /**
- * Recursion terminator for {_parameterTypes()}.
+ * Recursion terminator for @a _parameterTypes().
  */
 inline String _parameterTypes(void (*)(void)) {
   return "";
@@ -16,10 +16,10 @@ inline String _parameterTypes(void (*)(void)) {
 /**
  * Get the types of all function parameters.
  *
- * We isolate the first parameter type {T} from function pointer {*f_}. This
- * type is used to instantiate the variable {data}, which is passed to
- * {_typeof()} to encode its type. The first parameter type {T} is removed from
- * function pointer {*f_} in the recursive call.
+ * We isolate the first parameter type @a T from function pointer @a *f_. This
+ * type is used to instantiate the variable @a data, which is passed to
+ * @a _typeof() to encode its type. The first parameter type @a T is removed
+ * from function pointer @a *f_ in the recursive call.
  *
  * @param f_ Dummy function pointer.
  *
@@ -32,7 +32,7 @@ String _parameterTypes(void (*f_)(T, Args...)) {
   return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
-// Parameter of type {T&}.
+// Parameter of type @a T&.
 template <class T, class... Args>
 String _parameterTypes(void (*f_)(T&, Args...)) {
   T data;
@@ -44,7 +44,7 @@ String _parameterTypes(void (*f_)(T&, Args...)) {
 /**
  * Get the signature of a function.
  *
- * We prepare a dummy function pointer, referred to as {f_} in the template
+ * We prepare a dummy function pointer, referred to as @a f_ in the template
  * functions above, which will be used to isolate parameter types. The return
  * type of this function pointer is removed to avoid unneeded template
  * expansion.

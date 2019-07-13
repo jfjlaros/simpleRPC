@@ -34,7 +34,7 @@ Vector<T>::Vector(size_t size) {
  *
  * @param size Size of the vector.
  * @param data Pointer to data.
- * @param destroy Free {data} in the destructor.
+ * @param destroy Free @a data in the destructor.
  */
 template <class T>
 Vector<T>::Vector(size_t size, T* data, bool destroy) {
@@ -67,7 +67,7 @@ Vector<T>::~Vector(void) {
  *
  * @param index Index.
  *
- * @return Reference to element at index {index}.
+ * @return Reference to element at index @a index.
  */
 template <class T>
 T& Vector<T>::operator[](size_t index) {
