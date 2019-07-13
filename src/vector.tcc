@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_VECTOR_TCC_
 #define SIMPLE_RPC_VECTOR_TCC_
 
+/** @file */
+
 template <class T>
 class Vector {
   public:

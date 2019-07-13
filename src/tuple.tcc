@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_TUPLE_TCC_
 #define SIMPLE_RPC_TUPLE_TCC_
 
+/** @file */
+
 #include "helper.tcc"
 
 /*

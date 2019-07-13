@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
+/** @file */
+
 #include "tuple.tcc"
 #include "vector.tcc"
 

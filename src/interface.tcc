@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_INTERFACE_TCC_
 #define SIMPLE_RPC_INTERFACE_TCC_
 
+/** @file */
+
 /*
  * Template library for exporting native C functions as remote procedure calls.
  *

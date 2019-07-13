@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_WRITE_TCC_
 #define SIMPLE_RPC_WRITE_TCC_
 
+/** @file */
+
 #include <Arduino.h>
 
 #include "print.tcc"

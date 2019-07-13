@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_READ_TCC_
 #define SIMPLE_RPC_READ_TCC_
 
+/** @file */
+
 #include <Arduino.h>
 
 #include "defs.h"

@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_RPCCALL_TCC_
 #define SIMPLE_RPC_RPCCALL_TCC_
 
+/** @file */
+
 #include "read.tcc"
 #include "tuple.tcc"
 #include "write.tcc"

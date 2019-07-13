@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_PRINT_TCC_
 #define SIMPLE_RPC_PRINT_TCC_
 
+/** @file */
+
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 

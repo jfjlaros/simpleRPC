@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_H_
 #define SIMPLE_RPC_H_
 
+/** @file */
+
 #include "defs.h"
 #include "interface.tcc"
 

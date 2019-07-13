@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_SIGNATURE_TCC_
 #define SIMPLE_RPC_SIGNATURE_TCC_
 
+/** @file */
+
 #include "types.tcc"
 
 

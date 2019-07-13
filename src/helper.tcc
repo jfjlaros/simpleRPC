@@ -1,6 +1,8 @@
 #ifndef SIMPLE_RPC_HELPER_TCC_
 #define SIMPLE_RPC_HELPER_TCC_
 
+/** @file */
+
 /*
  * Compile-time switch for templates.
  *
