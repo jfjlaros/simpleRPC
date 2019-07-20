@@ -203,6 +203,9 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
       return v;
     }
     static void f2(Object<Vector<int>, char>&) {}
+    static int f3(Vector<signed char>&, int i) {
+      return 1;
+    }
   };
 
   // Void function, parameter is of type Vector.
@@ -227,6 +230,12 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   rpcCall(S::f2);
   REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == 0);
+
+  Serial.reset();
+  Serial.prepare((size_t)2, (signed char)12, (signed char)23, 10);
+  rpcCall(S::f3);
+  REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(signed char) + sizeof(int));
+  REQUIRE(Serial.tx == sizeof(int));
 }
 
 TEST_CASE("RPC call class member functions", "[call][class]") {

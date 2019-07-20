@@ -43,7 +43,9 @@ TEST_CASE("Objects", "[signature][object]") {
 TEST_CASE("Vectors", "[signature][vector]") {
   void (*f0)(Vector<int>, float);
   Vector<int> (*f1)(float);
+  int (*f2)(Vector<signed char>&, int);
 
   REQUIRE(signature(f0) == ": [i] f");
   REQUIRE(signature(f1) == "[i]: f");
+  REQUIRE(signature(f2) == "i: [b] i");
 }
