@@ -2,7 +2,7 @@
 
 
 void setLed(byte brightness) {
-  analogWrite(13, brightness);
+  analogWrite(LED_BUILTIN, brightness);
 }
 
 unsigned long time(void) {

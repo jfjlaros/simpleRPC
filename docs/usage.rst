@@ -90,7 +90,7 @@ method that takes one parameter and returns a value.
 .. code:: cpp
 
     void setLed(byte brightness) {
-      analogWrite(13, brightness);
+      analogWrite(LED_BUILTIN, brightness);
     }
 
     int inc(int a) {
@@ -141,7 +141,7 @@ class has a member function named ``setBrightness``.
 
     #include "led.h"
 
-    LED led(13);
+    LED led(LED_BUILTIN);
 
 
 Exporting this class method as a remote call goes as follows:
