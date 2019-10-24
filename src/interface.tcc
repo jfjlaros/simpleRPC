@@ -1,15 +1,16 @@
 #ifndef SIMPLE_RPC_INTERFACE_TCC_
 #define SIMPLE_RPC_INTERFACE_TCC_
 
-/** @file */
-
-/*
- * Template library for exporting native C functions as remote procedure calls.
+/**
+ * @file interface.tcc
+ *
+ * Template library for exporting native C and C++ functions as remote
+ * procedure calls.
  *
  * For more information about (variadic) templates:
- * http://www.drdobbs.com/cpp/extracting-function-parameter-and-return/240000586
- * https://eli.thegreenplace.net/2014/variadic-templates-in-c/
- * https://en.cppreference.com/w/cpp/language/parameter_pack
+ * @li http://www.drdobbs.com/cpp/extracting-function-parameter-and-return/240000586
+ * @li https://eli.thegreenplace.net/2014/variadic-templates-in-c/
+ * @li https://en.cppreference.com/w/cpp/language/parameter_pack
  *
  * TODO: Add support for multiple serial devices.
  */
@@ -23,6 +24,8 @@
  *
  * @param f Function pointer.
  * @param doc Function documentation.
+ *
+ * @private
  */
 template <class F, class D>
 void _writeDescription(F f, D doc) {
@@ -32,6 +35,8 @@ void _writeDescription(F f, D doc) {
 
 /**
  * Recursion terminator for @a _describe().
+ *
+ * @private
  */
 inline void _describe(void) {}
 
@@ -39,12 +44,14 @@ inline void _describe(void) {}
  * Describe a list of functions.
  *
  * We isolate the first two parameters @a f and @a doc, pass these to
- * @a _writeDescription and make a recursive call to process the remaining
+ * @a _writeDescription() and make a recursive call to process the remaining
  * parameters.
  *
  * @param f Function pointer.
  * @param doc Function documentation.
  * @param args Remaining parameters.
+ *
+ * @private
  */
 template <class F, class D, class... Args>
 void _describe(F f, D doc, Args... args) {
@@ -52,7 +59,11 @@ void _describe(F f, D doc, Args... args) {
   _describe(args...);
 }
 
-// Class member function.
+/**
+ * Class member function.
+ *
+ * @private
+ */
 template <class U, class V, class D, class... Args>
 void _describe(Tuple<U, V> t, D doc, Args... args) {
   _writeDescription(t.tail.head, doc);
@@ -62,6 +73,8 @@ void _describe(Tuple<U, V> t, D doc, Args... args) {
 
 /**
  * Recursion terminator for @a _select().
+ *
+ * @private
  */
 inline void _select(byte, byte) {}
 
@@ -78,6 +91,8 @@ inline void _select(byte, byte) {}
  * @param f Function pointer.
  * @param - Function documentation.
  * @param args Remaining parameters.
+ *
+ * @private
  */
 template <class F, class D, class... Args>
 void _select(byte number, byte depth, F f, D, Args... args) {

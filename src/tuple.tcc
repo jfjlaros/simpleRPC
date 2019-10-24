@@ -1,29 +1,33 @@
 #ifndef SIMPLE_RPC_TUPLE_TCC_
 #define SIMPLE_RPC_TUPLE_TCC_
 
-/** @file */
+/**
+ * @file tuple.tcc
+ *
+ * @a Tuple and @a Object definitions and manipulation functions.
+ */
 
 #include "helper.tcc"
 
-/*
+
+/**
  * Empty tuple.
+ *
+ * @private
  */
 template <class... Args>
 struct Tuple {};
 
-/*
+/**
  * Nested tuple.
- *
- * @a T @a head - First element.
- * @a Args... @a tail - Remaining elements.
  */
 template <class T, class... Args>
 struct Tuple<T, Args...> {
-  T head;
-  Tuple<Args...> tail;
+  T head;              ///< First element.
+  Tuple<Args...> tail; ///< Remaining elements.
 };
 
-/*
+/**
  * Nested object.
  *
  * Preferably this would have been an alias, but this is not supported in the
@@ -36,19 +40,23 @@ struct Object : Tuple<Args...> {
 };
 
 
-/*
+/**
  * Access the type of the @a k-th element in a tuple.
  *
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
+ *
+ * @private
  */
 template <size_t, class>
 struct ElemTypeHolder;
 
+/// @private
 template <class T, class... Args>
 struct ElemTypeHolder<0, Tuple<T, Args...> > {
   typedef T type;
 };
 
+/// @private
 template <size_t k, class T, class... Args>
 struct ElemTypeHolder<k, Tuple<T, Args...> > {
   typedef typename ElemTypeHolder<k - 1, Tuple<Args...> >::type type;
@@ -66,12 +74,15 @@ struct ElemTypeHolder<k, Tuple<T, Args...> > {
  * @return Reference to the @a k-th element in @a t.
  */
 template <size_t k, class... Args>
+/// @cond
 typename enableIf<
     k == 0, typename ElemTypeHolder<0, Tuple<Args...> >::type&>::type
+/// @endcond
     get(Tuple<Args...>& t) {
   return t.head;
 }
 
+/// @private
 template <size_t k, class T, class... Args>
 typename enableIf<
     k != 0, typename ElemTypeHolder<k, Tuple<T, Args...> >::type&>::type

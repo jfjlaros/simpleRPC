@@ -1,7 +1,12 @@
 #ifndef SIMPLE_RPC_RPCCALL_TCC_
 #define SIMPLE_RPC_RPCCALL_TCC_
 
-/** @file */
+/**
+ * @file rpcCall.tcc
+ *
+ * Read values from serial, execute a function and write the result back to
+ * serial.
+ */
 
 #include "read.tcc"
 #include "tuple.tcc"
@@ -17,6 +22,8 @@
  * @param - Dummy function pointer.
  * @param f Function pointer.
  * @param args Parameter pack for @a f.
+ *
+ * @private
  */
 template <class R, class... Tail, class... Args>
 void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
@@ -25,13 +32,13 @@ void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
   _write(&data);
 }
 
-// Void function.
+/// @private Void function.
 template <class... Tail, class... Args>
 void _call(void (*)(void), void (*f)(Tail...), Args&... args) {
   f(args...);
 }
 
-// Class member function.
+/// @private Class member function.
 template <class C, class P, class R, class... Tail, class... Args>
 void _call(void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   R data =(*t.head.*t.tail.head)(args...);
@@ -39,7 +46,7 @@ void _call(void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   _write(&data);
 }
 
-// Void class member function.
+/// @private Void class member function.
 template <class C, class P, class... Tail, class... Args>
 void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
@@ -59,6 +66,8 @@ void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
  * @param f_ Dummy function pointer.
  * @param f Function pointer.
  * @param args Parameter pack for @a f.
+ *
+ * @private
  */
 template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T, Tail...), F f, Args&... args) {
@@ -68,7 +77,7 @@ void _call(void (*f_)(T, Tail...), F f, Args&... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
-// Parameter of type @a T&.
+/// @private Parameter of type @a T&.
 template <class T, class... Tail, class F, class... Args>
 void _call(void (*f_)(T&, Tail...), F f, Args&... args) {
   T data;
@@ -93,7 +102,12 @@ void rpcCall(R (*f)(Args...)) {
   _call((void (*)(Args...))f, f);
 }
 
-// Class member function.
+/**
+ * Class member function.
+ *
+ * @param t @a Tuple consisting of a pointer to a class instance and a pointer
+ *   to a class method.
+ */
 template <class C, class P ,class R, class... Args>
 void rpcCall(Tuple<C*, R (P::*)(Args...)> t) {
   _call((void (*)(Args...))t.tail.head, t);

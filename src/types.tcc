@@ -1,7 +1,9 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
-/** @file */
+/**
+ * Type analysis and encoding.
+ */
 
 #include "tuple.tcc"
 #include "vector.tcc"
@@ -95,6 +97,8 @@ inline String _typeof(double) {
 
 /**
  * Recursion terminator for @a _typeof(Tuple&).
+ *
+ * @private
  */
 inline String _typeof(Tuple<>&) {
   return "";

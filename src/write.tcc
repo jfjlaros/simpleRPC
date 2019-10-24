@@ -1,7 +1,9 @@
 #ifndef SIMPLE_RPC_WRITE_TCC_
 #define SIMPLE_RPC_WRITE_TCC_
 
-/** @file */
+/**
+ * Serial write functions.
+ */
 
 #include <Arduino.h>
 
@@ -57,6 +59,8 @@ void _write(Vector<T>* data) {
 
 /**
  * Recursion terminator for @a _write(Tuple*)().
+ *
+ * @private
  */
 inline void _write(Tuple<>*) {}
 

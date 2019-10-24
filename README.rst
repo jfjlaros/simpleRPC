@@ -9,10 +9,10 @@ Simple RPC implementation for Arduino.
    :target: https://simpleRPC.readthedocs.io/en/latest
 .. image:: https://img.shields.io/github/release-date/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC/releases
-.. image:: https://www.ardu-badge.com/badge/simpleRPC.svg
-   :target: https://www.ardu-badge.com/simpleRPC
 .. image:: https://img.shields.io/github/release/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC/releases
+.. image:: https://www.ardu-badge.com/badge/simpleRPC.svg
+   :target: https://www.ardu-badge.com/simpleRPC
 .. image:: https://img.shields.io/github/languages/code-size/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC
 .. image:: https://img.shields.io/github/languages/count/jfjlaros/simpleRPC.svg

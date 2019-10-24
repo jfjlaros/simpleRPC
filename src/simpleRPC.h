@@ -1,12 +1,17 @@
 #ifndef SIMPLE_RPC_H_
 #define SIMPLE_RPC_H_
 
-/** @file */
+/**
+ * @file simpleRPC.h
+ *
+ * RPC interface.
+ */
 
 #include "defs.h"
 #include "interface.tcc"
 
 
+/// @private
 byte _ping(byte data) {
   return data;
 }

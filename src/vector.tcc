@@ -1,8 +1,11 @@
 #ifndef SIMPLE_RPC_VECTOR_TCC_
 #define SIMPLE_RPC_VECTOR_TCC_
 
-/** @file */
-
+/**
+ * @class Vector
+ *
+ * Generic vector.
+ */
 template <class T>
 class Vector {
   public:
@@ -12,8 +15,8 @@ class Vector {
     ~Vector(void);
     void resize(size_t);
     T& operator[](size_t);
-    size_t size = 0;
-    bool destroy = true;
+    size_t size = 0;     ///< Number of elements.
+    bool destroy = true; ///< Free memory when destructor is called.
   private:
     T* _data = NULL;
 };

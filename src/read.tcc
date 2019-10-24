@@ -1,7 +1,9 @@
 #ifndef SIMPLE_RPC_READ_TCC_
 #define SIMPLE_RPC_READ_TCC_
 
-/** @file */
+/**
+ * Serial read functions.
+ */
 
 #include <Arduino.h>
 

@@ -1,13 +1,19 @@
 #ifndef SIMPLE_RPC_SIGNATURE_TCC_
 #define SIMPLE_RPC_SIGNATURE_TCC_
 
-/** @file */
+/**
+ * @file signature.tcc
+ *
+ * Function signature analysis and encoding to a string.
+ */
 
 #include "types.tcc"
 
 
 /**
  * Recursion terminator for @a _parameterTypes().
+ *
+ * @private
  */
 inline String _parameterTypes(void (*)(void)) {
   return "";
@@ -24,6 +30,8 @@ inline String _parameterTypes(void (*)(void)) {
  * @param f_ Dummy function pointer.
  *
  * @return Space separated parameter types.
+ *
+ * @private
  */
 template <class T, class... Args>
 String _parameterTypes(void (*f_)(T, Args...)) {
@@ -32,7 +40,7 @@ String _parameterTypes(void (*f_)(T, Args...)) {
   return " " + _typeof(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
-// Parameter of type @a T&.
+/// @private Parameter of type @a T&.
 template <class T, class... Args>
 String _parameterTypes(void (*f_)(T&, Args...)) {
   T data;
@@ -60,13 +68,13 @@ String signature(R (*f)(Args...)) {
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
-// Void function.
+/// Void function.
 template <class... Args>
 String signature(void (*f)(Args...)) {
   return ":" + _parameterTypes(f);
 }
 
-// Class member function.
+/// Class member function.
 template <class R, class C, class... Args>
 String signature(R (C::*f)(Args...)) {
   R data;
@@ -74,7 +82,7 @@ String signature(R (C::*f)(Args...)) {
   return _typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
-// Void class member function.
+/// Void class member function.
 template <class C, class... Args>
 String signature(void (C::*f)(Args...)) {
   return ":" + _parameterTypes((void (*)(Args...))f);

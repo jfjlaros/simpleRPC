@@ -16,7 +16,9 @@ TEST_CASE("Function pointer types", "[signature][basic]") {
 TEST_CASE("Class member function pointer types", "[signature][class]") {
   class C {
     public:
-      short int f0(char, float) {}
+      short int f0(char, float) {
+        return 0;
+      }
       void f1(char, float) {}
   };
 
