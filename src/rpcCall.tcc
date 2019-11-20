@@ -86,6 +86,15 @@ void _call(void (*f_)(T&, Tail...), F f, Args&... args) {
   _call((void (*)(Tail...))f_, f, args..., data);
 }
 
+/// @private Parameter of type @a const T&.
+template <class T, class... Tail, class F, class... Args>
+void _call(void (*f_)(const T&, Tail...), F f, Args&... args) {
+  T data;
+
+  _read(&data);
+  _call((void (*)(Tail...))f_, f, args..., data);
+}
+
 
 /**
  * Set up function parameter collection, execution and writing to serial.
