@@ -12,6 +12,14 @@
 #include "tuple.tcc"
 #include "write.tcc"
 
+/*
+ * Prototypes needed for recursive definitions.
+ */
+template <class T, class... Tail, class F, class... Args>
+  void _call(void (*)(T&, Tail...), F, Args&...);
+template <class T, class... Tail, class F, class... Args>
+  void _call(void (*)(const T&, Tail...), F, Args&...);
+
 
 /**
  * Execute a function.
@@ -94,7 +102,6 @@ void _call(void (*f_)(const T&, Tail...), F f, Args&... args) {
   _read(&data);
   _call((void (*)(Tail...))f_, f, args..., data);
 }
-
 
 /**
  * Set up function parameter collection, execution and writing to serial.
