@@ -7,9 +7,13 @@
 
 #include <Arduino.h>
 
-#include "print.tcc"
+//#include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
+
+#include "serial/io.h"
+extern RWIO IO;
+
 
 /*
  * Prototypes needed for recursive definitions.
@@ -20,6 +24,8 @@ template <class T, class... Args>
   void _write(Tuple<T, Args...>*);
 template <class... Args>
   void _write(Object<Args...>*);
+template <class T, class... Args>
+  void write(T, Args...);
 
 
 /**
@@ -29,7 +35,7 @@ template <class... Args>
  */
 template <class T>
 void _write(T* data) {
-  Serial.write((byte*)data, sizeof(T));
+  IO.write((byte*)data, sizeof(T));
 }
 
 /**
@@ -37,8 +43,48 @@ void _write(T* data) {
  *
  * @param data String.
  */
-inline void _write(String* data) {
-  multiPrint(*data, _END_OF_STRING);
+//inline void _write(String* data) {
+//  //write((*data).c_str(), _END_OF_STRING);
+//  byte m = 'X';
+//
+//  IO.write(&m, 1);
+//  IO.write((byte*)(*data).c_str(), (*data).length());
+//  IO.write(_END_OF_STRING, sizeof(byte));
+//}
+
+template <class T>
+void xrite(T data) {
+  _write(&data);
+}
+
+inline void xrite(const char* data) {
+  size_t i = 0;
+
+  while (data[i] != _END_OF_STRING) {
+    xrite(data[i]);
+    i++;
+  }
+}
+
+inline void xrite(String data) {
+  xrite(data.c_str());
+}
+
+inline void xrite(const __FlashStringHelper* data) {
+  const char* __attribute__((progmem)) p = (const char*)data;
+  byte c = pgm_read_byte(p);
+
+  while (c) {
+    xrite(c);
+    p++;
+    c = pgm_read_byte(p);
+  }
+}
+
+template <class H, class... Tail>
+void xrite(H data, Tail... tail) {
+  xrite(data);
+  xrite(tail...);
 }
 
 /**
@@ -85,5 +131,16 @@ template <class... Args>
 void _write(Object<Args...>* data) {
   _write((Tuple<Args...>*)data);
 }
+
+
+/* TODO: Documentation */
+//inline void write(void) {}
+
+/* TODO: Documentation */
+//template <class T, class... Args>
+//void write(T data, Args... args) {
+//  _write(&data);
+//  write(args...);
+//}
 
 #endif

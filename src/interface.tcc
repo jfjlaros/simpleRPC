@@ -11,9 +11,10 @@
  * @li http://www.drdobbs.com/cpp/extracting-function-parameter-and-return/240000586
  * @li https://eli.thegreenplace.net/2014/variadic-templates-in-c/
  * @li https://en.cppreference.com/w/cpp/language/parameter_pack
- *
- * TODO: Add support for multiple serial devices.
  */
+
+#include "serial/io.h"
+
 #include "print.tcc"
 #include "rpcCall.tcc"
 #include "signature.tcc"
@@ -29,7 +30,8 @@
  */
 template <class F, class D>
 void _writeDescription(F f, D doc) {
-  multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
+  //multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
+  xrite(signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
 
 
@@ -123,11 +125,17 @@ void rpcInterface(Args... args) {
     command = Serial.read();
 
     if (command == _LIST_REQ) {
-      multiPrint(_PROTOCOL, _END_OF_STRING);
-      multiPrint(_VERSION[0], _VERSION[1], _VERSION[2]);
-      multiPrint(_hardwareDefs().c_str(), _END_OF_STRING);
+      xrite(_PROTOCOL, _END_OF_STRING);
+      xrite(_VERSION[0], _VERSION[1], _VERSION[2]);
+      xrite(_hardwareDefs(), _END_OF_STRING);
       _describe(args...);
-      multiPrint(_END_OF_STRING); // Empty string marks end of list.
+      xrite(_END_OF_STRING);
+
+      //multiPrint(_PROTOCOL, _END_OF_STRING);
+      //multiPrint(_VERSION[0], _VERSION[1], _VERSION[2]);
+      //multiPrint(_hardwareDefs().c_str(), _END_OF_STRING);
+      //_describe(args...);
+      //multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
     }
     _select(command, 0, args...);
