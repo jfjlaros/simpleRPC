@@ -8,6 +8,7 @@
 #include <Arduino.h>
 
 //#include "print.tcc"
+#include "defs.h"
 #include "tuple.tcc"
 #include "vector.tcc"
 
@@ -43,14 +44,17 @@ void _write(I& io, T* data) {
  *
  * @param data String.
  */
-//inline void _write(String* data) {
+template <class I>
+void _write(I io, String* data) {
+  xrite(io, *data);
+  xrite(io, _END_OF_STRING);
 //  //write((*data).c_str(), _END_OF_STRING);
 //  byte m = 'X';
 //
 //  IO.write(&m, 1);
 //  IO.write((byte*)(*data).c_str(), (*data).length());
 //  IO.write(_END_OF_STRING, sizeof(byte));
-//}
+}
 
 template <class I, class T>
 void xrite(I& io, T data) {
@@ -74,7 +78,7 @@ void xrite(I& io, String& data) {
 
 template <class I>
 void xrite(I& io, const __FlashStringHelper* data) {
-  const char* __attribute__((progmem)) p = (const char*)data;
+  const char* p = (const char*)data;
   byte c = pgm_read_byte(p);
 
   while (c) {
