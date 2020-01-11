@@ -3,6 +3,7 @@ MAIN := test_lib
 TESTS := test_tuple test_vector test_print test_read test_write test_types \
   test_signature test_interface test_rpcCall
 FIXTURES := arduino-serial-fixture/src/Arduino
+LIBS := ../src/serial/io
 
 
 CC := g++
@@ -10,7 +11,7 @@ INCLUDE_PATH := arduino-serial-fixture/src
 CC_ARGS := -Wno-pmf-conversions -std=c++11
 
 
-OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
+OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES) $(LIBS))
 
 .PHONY: all check clean distclean
 
@@ -18,7 +19,10 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))
 all: $(EXEC)
 
 $(EXEC): $(MAIN).cc $(OBJS)
-	$(CC) $(CC_ARGS) -o $@ $^
+	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ $^
+
+%.o: %.cpp
+	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
 
 %.o: %.cc
 	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<

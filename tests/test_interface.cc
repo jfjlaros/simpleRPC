@@ -1,6 +1,9 @@
 #include <catch.hpp>
 
 #include "../src/interface.tcc"
+#include "../src/serial/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Describe function", "[describe][basic]") {
@@ -8,12 +11,12 @@ TEST_CASE("Describe function", "[describe][basic]") {
 
   // Empty description.
   Serial.reset();
-  _describe(f, "");
+  _describe(io, f, "");
   REQUIRE(Serial.inspect<String>() == ":;");
 
   // Non-empty description.
   Serial.reset();
-  _describe(f, "Function description.");
+  _describe(io, f, "Function description.");
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
@@ -27,12 +30,12 @@ TEST_CASE("Describe class member function", "[describe][class]") {
 
   // Empty description.
   Serial.reset();
-  _describe(pack(&c, &C::f), "");
+  _describe(io, pack(&c, &C::f), "");
   REQUIRE(Serial.inspect<String>() == ":;");
 
   // Non-empty description.
   Serial.reset();
-  _describe(pack(&c, &C::f), "Function description.");
+  _describe(io, pack(&c, &C::f), "Function description.");
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
@@ -47,13 +50,13 @@ TEST_CASE("Multiple functions", "[describe][class]") {
 
   // Normal function first.
   Serial.reset();
-  _describe(f, "f", pack(&c, &C::f), "C::f");
+  _describe(io, f, "f", pack(&c, &C::f), "C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
 
   // Class member function first.
   Serial.reset();
-  _describe(pack(&c, &C::f), "C::f", f, "f");
+  _describe(io, pack(&c, &C::f), "C::f", f, "f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
 }
@@ -70,12 +73,12 @@ TEST_CASE("Select by number", "[describe][select]") {
 
   // Select first function.
   Serial.reset();
-  _select(0, 0, S::f0, "", S::f1, "");
+  _select(io, 0, 0, S::f0, "", S::f1, "");
   REQUIRE(Serial.inspect<short int>() == 1);
 
   // Select second function.
   Serial.reset();
-  _select(1, 0, S::f0, "", S::f1, "");
+  _select(io, 1, 0, S::f0, "", S::f1, "");
   REQUIRE(Serial.inspect<short int>() == 2);
 }
 
@@ -92,7 +95,7 @@ TEST_CASE("RPC interface", "[describe][interface]") {
   // Describe interface.
   Serial.reset();
   Serial.prepare(_LIST_REQ);
-  rpcInterface(S::f0, "f", S::f1, "g");
+  rpcInterface(io, S::f0, "f", S::f1, "g");
   REQUIRE(Serial.inspect<String>() == (String)_PROTOCOL);
   REQUIRE(Serial.inspect<byte>() == _VERSION[0]);
   REQUIRE(Serial.inspect<byte>() == _VERSION[1]);
@@ -104,12 +107,12 @@ TEST_CASE("RPC interface", "[describe][interface]") {
   // Select first function.
   Serial.reset();
   Serial.prepare((byte)0x00);
-  rpcInterface(S::f0, "f0", S::f1, "f1");
+  rpcInterface(io, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 1);
 
   // Select second function.
   Serial.reset();
   Serial.prepare((byte)0x01);
-  rpcInterface(S::f0, "f0", S::f1, "f1");
+  rpcInterface(io, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 2);
 }
