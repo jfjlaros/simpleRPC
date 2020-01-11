@@ -11,6 +11,10 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
+#include "serial/io.h"
+extern RWIO IO;
+
+
 /*
  * Prototypes needed for recursive definitions.
  */
@@ -29,7 +33,7 @@ template <class... Args>
  */
 template <class T>
 void _read(T* data) {
-  Serial.readBytes((char*)data, sizeof(T));
+  IO.read((byte*)data, sizeof(T));
 }
 
 /**
@@ -38,7 +42,15 @@ void _read(T* data) {
  * @param data String.
  */
 inline void _read(String* data) {
-  *data = Serial.readStringUntil(_END_OF_STRING);
+  byte character;
+
+  IO.read((&character), sizeof(byte));
+
+  while (character != _END_OF_STRING) {
+    *data += character;
+    IO.read((&character), sizeof(byte));
+  }
+  //*data = Serial.readStringUntil(_END_OF_STRING);
 }
 
 /**
