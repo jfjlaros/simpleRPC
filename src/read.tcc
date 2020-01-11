@@ -11,9 +11,6 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
-//#include "serial/io.h"
-//extern RWIO IO;
-
 
 /*
  * Prototypes needed for recursive definitions.
@@ -51,7 +48,6 @@ void _read(I& io, String* data) {
     *data += character;
     io.read((&character), sizeof(byte));
   }
-  //*data = Serial.readStringUntil(_END_OF_STRING);
 }
 
 /**
