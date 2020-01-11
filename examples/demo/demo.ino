@@ -1,5 +1,7 @@
 #include <simpleRPC.h>
 
+HardwareSerialIO io;
+
 
 void setLed(byte brightness) {
   analogWrite(LED_BUILTIN, brightness);
@@ -36,11 +38,13 @@ Vector<float> vector(Vector<int>& v) {
 
 
 void setup(void) {
-  Serial.begin(9600);
+  //Serial.begin(9600);
+  io.begin(9600);
 }
 
 void loop(void) {
   interface(
+    io,
     inc, F("inc: Increment a value. @a: Value. @return: a + 1."),
     setLed, F("set_led: Set LED brightness. @brightness: Brightness."),
     time, F("time: Report the system time. @return: System time."),

@@ -8,17 +8,20 @@
  * serial.
  */
 
+//#include "serial/io.h"
+
 #include "read.tcc"
 #include "tuple.tcc"
 #include "write.tcc"
 
+
 /*
  * Prototypes needed for recursive definitions.
  */
-template <class T, class... Tail, class F, class... Args>
-  void _call(void (*)(T&, Tail...), F, Args&...);
-template <class T, class... Tail, class F, class... Args>
-  void _call(void (*)(const T&, Tail...), F, Args&...);
+template <class I, class T, class... Tail, class F, class... Args>
+  void _call(I&, void (*)(T&, Tail...), F, Args&...);
+template <class I, class T, class... Tail, class F, class... Args>
+  void _call(I&, void (*)(const T&, Tail...), F, Args&...);
 
 
 /**
@@ -33,30 +36,30 @@ template <class T, class... Tail, class F, class... Args>
  *
  * @private
  */
-template <class R, class... Tail, class... Args>
-void _call(void (*)(void), R (*f)(Tail...), Args&... args) {
+template <class I, class R, class... Tail, class... Args>
+void _call(I& io, void (*)(void), R (*f)(Tail...), Args&... args) {
   R data = f(args...);
 
-  _write(&data);
+  _write(io, &data);
 }
 
 /// @private Void function.
-template <class... Tail, class... Args>
-void _call(void (*)(void), void (*f)(Tail...), Args&... args) {
+template <class I, class... Tail, class... Args>
+void _call(I&, void (*)(void), void (*f)(Tail...), Args&... args) {
   f(args...);
 }
 
 /// @private Class member function.
-template <class C, class P, class R, class... Tail, class... Args>
-void _call(void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
+template <class I, class C, class P, class R, class... Tail, class... Args>
+void _call(I& io, void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   R data =(*t.head.*t.tail.head)(args...);
 
-  _write(&data);
+  _write(io, &data);
 }
 
 /// @private Void class member function.
-template <class C, class P, class... Tail, class... Args>
-void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
+template <class I, class C, class P, class... Tail, class... Args>
+void _call(I&, void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 
@@ -77,30 +80,30 @@ void _call(void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
  *
  * @private
  */
-template <class T, class... Tail, class F, class... Args>
-void _call(void (*f_)(T, Tail...), F f, Args&... args) {
+template <class I, class T, class... Tail, class F, class... Args>
+void _call(I& io, void (*f_)(T, Tail...), F f, Args&... args) {
   T data;
 
-  _read(&data);
-  _call((void (*)(Tail...))f_, f, args..., data);
+  _read(io, &data);
+  _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
 /// @private Parameter of type @a T&.
-template <class T, class... Tail, class F, class... Args>
-void _call(void (*f_)(T&, Tail...), F f, Args&... args) {
+template <class I, class T, class... Tail, class F, class... Args>
+void _call(I& io, void (*f_)(T&, Tail...), F f, Args&... args) {
   T data;
 
-  _read(&data);
-  _call((void (*)(Tail...))f_, f, args..., data);
+  _read(io, &data);
+  _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
 /// @private Parameter of type @a const T&.
-template <class T, class... Tail, class F, class... Args>
-void _call(void (*f_)(const T&, Tail...), F f, Args&... args) {
+template <class I, class T, class... Tail, class F, class... Args>
+void _call(I& io, void (*f_)(const T&, Tail...), F f, Args&... args) {
   T data;
 
-  _read(&data);
-  _call((void (*)(Tail...))f_, f, args..., data);
+  _read(io, &data);
+  _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
 /**
@@ -113,9 +116,9 @@ void _call(void (*f_)(const T&, Tail...), F f, Args&... args) {
  *
  * @param f Function pointer.
  */
-template <class R, class... Args>
-void rpcCall(R (*f)(Args...)) {
-  _call((void (*)(Args...))f, f);
+template <class I, class R, class... Args>
+void rpcCall(I& io, R (*f)(Args...)) {
+  _call(io, (void (*)(Args...))f, f);
 }
 
 /**
@@ -124,9 +127,9 @@ void rpcCall(R (*f)(Args...)) {
  * @param t @a Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
  */
-template <class C, class P ,class R, class... Args>
-void rpcCall(Tuple<C*, R (P::*)(Args...)> t) {
-  _call((void (*)(Args...))t.tail.head, t);
+template <class I, class C, class P ,class R, class... Args>
+void rpcCall(I& io, Tuple<C*, R (P::*)(Args...)> t) {
+  _call(io, (void (*)(Args...))t.tail.head, t);
 }
 
 #endif
