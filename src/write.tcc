@@ -11,21 +11,21 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
-#include "serial/io.h"
-extern RWIO IO;
+//#include "serial/io.h"
+//extern RWIO IO;
 
 
 /*
  * Prototypes needed for recursive definitions.
  */
-template <class T>
-  void _write(Vector<T>*);
-template <class T, class... Args>
-  void _write(Tuple<T, Args...>*);
-template <class... Args>
-  void _write(Object<Args...>*);
-template <class T, class... Args>
-  void write(T, Args...);
+template <class I, class T>
+  void _write(I&, Vector<T>*);
+template <class I, class T, class... Args>
+  void _write(I&, Tuple<T, Args...>*);
+template <class I, class... Args>
+  void _write(I&, Object<Args...>*);
+template <class I, class T, class... Args>
+  void write(I&, T, Args...);
 
 
 /**
@@ -33,9 +33,9 @@ template <class T, class... Args>
  *
  * @param data Data.
  */
-template <class T>
-void _write(T* data) {
-  IO.write((byte*)data, sizeof(T));
+template <class I, class T>
+void _write(I& io, T* data) {
+  io.write((byte*)data, sizeof(T));
 }
 
 /**
@@ -52,39 +52,42 @@ void _write(T* data) {
 //  IO.write(_END_OF_STRING, sizeof(byte));
 //}
 
-template <class T>
-void xrite(T data) {
-  _write(&data);
+template <class I, class T>
+void xrite(I& io, T data) {
+  _write(io, &data);
 }
 
-inline void xrite(const char* data) {
+template <class I>
+void xrite(I& io, const char* data) {
   size_t i = 0;
 
   while (data[i] != _END_OF_STRING) {
-    xrite(data[i]);
+    xrite(io, data[i]);
     i++;
   }
 }
 
-inline void xrite(String data) {
-  xrite(data.c_str());
+template <class I>
+void xrite(I& io, String& data) {
+  xrite(io, data.c_str());
 }
 
-inline void xrite(const __FlashStringHelper* data) {
+template <class I>
+void xrite(I& io, const __FlashStringHelper* data) {
   const char* __attribute__((progmem)) p = (const char*)data;
   byte c = pgm_read_byte(p);
 
   while (c) {
-    xrite(c);
+    xrite(io, c);
     p++;
     c = pgm_read_byte(p);
   }
 }
 
-template <class H, class... Tail>
-void xrite(H data, Tail... tail) {
-  xrite(data);
-  xrite(tail...);
+template <class I, class H, class... Tail>
+void xrite(I& io, H data, Tail... tail) {
+  xrite(io, data);
+  xrite(io, tail...);
 }
 
 /**
@@ -92,13 +95,13 @@ void xrite(H data, Tail... tail) {
  *
  * @param data Vector.
  */
-template <class T>
-void _write(Vector<T>* data) {
+template <class I, class T>
+void _write(I& io, Vector<T>* data) {
   int i;
 
-  _write(&(*data).size);
+  _write(io, &(*data).size);
   for (i = 0; i < (*data).size; i++) {
-    _write(&(*data)[i]);
+    _write(io, &(*data)[i]);
   }
 }
 
@@ -108,17 +111,18 @@ void _write(Vector<T>* data) {
  *
  * @private
  */
-inline void _write(Tuple<>*) {}
+template <class I>
+void _write(I&, Tuple<>*) {}
 
 /**
  * Write a value of type @a Tuple to serial.
  *
  * @param data Tuple.
  */
-template <class T, class... Args>
-void _write(Tuple<T, Args...>* data) {
-  _write(&(*data).head);
-  _write(&(*data).tail);
+template <class I, class T, class... Args>
+void _write(I& io, Tuple<T, Args...>* data) {
+  _write(io, &(*data).head);
+  _write(io, &(*data).tail);
 }
 
 
@@ -127,9 +131,9 @@ void _write(Tuple<T, Args...>* data) {
  *
  * @param data Object.
  */
-template <class... Args>
-void _write(Object<Args...>* data) {
-  _write((Tuple<Args...>*)data);
+template <class I, class... Args>
+void _write(I& io, Object<Args...>* data) {
+  _write(io, (Tuple<Args...>*)data);
 }
 
 

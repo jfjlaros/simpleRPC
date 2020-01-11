@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 
-class RWIO {
+class HardwareSerialIO {
   public:
-    RWIO(void) {}
+    HardwareSerialIO(void) {}
     void begin(unsigned long);
     size_t available(void),
            read(byte*, size_t),

@@ -10,9 +10,12 @@
 #include "defs.h"
 #include "interface.tcc"
 
+// IO plugins.
+#include "serial/io.h"
+
 
 /// @private
-byte _ping(byte data) {
+inline byte _ping(byte data) {
   return data;
 }
 
@@ -24,9 +27,10 @@ byte _ping(byte data) {
  *
  * @param args Parameter pairs (function pointer, documentation).
  */
-template <class... Args>
-void interface(Args... args) {
+template <class I, class... Args>
+void interface(I& io, Args... args) {
   rpcInterface(
+    io,
     _ping, F("ping: Echo a value. @data: Value. @return: Value of data."),
     args...);
 }

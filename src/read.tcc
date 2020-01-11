@@ -11,19 +11,19 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
-#include "serial/io.h"
-extern RWIO IO;
+//#include "serial/io.h"
+//extern RWIO IO;
 
 
 /*
  * Prototypes needed for recursive definitions.
  */
-template <class T>
-  void _read(Vector<T>*);
-template <class T, class... Args>
-  void _read(Tuple<T, Args...>*);
-template <class... Args>
-  void _read(Object<Args...>*);
+template <class I, class T>
+  void _read(I&, Vector<T>*);
+template <class I, class T, class... Args>
+  void _read(I&, Tuple<T, Args...>*);
+template <class I, class... Args>
+  void _read(I&, Object<Args...>*);
 
 
 /**
@@ -31,9 +31,9 @@ template <class... Args>
  *
  * @param data Data.
  */
-template <class T>
-void _read(T* data) {
-  IO.read((byte*)data, sizeof(T));
+template <class I, class T>
+void _read(I& io, T* data) {
+  io.read((byte*)data, sizeof(T));
 }
 
 /**
@@ -41,14 +41,15 @@ void _read(T* data) {
  *
  * @param data String.
  */
-inline void _read(String* data) {
+template <class I>
+void _read(I& io, String* data) {
   byte character;
 
-  IO.read((&character), sizeof(byte));
+  io.read((&character), sizeof(byte));
 
   while (character != _END_OF_STRING) {
     *data += character;
-    IO.read((&character), sizeof(byte));
+    io.read((&character), sizeof(byte));
   }
   //*data = Serial.readStringUntil(_END_OF_STRING);
 }
@@ -58,17 +59,17 @@ inline void _read(String* data) {
  *
  * @param data Vector.
  */
-template <class T>
-void _read(Vector<T>* data) {
+template <class I, class T>
+void _read(I& io, Vector<T>* data) {
   size_t size;
   int i;
 
 
-  _read(&size);
+  _read(io, &size);
   (*data).resize(size);
 
   for (i = 0; i < (*data).size; i++) {
-    _read(&(*data)[i]);
+    _read(io, &(*data)[i]);
   }
 }
 
@@ -76,17 +77,18 @@ void _read(Vector<T>* data) {
 /**
  * Recursion terminator for @a _read(Tuple*)().
  */
-inline void _read(Tuple<>*) {}
+template <class I>
+void _read(I&, Tuple<>*) {}
 
 /**
  * Read a value of type @a Tuple from serial.
  *
  * @param data Tuple.
  */
-template <class T, class... Args>
-void _read(Tuple<T, Args...>* data) {
-  _read(&(*data).head);
-  _read(&(*data).tail);
+template <class I, class T, class... Args>
+void _read(I& io, Tuple<T, Args...>* data) {
+  _read(io, &(*data).head);
+  _read(io, &(*data).tail);
 }
 
 
@@ -95,9 +97,9 @@ void _read(Tuple<T, Args...>* data) {
  *
  * @param data Object.
  */
-template <class... Args>
-void _read(Object<Args...>* data) {
-  _read((Tuple<Args...>*)data);
+template <class I, class... Args>
+void _read(I& io, Object<Args...>* data) {
+  _read(io, (Tuple<Args...>*)data);
 }
 
 #endif

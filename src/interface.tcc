@@ -13,9 +13,9 @@
  * @li https://en.cppreference.com/w/cpp/language/parameter_pack
  */
 
-#include "serial/io.h"
+//#include "serial/io.h"
 
-#include "print.tcc"
+//#include "print.tcc"
 #include "rpcCall.tcc"
 #include "signature.tcc"
 
@@ -28,10 +28,10 @@
  *
  * @private
  */
-template <class F, class D>
-void _writeDescription(F f, D doc) {
+template <class I, class F, class D>
+void _writeDescription(I& io, F f, D doc) {
   //multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
-  xrite(signature(f).c_str(), ";", doc, _END_OF_STRING);
+  xrite(io, signature(f).c_str(), ";", doc, _END_OF_STRING);
 }
 
 
@@ -40,7 +40,8 @@ void _writeDescription(F f, D doc) {
  *
  * @private
  */
-inline void _describe(void) {}
+template <class I>
+void _describe(I&) {}
 
 /**
  * Describe a list of functions.
@@ -55,10 +56,10 @@ inline void _describe(void) {}
  *
  * @private
  */
-template <class F, class D, class... Args>
-void _describe(F f, D doc, Args... args) {
-  _writeDescription(f, doc);
-  _describe(args...);
+template <class I, class F, class D, class... Args>
+void _describe(I& io, F f, D doc, Args... args) {
+  _writeDescription(io, f, doc);
+  _describe(io, args...);
 }
 
 /**
@@ -66,10 +67,10 @@ void _describe(F f, D doc, Args... args) {
  *
  * @private
  */
-template <class U, class V, class D, class... Args>
-void _describe(Tuple<U, V> t, D doc, Args... args) {
-  _writeDescription(t.tail.head, doc);
-  _describe(args...);
+template <class I, class U, class V, class D, class... Args>
+void _describe(I& io, Tuple<U, V> t, D doc, Args... args) {
+  _writeDescription(io, t.tail.head, doc);
+  _describe(io, args...);
 }
 
 
@@ -78,7 +79,8 @@ void _describe(Tuple<U, V> t, D doc, Args... args) {
  *
  * @private
  */
-inline void _select(byte, byte) {}
+template <class I>
+void _select(I&, byte, byte) {}
 
 /**
  * Select and call a function indexed by @a number.
@@ -96,13 +98,13 @@ inline void _select(byte, byte) {}
  *
  * @private
  */
-template <class F, class D, class... Args>
-void _select(byte number, byte depth, F f, D, Args... args) {
+template <class I, class F, class D, class... Args>
+void _select(I& io, byte number, byte depth, F f, D, Args... args) {
   if (depth == number) {
-    rpcCall(f);
+    rpcCall(io, f);
     return;
   }
-  _select(number, depth + 1, args...);
+  _select(io, number, depth + 1, args...);
 }
 
 
@@ -117,19 +119,21 @@ void _select(byte number, byte depth, F f, D, Args... args) {
  *
  * @param args Parameter pairs (function pointer, documentation).
  */
-template <class... Args>
-void rpcInterface(Args... args) {
+template <class I, class... Args>
+void rpcInterface(I& io, Args... args) {
   byte command;
 
-  if (Serial.available()) {
-    command = Serial.read();
+  if (io.available()) {
+    //command = io.read();
+    io.read(&command, sizeof(byte));
+
 
     if (command == _LIST_REQ) {
-      xrite(_PROTOCOL, _END_OF_STRING);
-      xrite(_VERSION[0], _VERSION[1], _VERSION[2]);
-      xrite(_hardwareDefs(), _END_OF_STRING);
-      _describe(args...);
-      xrite(_END_OF_STRING);
+      xrite(io, _PROTOCOL, _END_OF_STRING);
+      xrite(io, _VERSION[0], _VERSION[1], _VERSION[2]);
+      xrite(io, _hardwareDefs(), _END_OF_STRING);
+      _describe(io, args...);
+      xrite(io, _END_OF_STRING);
 
       //multiPrint(_PROTOCOL, _END_OF_STRING);
       //multiPrint(_VERSION[0], _VERSION[1], _VERSION[2]);
@@ -138,7 +142,7 @@ void rpcInterface(Args... args) {
       //multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
     }
-    _select(command, 0, args...);
+    _select(io, command, 0, args...);
   }
 }
 
