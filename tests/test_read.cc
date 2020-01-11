@@ -1,6 +1,9 @@
 #include <catch.hpp>
 
 #include "../src/read.tcc"
+#include "../src/serial/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Read basic types", "[read][basic]") {
@@ -10,8 +13,8 @@ TEST_CASE("Read basic types", "[read][basic]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(&i);
-  _read(&c);
+  _read(io, &i);
+  _read(io, &c);
 
   REQUIRE(i == 1234);
   REQUIRE(c == 'x');
@@ -23,7 +26,7 @@ TEST_CASE("Read string", "[read][string]") {
   Serial.reset();
   Serial.prepare("xyz");
 
-  _read(&s);
+  _read(io, &s);
 
   REQUIRE(s == "xyz");
 }
@@ -34,7 +37,7 @@ TEST_CASE("Read tuple", "[read][tuple]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(&t);
+  _read(io, &t);
 
   REQUIRE(t.head == 1234);
   REQUIRE(t.tail.head == 'x');
@@ -46,7 +49,7 @@ TEST_CASE("Read object", "[read][object]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(&o);
+  _read(io, &o);
 
   REQUIRE(o.head == 1234);
   REQUIRE(o.tail.head == 'x');
@@ -58,7 +61,7 @@ TEST_CASE("Read vector", "[read][vector]") {
   Serial.reset();
   Serial.prepare((size_t)3, 1234, 2345, 3456);
 
-  _read(&v);
+  _read(io, &v);
 
   REQUIRE(v.size == 3);
   REQUIRE(v[0] == 1234);
@@ -72,7 +75,7 @@ TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
 
-  _read(&t);
+  _read(io, &t);
 
   REQUIRE(t.head[0] == 1234);
   REQUIRE(t.head[1] == 2345);
@@ -85,7 +88,7 @@ TEST_CASE("Read complex object", "[read][object][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
 
-  _read(&o);
+  _read(io, &o);
 
   REQUIRE(o.head[0] == 1234);
   REQUIRE(o.head[1] == 2345);
@@ -98,7 +101,7 @@ TEST_CASE("Read nested vector", "[read][vector][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
 
-  _read(&v);
+  _read(io, &v);
 
   REQUIRE(v[0][0] == 1234);
   REQUIRE(v[0][1] == 2345);
@@ -112,7 +115,7 @@ TEST_CASE("Read complex vector", "[read][vector][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 'x', 2345, 'y');
 
-  _read(&v);
+  _read(io, &v);
 
   REQUIRE(v[0].head == 1234);
   REQUIRE(v[0].tail.head.head == 'x');

@@ -1,6 +1,9 @@
 #include <catch.hpp>
 
 #include "../src/write.tcc"
+#include "../src/serial/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Write basic types", "[write][basic]") {
@@ -9,8 +12,8 @@ TEST_CASE("Write basic types", "[write][basic]") {
 
   Serial.reset();
 
-  _write(&i);
-  _write(&c);
+  _write(io, &i);
+  _write(io, &c);
 
   REQUIRE(Serial.inspect<int>() == 1234);
   REQUIRE(Serial.inspect<char>() == 'x');
@@ -21,7 +24,7 @@ TEST_CASE("Write string", "[write][string]") {
 
   Serial.reset();
 
-  _write(&s);
+  _write(io, &s);
 
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
@@ -31,7 +34,7 @@ TEST_CASE("Write tuple", "[write][tuple]") {
 
   Serial.reset();
 
-  _write(&t);
+  _write(io, &t);
 
   REQUIRE(Serial.inspect<int>() == 1234);
   REQUIRE(Serial.inspect<char>() == 'x');
@@ -46,7 +49,7 @@ TEST_CASE("Write object", "[write][object]") {
 
   Serial.reset();
 
-  _write(&o);
+  _write(io, &o);
 
   REQUIRE(Serial.inspect<int>() == 1234);
   REQUIRE(Serial.inspect<char>() == 'x');
@@ -59,7 +62,7 @@ TEST_CASE("Write vector", "[write][vector]") {
 
   Serial.reset();
 
-  _write(&v);
+  _write(io, &v);
 
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
@@ -76,7 +79,7 @@ TEST_CASE("Write complex tuple", "[write][tuple][complex]") {
 
   Serial.reset();
 
-  _write(&t);
+  _write(io, &t);
 
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
@@ -94,7 +97,7 @@ TEST_CASE("Write complex object", "[write][object][complex]") {
 
   Serial.reset();
 
-  _write(&o);
+  _write(io, &o);
 
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
@@ -114,7 +117,7 @@ TEST_CASE("Write nested vector", "[write][vector][complex]") {
 
   Serial.reset();
 
-  _write(&v);
+  _write(io, &v);
 
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<size_t>() == 2);
@@ -135,7 +138,7 @@ TEST_CASE("Write complex vector", "[write][vector][complex]") {
 
   Serial.reset();
 
-  _write(&v);
+  _write(io, &v);
 
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
