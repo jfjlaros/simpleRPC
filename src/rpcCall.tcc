@@ -51,7 +51,8 @@ void _call(I&, void (*)(void), void (*f)(Tail...), Args&... args) {
 
 /// @private Class member function.
 template <class I, class C, class P, class R, class... Tail, class... Args>
-void _call(I& io, void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
+void _call(
+    I& io, void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   R data =(*t.head.*t.tail.head)(args...);
 
   _write(io, &data);
@@ -59,7 +60,8 @@ void _call(I& io, void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args)
 
 /// @private Void class member function.
 template <class I, class C, class P, class... Tail, class... Args>
-void _call(I&, void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
+void _call(
+    I&, void (*)(void), Tuple<C*, void (P::*)(Tail...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 

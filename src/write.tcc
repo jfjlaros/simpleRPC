@@ -7,13 +7,9 @@
 
 #include <Arduino.h>
 
-//#include "print.tcc"
 #include "defs.h"
 #include "tuple.tcc"
 #include "vector.tcc"
-
-//#include "serial/io.h"
-//extern RWIO IO;
 
 
 /*
@@ -46,14 +42,8 @@ void _write(I& io, T* data) {
  */
 template <class I>
 void _write(I io, String* data) {
-  xrite(io, *data);
+  xrite(io, *data); // TODO: Resolve this weird recursion.
   xrite(io, _END_OF_STRING);
-//  //write((*data).c_str(), _END_OF_STRING);
-//  byte m = 'X';
-//
-//  IO.write(&m, 1);
-//  IO.write((byte*)(*data).c_str(), (*data).length());
-//  IO.write(_END_OF_STRING, sizeof(byte));
 }
 
 template <class I, class T>
@@ -139,16 +129,5 @@ template <class I, class... Args>
 void _write(I& io, Object<Args...>* data) {
   _write(io, (Tuple<Args...>*)data);
 }
-
-
-/* TODO: Documentation */
-//inline void write(void) {}
-
-/* TODO: Documentation */
-//template <class T, class... Args>
-//void write(T data, Args... args) {
-//  _write(&data);
-//  write(args...);
-//}
 
 #endif

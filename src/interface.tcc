@@ -13,9 +13,6 @@
  * @li https://en.cppreference.com/w/cpp/language/parameter_pack
  */
 
-//#include "serial/io.h"
-
-//#include "print.tcc"
 #include "rpcCall.tcc"
 #include "signature.tcc"
 
@@ -30,8 +27,7 @@
  */
 template <class I, class F, class D>
 void _writeDescription(I& io, F f, D doc) {
-  //multiPrint(signature(f).c_str(), ";", doc, _END_OF_STRING);
-  xrite(io, signature(f).c_str(), ";", doc, _END_OF_STRING);
+  xrite(io, signature(f), ';', doc, _END_OF_STRING);
 }
 
 
@@ -124,8 +120,7 @@ void rpcInterface(I& io, Args... args) {
   byte command;
 
   if (io.available()) {
-    //command = io.read();
-    io.read(&command, sizeof(byte));
+    io.read(&command, sizeof(byte)); // Convenience function?
 
 
     if (command == _LIST_REQ) {
@@ -134,12 +129,6 @@ void rpcInterface(I& io, Args... args) {
       xrite(io, _hardwareDefs(), _END_OF_STRING);
       _describe(io, args...);
       xrite(io, _END_OF_STRING);
-
-      //multiPrint(_PROTOCOL, _END_OF_STRING);
-      //multiPrint(_VERSION[0], _VERSION[1], _VERSION[2]);
-      //multiPrint(_hardwareDefs().c_str(), _END_OF_STRING);
-      //_describe(args...);
-      //multiPrint(_END_OF_STRING); // Empty string marks end of list.
       return;
     }
     _select(io, command, 0, args...);
