@@ -10,7 +10,7 @@ size_t HardwareSerialIO::available(void) {
 }
 
 size_t HardwareSerialIO::read(byte* buffer, size_t size) {
-  return Serial.readBytes((char *)buffer, size);
+  return Serial.readBytes((char*)buffer, size);
 }
 
 size_t HardwareSerialIO::write(byte* buffer, size_t size) {
