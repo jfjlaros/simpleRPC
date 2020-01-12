@@ -20,6 +20,7 @@
 /**
  * Write the signature and documentation of a function to serial.
  *
+ * @param io Input / output object.
  * @param f Function pointer.
  * @param doc Function documentation.
  *
@@ -27,7 +28,7 @@
  */
 template <class I, class F, class D>
 void _writeDescription(I& io, F f, D doc) {
-  xrite(io, signature(f), ';', doc, _END_OF_STRING);
+  rpcPrint(io, signature(f), ';', doc, _END_OF_STRING);
 }
 
 
@@ -46,6 +47,7 @@ void _describe(I&) {}
  * @a _writeDescription() and make a recursive call to process the remaining
  * parameters.
  *
+ * @param io Input / output object.
  * @param f Function pointer.
  * @param doc Function documentation.
  * @param args Remaining parameters.
@@ -60,6 +62,8 @@ void _describe(I& io, F f, D doc, Args... args) {
 
 /**
  * Class member function.
+ *
+ * @param io Input / output object.
  *
  * @private
  */
@@ -86,6 +90,7 @@ void _select(I&, byte, byte) {}
  * equals @a number), we call function @a f. Otherwise, we try again
  * recursively.
  *
+ * @param io Input / output object.
  * @param number Function index.
  * @param depth Current index.
  * @param f Function pointer.
@@ -113,6 +118,7 @@ void _select(I& io, byte number, byte depth, F f, D, Args... args) {
  * @a _LIST_REQ, we describe the list of functions. Otherwise, we call the
  * function indexed by @a command.
  *
+ * @param io Input / output object.
  * @param args Parameter pairs (function pointer, documentation).
  */
 template <class I, class... Args>
@@ -120,15 +126,14 @@ void rpcInterface(I& io, Args... args) {
   byte command;
 
   if (io.available()) {
-    io.read(&command, sizeof(byte)); // Convenience function?
-
+    rpcRead(io, &command);
 
     if (command == _LIST_REQ) {
-      xrite(io, _PROTOCOL, _END_OF_STRING);
-      xrite(io, _VERSION[0], _VERSION[1], _VERSION[2]);
-      xrite(io, _hardwareDefs(), _END_OF_STRING);
+      rpcPrint(io, _PROTOCOL, _END_OF_STRING);
+      rpcPrint(io, _VERSION[0], _VERSION[1], _VERSION[2]);
+      rpcPrint(io, _hardwareDefs(), _END_OF_STRING);
       _describe(io, args...);
-      xrite(io, _END_OF_STRING);
+      rpcPrint(io, _END_OF_STRING);
       return;
     }
     _select(io, command, 0, args...);

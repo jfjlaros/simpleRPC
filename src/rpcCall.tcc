@@ -30,6 +30,7 @@ template <class I, class T, class... Tail, class F, class... Args>
  * All parameters have been collected since function pointer @a *f_ has no
  * parameter types. All values are now present in the @a args parameter pack.
  *
+ * @param io Input / output object.
  * @param - Dummy function pointer.
  * @param f Function pointer.
  * @param args Parameter pack for @a f.
@@ -40,7 +41,7 @@ template <class I, class R, class... Tail, class... Args>
 void _call(I& io, void (*)(void), R (*f)(Tail...), Args&... args) {
   R data = f(args...);
 
-  _write(io, &data);
+  rpcWrite(io, &data);
 }
 
 /// @private Void function.
@@ -55,7 +56,7 @@ void _call(
     I& io, void (*)(void), Tuple<C*, R (P::*)(Tail...)> t, Args&... args) {
   R data =(*t.head.*t.tail.head)(args...);
 
-  _write(io, &data);
+  rpcWrite(io, &data);
 }
 
 /// @private Void class member function.
@@ -76,6 +77,7 @@ void _call(
  * parameter type @a T is removed from function pointer @a *f_ in the recursive
  * call.
  *
+ * @param io Input / output object.
  * @param f_ Dummy function pointer.
  * @param f Function pointer.
  * @param args Parameter pack for @a f.
@@ -86,7 +88,7 @@ template <class I, class T, class... Tail, class F, class... Args>
 void _call(I& io, void (*f_)(T, Tail...), F f, Args&... args) {
   T data;
 
-  _read(io, &data);
+  rpcRead(io, &data);
   _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
@@ -95,7 +97,7 @@ template <class I, class T, class... Tail, class F, class... Args>
 void _call(I& io, void (*f_)(T&, Tail...), F f, Args&... args) {
   T data;
 
-  _read(io, &data);
+  rpcRead(io, &data);
   _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
@@ -104,7 +106,7 @@ template <class I, class T, class... Tail, class F, class... Args>
 void _call(I& io, void (*f_)(const T&, Tail...), F f, Args&... args) {
   T data;
 
-  _read(io, &data);
+  rpcRead(io, &data);
   _call(io, (void (*)(Tail...))f_, f, args..., data);
 }
 
@@ -116,6 +118,7 @@ void _call(I& io, void (*f_)(const T&, Tail...), F f, Args&... args) {
  * type of this function pointer is removed to avoid unneeded template
  * expansion.
  *
+ * @param io Input / output object.
  * @param f Function pointer.
  */
 template <class I, class R, class... Args>
@@ -126,6 +129,7 @@ void rpcCall(I& io, R (*f)(Args...)) {
 /**
  * Class member function.
  *
+ * @param io Input / output object.
  * @param t @a Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
  */

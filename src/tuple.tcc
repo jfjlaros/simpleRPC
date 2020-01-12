@@ -48,18 +48,18 @@ struct Object : Tuple<Args...> {
  * @private
  */
 template <size_t, class>
-struct ElemTypeHolder;
+struct _ElemTypeHolder;
 
 /// @private
 template <class T, class... Args>
-struct ElemTypeHolder<0, Tuple<T, Args...> > {
+struct _ElemTypeHolder<0, Tuple<T, Args...> > {
   typedef T type;
 };
 
 /// @private
 template <size_t k, class T, class... Args>
-struct ElemTypeHolder<k, Tuple<T, Args...> > {
-  typedef typename ElemTypeHolder<k - 1, Tuple<Args...> >::type type;
+struct _ElemTypeHolder<k, Tuple<T, Args...> > {
+  typedef typename _ElemTypeHolder<k - 1, Tuple<Args...> >::type type;
 };
 
 
@@ -76,7 +76,7 @@ struct ElemTypeHolder<k, Tuple<T, Args...> > {
 template <size_t k, class... Args>
 /// @cond
 typename enableIf<
-    k == 0, typename ElemTypeHolder<0, Tuple<Args...> >::type&>::type
+    k == 0, typename _ElemTypeHolder<0, Tuple<Args...> >::type&>::type
 /// @endcond
     get(Tuple<Args...>& t) {
   return t.head;
@@ -85,7 +85,7 @@ typename enableIf<
 /// @private
 template <size_t k, class T, class... Args>
 typename enableIf<
-    k != 0, typename ElemTypeHolder<k, Tuple<T, Args...> >::type&>::type
+    k != 0, typename _ElemTypeHolder<k, Tuple<T, Args...> >::type&>::type
     get(Tuple<T, Args...>& t) {
   return get<k - 1>(t.tail);
 }

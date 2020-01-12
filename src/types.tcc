@@ -12,7 +12,7 @@
  * Prototypes needed for recursive definitions.
  */
 template <class T>
-  String _typeof(Vector<T>&);
+  String typeof(Vector<T>&);
 
 
 /*
@@ -21,51 +21,51 @@ template <class T>
  * For more information about the encoding:
  * https://docs.python.org/3.5/library/struct.html#format-strings
  */
-inline String _typeof(bool) {
+inline String typeof(bool) {
   return "?";
 }
 
-inline String _typeof(char) {
+inline String typeof(char) {
   return "c";
 }
 
-inline String _typeof(signed char) {
+inline String typeof(signed char) {
   return "b";
 }
 
-inline String _typeof(unsigned char) {
+inline String typeof(unsigned char) {
   return "B";
 }
 
-inline String _typeof(short int) {
+inline String typeof(short int) {
   return "h";
 }
 
-inline String _typeof(unsigned short int) {
+inline String typeof(unsigned short int) {
   return "H";
 }
 
-inline String _typeof(long int) {
+inline String typeof(long int) {
   return "l";
 }
 
-inline String _typeof(unsigned long int) {
+inline String typeof(unsigned long int) {
   return "L";
 }
 
-inline String _typeof(long long int) {
+inline String typeof(long long int) {
   return "q";
 }
 
-inline String _typeof(unsigned long long int) {
+inline String typeof(unsigned long long int) {
   return "Q";
 }
 
-inline String _typeof(float) {
+inline String typeof(float) {
   return "f";
 }
 
-inline String _typeof(String) {
+inline String typeof(String) {
   return "s";
 }
 
@@ -73,21 +73,21 @@ inline String _typeof(String) {
  * The @a int and @a double type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
-inline String _typeof(int) {
+inline String typeof(int) {
   if (sizeof(int) == 2) {
     return "h";
   }
   return "i";
 }
 
-inline String _typeof(unsigned int) {
+inline String typeof(unsigned int) {
   if (sizeof(unsigned int) == 2) {
     return "H";
   }
   return "I";
 }
 
-inline String _typeof(double) {
+inline String typeof(double) {
   if (sizeof(double) == 4) {
     return "f";
   }
@@ -96,11 +96,11 @@ inline String _typeof(double) {
 
 
 /**
- * Recursion terminator for @a _typeof(Tuple&).
+ * Recursion terminator for @a typeof(Tuple&).
  *
  * @private
  */
-inline String _typeof(Tuple<>&) {
+inline String typeof(Tuple<>&) {
   return "";
 }
 
@@ -110,8 +110,8 @@ inline String _typeof(Tuple<>&) {
  * @return Tuple member types.
  */
 template <class... Args>
-String _typeof(Tuple<Args...>& t) {
-  return _typeof(t.head) + _typeof(t.tail);
+String typeof(Tuple<Args...>& t) {
+  return typeof(t.head) + typeof(t.tail);
 }
 
 
@@ -121,8 +121,8 @@ String _typeof(Tuple<Args...>& t) {
  * @return Object member types.
  */
 template <class... Args>
-String _typeof(Object<Args...>& o) {
-  return "(" + _typeof((Tuple<Args...>&)o) + ")";
+String typeof(Object<Args...>& o) {
+  return "(" + typeof((Tuple<Args...>&)o) + ")";
 }
 
 
@@ -130,10 +130,10 @@ String _typeof(Object<Args...>& o) {
  * Vector type.
  */
 template <class T>
-String _typeof(Vector<T>&) {
+String typeof(Vector<T>&) {
   T x;
 
-  return "[" + _typeof(x) + "]";
+  return "[" + typeof(x) + "]";
 }
 
 
@@ -146,9 +146,9 @@ inline String _hardwareDefs(void) {
   size_t i = 0xff;
 
   if (((unsigned char*)&i)[0] == 0xff) {
-    return "<" + _typeof(i);
+    return "<" + typeof(i);
   }
-  return ">" + _typeof(i);
+  return ">" + typeof(i);
 }
 
 #endif
