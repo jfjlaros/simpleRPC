@@ -1,7 +1,7 @@
 Protocol
 ========
 
-In this section we describe the serial protocol.
+In this section we describe the RPC protocol.
 
 Every exported method defined using the ``interface()`` function (see the
 :doc:`usage_device` section) is assigned a number between 0 and 254 in order of
@@ -10,14 +10,14 @@ second method, etc.
 
 There are two types of calls to the device: the method discovery call and a
 remote procedure call. In both cases, communication is initiated by the host by
-writing one byte to the serial device.
+writing one byte to the I/O device.
 
 
 Method discovery
 ----------------
 
 Method discovery is initiated by the host by writing one byte with value
-``0xff`` to the serial device.
+``0xff`` to the I/O device.
 
 The device will respond with a header and a list of method descriptions
 delimited by an end of string signature (``\0``). The list is terminated by an
@@ -91,11 +91,11 @@ Remote procedure calls
 ----------------------
 
 A remote procedure call is initiated by the host by writing one byte to the
-serial device of which the value maps to one of the exported methods (i.e., 0
+I/O device of which the value maps to one of the exported methods (i.e., 0
 maps to the first method, 1 to the second, etc.). If this method takes any
-parameters, their values are written to the serial device. After the parameter
+parameters, their values are written to the I/O device. After the parameter
 values have been received, the device executes the method and writes its return
-value (if any) back to the serial device.
+value (if any) back to the I/O device.
 
 All native C types (``int``, ``float``, ``double``, etc.), Tuples, Objects,
 Vectors and any combination of these are currently supported. The host is
