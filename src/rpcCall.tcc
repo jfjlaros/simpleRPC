@@ -4,8 +4,7 @@
 /**
  * @file rpcCall.tcc
  *
- * Read values from serial, execute a function and write the result back to
- * serial.
+ * Read values, execute a function and write the result back.
  */
 
 #include "read.tcc"
@@ -66,14 +65,13 @@ void _call(
 
 
 /**
- * Collect parameters of a function from serial.
+ * Collect parameters of a function.
  *
  * We isolate the first parameter type @a T from function pointer @a *f_. This
  * type is used to instantiate the variable @a data, which is used to receive
- * @a sizeof(T) bytes from the serial stream. This value is passed recursively
- * to @a _call() function, adding it to the @a args parameter pack. The first
- * parameter type @a T is removed from function pointer @a *f_ in the recursive
- * call.
+ * @a sizeof(T) bytes. This value is passed recursively to @a _call() function,
+ * adding it to the @a args parameter pack. The first parameter type @a T is
+ * removed from function pointer @a *f_ in the recursive call.
  *
  * @param io Input / output object.
  * @param f_ Dummy function pointer.
@@ -109,7 +107,7 @@ void _call(I& io, void (*f_)(const T&, Tail...), F f, Args&... args) {
 }
 
 /**
- * Set up function parameter collection, execution and writing to serial.
+ * Set up function parameter collection, execution and writing.
  *
  * We prepare a dummy function pointer, referred to as @a f_ in the template
  * functions above, which will be used to isolate parameter types. The return

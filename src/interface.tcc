@@ -18,7 +18,7 @@
 
 
 /**
- * Write the signature and documentation of a function to serial.
+ * Write the signature and documentation of a function.
  *
  * @param io Input / output object.
  * @param f Function pointer.
@@ -62,8 +62,6 @@ void _describe(I& io, F f, D doc, Args... args) {
 
 /**
  * Class member function.
- *
- * @param io Input / output object.
  *
  * @private
  */
@@ -114,9 +112,9 @@ void _select(I& io, byte number, byte depth, F f, D, Args... args) {
  *
  * This function expects parameter pairs (function pointer, documentation).
  *
- * One byte is read from serial into @a command, if the value equals
- * @a _LIST_REQ, we describe the list of functions. Otherwise, we call the
- * function indexed by @a command.
+ * One byte is read into @a command, if the value equals @a _LIST_REQ, we
+ * describe the list of functions. Otherwise, we call the function indexed by
+ * @a command.
  *
  * @param io Input / output object.
  * @param args Parameter pairs (function pointer, documentation).

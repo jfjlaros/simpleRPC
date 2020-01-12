@@ -25,6 +25,7 @@ inline byte _ping(byte data) {
  *
  * This function expects parameter pairs (function pointer, documentation).
  *
+ * @param io Input / output object.
  * @param args Parameter pairs (function pointer, documentation).
  */
 template <class I, class... Args>

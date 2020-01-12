@@ -2,7 +2,7 @@
 #define SIMPLE_RPC_READ_TCC_
 
 /**
- * Serial read functions.
+ * Read functions.
  */
 
 #include "defs.h"
@@ -22,7 +22,7 @@ template <class I, class... Args>
 
 
 /**
- * Read a value of basic type from serial.
+ * Read a value of basic type.
  *
  * @param io Input / output object.
  * @param data Data.
@@ -33,7 +33,7 @@ void rpcRead(I& io, T* data) {
 }
 
 /**
- * Read a value of type @a String from serial.
+ * Read a value of type @a String.
  *
  * @param io Input / output object.
  * @param data String.
@@ -51,7 +51,7 @@ void rpcRead(I& io, String* data) {
 }
 
 /**
- * Read a value of type @a Vector from serial.
+ * Read a value of type @a Vector.
  *
  * @param io Input / output object.
  * @param data Vector.
@@ -73,12 +73,14 @@ void rpcRead(I& io, Vector<T>* data) {
 
 /**
  * Recursion terminator for @a rpcRead(Tuple*)().
+ *
+ * @private
  */
 template <class I>
 void rpcRead(I&, Tuple<>*) {}
 
 /**
- * Read a value of type @a Tuple from serial.
+ * Read a value of type @a Tuple.
  *
  * @param io Input / output object.
  * @param data Tuple.
@@ -91,7 +93,7 @@ void rpcRead(I& io, Tuple<T, Args...>* data) {
 
 
 /**
- * Read a value of type @a Object from serial.
+ * Read a value of type @a Object.
  *
  * @param io Input / output object.
  * @param data Object.
