@@ -10,17 +10,6 @@
 #include "vector.tcc"
 
 
-/*
- * Prototypes needed for recursive definitions.
- */
-template <class I, class T>
-  void rpcRead(I&, Vector<T>*);
-template <class I, class T, class... Args>
-  void rpcRead(I&, Tuple<T, Args...>*);
-template <class I, class... Args>
-  void rpcRead(I&, Object<Args...>*);
-
-
 /**
  * Read a value of basic type.
  *

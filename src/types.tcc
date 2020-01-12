@@ -8,12 +8,6 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 
-/*
- * Prototypes needed for recursive definitions.
- */
-template <class T>
-  String rpcTypeOf(Vector<T>&);
-
 
 /*
  * Type encoding functions.

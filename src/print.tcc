@@ -1,6 +1,10 @@
 #ifndef SIMPLE_RPC_PRINT_TCC_
 #define SIMPLE_RPC_PRINT_TCC_
 
+/**
+ * Print functions.
+ */
+
 #include "defs.h"
 
 

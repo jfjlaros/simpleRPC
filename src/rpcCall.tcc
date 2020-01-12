@@ -12,15 +12,6 @@
 #include "write.tcc"
 
 
-/*
- * Prototypes needed for recursive definitions.
- */
-template <class I, class T, class... Tail, class F, class... Args>
-  void _call(I&, void (*)(T&, Tail...), F, Args&...);
-template <class I, class T, class... Tail, class F, class... Args>
-  void _call(I&, void (*)(const T&, Tail...), F, Args&...);
-
-
 /**
  * Execute a function.
  *
