@@ -11,7 +11,7 @@
 #include "interface.tcc"
 
 // IO plugins.
-#include "serial/io.h"
+#include "plugins/hardwareserial/io.h"
 
 
 /// @private
