@@ -5,8 +5,6 @@
  * Serial write functions.
  */
 
-#include <Arduino.h>
-
 #include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
@@ -44,7 +42,7 @@ void rpcWrite(I& io, T* data) {
  */
 template <class I>
 void rpcWrite(I io, String* data) {
-  rpcPrint(io, *data); // TODO: Resolve this weird recursion.
+  rpcPrint(io, *data);
   rpcPrint(io, _END_OF_STRING);
 }
 

@@ -5,6 +5,8 @@
  * Protocol constants.
  */
 
+#include <Arduino.h>
+
 #define _PROTOCOL "simpleRPC"
 #define _VERSION "\3\0\0"
 

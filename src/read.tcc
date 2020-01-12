@@ -5,8 +5,6 @@
  * Serial read functions.
  */
 
-#include <Arduino.h>
-
 #include "defs.h"
 #include "tuple.tcc"
 #include "vector.tcc"

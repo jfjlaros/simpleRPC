@@ -8,8 +8,6 @@
  * serial.
  */
 
-//#include "serial/io.h"
-
 #include "read.tcc"
 #include "tuple.tcc"
 #include "write.tcc"
