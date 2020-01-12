@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include "../src/print.tcc"
-#include "../src/serial/io.h"
+#include "../src/plugins/hardwareserial/io.h"
 
 extern HardwareSerialIO io;
 

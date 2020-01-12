@@ -1,5 +1,5 @@
-#ifndef SIMPLE_RPC_SERIAL_IO_H_
-#define SIMPLE_RPC_SERIAL_IO_H_
+#ifndef SIMPLE_RPC_HARDWARESERIAL_IO_H_
+#define SIMPLE_RPC_HARDWARESERIAL_IO_H_
 
 #include <Arduino.h>
 
