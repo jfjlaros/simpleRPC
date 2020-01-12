@@ -12,7 +12,7 @@
  * Prototypes needed for recursive definitions.
  */
 template <class T>
-  String typeof(Vector<T>&);
+  String rpcTypeOf(Vector<T>&);
 
 
 /*
@@ -21,51 +21,51 @@ template <class T>
  * For more information about the encoding:
  * https://docs.python.org/3.5/library/struct.html#format-strings
  */
-inline String typeof(bool) {
+inline String rpcTypeOf(bool) {
   return "?";
 }
 
-inline String typeof(char) {
+inline String rpcTypeOf(char) {
   return "c";
 }
 
-inline String typeof(signed char) {
+inline String rpcTypeOf(signed char) {
   return "b";
 }
 
-inline String typeof(unsigned char) {
+inline String rpcTypeOf(unsigned char) {
   return "B";
 }
 
-inline String typeof(short int) {
+inline String rpcTypeOf(short int) {
   return "h";
 }
 
-inline String typeof(unsigned short int) {
+inline String rpcTypeOf(unsigned short int) {
   return "H";
 }
 
-inline String typeof(long int) {
+inline String rpcTypeOf(long int) {
   return "l";
 }
 
-inline String typeof(unsigned long int) {
+inline String rpcTypeOf(unsigned long int) {
   return "L";
 }
 
-inline String typeof(long long int) {
+inline String rpcTypeOf(long long int) {
   return "q";
 }
 
-inline String typeof(unsigned long long int) {
+inline String rpcTypeOf(unsigned long long int) {
   return "Q";
 }
 
-inline String typeof(float) {
+inline String rpcTypeOf(float) {
   return "f";
 }
 
-inline String typeof(String) {
+inline String rpcTypeOf(String) {
   return "s";
 }
 
@@ -73,21 +73,21 @@ inline String typeof(String) {
  * The @a int and @a double type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
-inline String typeof(int) {
+inline String rpcTypeOf(int) {
   if (sizeof(int) == 2) {
     return "h";
   }
   return "i";
 }
 
-inline String typeof(unsigned int) {
+inline String rpcTypeOf(unsigned int) {
   if (sizeof(unsigned int) == 2) {
     return "H";
   }
   return "I";
 }
 
-inline String typeof(double) {
+inline String rpcTypeOf(double) {
   if (sizeof(double) == 4) {
     return "f";
   }
@@ -96,11 +96,11 @@ inline String typeof(double) {
 
 
 /**
- * Recursion terminator for @a typeof(Tuple&).
+ * Recursion terminator for @a rpcTypeOf(Tuple&).
  *
  * @private
  */
-inline String typeof(Tuple<>&) {
+inline String rpcTypeOf(Tuple<>&) {
   return "";
 }
 
@@ -110,8 +110,8 @@ inline String typeof(Tuple<>&) {
  * @return Tuple member types.
  */
 template <class... Args>
-String typeof(Tuple<Args...>& t) {
-  return typeof(t.head) + typeof(t.tail);
+String rpcTypeOf(Tuple<Args...>& t) {
+  return rpcTypeOf(t.head) + rpcTypeOf(t.tail);
 }
 
 
@@ -121,8 +121,8 @@ String typeof(Tuple<Args...>& t) {
  * @return Object member types.
  */
 template <class... Args>
-String typeof(Object<Args...>& o) {
-  return "(" + typeof((Tuple<Args...>&)o) + ")";
+String rpcTypeOf(Object<Args...>& o) {
+  return "(" + rpcTypeOf((Tuple<Args...>&)o) + ")";
 }
 
 
@@ -130,10 +130,10 @@ String typeof(Object<Args...>& o) {
  * Vector type.
  */
 template <class T>
-String typeof(Vector<T>&) {
+String rpcTypeOf(Vector<T>&) {
   T x;
 
-  return "[" + typeof(x) + "]";
+  return "[" + rpcTypeOf(x) + "]";
 }
 
 
@@ -146,9 +146,9 @@ inline String _hardwareDefs(void) {
   size_t i = 0xff;
 
   if (((unsigned char*)&i)[0] == 0xff) {
-    return "<" + typeof(i);
+    return "<" + rpcTypeOf(i);
   }
-  return ">" + typeof(i);
+  return ">" + rpcTypeOf(i);
 }
 
 #endif

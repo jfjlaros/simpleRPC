@@ -24,7 +24,7 @@ inline String _parameterTypes(void (*)(void)) {
  *
  * We isolate the first parameter type @a T from function pointer @a *f_. This
  * type is used to instantiate the variable @a data, which is passed to
- * @a typeof() to encode its type. The first parameter type @a T is removed
+ * @a rpcTypeOf() to encode its type. The first parameter type @a T is removed
  * from function pointer @a *f_ in the recursive call.
  *
  * @param f_ Dummy function pointer.
@@ -37,7 +37,7 @@ template <class T, class... Args>
 String _parameterTypes(void (*f_)(T, Args...)) {
   T data;
 
-  return " " + typeof(data) + _parameterTypes((void (*)(Args...))f_);
+  return " " + rpcTypeOf(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
 /// @private Parameter of type @a T&.
@@ -45,7 +45,7 @@ template <class T, class... Args>
 String _parameterTypes(void (*f_)(T&, Args...)) {
   T data;
 
-  return " " + typeof(data) + _parameterTypes((void (*)(Args...))f_);
+  return " " + rpcTypeOf(data) + _parameterTypes((void (*)(Args...))f_);
 }
 
 
@@ -65,7 +65,7 @@ template <class R, class... Args>
 String signature(R (*f)(Args...)) {
   R data;
 
-  return typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
+  return rpcTypeOf(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
 /// Void function.
@@ -79,7 +79,7 @@ template <class R, class C, class... Args>
 String signature(R (C::*f)(Args...)) {
   R data;
 
-  return typeof(data) + ":" + _parameterTypes((void (*)(Args...))f);
+  return rpcTypeOf(data) + ":" + _parameterTypes((void (*)(Args...))f);
 }
 
 /// Void class member function.
