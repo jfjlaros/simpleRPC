@@ -1,15 +1,19 @@
 #include <catch.hpp>
 
-// TODO: convert to xrite()
-/*
 #include "../src/print.tcc"
+#include "../src/serial/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Print", "[print]") {
   // Print single string.
-  REQUIRE(multiPrint((string)"abc") == 3);
+  Serial.reset();
+  rpcPrint(io, "abc");
+  REQUIRE(Serial.inspect<string>() == "abc");
 
   // Print multiple strings.
-  REQUIRE(multiPrint((string)"abc", (string)"12345") == 8);
+  Serial.reset();
+  rpcPrint(io, "abc", "12345");
+  REQUIRE(Serial.inspect<string>() == "abc12345");
 }
-*/
