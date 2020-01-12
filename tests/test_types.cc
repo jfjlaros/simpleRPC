@@ -18,17 +18,17 @@ TEST_CASE("Basic types 1", "[types][basic]") {
   unsigned long long int ulli;
   float f;
 
-  REQUIRE(_typeof(b) == "?");
-  REQUIRE(_typeof(c) == "c");
-  REQUIRE(_typeof(sc) == "b");
-  REQUIRE(_typeof(uc) == "B");
-  REQUIRE(_typeof(si) == "h");
-  REQUIRE(_typeof(usi) == "H");
-  REQUIRE(_typeof(li) == "l");
-  REQUIRE(_typeof(uli) == "L");
-  REQUIRE(_typeof(lli) == "q");
-  REQUIRE(_typeof(ulli) == "Q");
-  REQUIRE(_typeof(f) == "f");
+  REQUIRE(typeof(b) == "?");
+  REQUIRE(typeof(c) == "c");
+  REQUIRE(typeof(sc) == "b");
+  REQUIRE(typeof(uc) == "B");
+  REQUIRE(typeof(si) == "h");
+  REQUIRE(typeof(usi) == "H");
+  REQUIRE(typeof(li) == "l");
+  REQUIRE(typeof(uli) == "L");
+  REQUIRE(typeof(lli) == "q");
+  REQUIRE(typeof(ulli) == "Q");
+  REQUIRE(typeof(f) == "f");
 }
 
 TEST_CASE("Basic types 2", "[types][basic]") {
@@ -38,33 +38,33 @@ TEST_CASE("Basic types 2", "[types][basic]") {
 
   // Basic types of which the size may differ between platforms.
   if (sizeof(int) == 2) {
-    REQUIRE(_typeof(i) == "h");
-    REQUIRE(_typeof(ui) == "H");
+    REQUIRE(typeof(i) == "h");
+    REQUIRE(typeof(ui) == "H");
   }
   else {
-    REQUIRE(_typeof(i) == "i");
-    REQUIRE(_typeof(ui) == "I");
+    REQUIRE(typeof(i) == "i");
+    REQUIRE(typeof(ui) == "I");
   }
   if (sizeof(double) == 4) {
-    REQUIRE(_typeof(d) == "f");
+    REQUIRE(typeof(d) == "f");
   }
   else {
-    REQUIRE(_typeof(d) == "d");
+    REQUIRE(typeof(d) == "d");
   }
 }
 
 TEST_CASE("String type", "[types][string]") {
   String s;
 
-  REQUIRE(_typeof(s) == "s");
+  REQUIRE(typeof(s) == "s");
 }
 
 TEST_CASE("Tuple types", "[types][tuple]") {
   Tuple<int, char> ic;
   Tuple<int, signed char, unsigned long> iscul;
 
-  REQUIRE(_typeof(ic) == "ic");
-  REQUIRE(_typeof(iscul) == "ibL");
+  REQUIRE(typeof(ic) == "ic");
+  REQUIRE(typeof(iscul) == "ibL");
 }
 
 TEST_CASE("Object types", "[types][object]") {
@@ -78,8 +78,8 @@ TEST_CASE("Object types", "[types][object]") {
       Object<char, char>,
       Object<char>>> o1;
 
-  REQUIRE(_typeof(o0) == "((ci)L)");
-  REQUIRE(_typeof(o1) == "(((ccc)c)c((cc)(c)))");
+  REQUIRE(typeof(o0) == "((ci)L)");
+  REQUIRE(typeof(o1) == "(((ccc)c)c((cc)(c)))");
 }
 
 TEST_CASE("Vector", "[types][vector]") {
@@ -88,10 +88,10 @@ TEST_CASE("Vector", "[types][vector]") {
   Vector<signed char> v2;
   Vector<Vector<int>> v3;
 
-  REQUIRE(_typeof(v0) == "[i]");
-  REQUIRE(_typeof(v1) == "[f]");
-  REQUIRE(_typeof(v2) == "[b]");
-  REQUIRE(_typeof(v3) == "[[i]]");
+  REQUIRE(typeof(v0) == "[i]");
+  REQUIRE(typeof(v1) == "[f]");
+  REQUIRE(typeof(v2) == "[b]");
+  REQUIRE(typeof(v3) == "[[i]]");
 }
 
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
@@ -99,17 +99,17 @@ TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
   Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1;
   Tuple<Object<int, char>, Vector<int>> t2;
 
-  REQUIRE(_typeof(t0) == "[i]c");
-  REQUIRE(_typeof(t1) == "icBf");
-  REQUIRE(_typeof(t2) == "(ic)[i]");
+  REQUIRE(typeof(t0) == "[i]c");
+  REQUIRE(typeof(t1) == "icBf");
+  REQUIRE(typeof(t2) == "(ic)[i]");
 }
 
 TEST_CASE("Complex object types", "[types][object][complex]") {
   Object<Vector<Object<int, char>>, Object<float>> o0;
   Object<Tuple<int, char>, Object<char>> o1;
 
-  REQUIRE(_typeof(o0) == "([(ic)](f))");
-  REQUIRE(_typeof(o1) == "(ic(c))");
+  REQUIRE(typeof(o0) == "([(ic)](f))");
+  REQUIRE(typeof(o1) == "(ic(c))");
 }
 
 TEST_CASE("Complex vector types", "[types][vector][complex]") {
@@ -117,7 +117,7 @@ TEST_CASE("Complex vector types", "[types][vector][complex]") {
   Vector<Object<int, Vector<char>>> v1;
   Vector<Tuple<char, Object<int, char>>> v2;
 
-  REQUIRE(_typeof(v0) == "[ic]");
-  REQUIRE(_typeof(v1) == "[(i[c])]");
-  REQUIRE(_typeof(v2) == "[c(ic)]");
+  REQUIRE(typeof(v0) == "[ic]");
+  REQUIRE(typeof(v1) == "[(i[c])]");
+  REQUIRE(typeof(v2) == "[c(ic)]");
 }

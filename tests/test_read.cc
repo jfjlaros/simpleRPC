@@ -13,8 +13,8 @@ TEST_CASE("Read basic types", "[read][basic]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(io, &i);
-  _read(io, &c);
+  rpcRead(io, &i);
+  rpcRead(io, &c);
 
   REQUIRE(i == 1234);
   REQUIRE(c == 'x');
@@ -26,7 +26,7 @@ TEST_CASE("Read string", "[read][string]") {
   Serial.reset();
   Serial.prepare("xyz");
 
-  _read(io, &s);
+  rpcRead(io, &s);
 
   REQUIRE(s == "xyz");
 }
@@ -37,7 +37,7 @@ TEST_CASE("Read tuple", "[read][tuple]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(io, &t);
+  rpcRead(io, &t);
 
   REQUIRE(t.head == 1234);
   REQUIRE(t.tail.head == 'x');
@@ -49,7 +49,7 @@ TEST_CASE("Read object", "[read][object]") {
   Serial.reset();
   Serial.prepare(1234, 'x');
 
-  _read(io, &o);
+  rpcRead(io, &o);
 
   REQUIRE(o.head == 1234);
   REQUIRE(o.tail.head == 'x');
@@ -61,7 +61,7 @@ TEST_CASE("Read vector", "[read][vector]") {
   Serial.reset();
   Serial.prepare((size_t)3, 1234, 2345, 3456);
 
-  _read(io, &v);
+  rpcRead(io, &v);
 
   REQUIRE(v.size == 3);
   REQUIRE(v[0] == 1234);
@@ -75,7 +75,7 @@ TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
 
-  _read(io, &t);
+  rpcRead(io, &t);
 
   REQUIRE(t.head[0] == 1234);
   REQUIRE(t.head[1] == 2345);
@@ -88,7 +88,7 @@ TEST_CASE("Read complex object", "[read][object][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
 
-  _read(io, &o);
+  rpcRead(io, &o);
 
   REQUIRE(o.head[0] == 1234);
   REQUIRE(o.head[1] == 2345);
@@ -101,7 +101,7 @@ TEST_CASE("Read nested vector", "[read][vector][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
 
-  _read(io, &v);
+  rpcRead(io, &v);
 
   REQUIRE(v[0][0] == 1234);
   REQUIRE(v[0][1] == 2345);
@@ -115,7 +115,7 @@ TEST_CASE("Read complex vector", "[read][vector][complex]") {
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 'x', 2345, 'y');
 
-  _read(io, &v);
+  rpcRead(io, &v);
 
   REQUIRE(v[0].head == 1234);
   REQUIRE(v[0].tail.head.head == 'x');
