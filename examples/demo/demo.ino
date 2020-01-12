@@ -38,7 +38,6 @@ Vector<float> vector(Vector<int>& v) {
 
 
 void setup(void) {
-  //Serial.begin(9600);
   io.begin(9600);
 }
 

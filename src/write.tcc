@@ -2,7 +2,7 @@
 #define SIMPLE_RPC_WRITE_TCC_
 
 /**
- * Serial write functions.
+ * Write functions.
  */
 
 #include "print.tcc"
@@ -24,7 +24,7 @@ template <class I, class T, class... Args>
 
 
 /**
- * Write a value of basic type to serial.
+ * Write a value of basic type.
  *
  * @param io Input / output object.
  * @param data Data.
@@ -35,7 +35,7 @@ void rpcWrite(I& io, T* data) {
 }
 
 /**
- * Write a value of type @a String to serial.
+ * Write a value of type @a String.
  *
  * @param io Input / output object.
  * @param data String.
@@ -47,7 +47,7 @@ void rpcWrite(I io, String* data) {
 }
 
 /**
- * Write a value of type @a Vector to serial.
+ * Write a value of type @a Vector.
  *
  * @param io Input / output object.
  * @param data Vector.
@@ -72,7 +72,7 @@ template <class I>
 void rpcWrite(I&, Tuple<>*) {}
 
 /**
- * Write a value of type @a Tuple to serial.
+ * Write a value of type @a Tuple.
  *
  * @param io Input / output object.
  * @param data Tuple.
@@ -85,7 +85,7 @@ void rpcWrite(I& io, Tuple<T, Args...>* data) {
 
 
 /**
- * Write a value of type @a Object to serial.
+ * Write a value of type @a Object.
  *
  * @param io Input / output object.
  * @param data Object.
