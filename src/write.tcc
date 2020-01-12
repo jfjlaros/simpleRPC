@@ -10,19 +10,6 @@
 #include "vector.tcc"
 
 
-/*
- * Prototypes needed for recursive definitions.
- */
-template <class I, class T>
-  void rpcWrite(I&, Vector<T>*);
-template <class I, class T, class... Args>
-  void rpcWrite(I&, Tuple<T, Args...>*);
-template <class I, class... Args>
-  void rpcWrite(I&, Object<Args...>*);
-template <class I, class T, class... Args>
-  void write(I&, T, Args...);
-
-
 /**
  * Write a value of basic type.
  *
