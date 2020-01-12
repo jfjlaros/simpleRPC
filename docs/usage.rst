@@ -8,14 +8,24 @@ Include the header file to use the device library.
     #include <simpleRPC.h>
 
 The library provides the ``interface()`` function, which is responsible for all
-serial communication with the host. To use this function, first enable serial
-communication at 9600 baud in the ``setup()`` body.
+communication with the host. To use this function, first define which interface
+to use by instantiating one of the plugins, the ``HardwareSerialIO`` for
+example.
+
+.. code:: cpp
+
+    HardwareSerialIO io;
+
+This particular plugin needs to be initialised to enable communication at 9600
+baud using the ``begin()`` method in the ``setup()`` body.
 
 .. code:: cpp
 
     void setup(void) {
-      Serial.begin(9600);
+      io.begin(9600);
     }
+
+For other I/O interfaces, please see doc:`plugins`.
 
 
 Standard methods
@@ -31,12 +41,14 @@ parameters.
    * - parameter
      - description
    * - 0
-     - Method one.
+     - Input / output class instance.
    * - 1
-     - Documentation string of method one.
+     - Method one.
    * - 2
-     - Method two.
+     - Documentation string of method one.
    * - 3
+     - Method two.
+   * - 4
      - Documentation string of method two.
    * - ...
      - ...
@@ -103,6 +115,7 @@ Exporting these methods in the ``loop()`` body looks as follows:
 
     void loop(void) {
       interface(
+        io,
         inc, "inc: Increment a value. @a: Value. @return: a + 1.",
         setLed, "set_led: Set LED brightness. @brightness: Brightness.");
     }
@@ -150,6 +163,7 @@ Exporting this class method as a remote call goes as follows:
 
       void loop(void) {
         interface(
+          io,
           pack(&led, &LED::setBrightness),
             "set_led: Set LED brightness. @brightness: Brightness.");
       }

@@ -7,5 +7,6 @@
    introduction
    install
    usage
+   plugins
    protocol
    credits
