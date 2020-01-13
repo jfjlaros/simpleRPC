@@ -16,13 +16,15 @@ example.
 
     HardwareSerialIO io;
 
-This particular plugin needs to be initialised to enable communication at 9600
-baud using the ``begin()`` method in the ``setup()`` body.
+This particular plugin needs to be initialised with the standard ``Serial``
+class instance to enable communication using the hardware serial interface.
+This is done using the ``begin()`` method in the ``setup()`` body.
 
 .. code:: cpp
 
     void setup(void) {
-      io.begin(9600);
+      Serial.begin(9600);
+      io.begin(Serial);
     }
 
 For other I/O interfaces, please see doc:`plugins`.

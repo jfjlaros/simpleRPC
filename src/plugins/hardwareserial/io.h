@@ -6,10 +6,12 @@
 class HardwareSerialIO {
   public:
     HardwareSerialIO(void) {}
-    void begin(unsigned long);
+    void begin(HardwareSerial&);
     size_t available(void),
            read(byte*, size_t),
            write(byte*, size_t);
+  private:
+    HardwareSerial *_hs;
 };
 
 #endif

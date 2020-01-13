@@ -6,13 +6,13 @@
 
 class SoftwareSerialIO {
   public:
-    SoftwareSerialIO(uint8_t txPin, uint8_t rxPin) : _ss(txPin, rxPin) {}
-    void begin(unsigned long);
+    SoftwareSerialIO(void) {}
+    void begin(SoftwareSerial&);
     size_t available(void),
            read(byte*, size_t),
            write(byte*, size_t);
   private:
-    SoftwareSerial _ss;
+    SoftwareSerial *_ss;
 };
 
 #endif

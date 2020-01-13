@@ -13,6 +13,7 @@
 // IO plugins.
 #include "plugins/hardwareserial/io.h"
 #include "plugins/softwareserial/io.h"
+#include "plugins/wire/io.h"
 
 
 /// @private

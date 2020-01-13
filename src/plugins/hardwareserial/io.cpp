@@ -1,18 +1,18 @@
 #include "io.h"
 
 
-void HardwareSerialIO::begin(unsigned long speed) {
-  Serial.begin(speed);
+void HardwareSerialIO::begin(HardwareSerial& hs) {
+  _hs = &hs;
 }
 
 size_t HardwareSerialIO::available(void) {
-  return (size_t)Serial.available();
+  return (size_t)_hs->available();
 }
 
 size_t HardwareSerialIO::read(byte* buffer, size_t size) {
-  return Serial.readBytes((char*)buffer, size);
+  return _hs->readBytes((char*)buffer, size);
 }
 
 size_t HardwareSerialIO::write(byte* buffer, size_t size) {
-  return Serial.write((const byte*)buffer, size);
+  return _hs->write((const byte*)buffer, size);
 }
