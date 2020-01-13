@@ -15,8 +15,10 @@ size_t WireIO::read(byte* buffer, size_t size) {
   for (i = 0; i < size; i++) {
     buffer[i] = (byte)_tw->read();
   }
+
+  return i;
 }
 
 size_t WireIO::write(byte* buffer, size_t size) {
-  _tw->write(buffer, size);
+  return _tw->write(buffer, size);
 }
