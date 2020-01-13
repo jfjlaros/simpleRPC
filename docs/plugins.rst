@@ -2,18 +2,23 @@ Plugins
 =======
 
 The library supports I/O plugins in order to enable RPC communication over a
-range of interfaces, 
-Currently, the folowing plugins are implemented.
+range of interfaces. Currently, the following plugins are implemented.
 
 .. list-table:: Plugins.
    :header-rows: 1
 
    * - name
      - description
-   * - HardwareSerialIO
+     - status
+   * - ``HardwareSerialIO``
      - The standard Arduino serial interface.
-   * - SoftwareSerialIO
+     - working
+   * - ``SoftwareSerialIO``
      - Arduino serial interface using arbitrary pins.
+     - untested
+   * - ``WireIO``
+     -  I2C / TWI interface.
+     - untested
 
 All plugins have at least the following methods.
 
@@ -25,10 +30,10 @@ All plugins have at least the following methods.
      - parameters
    * -
      - Constructor.
-     - user definable
+     - none
    * - ``begin()``
      - Initialisation function.
-     - user definable
+     - depends on plugin
    * - ``available()``
      - Number of bytes available for reading.
      - none
@@ -42,9 +47,8 @@ All plugins have at least the following methods.
 Usually, the I/O plugin is declared as a global object instance in the sketch
 and the ``begin()`` method is invoked from the ``setup()`` function.
 
-The methods ``available()``, ``read()`` and ``write()`` are fixed for all
-plugins. The constructor and the ``begin()`` function may differ between
-plugins.
+The constructor and the methods ``available()``, ``read()`` and ``write()`` are
+fixed for all plugins. The ``begin()`` function may differ between plugins.
 
 
 ``HardwareSerialIO``
@@ -55,20 +59,22 @@ and 1 (which also goes to the computer via the USB connection). The
 ``HardwareSerialIO`` plugin is a wrapper for the Serial_ library, which allows
 communication with the hardware serial interface.
 
-The plugin specific methods are described below.
+The ``begin()`` method of this plugin takes a class instance of type
+``HardwareSerial`` as parameter.
 
-.. list-table:: Methods.
-   :header-rows: 1
+Example
+^^^^^^^
 
-   * - name
-     - description
-     - parameters
-   * -
-     - Constructor.
-     - none
-   * - ``begin()``
-     - Set the baud rate of the serial connection.
-     - ``unsigned long speed``
+A typical use of the ``HardwareSerialIO`` plugin is as follows.
+
+.. cpp::
+
+    HardwareSerialIO io;
+
+    void setup(void) {
+      Serial.begin(9600);
+      io.begin(Serial);
+    }
 
 
 ``SoftwareSerialIO``
@@ -78,21 +84,48 @@ The SoftwareSerial_ library has been developed to allow serial communication on
 other digital pins of the Arduino. The ``SoftwareSerialIO`` plugin is a wrapper
 for this library.
 
-The plugin specific methods are described below.
+The ``begin()`` method of this plugin takes a class instance of type
+``SoftwareSerial`` as parameter.
 
-.. list-table:: Methods.
-   :header-rows: 1
+Example
+^^^^^^^
 
-   * - name
-     - description
-     - parameters
-   * -
-     - Constructor, sets the transmit and receive pins.
-     - ``uint8_t txPin``, ``uint8_t rxPin``
-   * - ``begin()``
-     - Set the baud rate of the serial connection.
-     - ``unsigned long speed``
+A typical use of the ``SoftwareSerialIO`` plugin is as follows.
+
+.. cpp::
+
+    SoftwareSerial ss(2, 3);
+    SoftwareSerialIO io;
+
+    void setup(void) {
+      ss.begin(9600);
+      io.begin(ss);
+    }
+
+
+``WireIO``
+----------
+
+The Wire_ library allows for communication using the I2C / TWI interface. The
+``WireIO`` plugin is a wrapper for this library.
+
+The ``begin()`` method of this plugin takes a class instance of type
+``TwoWire`` as parameter.
+
+Example
+^^^^^^^
+
+A typical use of the ``WireIO`` plugin is as follows.
+
+.. cpp::
+
+    WireIO io;
+
+    void setup(void) {
+      io.begin(Wire);
+    }
 
 
 .. _Serial: https://www.arduino.cc/en/Reference/Serial
 .. _SoftwareSerial: https://www.arduino.cc/en/Reference/SoftwareSerial
+.. _Wire: https://www.arduino.cc/en/Reference/Wire

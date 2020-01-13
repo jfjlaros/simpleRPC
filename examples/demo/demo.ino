@@ -38,7 +38,8 @@ Vector<float> vector(Vector<int>& v) {
 
 
 void setup(void) {
-  io.begin(9600);
+  Serial.begin(9600);
+  io.begin(Serial);
 }
 
 void loop(void) {
