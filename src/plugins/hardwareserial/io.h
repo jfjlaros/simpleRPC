@@ -11,7 +11,7 @@ class HardwareSerialIO {
            read(byte*, size_t),
            write(byte*, size_t);
   private:
-    HardwareSerial *_hs;
+    HardwareSerial* _hs;
 };
 
 #endif

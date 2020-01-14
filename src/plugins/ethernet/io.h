@@ -12,8 +12,8 @@ class EthernetIO {
            read(byte*, size_t),
            write(byte*, size_t);
   private:
-    EthernetServer *_es;
-    EthernetClient *_ec;
+    EthernetServer* _es;
+    EthernetClient* _ec;
 };
 
 #endif

@@ -12,7 +12,7 @@ class SoftwareSerialIO {
            read(byte*, size_t),
            write(byte*, size_t);
   private:
-    SoftwareSerial *_ss;
+    SoftwareSerial* _ss;
 };
 
 #endif
