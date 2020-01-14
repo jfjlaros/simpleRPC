@@ -59,7 +59,7 @@ inline String rpcTypeOf(float) {
   return "f";
 }
 
-inline String rpcTypeOf(String) {
+inline String rpcTypeOf(String&) {
   return "s";
 }
 
