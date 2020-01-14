@@ -7,8 +7,8 @@ LIBS := ../src/plugins/hardwareserial/io
 
 
 CC := g++
-INCLUDE_PATH := arduino-serial-fixture/src
-CC_ARGS := -Wno-pmf-conversions -std=c++11
+CC_ARGS := -std=c++11 -Wno-pmf-conversions \
+  -I arduino-serial-fixture/src -I plugins
 
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES) $(LIBS))
@@ -19,13 +19,13 @@ OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES) $(LIBS))
 all: $(EXEC)
 
 $(EXEC): $(MAIN).cc $(OBJS)
-	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ $^
+	$(CC) $(CC_ARGS) -o $@ $^
 
 %.o: %.cpp
-	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
+	$(CC) $(CC_ARGS) -o $@ -c $<
 
 %.o: %.cc
-	$(CC) $(CC_ARGS) -I $(INCLUDE_PATH) -o $@ -c $<
+	$(CC) $(CC_ARGS) -o $@ -c $<
 
 check: all
 	valgrind ./$(EXEC)

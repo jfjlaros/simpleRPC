@@ -12,7 +12,7 @@ class WireIO {
            read(byte*, size_t),
            write(byte*, size_t);
   private:
-    TwoWire *_tw;
+    TwoWire* _tw;
 };
 
 #endif
