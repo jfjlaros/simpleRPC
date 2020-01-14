@@ -85,7 +85,7 @@ used for missing keys. All descriptions may be empty.
    * - key
      - default
    * - Method name.
-     - ``method`` followed by a number, e.g., ``method2``.
+     - ``method`` followed by a number, e.g., ``method0``.
    * - Parameter name.
      - ``arg`` followed by a number, e.g., ``arg0``.
    * - ``return``
