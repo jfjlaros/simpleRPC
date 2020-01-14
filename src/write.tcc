@@ -28,7 +28,7 @@ void rpcWrite(I& io, T* data) {
  * @param data String.
  */
 template <class I>
-void rpcWrite(I io, String* data) {
+void rpcWrite(I& io, String* data) {
   rpcPrint(io, *data);
   rpcPrint(io, _END_OF_STRING);
 }
