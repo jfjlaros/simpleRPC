@@ -38,7 +38,14 @@ which is then able to generate an API interface.
 - Support for PROGMEM_'s ``F()`` macro to reduce memory footprint.
 - Support for compound data structures like Tuples, Objects (nested Tuples),
   Vectors and arbitrary combinations of these.
-- Support for different types of I/O interfaces via plugins.
+- Support for different types of I/O interfaces via plugins, e.g.,
+
+  - Hardware serial.
+  - Software serial (untested).
+  - Wire (untested).
+  - Ethernet (untested).
+
+- Support for using multiple interfaces at the same time.
 
 The Arduino library is independent of any host implementation, we provide a
 Python API client_ library as a reference implementation.
@@ -67,8 +74,8 @@ Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
       interface(io, digitalRead, "", digitalWrite, "");
     }
 
-These functions are now available on the host under names ``method2()`` and
-``method3()``.
+These functions are now available on the host under names ``method0()`` and
+``method1()``.
 
 The documentation string can be used to name and describe the method.
 
