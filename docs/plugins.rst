@@ -67,7 +67,7 @@ Example
 
 A typical use of the ``HardwareSerialIO`` plugin is as follows.
 
-.. cpp::
+.. code:: cpp
 
     HardwareSerialIO io;
 
@@ -92,7 +92,7 @@ Example
 
 A typical use of the ``SoftwareSerialIO`` plugin is as follows.
 
-.. cpp::
+.. code:: cpp
 
     SoftwareSerial ss(2, 3);
     SoftwareSerialIO io;
@@ -117,13 +117,63 @@ Example
 
 A typical use of the ``WireIO`` plugin is as follows.
 
-.. cpp::
+.. code:: cpp
 
     WireIO io;
 
     void setup(void) {
       io.begin(Wire);
     }
+
+
+Multiple I/O interfaces
+-----------------------
+
+It is possible to use multiple I/O interfaces at the same time. This can be
+done by either serving a different set of methods on each interface or by
+serving the same set of methods on multiple interfaces.
+
+To serve different methods on each interface, the ``interface()`` function is
+simply used multiple times.
+
+Example
+^^^^^^^
+
+Suppose we have set up two I/O interfaces named ``ioHardware`` and
+``ioSoftware``, we serve different methods on each of the interfaces as
+follows.
+
+.. code:: cpp
+
+    void loop(void) {
+      interface(
+        ioHardware,
+        inc, F("inc: Increment a value. @a: Value. @return: a + 1."));
+      interface(
+        ioSoftware,
+        setLed, F("set_led: Set LED brightness. @brightness: Brightness."));
+    }
+
+Alternatively, it is possible to serve the same set of methods on multiple
+interfaces. This can be done by passing a Tuple of pointers to the interfaces
+as the first parameter of the ``interface()`` function.
+
+Example
+^^^^^^^
+
+Suppose we have set up two I/O interfaces named ``ioHardware`` and
+``ioSoftware``, we serve the same methods on both interfaces by grouping
+pointers to these interfaces with the ``pack()`` function as follows.
+
+.. code:: cpp
+
+    void loop(void) {
+      interface(
+        pack(&ioHardware, &ioSoftware),
+        inc, F("inc: Increment a value. @a: Value. @return: a + 1."));
+    }
+
+Finally, it is possible to combine both of the strategies described above.
 
 
 .. _Serial: https://www.arduino.cc/en/Reference/Serial
