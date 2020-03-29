@@ -3,11 +3,15 @@
 HardwareSerialIO io;
 
 
+byte ping(byte data) {
+  return data;
+}
+
 void setLed(byte brightness) {
   analogWrite(LED_BUILTIN, brightness);
 }
 
-unsigned long time(void) {
+unsigned long milliTime(void) {
   return millis();
 }
 
@@ -45,9 +49,10 @@ void setup(void) {
 void loop(void) {
   interface(
     io,
+    ping, F("ping: Echo a value. @data: Value. @return: Value of data."),
     inc, F("inc: Increment a value. @a: Value. @return: a + 1."),
     setLed, F("set_led: Set LED brightness. @brightness: Brightness."),
-    time, F("time: Report the system time. @return: System time."),
+    milliTime, F("time: Report the system time. @return: System time."),
     object, F("object: Example with objects. @o: Object. @return: Object."),
     vector, F("vector: Example with vectors. @v: Vector. @return: Vector."));
 }
