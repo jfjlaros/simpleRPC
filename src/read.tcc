@@ -29,13 +29,13 @@ void rpcRead(I& io, T* data) {
  */
 template <class I>
 void rpcRead(I& io, String* data) {
-  byte character;
+  char character;
 
-  io.read((&character), sizeof(byte));
+  io.read(((byte*)&character), sizeof(char));
 
   while (character != _END_OF_STRING) {
     *data += character;
-    io.read((&character), sizeof(byte));
+    io.read(((byte*)&character), sizeof(char));
   }
 }
 
