@@ -33,6 +33,18 @@ void rpcWrite(I& io, String* data) {
   rpcPrint(io, _END_OF_STRING);
 }
 
+/// @private char* C string.
+template <class I>
+void rpcWrite(I& io, char** data) {
+  rpcWrite(io, (String*)data);
+}
+
+/// @private const char* C string.
+template <class I>
+void rpcWrite(I& io, const char** data) {
+  rpcWrite(io, (String*)data);
+}
+
 /**
  * Write a value of type @a Vector.
  *

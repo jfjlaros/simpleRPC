@@ -29,6 +29,26 @@ TEST_CASE("Write string", "[write][string]") {
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
+TEST_CASE("Write char* C string", "[write][string]") {
+  char* s1 = (char*)"xyz";
+
+  Serial.reset();
+
+  rpcWrite(io, &s1);
+
+  REQUIRE(Serial.inspect<String>() == "xyz");
+}
+
+TEST_CASE("Write const char* C string", "[write][string]") {
+  const char* s2 = "xyz";
+
+  Serial.reset();
+
+  rpcWrite(io, &s2);
+
+  REQUIRE(Serial.inspect<String>() == "xyz");
+}
+
 TEST_CASE("Write tuple", "[write][tuple]") {
   Tuple<int, char> t = {1234, 'x'};
 

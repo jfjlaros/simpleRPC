@@ -63,6 +63,14 @@ inline String rpcTypeOf(String&) {
   return "s";
 }
 
+inline String rpcTypeOf(char*) {
+  return "s";
+}
+
+inline String rpcTypeOf(const char*) {
+  return "s";
+}
+
 /*
  * The @a int and @a double type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
