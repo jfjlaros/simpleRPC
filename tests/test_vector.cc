@@ -27,7 +27,6 @@ TEST_CASE("Initialisation, pointer parameter, no free.", "[vector]") {
   Vector<int> v(10, data, false);
 
   REQUIRE(v.size == 10);
-
   free(data);
 }
 
