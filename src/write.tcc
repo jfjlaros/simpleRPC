@@ -21,6 +21,7 @@ void rpcWrite(I& io, T* data) {
   io.write((byte*)data, sizeof(T));
 }
 
+
 /**
  * Write a value of type @a String.
  *
@@ -33,17 +34,18 @@ void rpcWrite(I& io, String* data) {
   rpcPrint(io, _END_OF_STRING);
 }
 
-/// @private char* C string.
+/// @private C string of type @a char*.
 template <class I>
 void rpcWrite(I& io, char** data) {
   rpcWrite(io, (String*)data);
 }
 
-/// @private const char* C string.
+/// @private C string of type @a const char*.
 template <class I>
 void rpcWrite(I& io, const char** data) {
   rpcWrite(io, (String*)data);
 }
+
 
 /**
  * Write a value of type @a Vector.

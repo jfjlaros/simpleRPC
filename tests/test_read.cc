@@ -1,5 +1,6 @@
 #include <catch.hpp>
 
+#include "../src/del.tcc"
 #include "../src/read.tcc"
 #include "../src/plugins/hardwareserial/io.h"
 
@@ -20,7 +21,7 @@ TEST_CASE("Read basic types", "[read][basic]") {
   REQUIRE(c == 'x');
 }
 
-TEST_CASE("Read string", "[read][string]") {
+TEST_CASE("Read String", "[read][string]") {
   String s;
 
   Serial.reset();
@@ -29,6 +30,32 @@ TEST_CASE("Read string", "[read][string]") {
   rpcRead(io, &s);
 
   REQUIRE(s == "xyz");
+}
+
+TEST_CASE("Read string of type char*", "[read][string]") {
+  char* s;
+
+  Serial.reset();
+  Serial.prepare("xyz");
+
+  rpcRead(io, &s);
+
+  REQUIRE((String)s == "xyz");
+
+  rpcDel(&s);
+}
+
+TEST_CASE("Read string of type const char*", "[read][string]") {
+  const char* s;
+
+  Serial.reset();
+  Serial.prepare("xyz");
+
+  rpcRead(io, &s);
+
+  REQUIRE((String)s == "xyz");
+
+  rpcDel(&s);
 }
 
 TEST_CASE("Read tuple", "[read][tuple]") {

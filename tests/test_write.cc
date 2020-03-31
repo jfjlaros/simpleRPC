@@ -19,7 +19,7 @@ TEST_CASE("Write basic types", "[write][basic]") {
   REQUIRE(Serial.inspect<char>() == 'x');
 }
 
-TEST_CASE("Write string", "[write][string]") {
+TEST_CASE("Write String", "[write][string]") {
   String s = "xyz";
 
   Serial.reset();
@@ -29,22 +29,22 @@ TEST_CASE("Write string", "[write][string]") {
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
-TEST_CASE("Write char* C string", "[write][string]") {
-  char* s1 = (char*)"xyz";
+TEST_CASE("Write C string of type char*", "[write][string]") {
+  char* s = (char*)"xyz";
 
   Serial.reset();
 
-  rpcWrite(io, &s1);
+  rpcWrite(io, &s);
 
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
-TEST_CASE("Write const char* C string", "[write][string]") {
-  const char* s2 = "xyz";
+TEST_CASE("Write C string of type const char*", "[write][string]") {
+  const char* s = "xyz";
 
   Serial.reset();
 
-  rpcWrite(io, &s2);
+  rpcWrite(io, &s);
 
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
