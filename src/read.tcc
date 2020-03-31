@@ -21,6 +21,7 @@ void rpcRead(I& io, T* data) {
   io.read((byte*)data, sizeof(T));
 }
 
+
 /**
  * Read a value of type @a String.
  *
@@ -38,6 +39,23 @@ void rpcRead(I& io, String* data) {
     io.read(((byte*)&character), sizeof(char));
   }
 }
+
+/// @private C string of type @a char*.
+template <class I>
+void rpcRead(I& io, char** data) {
+  String s;
+
+  rpcRead(io, &s);
+  *data = (char*)malloc((s.length() + 1) * sizeof(char));
+  strcpy(*data, s.c_str());
+}
+
+/// @private C string of type @a const char*.
+template <class I>
+void rpcRead(I& io, const char** data) {
+  rpcRead(io, (char**)data);
+}
+
 
 /**
  * Read a value of type @a Vector.

@@ -7,8 +7,8 @@
  * Read values, execute a function and write the result back.
  */
 
+#include "del.tcc"
 #include "read.tcc"
-#include "tuple.tcc"
 #include "write.tcc"
 
 
@@ -77,6 +77,7 @@ void _call(I& io, void (*f_)(T, Tail...), F f, Args&... args) {
 
   rpcRead(io, &data);
   _call(io, (void (*)(Tail...))f_, f, args..., data);
+  rpcDel(&data);
 }
 
 /// @private Parameter of type @a T&.
@@ -85,28 +86,6 @@ void _call(I& io, void (*f_)(T&, Tail...), F f, Args&... args) {
   _call(io, (void (*)(T, Tail...))f_, f, args...);
 }
 
-/// @private Parameter of type @a const T&.
-template <class I, class T, class... Tail, class F, class... Args>
-void _call(I& io, void (*f_)(const T&, Tail...), F f, Args&... args) {
-  _call(io, (void (*)(T, Tail...))f_, f, args...);
-}
-
-/// @private Parameter of type @a char*.
-template <class I, class... Tail, class F, class... Args>
-void _call(I& io, void (*f_)(char*, Tail...), F f, Args&... args) {
-  char *cStr;
-  String data;
-
-  rpcRead(io, &data);
-  cStr = (char*)data.c_str();
-  _call(io, (void (*)(Tail...))f_, f, args..., cStr);
-}
-
-/// @private Parameter of type @a const char*.
-template <class I, class... Tail, class F, class... Args>
-void _call(I& io, void (*f_)(const char*, Tail...), F f, Args&... args) {
-  _call(io, (void (*)(char*, Tail...))f_, f, args...);
-}
 
 /**
  * Set up function parameter collection, execution and writing.
