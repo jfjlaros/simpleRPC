@@ -43,11 +43,16 @@ void rpcRead(I& io, String* data) {
 /// @private C string of type @a char*.
 template <class I>
 void rpcRead(I& io, char** data) {
-  String s;
+  size_t size = 1;
 
-  rpcRead(io, &s);
-  *data = (char*)malloc((s.length() + 1) * sizeof(char));
-  strcpy(*data, s.c_str());
+  *data = (char*)malloc(sizeof(char));
+  io.read((byte*)(*data), sizeof(char));
+
+  while ((*data)[size - 1] != _END_OF_STRING) {
+    size++;
+    *data = (char*)realloc((void*)(*data), size * sizeof(char));
+    io.read(((byte*)&(*data)[size - 1]), sizeof(char));
+  }
 }
 
 /// @private C string of type @a const char*.
