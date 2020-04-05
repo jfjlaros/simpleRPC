@@ -23,6 +23,29 @@ void rpcWrite(I& io, T* data) {
 
 
 /**
+ * Write a value of type @a char*.
+ *
+ * @param io Input / output object.
+ * @param data String.
+ */
+template <class I>
+void rpcWrite(I& io, char** data) {
+  rpcPrint(io, *data);
+  rpcPrint(io, _END_OF_STRING);
+}
+
+/**
+ * Write a value of type @a const char*.
+ *
+ * @param io Input / output object.
+ * @param data String.
+ */
+template <class I>
+void rpcWrite(I& io, const char** data) {
+  rpcWrite(io, (char**)data);
+}
+
+/**
  * Write a value of type @a String.
  *
  * @param io Input / output object.
@@ -32,18 +55,6 @@ template <class I>
 void rpcWrite(I& io, String* data) {
   rpcPrint(io, *data);
   rpcPrint(io, _END_OF_STRING);
-}
-
-/// @private C string of type @a char*.
-template <class I>
-void rpcWrite(I& io, char** data) {
-  rpcWrite(io, (String*)data);
-}
-
-/// @private C string of type @a const char*.
-template <class I>
-void rpcWrite(I& io, const char** data) {
-  rpcWrite(io, (String*)data);
 }
 
 

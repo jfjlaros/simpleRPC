@@ -19,14 +19,15 @@ void rpcPrint(I& io, T data) {
   io.write((byte*)&data, sizeof(T));
 }
 
+
 /**
- * Print a C string.
+ * Print a value of type @a char*.
  *
  * @param io Input / output object.
  * @param data C string.
  */
 template <class I>
-void rpcPrint(I& io, const char* data) {
+void rpcPrint(I& io, char* data) {
   size_t i = 0;
 
   while (data[i] != _END_OF_STRING) {
@@ -36,7 +37,18 @@ void rpcPrint(I& io, const char* data) {
 }
 
 /**
- * Print a string.
+ * Print a value of type @a const char*.
+ *
+ * @param io Input / output object.
+ * @param data C string.
+ */
+template <class I>
+void rpcPrint(I& io, const char* data) {
+  rpcPrint(io, (char*)data);
+}
+
+/**
+ * Print a value of type String.
  *
  * @param io Input / output object.
  * @param data String.
@@ -63,6 +75,7 @@ void rpcPrint(I& io, const __FlashStringHelper* data) {
     c = pgm_read_byte(p);
   }
 }
+
 
 /**
  * Print any number of values.
