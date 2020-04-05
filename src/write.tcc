@@ -1,20 +1,18 @@
 #ifndef SIMPLE_RPC_WRITE_TCC_
 #define SIMPLE_RPC_WRITE_TCC_
 
-/**
- * Write functions.
- */
-
 #include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
 
+//! \defgroup write
 
-/**
- * Write a value of basic type.
+
+/*! \ingroup write
+ * Write a value to an Input / output object.
  *
- * @param io Input / output object.
- * @param data Data.
+ * \param io Input / output object.
+ * \param data Data.
  */
 template <class I, class T>
 void rpcWrite(I& io, T* data) {
@@ -22,35 +20,23 @@ void rpcWrite(I& io, T* data) {
 }
 
 
-/**
- * Write a value of type @a char*.
- *
- * @param io Input / output object.
- * @param data String.
- */
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
 template <class I>
 void rpcWrite(I& io, char** data) {
   rpcPrint(io, *data);
   rpcPrint(io, _END_OF_STRING);
 }
 
-/**
- * Write a value of type @a const char*.
- *
- * @param io Input / output object.
- * @param data String.
- */
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
 template <class I>
 void rpcWrite(I& io, const char** data) {
   rpcWrite(io, (char**)data);
 }
 
-/**
- * Write a value of type @a String.
- *
- * @param io Input / output object.
- * @param data String.
- */
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
 template <class I>
 void rpcWrite(I& io, String* data) {
   rpcPrint(io, *data);
@@ -58,12 +44,8 @@ void rpcWrite(I& io, String* data) {
 }
 
 
-/**
- * Write a value of type @a Vector.
- *
- * @param io Input / output object.
- * @param data Vector.
- */
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
 template <class I, class T>
 void rpcWrite(I& io, Vector<T>* data) {
   int i;
@@ -75,36 +57,24 @@ void rpcWrite(I& io, Vector<T>* data) {
 }
 
 
-/**
- * Recursion terminator for @a rpcWrite(Tuple*)().
- *
- * @private
- */
+//! Recursion terminator for `rpcWrite(Tuple*)()`.
 template <class I>
 void rpcWrite(I&, Tuple<>*) {}
 
-/**
- * Write a value of type @a Tuple.
- *
- * @param io Input / output object.
- * @param data Tuple.
- */
-template <class I, class T, class... Args>
-void rpcWrite(I& io, Tuple<T, Args...>* data) {
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
+template <class I, class... Membs>
+void rpcWrite(I& io, Tuple<Membs...>* data) {
   rpcWrite(io, &(*data).head);
   rpcWrite(io, &(*data).tail);
 }
 
 
-/**
- * Write a value of type @a Object.
- *
- * @param io Input / output object.
- * @param data Object.
- */
-template <class I, class... Args>
-void rpcWrite(I& io, Object<Args...>* data) {
-  rpcWrite(io, (Tuple<Args...>*)data);
+/*! \ingroup write
+ * \copydoc rpcWrite(I&, T*) */
+template <class I, class... Membs>
+void rpcWrite(I& io, Object<Membs...>* data) {
+  rpcWrite(io, (Tuple<Membs...>*)data);
 }
 
 #endif

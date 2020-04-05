@@ -27,8 +27,8 @@ procedure calls.
     }
 
 A common way of making functions available is to map each of the functions to
-an unique value. The Arduino reads one byte from an I/O device and it uses
-this to call the appropriated function.
+an unique value. The Arduino reads one byte from an I/O device and it uses this
+to select the appropriated function.
 
 If a function takes parameters, their values need to be read from the I/O
 device before calling the function. Any return value needs to be written to the
@@ -96,9 +96,8 @@ such an approach are clear from the example:
 - A lot of low-level knowledge of the device methods and their types is
   required.
 
-This is why we developed the simpleRPC library, like the implementation above,
-it only communicates values but has none of the downsides of an *ad hoc*
-protocol.
+This is where the simpleRPC library comes in, like the implementation above, it
+only communicates values but has none of the downsides of an *ad hoc* protocol.
 
 
 .. _struct: https://docs.python.org/2/library/struct.html

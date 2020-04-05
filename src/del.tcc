@@ -1,67 +1,52 @@
 #ifndef SIMPLE_RPC_DEL_TCC_
 #define SIMPLE_RPC_DEL_TCC_
 
-/**
- * @file del.tcc
- *
- * Delete functions.
- */
 #include "tuple.tcc"
 
+//! \defgroup del
 
-/**
- * Delete a basic type.
+
+/*! \ingroup del
+ * Delete a value.
  *
- * @param data Data.
+ * \param data Data.
  */
 template <class T>
 void rpcDel(T* data) {}
 
 
-/**
- * Delete an array.
- *
- * @param data Array of type @a T*.
- */
+/*! \ingroup del
+ * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(T** data) {
   free(*data);
 }
 
-/// @private Delete an array of type @a const T*.
+/*! \ingroup del
+ * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(const T** data) {
   rpcDel((T**)data);
 }
 
 
-/**
- * Recursion terminator for @a rpcDel(Tuple*)().
- *
- * @private
- */
+//! Recursion terminator for `rpcDel(Tuple*)`.
 inline void rpcDel(Tuple<>*) {}
 
-/**
- * Delete a @a Tuple.
- *
- * @param data Tuple.
- */
-template <class T, class... Args>
-void rpcDel(Tuple<T, Args...>* data) {
+/*! \ingroup del
+ * \copydoc rpcDel(T*) */
+template <class... Membs>
+void rpcDel(Tuple<Membs...>* data) {
   rpcDel(&(*data).head);
   rpcDel(&(*data).tail);
 }
 
 
-/**
- * Delete an @a Object.
- *
- * @param data Object.
- */
-template <class... Args>
-void rpcDel(Object<Args...>* data) {
-  rpcDel((Tuple<Args...>*)data);
+/*! \ingroup del
+ * \copydoc rpcDel(T*) */
+template <class... Membs>
+void rpcDel(Object<Membs...>* data) {
+  rpcDel((Tuple<Membs...>*)data);
 }
 
 #endif

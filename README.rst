@@ -36,8 +36,8 @@ which is then able to generate an API interface.
 - Support for arbitrary functions and class methods.
 - Optional function and parameter naming and documentation.
 - Support for PROGMEM_'s ``F()`` macro to reduce memory footprint.
-- Support for compound data structures like Tuples, Objects (nested Tuples),
-  Vectors and arbitrary combinations of these.
+- Support for compound data structures like Tuples, Objects (Tuples with
+  internal structure), Vectors and arbitrary combinations of these.
 - Support for different types of I/O interfaces via plugins, e.g.,
 
   - Hardware serial.
@@ -47,8 +47,8 @@ which is then able to generate an API interface.
 
 - Support for using multiple interfaces at the same time.
 
-The Arduino library is independent of any host implementation, we provide a
-Python API client_ library as a reference implementation.
+The Arduino library is independent of any host implementation, a Python API
+client_ library is provided as a reference implementation.
 
 Please see ReadTheDocs_ for the latest documentation.
 
@@ -90,8 +90,8 @@ The documentation string can be used to name and describe the method.
 
 This is reflected on the host, where the methods are now named
 ``digital_read()`` and ``digital_write()`` and where the provided API
-documentation is also available. In our client reference implementation
-documentation, we show an example_ on how this works.
+documentation is also available. In the client reference implementation
+documentation, contains an example_ on how this works.
 
 
 Further reading

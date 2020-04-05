@@ -95,24 +95,50 @@ TEST_CASE("RPC interface", "[describe][interface]") {
   // Describe interface.
   Serial.reset();
   Serial.prepare(_LIST_REQ);
-  rpcInterface(io, S::f0, "f", S::f1, "g");
+  interface(io, S::f0, "f", S::f1, "g");
   REQUIRE(Serial.inspect<String>() == (String)_PROTOCOL);
   REQUIRE(Serial.inspect<byte>() == _VERSION[0]);
   REQUIRE(Serial.inspect<byte>() == _VERSION[1]);
   REQUIRE(Serial.inspect<byte>() == _VERSION[2]);
-  REQUIRE(Serial.inspect<String>() == _hardwareDefs());
+  REQUIRE(Serial.inspect<String>() == hardwareDefs());
   REQUIRE(Serial.inspect<String>() == "h:;f");
   REQUIRE(Serial.inspect<String>() == "h:;g");
 
   // Select first function.
   Serial.reset();
   Serial.prepare((byte)0x00);
-  rpcInterface(io, S::f0, "f0", S::f1, "f1");
+  interface(io, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 1);
 
   // Select second function.
   Serial.reset();
   Serial.prepare((byte)0x01);
-  rpcInterface(io, S::f0, "f0", S::f1, "f1");
+  interface(io, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 2);
+}
+
+TEST_CASE("RPC call function x", "[call][basic]") {
+  struct S {
+    static short int f(int) {
+      return 2;
+    }
+  };
+
+  // One interface.
+  Serial.reset();
+  Serial.prepare('\0');
+  interface(io, S::f, "");
+  REQUIRE(Serial.inspect<short int>() == 2);
+  REQUIRE(Serial.rx == sizeof(byte) + sizeof(int));
+  REQUIRE(Serial.tx == sizeof(short int));
+
+  // Two interfaces.
+  Serial.reset();
+  Serial.prepare('\0');
+  Serial.prepare('\0');
+  interface(pack(&io, &io), S::f, "");
+  REQUIRE(Serial.inspect<short int>() == 2);
+  REQUIRE(Serial.inspect<short int>() == 2);
+  REQUIRE(Serial.rx == 2 * (sizeof(byte) + sizeof(int)));
+  REQUIRE(Serial.tx == 2 * (sizeof(short int)));
 }
