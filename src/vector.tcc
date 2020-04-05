@@ -1,10 +1,10 @@
 #ifndef SIMPLE_RPC_VECTOR_TCC_
 #define SIMPLE_RPC_VECTOR_TCC_
 
-/**
- * @class Vector
- *
- * Generic vector.
+//! \defgroup vector
+
+/*! \ingroup vector
+ * Generic Vector.
  */
 template <class T>
 class Vector {
@@ -15,29 +15,29 @@ class Vector {
     ~Vector(void);
     void resize(size_t);
     T& operator[](size_t);
-    size_t size = 0;     ///< Number of elements.
-    bool destroy = true; ///< Free memory when destructor is called.
+    size_t size = 0;     //!< Number of elements.
+    bool destroy = true; //!< Free memory when destructor is called.
   private:
     T* _data = NULL;
 };
 
 
-/**
- * Constructor.
+/*!
+ * Create a Vector with `size` elements.
  *
- * @param size Size of the vector.
+ * \param size Size of the Vector.
  */
 template <class T>
 Vector<T>::Vector(size_t size) {
   resize(size);
 }
 
-/**
- * Constructor.
+/*!
+ * Create a Vector with `size` elements from a C array.
  *
- * @param size Size of the vector.
- * @param data Pointer to data.
- * @param destroy Free @a data in the destructor.
+ * \param size Size of the Vector.
+ * \param data Pointer to data.
+ * \param destroy Free `data` in the destructor.
  */
 template <class T>
 Vector<T>::Vector(size_t size, T* data, bool destroy) {
@@ -46,9 +46,7 @@ Vector<T>::Vector(size_t size, T* data, bool destroy) {
   _data = data;
 }
 
-/**
- * Destructor.
- */
+//! Destructor.
 template <class T>
 Vector<T>::~Vector(void) {
   int i;
@@ -62,25 +60,24 @@ Vector<T>::~Vector(void) {
   }
 }
 
-/**
+/*!
  * Get a reference to an element.
  *
- * This can be used for both retrieving as well as setting the content of an
- * element.
+ * This can be used for both retrieval as well as assignment.
  *
- * @param index Index.
+ * \param index Index.
  *
- * @return Reference to element at index @a index.
+ * \return Reference to element at index `index`.
  */
 template <class T>
 T& Vector<T>::operator[](size_t index) {
   return _data[index];
 }
 
-/**
- * Set the size of a vector.
+/*!
+ * Resize the Vector.
  *
- * @param size New size of the vector.
+ * \param size New size of the Vector.
  */
 template <class T>
 void Vector<T>::resize(size_t size) {

@@ -1,80 +1,108 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
-/**
- * Type analysis and encoding.
- */
-
 #include "tuple.tcc"
 #include "vector.tcc"
 
+//! \defgroup types
 
-/*
- * Type encoding functions.
+
+/*! \ingroup types
+ * Type encoding.
  *
- * For more information about the encoding:
- * https://docs.python.org/3.5/library/struct.html#format-strings
+ * \param - Value.
+ *
+ * \return Encoded type of `Value`.
  */
 inline String rpcTypeOf(bool) {
   return "?";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(char) {
   return "c";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(signed char) {
   return "b";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(unsigned char) {
   return "B";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(short int) {
   return "h";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(unsigned short int) {
   return "H";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(long int) {
   return "l";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(unsigned long int) {
   return "L";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(long long int) {
   return "q";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(unsigned long long int) {
   return "Q";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(float) {
   return "f";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(String&) {
   return "s";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(char*) {
   return "s";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(const char*) {
   return "s";
 }
 
 /*
- * The @a int and @a double type sizes vary between boards, see:
+ * The `int` and `double` type sizes vary between boards, see:
  * https://www.arduino.cc/reference/en/language/variables/data-types/
  */
+
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(int) {
   if (sizeof(int) == 2) {
     return "h";
@@ -82,6 +110,8 @@ inline String rpcTypeOf(int) {
   return "i";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(unsigned int) {
   if (sizeof(unsigned int) == 2) {
     return "H";
@@ -89,6 +119,8 @@ inline String rpcTypeOf(unsigned int) {
   return "I";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 inline String rpcTypeOf(double) {
   if (sizeof(double) == 4) {
     return "f";
@@ -97,40 +129,39 @@ inline String rpcTypeOf(double) {
 }
 
 
-/**
- * Recursion terminator for @a rpcTypeOf(Tuple&).
- *
- * @private
- */
+//! Recursion terminator for `rpcTypeOf(Tuple&)`.
 inline String rpcTypeOf(Tuple<>&) {
   return "";
 }
 
-/**
- * Get the types of all members of a tuple.
+/*! \ingroup types
+ * Get the types of all members of a Tuple.
  *
- * @return Tuple member types.
+ * \param t Tuple.
+ *
+ * \return Tuple member types.
  */
-template <class... Args>
-String rpcTypeOf(Tuple<Args...>& t) {
+template <class... Membs>
+String rpcTypeOf(Tuple<Membs...>& t) {
   return rpcTypeOf(t.head) + rpcTypeOf(t.tail);
 }
 
 
-/**
- * Get the types of all members of an object.
+/*! \ingroup types
+ * Get the types of all members of an Object.
  *
- * @return Object member types.
+ * \param t Object.
+ *
+ * \return Object member types.
  */
-template <class... Args>
-String rpcTypeOf(Object<Args...>& o) {
-  return "(" + rpcTypeOf((Tuple<Args...>&)o) + ")";
+template <class... Membs>
+String rpcTypeOf(Object<Membs...>& o) {
+  return "(" + rpcTypeOf((Tuple<Membs...>&)o) + ")";
 }
 
 
-/**
- * Vector type.
- */
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
 template <class T>
 String rpcTypeOf(Vector<T>&) {
   T x;
@@ -139,12 +170,12 @@ String rpcTypeOf(Vector<T>&) {
 }
 
 
-/**
- * Determine endianness and type of @a size_t.
+/*! \ingroup types
+ * Determine endianness and type of `size_t`.
  *
- * @return Endianness and type of @a size_t;
+ * \return Endianness and type of `size_t`.
  */
-inline String _hardwareDefs(void) {
+inline String hardwareDefs(void) {
   size_t i = 0xff;
 
   if (((unsigned char*)&i)[0] == 0xff) {

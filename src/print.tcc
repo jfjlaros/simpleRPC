@@ -1,18 +1,16 @@
 #ifndef SIMPLE_RPC_PRINT_TCC_
 #define SIMPLE_RPC_PRINT_TCC_
 
-/**
- * Print functions.
- */
-
 #include "defs.h"
 
+//! \defgroup print
 
-/**
- * Print a value of basic type.
+
+/*! \ingroup print
+ * Print a value to an Input / output object.
  *
- * @param io Input / output object.
- * @param data Data.
+ * \param io Input / output object.
+ * \param data Data.
  */
 template <class I, class T>
 void rpcPrint(I& io, T data) {
@@ -20,12 +18,8 @@ void rpcPrint(I& io, T data) {
 }
 
 
-/**
- * Print a value of type @a char*.
- *
- * @param io Input / output object.
- * @param data C string.
- */
+/*! \ingroup print
+ * \copydoc rpcPrint(I&, T) */
 template <class I>
 void rpcPrint(I& io, char* data) {
   size_t i = 0;
@@ -36,34 +30,22 @@ void rpcPrint(I& io, char* data) {
   }
 }
 
-/**
- * Print a value of type @a const char*.
- *
- * @param io Input / output object.
- * @param data C string.
- */
+/*! \ingroup print
+ * \copydoc rpcPrint(I&, T) */
 template <class I>
 void rpcPrint(I& io, const char* data) {
   rpcPrint(io, (char*)data);
 }
 
-/**
- * Print a value of type String.
- *
- * @param io Input / output object.
- * @param data String.
- */
+/*! \ingroup print
+ * \copydoc rpcPrint(I&, T) */
 template <class I>
 void rpcPrint(I& io, String& data) {
   rpcPrint(io, data.c_str());
 }
 
-/**
- * Print a PROGMEM string.
- *
- * @param io Input / output object.
- * @param data PROGMEM string.
- */
+/*! \ingroup print
+ * \copydoc rpcPrint(I&, T) */
 template <class I>
 void rpcPrint(I& io, const __FlashStringHelper* data) {
   const char* p = (const char*)data;
@@ -77,12 +59,12 @@ void rpcPrint(I& io, const __FlashStringHelper* data) {
 }
 
 
-/**
+/*! \ingroup print
  * Print any number of values.
  *
- * @param io Input / output object.
- * @param data Value to be printed.
- * @param args Remaining values.
+ * \param io Input / output object.
+ * \param data Value to be printed.
+ * \param args Remaining values.
  */
 template <class I, class H, class... Tail>
 void rpcPrint(I& io, H data, Tail... args) {

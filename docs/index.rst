@@ -9,4 +9,5 @@
    usage
    plugins
    protocol
+   api
    credits

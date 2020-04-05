@@ -1,102 +1,97 @@
 #ifndef SIMPLE_RPC_TUPLE_TCC_
 #define SIMPLE_RPC_TUPLE_TCC_
 
-/**
- * @file tuple.tcc
- *
- * @a Tuple and @a Object definitions and manipulation functions.
- */
-
 #include "helper.tcc"
 
+//! \defgroup tuple
+//! \defgroup object
+//! \defgroup tuplehelper
 
-/**
- * Empty tuple.
- *
- * @private
+
+/*! \ingroup tuple
+ * Empty Tuple.
  */
-template <class... Args>
+template <class... Membs>
 struct Tuple {};
 
-/**
- * Nested tuple.
+/*! \ingroup tuple
+ * Non-empty Tuple.
  */
-template <class T, class... Args>
-struct Tuple<T, Args...> {
-  T head;              ///< First element.
-  Tuple<Args...> tail; ///< Remaining elements.
+template <class H, class... Tail>
+struct Tuple<H, Tail...> {
+  H head;              //!< First element.
+  Tuple<Tail...> tail; //!< Remaining elements.
 };
 
-/**
- * Nested object.
- *
- * Preferably this would have been an alias, but this is not supported in the
- * current version of Arduino C++.
+/*! \ingroup object
+ * Object.
  */
-template <class... Args>
-struct Object : Tuple<Args...> {
+template <class... Membs>
+struct Object : Tuple<Membs...> {
+  /*
+   * Preferably this would have been an alias, but this is not supported in the
+   * current version of Arduino C++.
+   */
   Object(void) {}
-  Object(Args... args) : Tuple<Args...>({args...}) {}
+  Object(Membs... args) : Tuple<Membs...>({args...}) {}
 };
 
 
-/**
- * Access the type of the @a k-th element in a tuple.
+/*!
+ * Access the type of the *k*-th element in a Tuple.
  *
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
- *
- * @private
  */
 template <size_t, class>
 struct _ElemTypeHolder;
 
-/// @private
-template <class T, class... Args>
-struct _ElemTypeHolder<0, Tuple<T, Args...> > {
-  typedef T type;
+//! \copydoc _ElemTypeHolder
+template <class H, class... Tail>
+struct _ElemTypeHolder<0, Tuple<H, Tail...> > {
+  typedef H type;
 };
 
-/// @private
-template <size_t k, class T, class... Args>
-struct _ElemTypeHolder<k, Tuple<T, Args...> > {
-  typedef typename _ElemTypeHolder<k - 1, Tuple<Args...> >::type type;
+//! \copydoc _ElemTypeHolder
+template <size_t k, class H, class... Tail>
+struct _ElemTypeHolder<k, Tuple<H, Tail...> > {
+  typedef typename _ElemTypeHolder<k - 1, Tuple<Tail...> >::type type;
 };
 
 
-/**
- * Get the @a k-th element in a Tuple.
+/*! \ingroup tuplehelper
+ * Get the *k*-th element of a Tuple or Object.
  *
- * This can be used for both retrieving as well as setting the content of an
- * element.
+ * This can be used for both retrieval as well as assignment.
  *
- * @param t A tuple.
+ * \param t A Tuple.
  *
- * @return Reference to the @a k-th element in @a t.
+ * \return Reference to the *k*-th element in `t`.
  */
-template <size_t k, class... Args>
-/// @cond
+template <size_t k, class... Membs>
+//! \cond
 typename enableIf<
-    k == 0, typename _ElemTypeHolder<0, Tuple<Args...> >::type&>::type
-/// @endcond
-    get(Tuple<Args...>& t) {
+    k == 0, typename _ElemTypeHolder<0, Tuple<Membs...> >::type&>::type
+//! \endcond
+    get(Tuple<Membs...>& t) {
   return t.head;
 }
 
-/// @private
-template <size_t k, class T, class... Args>
+template <size_t k, class... Membs>
+//! \cond
 typename enableIf<
-    k != 0, typename _ElemTypeHolder<k, Tuple<T, Args...> >::type&>::type
-    get(Tuple<T, Args...>& t) {
+    k != 0, typename _ElemTypeHolder<k, Tuple<Membs...> >::type&>::type
+//! \endcond
+    get(Tuple<Membs...>& t) {
   return get<k - 1>(t.tail);
 }
 
 
-/**
- * Make a nested tuple from a list of parameters.
+/*! \ingroup tuplehelper
+ * Make a Tuple from a parameter pack.
  *
- * @param args Values to store in a nested tuple.
+ * \param args Values to store in a Tuple.
  *
- * @return Nested tuple containing @a args.
+ * \return Tuple containing `args`.
  */
 template <class... Args>
 Tuple<Args...> pack(Args... args) {
@@ -105,16 +100,16 @@ Tuple<Args...> pack(Args... args) {
   return t;
 }
 
-/**
- * Cast a struct to a tuple.
+/*! \ingroup tuplehelper
+ * Cast a `struct` to a Tuple.
  *
- * @param s Struct.
+ * \param s Struct.
  *
- * @return Nested tuple representation of @a s.
+ * \return Tuple representation of `s`.
  */
-template <class... Args, class T>
-Tuple<Args...> castStruct(T& s) {
-  Tuple<Args...>* t = (Tuple<Args...>*)&s;
+template <class... Membs, class T>
+Tuple<Membs...> castStruct(T& s) {
+  Tuple<Membs...>* t = (Tuple<Membs...>*)&s;
 
   return *t;
 }

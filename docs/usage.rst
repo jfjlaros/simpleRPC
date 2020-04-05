@@ -1,7 +1,7 @@
 Usage
 =====
 
-Include the header file to use the device library.
+Include the header file to use the simpleRPC library.
 
 .. code:: cpp
 
@@ -9,7 +9,7 @@ Include the header file to use the device library.
 
 The library provides the ``interface()`` function, which is responsible for all
 communication with the host. To use this function, first define which interface
-to use by instantiating one of the plugins, the ``HardwareSerialIO`` for
+to use by instantiating one of the plugins, ``HardwareSerialIO`` for
 example.
 
 .. code:: cpp
@@ -27,15 +27,15 @@ This is done using the ``begin()`` method in the ``setup()`` body.
       io.begin(Serial);
     }
 
-For other I/O interfaces, please see doc:`plugins`.
+Please see the :doc:`plugins` section for using other I/O interfaces.
 
 
-Standard methods
-----------------
+Exporting C functions
+---------------------
 
-Methods are exported by calling the ``interface()`` function from the
-``loop()`` body. This function accepts (function, documentation) pairs as
-parameters.
+Standard C functions are exported as RPC methods by calling the ``interface()``
+function from the ``loop()`` body. This function accepts (function,
+documentation) pairs as parameters.
 
 .. list-table:: Interface function parameters.
    :header-rows: 1
@@ -43,22 +43,22 @@ parameters.
    * - parameter
      - description
    * - 0
-     - Input / output class instance.
+     - I/O class instance.
    * - 1
-     - Method one.
+     - Function one.
    * - 2
-     - Documentation string of method one.
+     - Documentation string of function one.
    * - 3
-     - Method two.
+     - Function two.
    * - 4
-     - Documentation string of method two.
+     - Documentation string of function two.
    * - ...
      - ...
 
 A documentation string consists of a list of key-value pairs in the form ``key:
 value`` delimited by the ``@`` character. The first pair in this list is
-reserved for the method name and its description, all subsequent pairs are used
-to name and describe parameters or to describe a return value.
+reserved for the RPC method name and its description, all subsequent pairs are
+used to name and describe parameters or to describe a return value.
 
 .. list-table:: Documentation string.
    :header-rows: 1
@@ -67,8 +67,8 @@ to name and describe parameters or to describe a return value.
      - key
      - value
    * -
-     - Method name.
-     - Method description.
+     - RPC method name.
+     - RPC method description.
    * - ``@``
      - Parameter name.
      - Parameter description.
@@ -84,22 +84,22 @@ used for missing keys. All descriptions may be empty.
 
    * - key
      - default
-   * - Method name.
+   * - RPC method name.
      - ``method`` followed by a number, e.g., ``method0``.
    * - Parameter name.
      - ``arg`` followed by a number, e.g., ``arg0``.
    * - ``return``
      - ``return``
 
-To reduce the memory footprint, the use of the ``F()`` macro is allowed in the
+To reduce the memory footprint, the ``F()`` macro can be used in the
 ``interface()`` function. This stores the documentation string in program
 memory instead of SRAM. For more information, see the progmem_ documentation.
 
 Example
 ^^^^^^^
 
-Suppose we want to export a method that sets the brightness of an LED and a
-method that takes one parameter and returns a value.
+Suppose we want to export a function that sets the brightness of an LED and a
+function that takes one parameter and returns a value.
 
 .. code:: cpp
 
@@ -111,7 +111,7 @@ method that takes one parameter and returns a value.
       return a + 1;
     }
 
-Exporting these methods in the ``loop()`` body looks as follows:
+Exporting these functions goes as follows:
 
 .. code:: cpp
 
@@ -128,16 +128,16 @@ The client reference documentation includes an example_ on how these methods
 can be accessed from the host.
 
 
-Class methods
--------------
+Exporting class methods
+-----------------------
 
-Class member functions are different from ordinary functions in the sense that
-they always operate on an object. This is why it is not possible to simply pass
-a function pointer, but to also provide a class instance for the function to
-operate on. To facilitate this, the ``pack()`` function can be used to combine
-a class instance and a function pointer before passing them to ``interface()``.
+Class methods are different from ordinary functions in the sense that they
+always operate on an object. This is why both a function pointer and a class
+instance need to be provided to the ``interface()`` function. To facilitate
+this, the ``pack()`` function can be used to combine a class instance and a
+function pointer before passing them to ``interface()``.
 
-For a class instance ``c`` of class ``C``, the class member function ``f()``
+For a class instance ``c`` of class ``C``, the class method ``f()``
 can be packed as follows:
 
 .. code:: cpp
@@ -150,7 +150,7 @@ Example
 ^^^^^^^
 
 Suppose we have a library named *led* which provides the class ``LED``. This
-class has a member function named ``setBrightness``.
+class has a method named ``setBrightness``.
 
 .. code:: cpp
 
@@ -159,7 +159,7 @@ class has a member function named ``setBrightness``.
     LED led(LED_BUILTIN);
 
 
-Exporting this class method as a remote call goes as follows:
+Exporting this class method goes as follows:
 
 .. code:: cpp
 
@@ -171,137 +171,14 @@ Exporting this class method as a remote call goes as follows:
       }
 
 
-Tuples
-------
-
-Tuples can be used to group multiple objects of different types together. A
-Tuple has two members, ``head`` and ``tail``, where ``head`` is of any type,
-and ``tail`` is an other Tuple.
-
-Tuples can be initialised with a brace-initializer-list as follows.
-
-.. code:: cpp
-
-    Tuple<int, char> t = {10, 'c'};
-
-Elements of a Tuple can be retrieved in two ways, either via its ``head`` and
-``tail`` member variables, or with the ``get<>()`` helper function.
-
-.. code:: cpp
-
-    int i = t.head;
-    char c = t.tail.head;
-
-    int j = get<0>(t);
-    char d = get<1>(t)';
-
-Likewise, assignment of an element can be done via its member variables or with
-the ``get<>()`` helper function.
-
-.. code:: cpp
-
-    t.head = 11;
-    t.tail.head = 'd';
-
-    get<0>(t) = 11;
-    get<1>(t) = 'd';
-
-There are two additional helper functions available for Tuples: ``pack()`` and
-``castStruct()``. ``pack()`` can be used to create a temporary tuple to be used
-in a function call.
-
-.. code:: cpp
-
-    function(pack('a', 'b', 10));
-
-Likewise, the ``castStruct()`` function can be used to convert a C ``struct``
-to a Tuple.
-
-.. code:: cpp
-
-    struct S {
-      int i;
-      char c;
-    };
-
-    S s;
-    function(castStruct<int, char>(s));
-
-Note that a Tuple, like any higher order data structure should be passed by
-reference.
-
-
-Objects
--------
-
-Objects behave much like Tuples, but they are serialised differently (see the
-:doc:`protocol` section).
-
-Objects can be initialised via a constructor as follows.
-
-.. code:: cpp
-
-    Object<int, char> o(10, 'c');
-
-Element retrieval and assignment is identical to that of Tuples.
-
-Note that an Object, like any higher order data structure should be passed by
-reference.
-
-Vectors
--------
-
-A Vector is a sequence container that implements storage of data elements. The
-type of the vector is given at initialisation time via a template parameter,
-e.g., ``int``.
-
-.. code:: cpp
-
-    Vector<int> v;
-    Vector<int> u(12);
-
-In this example, Vector ``v`` is of size 0 and ``u`` is of size 12. A Vector
-can also be initialised with a pointer to an allocated block of memory.
-
-.. code:: cpp
-
-    Vector<int> v(12, data);
-
-The memory block is freed when the Vector is destroyed. If this is not
-desirable, an additional flag ``destroy`` can be passed to the constructor as
-follows.
-
-.. code:: cpp
-
-    Vector<int> v(12, data, false);
-
-This behaviour can also be changed by manipulating the ``destroy`` member
-variable.
-
-A Vector can be resized using the ``resize`` method.
-
-.. code:: cpp
-
-    v.resize(20);
-
-The ``size`` member variable contains the current size of the Vector.
-
-Element retrieval and assignment is done in the usual way.
-
-.. code:: cpp
-
-    int i = v[10];
-
-    v[11] = 9;
-
-Note that a Vector, like any higher order data structure should be passed by
-reference.
-
-
 Complex objects
 ---------------
 
-Arbitrary combinations of Tuples, Objects and Vectors can be made to construct
+In some cases, basic C types and C strings are not sufficient or convenient.
+This is why simpleRPC supports higher order objects described in detail in the
+:doc:`api/tuple` and :doc:`api/vector` sections,
+
+Arbitrary combinations of these higher order objects can be made to construct
 complex objects.
 
 In the following example, we create a 2-dimensional matrix of integers, a
@@ -315,6 +192,10 @@ Object respectively.
     Vector<Tuple<int, char> > v;
 
     Object<int, Vector<int>, Object<char, long> > o;
+
+These objects can be used for parameters as well as for return values. Note
+that these objects, like any higher order data structure should be passed by
+reference.
 
 
 .. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example

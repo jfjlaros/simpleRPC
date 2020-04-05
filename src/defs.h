@@ -1,10 +1,6 @@
 #ifndef SIMPLE_RPC_DEFS_H_
 #define SIMPLE_RPC_DEFS_H_
 
-/**
- * Protocol constants.
- */
-
 #include <Arduino.h>
 
 #define _PROTOCOL "simpleRPC"
