@@ -23,6 +23,37 @@ void rpcRead(I& io, T* data) {
 
 
 /**
+ * Read a value of type @a char*.
+ *
+ * @param io Input / output object.
+ * @param data String.
+ */
+template <class I>
+void rpcRead(I& io, char** data) {
+  size_t size = 1;
+
+  *data = (char*)malloc(sizeof(char));
+  io.read((byte*)(*data), sizeof(char));
+
+  while ((*data)[size - 1] != _END_OF_STRING) {
+    size++;
+    *data = (char*)realloc((void*)(*data), size * sizeof(char));
+    io.read(((byte*)&(*data)[size - 1]), sizeof(char));
+  }
+}
+
+/**
+ * Read a value of type @a const char*.
+ *
+ * @param io Input / output object.
+ * @param data String.
+ */
+template <class I>
+void rpcRead(I& io, const char** data) {
+  rpcRead(io, (char**)data);
+}
+
+/**
  * Read a value of type @a String.
  *
  * @param io Input / output object.
@@ -38,27 +69,6 @@ void rpcRead(I& io, String* data) {
     *data += character;
     io.read(((byte*)&character), sizeof(char));
   }
-}
-
-/// @private C string of type @a char*.
-template <class I>
-void rpcRead(I& io, char** data) {
-  size_t size = 1;
-
-  *data = (char*)malloc(sizeof(char));
-  io.read((byte*)(*data), sizeof(char));
-
-  while ((*data)[size - 1] != _END_OF_STRING) {
-    size++;
-    *data = (char*)realloc((void*)(*data), size * sizeof(char));
-    io.read(((byte*)&(*data)[size - 1]), sizeof(char));
-  }
-}
-
-/// @private C string of type @a const char*.
-template <class I>
-void rpcRead(I& io, const char** data) {
-  rpcRead(io, (char**)data);
 }
 
 
