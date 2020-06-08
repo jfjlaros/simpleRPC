@@ -14,5 +14,5 @@ size_t SoftwareSerialIO::read(byte* buffer, size_t size) {
 }
 
 size_t SoftwareSerialIO::write(byte* buffer, size_t size) {
-  return _ss->write((const byte*)buffer, size);
+  return _ss->write((byte const*)buffer, size);
 }

@@ -15,7 +15,7 @@ Get a struct_ formatted representation of the type of a value.
    * - ``unsigned long int``
      - ``L``
      - Unsigned integer.
-   * - ``const char*``
+   * - ``char const*``
      - ``s``
      - String.
    * - ``Tuple<int, signed char, unsigned long>``

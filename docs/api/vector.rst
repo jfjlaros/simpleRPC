@@ -5,7 +5,7 @@ A Vector is a sequence container that implements storage of data elements. The
 type of the vector is given at initialisation time via a template parameter,
 e.g., ``int``.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Vector<int> v;
     Vector<int> u(12);
@@ -13,7 +13,7 @@ e.g., ``int``.
 In this example, Vector ``v`` is of size 0 and ``u`` is of size 12. A Vector
 can also be initialised with a pointer to an allocated block of memory.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Vector<int> v(12, data);
 
@@ -21,7 +21,7 @@ The memory block is freed when the Vector is destroyed. If this is not
 desirable, an additional flag ``destroy`` can be passed to the constructor as
 follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Vector<int> v(12, data, false);
 
@@ -30,7 +30,7 @@ variable.
 
 A Vector can be resized using the ``resize`` method.
 
-.. code:: cpp
+.. code-block:: cpp
 
     v.resize(20);
 
@@ -38,7 +38,7 @@ The ``size`` member variable contains the current size of the Vector.
 
 Element retrieval and assignment is done in the usual way.
 
-.. code:: cpp
+.. code-block:: cpp
 
     int i = v[10];
 

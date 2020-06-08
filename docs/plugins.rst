@@ -67,7 +67,7 @@ Example
 
 A typical use of the ``HardwareSerialIO`` plugin is as follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     HardwareSerialIO io;
 
@@ -92,7 +92,7 @@ Example
 
 A typical use of the ``SoftwareSerialIO`` plugin is as follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     SoftwareSerial ss(2, 3);
     SoftwareSerialIO io;
@@ -117,7 +117,7 @@ Example
 
 A typical use of the ``WireIO`` plugin is as follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     WireIO io;
 
@@ -143,7 +143,7 @@ Suppose we have set up two I/O interfaces named ``ioHardware`` and
 ``ioSoftware``, we serve different methods on each of the interfaces as
 follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     void loop(void) {
       interface(
@@ -165,7 +165,7 @@ Suppose we have set up two I/O interfaces named ``ioHardware`` and
 ``ioSoftware``, we serve the same methods on both interfaces by grouping
 pointers to these interfaces with the ``pack()`` function as follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     void loop(void) {
       interface(

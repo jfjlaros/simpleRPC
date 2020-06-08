@@ -24,10 +24,10 @@ void rpcRead(I& io, T* data) {
  * \copydoc rpcRead(I&, T*) */
 template <class I>
 void rpcRead(I& io, char** data) {
-  size_t size = 1;
-
   *data = (char*)malloc(sizeof(char));
   io.read((byte*)(*data), sizeof(char));
+
+  size_t size = 1;
 
   while ((*data)[size - 1] != _END_OF_STRING) {
     size++;
@@ -39,7 +39,7 @@ void rpcRead(I& io, char** data) {
 /*! \ingroup read
  * \copydoc rpcRead(I&, T*) */
 template <class I>
-void rpcRead(I& io, const char** data) {
+void rpcRead(I& io, char const** data) {
   rpcRead(io, (char**)data);
 }
 
@@ -63,13 +63,11 @@ void rpcRead(I& io, String* data) {
 template <class I, class T>
 void rpcRead(I& io, Vector<T>* data) {
   size_t size;
-  int i;
-
 
   rpcRead(io, &size);
   (*data).resize(size);
 
-  for (i = 0; i < (*data).size; i++) {
+  for (size_t i = 0; i < (*data).size; i++) {
     rpcRead(io, &(*data)[i]);
   }
 }

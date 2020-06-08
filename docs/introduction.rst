@@ -12,7 +12,7 @@ Motivation
 Suppose we have an number of functions that we want to export as remote
 procedure calls.
 
-.. code:: cpp
+.. code-block:: cpp
 
     int testInt(void) {
       return 1;
@@ -36,7 +36,7 @@ I/O device after calling the function.
 
 A typical implementation of such an approach is shown below.
 
-.. code:: cpp
+.. code-block:: cpp
 
     void loop(void) {
       int iValue, iParamA, iParamB;
@@ -46,17 +46,17 @@ A typical implementation of such an approach is shown below.
         switch (Serial.read()) {
           case 0x00:
             iValue = testInt();
-            Serial.write((byte *)&iValue, 2);
+            Serial.write((byte*)&iValue, 2);
             break;
           case 0x01:
             fValue = testFloat();
-            Serial.write((byte *)&fValue, 4);
+            Serial.write((byte*)&fValue, 4);
             break;
           case 0x02:
-            Serial.readBytes((char *)&iParamA, 2);
-            Serial.readBytes((char *)&iParamB, 2);
+            Serial.readBytes((char*)&iParamA, 2);
+            Serial.readBytes((char*)&iParamB, 2);
             iValue = add(iParamA, iParamB);
-            Serial.write((byte *)&iValue, 2);
+            Serial.write((byte*)&iValue, 2);
             break;
         }
       }
@@ -70,7 +70,7 @@ Arduino, Any return value needs to be unpacked. In the following example, we
 assume that a serial connection is made using the pySerial_ library. The
 functions ``pack`` and ``unpack`` are provided by the struct_ library.
 
-.. code:: python
+.. code-block:: python
 
     # Call the testInt() function.
     connection.write(pack('B', 0x00))

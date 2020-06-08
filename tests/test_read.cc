@@ -38,8 +38,8 @@ TEST_CASE("Read string of type char*", "[read][string]") {
   rpcDel(&s);
 }
 
-TEST_CASE("Read string of type const char*", "[read][string]") {
-  const char* s;
+TEST_CASE("Read string of type char const*", "[read][string]") {
+  char const* s;
 
   Serial.reset();
   Serial.prepare("xyz");

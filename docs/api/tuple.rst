@@ -13,7 +13,7 @@ defined as being either:
 
 Initialisation of a Tuple can be done with a brace-initializer-list as follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Tuple<int, char> t = {10, 'c'};
 
@@ -40,7 +40,7 @@ can be found in the :ref:`method_discovery` section.
 Initialisation of an Object can be done with a brace-initializer-list as
 follows.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Object<int, char> o(10, 'c');
 
@@ -64,7 +64,7 @@ Elements of a Tuple or Object can be retrieved in two ways, either via the
 ``head`` and ``tail`` member variables, or using with the ``get<>()`` helper
 function.
 
-.. code:: cpp
+.. code-block:: cpp
 
     int i = t.head;
     char c = t.tail.head;
@@ -75,7 +75,7 @@ function.
 Likewise, assignment of an element can be done via its member variables or with
 the ``get<>()`` helper function.
 
-.. code:: cpp
+.. code-block:: cpp
 
     t.head = 11;
     t.tail.head = 'd';
@@ -88,13 +88,13 @@ There are additional helper functions available for the creation of Tuples.
 The function ``pack()`` can be used to create a temporary Tuple to be used in a
 function call.
 
-.. code:: cpp
+.. code-block:: cpp
 
     function(pack('a', 'b', 10));
 
 The ``castStruct()`` function can be used to convert a C ``struct`` to a Tuple.
 
-.. code:: cpp
+.. code-block:: cpp
 
     struct S {
       int i;

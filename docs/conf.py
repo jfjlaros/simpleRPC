@@ -13,6 +13,7 @@ breathe_default_members = ['members']
 
 master_doc = 'index'
 
+highlight_language = 'none'
 html_theme = 'sphinx_rtd_theme'
 
 

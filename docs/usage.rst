@@ -3,7 +3,7 @@ Usage
 
 Include the header file to use the simpleRPC library.
 
-.. code:: cpp
+.. code-block:: cpp
 
     #include <simpleRPC.h>
 
@@ -12,7 +12,7 @@ communication with the host. To use this function, first define which interface
 to use by instantiating one of the plugins, ``HardwareSerialIO`` for
 example.
 
-.. code:: cpp
+.. code-block:: cpp
 
     HardwareSerialIO io;
 
@@ -20,7 +20,7 @@ This particular plugin needs to be initialised with the standard ``Serial``
 class instance to enable communication using the hardware serial interface.
 This is done using the ``begin()`` method in the ``setup()`` body.
 
-.. code:: cpp
+.. code-block:: cpp
 
     void setup(void) {
       Serial.begin(9600);
@@ -101,7 +101,7 @@ Example
 Suppose we want to export a function that sets the brightness of an LED and a
 function that takes one parameter and returns a value.
 
-.. code:: cpp
+.. code-block:: cpp
 
     void setLed(byte brightness) {
       analogWrite(LED_BUILTIN, brightness);
@@ -113,7 +113,7 @@ function that takes one parameter and returns a value.
 
 Exporting these functions goes as follows:
 
-.. code:: cpp
+.. code-block:: cpp
 
     void loop(void) {
       interface(
@@ -140,7 +140,7 @@ function pointer before passing them to ``interface()``.
 For a class instance ``c`` of class ``C``, the class method ``f()``
 can be packed as follows:
 
-.. code:: cpp
+.. code-block:: cpp
 
     pack(&c, &C::f)
 
@@ -152,7 +152,7 @@ Example
 Suppose we have a library named *led* which provides the class ``LED``. This
 class has a method named ``setBrightness``.
 
-.. code:: cpp
+.. code-block:: cpp
 
     #include "led.h"
 
@@ -161,7 +161,7 @@ class has a method named ``setBrightness``.
 
 Exporting this class method goes as follows:
 
-.. code:: cpp
+.. code-block:: cpp
 
       void loop(void) {
         interface(
@@ -185,7 +185,7 @@ In the following example, we create a 2-dimensional matrix of integers, a
 Vector of Tuples and an Object containing an integer, a Vector and an other
 Object respectively.
 
-.. code:: cpp
+.. code-block:: cpp
 
     Vector<Vector<int> > matrix;
 
