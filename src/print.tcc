@@ -33,7 +33,7 @@ void rpcPrint(I& io, char* data) {
 /*! \ingroup print
  * \copydoc rpcPrint(I&, T) */
 template <class I>
-void rpcPrint(I& io, const char* data) {
+void rpcPrint(I& io, char const* data) {
   rpcPrint(io, (char*)data);
 }
 
@@ -47,8 +47,8 @@ void rpcPrint(I& io, String& data) {
 /*! \ingroup print
  * \copydoc rpcPrint(I&, T) */
 template <class I>
-void rpcPrint(I& io, const __FlashStringHelper* data) {
-  const char* p = (const char*)data;
+void rpcPrint(I& io, __FlashStringHelper const* data) {
+  char const* p = (char const*)data;
   byte c = pgm_read_byte(p);
 
   while (c) {

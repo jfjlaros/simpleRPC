@@ -8,9 +8,9 @@ class WireIO {
   public:
     WireIO(void) {}
     void begin(TwoWire&);
-    size_t available(void),
-           read(byte*, size_t),
-           write(byte*, size_t);
+    size_t available(void);
+    size_t read(byte*, size_t);
+    size_t write(byte*, size_t);
   private:
     TwoWire* _tw;
 };

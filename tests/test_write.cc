@@ -33,8 +33,8 @@ TEST_CASE("Write C string of type char*", "[write][string]") {
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
-TEST_CASE("Write C string of type const char*", "[write][string]") {
-  const char* s = "xyz";
+TEST_CASE("Write C string of type char const*", "[write][string]") {
+  char const* s = "xyz";
 
   Serial.reset();
   rpcWrite(io, &s);

@@ -31,7 +31,7 @@ void rpcWrite(I& io, char** data) {
 /*! \ingroup write
  * \copydoc rpcWrite(I&, T*) */
 template <class I>
-void rpcWrite(I& io, const char** data) {
+void rpcWrite(I& io, char const** data) {
   rpcWrite(io, (char**)data);
 }
 
@@ -48,10 +48,9 @@ void rpcWrite(I& io, String* data) {
  * \copydoc rpcWrite(I&, T*) */
 template <class I, class T>
 void rpcWrite(I& io, Vector<T>* data) {
-  int i;
-
   rpcWrite(io, &(*data).size);
-  for (i = 0; i < (*data).size; i++) {
+
+  for (size_t i = 0; i < (*data).size; i++) {
     rpcWrite(io, &(*data)[i]);
   }
 }

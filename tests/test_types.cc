@@ -56,7 +56,7 @@ TEST_CASE("Basic types 2", "[types][basic]") {
 TEST_CASE("String type", "[types][string]") {
   String s0;
   char* s1;
-  const char* s2;
+  char const* s2;
 
   REQUIRE(rpcTypeOf(s0) == "s");
   REQUIRE(rpcTypeOf(s1) == "s");

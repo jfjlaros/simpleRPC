@@ -46,17 +46,17 @@ A typical implementation of such an approach is shown below.
         switch (Serial.read()) {
           case 0x00:
             iValue = testInt();
-            Serial.write((byte *)&iValue, 2);
+            Serial.write((byte*)&iValue, 2);
             break;
           case 0x01:
             fValue = testFloat();
-            Serial.write((byte *)&fValue, 4);
+            Serial.write((byte*)&fValue, 4);
             break;
           case 0x02:
-            Serial.readBytes((char *)&iParamA, 2);
-            Serial.readBytes((char *)&iParamB, 2);
+            Serial.readBytes((char*)&iParamA, 2);
+            Serial.readBytes((char*)&iParamB, 2);
             iValue = add(iParamA, iParamB);
-            Serial.write((byte *)&iValue, 2);
+            Serial.write((byte*)&iValue, 2);
             break;
         }
       }

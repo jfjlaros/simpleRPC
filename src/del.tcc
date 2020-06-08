@@ -25,7 +25,7 @@ void rpcDel(T** data) {
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
 template <class T>
-void rpcDel(const T** data) {
+void rpcDel(T const** data) {
   rpcDel((T**)data);
 }
 
