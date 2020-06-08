@@ -31,9 +31,8 @@ Object<char, Object<int, char> > object(Object<char, Object<int, char> >& o) {
 
 Vector<float> vector(Vector<int>& v) {
   Vector<float> r(v.size);
-  int i;
 
-  for (i = 0; i < v.size; i++) {
+  for (size_t i = 0; i < v.size; i++) {
     r[i] = float(v[i]) + 0.4;
   }
 

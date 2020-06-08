@@ -106,12 +106,12 @@ TEST_CASE("RPC call function with String types", "[call][string]") {
     static String f2(void) {
       return "xyz";
     }
-    static void f3(int, String&, const String&) {}
-    static void f4(int, const String&, String&) {}
-    static void f5(String&, int, const String&) {}
-    static void f6(String&, const String&, int) {}
-    static void f7(const String&, int, String&) {}
-    static void f8(const String&, String&, int) {}
+    static void f3(int, String&, String const&) {}
+    static void f4(int, String const&, String&) {}
+    static void f5(String&, int, String const&) {}
+    static void f6(String&, String const&, int) {}
+    static void f7(String const&, int, String&) {}
+    static void f8(String const&, String&, int) {}
   };
 
   // Void function, first parameter is of type String.
@@ -174,15 +174,15 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
     static char* f2(void) {
       return (char*)"xyz";
     }
-    static const char* f3(void) {
+    static char const* f3(void) {
       return "xyz";
     }
-    static void f4(int, char*, const char*) {}
-    static void f5(int, const char[], char*) {}
-    static void f6(char*, int, const char*) {}
-    static void f7(char[], const char*, int) {}
-    static void f8(const char*, int, char*) {}
-    static void f9(const char*, char*, int) {}
+    static void f4(int, char*, char const*) {}
+    static void f5(int, char const[], char*) {}
+    static void f6(char*, int, char const*) {}
+    static void f7(char[], char const*, int) {}
+    static void f8(char const*, int, char*) {}
+    static void f9(char const*, char*, int) {}
   };
 
   // Void function, first parameter is of type char*.
@@ -206,7 +206,7 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
   REQUIRE(Serial.rx == 0);
   REQUIRE(Serial.tx == 4);
 
-  // Function with return type const char*.
+  // Function with return type char const*.
   Serial.reset();
   rpcCall(io, S::f3);
   REQUIRE(Serial.inspect<String>() == "xyz");
@@ -386,7 +386,7 @@ TEST_CASE("Executing a function", "[call]") {
     static short int f1(int i, char c) {
       return i + c + 1;
     }
-    static String f2(Object<String, char*, const char*>& o) {
+    static String f2(Object<String, char*, char const*>& o) {
       return get<0>(o) + get<1>(o) + get<2>(o);
     }
   };

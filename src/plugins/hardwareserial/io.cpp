@@ -14,5 +14,5 @@ size_t HardwareSerialIO::read(byte* buffer, size_t size) {
 }
 
 size_t HardwareSerialIO::write(byte* buffer, size_t size) {
-  return _hs->write((const byte*)buffer, size);
+  return _hs->write((byte const*)buffer, size);
 }

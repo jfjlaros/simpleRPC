@@ -13,7 +13,7 @@ Printing
 The following functions take care of serialisation of:
 
 - Values of basic types.
-- C strings (``char[]``, ``char*``, ``const char[]``, ``const char*``).
+- C strings (``char[]``, ``char*``, ``char const[]``, ``char const*``).
 - C++ Strings.
 - PROGMEM strings (``F()`` macro).
 

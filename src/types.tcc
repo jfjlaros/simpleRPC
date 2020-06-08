@@ -92,7 +92,7 @@ inline String rpcTypeOf(char*) {
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(const char*) {
+inline String rpcTypeOf(char const*) {
   return "s";
 }
 

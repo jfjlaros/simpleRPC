@@ -59,7 +59,7 @@ Quick start
 Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
 ``interface()`` function.
 
-.. code:: cpp
+.. code-block:: cpp
 
     #include <simpleRPC.h>
 
@@ -79,7 +79,7 @@ These functions are now available on the host under names ``method0()`` and
 
 The documentation string can be used to name and describe the method.
 
-.. code:: cpp
+.. code-block:: cpp
 
     interface(
       io,
