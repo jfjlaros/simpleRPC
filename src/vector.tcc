@@ -49,10 +49,8 @@ Vector<T>::Vector(size_t size, T* data, bool destroy) {
 //! Destructor.
 template <class T>
 Vector<T>::~Vector(void) {
-  int i;
-
   if (destroy) {
-    for (i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
       _data[i].T::~T();
     }
 
@@ -81,15 +79,13 @@ T& Vector<T>::operator[](size_t index) {
  */
 template <class T>
 void Vector<T>::resize(size_t size) {
-  int i;
-
-  for (i = size; i < this->size; i++) {
+  for (size_t i = size; i < this->size; i++) {
     _data[i].T::~T();
   }
 
   _data = (T*)realloc((void*)_data, size * sizeof(T));
 
-  for (i = this->size; i < size; i++) {
+  for (size_t i = this->size; i < size; i++) {
     _data[i] = T();
   }
 

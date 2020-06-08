@@ -94,7 +94,7 @@ void _select(I& io, byte number, byte depth, F f, D, Args... args) {
  * RPC interface.
  *
  * The `args` parameter pack is a list of pairs (function pointer,
- * documentation). The documentation string can be of type `const char*`, or
+ * documentation). The documentation string can be of type `char const*`, or
  * the PROGMEM `F()` macro can be used to reduce memory footprint.
  *
  * \param io Input / output object.
@@ -107,9 +107,9 @@ void interface(I& io, Args... args) {
    * of functions is described. Otherwise, the function indexed by `command` is
    * called.
    */
-  byte command;
-
   if (io.available()) {
+    byte command;
+
     rpcRead(io, &command);
 
     if (command == _LIST_REQ) {
