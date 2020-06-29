@@ -1,6 +1,10 @@
 Types
 =====
 
+.. code-block:: cpp
+
+    #include "types.tcc"
+
 Get a struct_ formatted representation of the type of a value.
 
 .. list-table:: Type encoding examples.

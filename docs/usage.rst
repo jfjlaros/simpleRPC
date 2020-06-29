@@ -176,7 +176,7 @@ Complex objects
 
 In some cases, basic C types and C strings are not sufficient or convenient.
 This is why simpleRPC supports higher order objects described in detail in the
-:doc:`api/tuple` and :doc:`api/vector` sections,
+:doc:`api/tuple` and :doc:`api/vector` sections.
 
 Arbitrary combinations of these higher order objects can be made to construct
 complex objects.
