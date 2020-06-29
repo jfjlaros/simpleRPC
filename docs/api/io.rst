@@ -10,6 +10,10 @@ plugin is described in the :doc:`plugins` section.
 Printing
 --------
 
+.. code-block:: cpp
+
+    #include "print.tcc"
+
 The following functions take care of serialisation of:
 
 - Values of basic types.
@@ -32,6 +36,10 @@ Reading
 
 Read functions for deserialisation.
 
+.. code-block:: cpp
+
+    #include "read.tcc"
+
 Functions
 ~~~~~~~~~
 
@@ -43,6 +51,10 @@ Writing
 -------
 
 Write functions for serialisation.
+
+.. code-block:: cpp
+
+    #include "read.tcc"
 
 Functions
 ~~~~~~~~~

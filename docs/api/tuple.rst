@@ -1,6 +1,10 @@
 Tuples and Objects
 ==================
 
+.. code-block:: cpp
+
+    #include "tuple.tcc"
+
 Tuples
 ------
 

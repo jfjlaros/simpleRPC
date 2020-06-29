@@ -1,6 +1,10 @@
 RPC function calls
 ==================
 
+.. code-block:: cpp
+
+    #include "rpcCall.tcc"
+
 Functions
 ---------
 

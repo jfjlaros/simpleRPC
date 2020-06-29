@@ -1,6 +1,10 @@
 Function Signatures
 ===================
 
+.. code-block:: cpp
+
+    #include "signature.tcc"
+
 .. list-table:: Function signature examples.
    :header-rows: 1
 

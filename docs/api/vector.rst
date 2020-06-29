@@ -1,6 +1,10 @@
 Vectors
 =======
 
+.. code-block:: cpp
+
+    #include "vector.tcc"
+
 A Vector is a sequence container that implements storage of data elements. The
 type of the vector is given at initialisation time via a template parameter,
 e.g., ``int``.
