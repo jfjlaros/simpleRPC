@@ -326,7 +326,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
     }
   };
 
-  // Void function, parameter is of type Vector.
+  // Boolean function, parameter is of type Vector.
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345);
   rpcCall(io, S::f0);
@@ -354,6 +354,18 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   rpcCall(io, S::f3);
   REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(signed char) + sizeof(int));
   REQUIRE(Serial.tx == sizeof(int));
+}
+
+TEST_CASE("RPC call function with C vector types", "[call][vector]") {
+  struct S {
+    static void f(int* v) {}
+  };
+
+  // Vector function, parameter is of type C vector.
+  Serial.reset();
+  Serial.prepare((size_t)2, 1234, 2345);
+  rpcCall(io, S::f);
+  REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(int));
 }
 
 TEST_CASE("RPC call class member functions", "[call][class]") {
