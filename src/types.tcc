@@ -169,6 +169,15 @@ String rpcTypeOf(Vector<T>&) {
   return "[" + rpcTypeOf(x) + "]";
 }
 
+/*! \ingroup types
+ * \copydoc rpcTypeOf(bool) */
+template <class T>
+String rpcTypeOf(T*) {
+  T x;
+
+  return "[" + rpcTypeOf(x) + "]";
+}
+
 
 /*! \ingroup types
  * Determine endianness and type of `size_t`.

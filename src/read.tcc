@@ -72,6 +72,14 @@ void rpcRead(I& io, Vector<T>* data) {
   }
 }
 
+template <class I, class T>
+void rpcRead(I& io, T** data) {
+  Vector<T> v(0, NULL, false);
+
+  rpcRead(io, &v);
+  *data = v.data;
+}
+
 
 //! Recursion terminator for `rpcRead(Tuple*)`.
 template <class I>
