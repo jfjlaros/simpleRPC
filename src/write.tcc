@@ -16,7 +16,7 @@
  */
 template <class I, class T>
 void rpcWrite(I& io, T* data) {
-  io.write((byte*)data, sizeof(T));
+  io.write((unsigned char*)data, sizeof(T));
 }
 
 
@@ -25,7 +25,7 @@ void rpcWrite(I& io, T* data) {
 template <class I>
 void rpcWrite(I& io, char** data) {
   rpcPrint(io, *data);
-  rpcPrint(io, _END_OF_STRING);
+  rpcPrint(io, '\0');
 }
 
 /*! \ingroup write
@@ -40,7 +40,7 @@ void rpcWrite(I& io, char const** data) {
 template <class I>
 void rpcWrite(I& io, String* data) {
   rpcPrint(io, *data);
-  rpcPrint(io, _END_OF_STRING);
+  rpcPrint(io, '\0');
 }
 
 

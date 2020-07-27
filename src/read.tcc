@@ -16,7 +16,7 @@
  */
 template <class I, class T>
 void rpcRead(I& io, T* data) {
-  io.read((byte*)data, sizeof(T));
+  io.read((unsigned char*)data, sizeof(T));
 }
 
 
@@ -25,14 +25,11 @@ void rpcRead(I& io, T* data) {
 template <class I>
 void rpcRead(I& io, char** data) {
   *data = (char*)malloc(sizeof(char));
-  io.read((byte*)(*data), sizeof(char));
+  rpcRead(io, &(*data)[0]);
 
-  size_t size = 1;
-
-  while ((*data)[size - 1] != _END_OF_STRING) {
-    size++;
-    *data = (char*)realloc((void*)(*data), size * sizeof(char));
-    io.read(((byte*)&(*data)[size - 1]), sizeof(char));
+  for (size_t size = 1; (*data)[size - 1]; size++) {
+    *data = (char*)realloc((void*)(*data), (size + 1) * sizeof(char));
+    rpcRead(io, &(*data)[size]);
   }
 }
 
@@ -49,11 +46,11 @@ template <class I>
 void rpcRead(I& io, String* data) {
   char character;
 
-  io.read(((byte*)&character), sizeof(char));
+  rpcRead(io, &character);
 
-  while (character != _END_OF_STRING) {
+  while (character) {
     *data += character;
-    io.read(((byte*)&character), sizeof(char));
+    rpcRead(io, &character);
   }
 }
 

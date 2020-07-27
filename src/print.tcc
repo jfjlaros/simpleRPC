@@ -14,7 +14,7 @@
  */
 template <class I, class T>
 void rpcPrint(I& io, T data) {
-  io.write((byte*)&data, sizeof(T));
+  io.write((unsigned char*)&data, sizeof(T));
 }
 
 
@@ -24,7 +24,7 @@ template <class I>
 void rpcPrint(I& io, char* data) {
   size_t i = 0;
 
-  while (data[i] != _END_OF_STRING) {
+  while (data[i]) {
     rpcPrint(io, data[i]);
     i++;
   }
@@ -49,7 +49,7 @@ void rpcPrint(I& io, String& data) {
 template <class I>
 void rpcPrint(I& io, __FlashStringHelper const* data) {
   char const* p = (char const*)data;
-  byte c = pgm_read_byte(p);
+  unsigned char c = pgm_read_byte(p);
 
   while (c) {
     rpcPrint(io, c);

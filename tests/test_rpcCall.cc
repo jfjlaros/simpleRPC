@@ -362,6 +362,8 @@ TEST_CASE("RPC call function with C vector types", "[call][vector]") {
     static void f1(int**) {}
     static void f2(int const*) {}
     static void f3(int const**) {}
+    static void f4(int***) {}
+    static void f5(int****) {}
   };
 
   // Vector function, parameter is of type C vector.
@@ -387,6 +389,16 @@ TEST_CASE("RPC call function with C vector types", "[call][vector]") {
   Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
   rpcCall(io, S::f3);
   REQUIRE(Serial.rx == 3 * sizeof(size_t) + 4 * sizeof(int));
+
+  Serial.reset();
+  Serial.prepare((size_t)1, (size_t)1, (size_t)1, 1234);
+  rpcCall(io, S::f4);
+  REQUIRE(Serial.rx == 3 * sizeof(size_t) + sizeof(int));
+
+  Serial.reset();
+  Serial.prepare((size_t)1, (size_t)1, (size_t)1, (size_t)1, 1234);
+  rpcCall(io, S::f5);
+  REQUIRE(Serial.rx == 4 * sizeof(size_t) + sizeof(int));
 }
 
 TEST_CASE("RPC call class member functions", "[call][class]") {
