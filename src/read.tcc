@@ -72,12 +72,33 @@ void rpcRead(I& io, Vector<T>* data) {
   }
 }
 
+/*! \ingroup read
+ * \copydoc rpcRead(I&, T*) */
 template <class I, class T>
 void rpcRead(I& io, T** data) {
-  Vector<T> v(0, NULL, false);
+  size_t size;
 
-  rpcRead(io, &v);
-  *data = v.data;
+  rpcRead(io, &size);
+  *data = (T*)malloc(size * sizeof(T));
+
+  for (size_t i = 0; i < size; i++) {
+    rpcRead(io, &(*data)[i]);
+  }
+}
+
+/*! \ingroup read
+ * \copydoc rpcRead(I&, T*) */
+template <class I, class T>
+void rpcRead(I& io, T*** data) {
+  size_t size;
+
+  rpcRead(io, &size);
+  *data = (T**)malloc((size + 1) * sizeof(T*));
+
+  for (size_t i = 0; i < size; i++) {
+    rpcRead(io, &(*data)[i]);
+  }
+  (*data)[size] = NULL;
 }
 
 
