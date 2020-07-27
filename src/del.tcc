@@ -25,6 +25,13 @@ void rpcDel(T** data) {
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
 template <class T>
+void rpcDel(T const** data) {
+  rpcDel((T**)data);
+}
+
+/*! \ingroup del
+ * \copydoc rpcDel(T*) */
+template <class T>
 void rpcDel(T*** data) {
   for (size_t i = 0; (*data)[i]; i++) {
     rpcDel(&(*data)[i]);
@@ -35,8 +42,8 @@ void rpcDel(T*** data) {
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
 template <class T>
-void rpcDel(T const** data) {
-  rpcDel((T**)data);
+void rpcDel(T const*** data) {
+  rpcDel((T***)data);
 }
 
 
