@@ -25,7 +25,7 @@
  */
 template <class I, class F, class D>
 void _writeDescription(I& io, F f, D doc) {
-  rpcPrint(io, signature(f), ';', doc, _END_OF_STRING);
+  rpcPrint(io, signature(f), ';', doc, '\0');
 }
 
 
@@ -62,7 +62,7 @@ void _describe(I& io, Tuple<U, V> t, D doc, Args... args) {
 
 //! Recursion terminator for `_select()`.
 template <class I>
-void _select(I&, byte, byte) {}
+void _select(I&, unsigned char, unsigned char) {}
 
 /*!
  * Select and call a function indexed by `number`.
@@ -75,7 +75,8 @@ void _select(I&, byte, byte) {}
  * \param args Remaining parameters.
  */
 template <class I, class F, class D, class... Args>
-void _select(I& io, byte number, byte depth, F f, D, Args... args) {
+void _select(
+    I& io, unsigned char number, unsigned char depth, F f, D, Args... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -108,16 +109,16 @@ void interface(I& io, Args... args) {
    * called.
    */
   if (io.available()) {
-    byte command;
+    unsigned char command;
 
     rpcRead(io, &command);
 
     if (command == _LIST_REQ) {
-      rpcPrint(io, _PROTOCOL, _END_OF_STRING);
+      rpcPrint(io, _PROTOCOL, '\0');
       rpcPrint(io, _VERSION[0], _VERSION[1], _VERSION[2]);
-      rpcPrint(io, hardwareDefs(), _END_OF_STRING);
+      rpcPrint(io, hardwareDefs(), '\0');
       _describe(io, args...);
-      rpcPrint(io, _END_OF_STRING);
+      rpcPrint(io, '\0');
       return;
     }
     _select(io, command, 0, args...);

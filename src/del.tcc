@@ -36,6 +36,7 @@ void rpcDel(T*** data) {
   for (size_t i = 0; (*data)[i]; i++) {
     rpcDel(&(*data)[i]);
   }
+
   free(*data);
 }
 

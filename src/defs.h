@@ -6,8 +6,6 @@
 #define _PROTOCOL "simpleRPC"
 #define _VERSION "\3\0\0"
 
-#define _END_OF_STRING '\0'
-
-#define _LIST_REQ (byte)0xff
+#define _LIST_REQ (unsigned char)0xff
 
 #endif

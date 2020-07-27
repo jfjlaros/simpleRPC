@@ -1,7 +1,6 @@
 #ifndef SIMPLE_RPC_WIRE_IO_H_
 #define SIMPLE_RPC_WIRE_IO_H_
 
-#include <Arduino.h>
 #include <Wire.h>
 
 class WireIO {
@@ -9,8 +8,8 @@ class WireIO {
     WireIO(void) {}
     void begin(TwoWire&);
     size_t available(void);
-    size_t read(byte*, size_t);
-    size_t write(byte*, size_t);
+    size_t read(unsigned char*, size_t);
+    size_t write(unsigned char*, size_t);
   private:
     TwoWire* _tw;
 };
