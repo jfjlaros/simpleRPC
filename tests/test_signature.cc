@@ -56,8 +56,10 @@ TEST_CASE("C vectors", "[signature][vector]") {
   void (*f0)(int*, float);
   int* (*f1)(float);
   int (*f2)(signed char*, int);
+  void (*f3)(int**);
 
   REQUIRE(signature(f0) == ": [i] f");
   REQUIRE(signature(f1) == "[i]: f");
   REQUIRE(signature(f2) == "i: [b] i");
+  REQUIRE(signature(f3) == ": [[i]]");
 }

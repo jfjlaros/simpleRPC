@@ -358,14 +358,21 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
 
 TEST_CASE("RPC call function with C vector types", "[call][vector]") {
   struct S {
-    static void f(int* v) {}
+    static void f0(int*) {}
+    static void f1(int**) {}
   };
 
   // Vector function, parameter is of type C vector.
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345);
-  rpcCall(io, S::f);
+  rpcCall(io, S::f0);
   REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(int));
+
+  // Vector function, parameter is of type C 2-d vector.
+  Serial.reset();
+  Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
+  rpcCall(io, S::f1);
+  REQUIRE(Serial.rx == 3 * sizeof(size_t) + 4 * sizeof(int));
 }
 
 TEST_CASE("RPC call class member functions", "[call][class]") {
