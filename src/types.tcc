@@ -187,7 +187,7 @@ String rpcTypeOf(T*) {
 inline String hardwareDefs(void) {
   size_t i = 0xff;
 
-  if (((unsigned char*)&i)[0] == 0xff) {
+  if (((uint8_t*)&i)[0] == 0xff) {
     return "<" + rpcTypeOf(i);
   }
   return ">" + rpcTypeOf(i);

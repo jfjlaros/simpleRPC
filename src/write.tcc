@@ -16,7 +16,7 @@
  */
 template <class I, class T>
 void rpcWrite(I& io, T* data) {
-  io.write((unsigned char*)data, sizeof(T));
+  io.write((uint8_t*)data, sizeof(T));
 }
 
 
