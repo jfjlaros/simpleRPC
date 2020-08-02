@@ -62,7 +62,7 @@ void _describe(I& io, Tuple<U, V> t, D doc, Args... args) {
 
 //! Recursion terminator for `_select()`.
 template <class I>
-void _select(I&, unsigned char, unsigned char) {}
+void _select(I&, uint8_t, uint8_t) {}
 
 /*!
  * Select and call a function indexed by `number`.
@@ -75,8 +75,7 @@ void _select(I&, unsigned char, unsigned char) {}
  * \param args Remaining parameters.
  */
 template <class I, class F, class D, class... Args>
-void _select(
-    I& io, unsigned char number, unsigned char depth, F f, D, Args... args) {
+void _select(I& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -109,7 +108,7 @@ void interface(I& io, Args... args) {
    * called.
    */
   if (io.available()) {
-    unsigned char command;
+    uint8_t command;
 
     rpcRead(io, &command);
 
