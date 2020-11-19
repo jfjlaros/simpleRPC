@@ -6,8 +6,7 @@
 
 // I/O plugins.
 #include "plugins/ethernet/io.h"
-#include "plugins/hardwareserial/io.h"
-#include "plugins/softwareserial/io.h"
+#include "plugins/stream/io.h"
 #include "plugins/wire/io.h"
 
 #endif
