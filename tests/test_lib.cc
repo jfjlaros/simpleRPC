@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 
-#include "../src/plugins/hardwareserial/io.h"
+#include "../src/plugins/stream/io.h"
 
 HardwareSerialIO io;
 

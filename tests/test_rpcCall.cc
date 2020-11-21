@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include "../src/rpcCall.tcc"
-#include "../src/plugins/hardwareserial/io.h"
+#include "../src/plugins/stream/io.h"
 
 extern HardwareSerialIO io;
 
