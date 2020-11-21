@@ -25,7 +25,11 @@
  */
 template <class I, class F, class D>
 void _writeDescription(I& io, F f, D doc) {
-  rpcPrint(io, signature(f), ';', doc, '\0');
+  Collection col;
+
+  signature(col, f);
+  col.print(io);
+  rpcPrint(io, ';', doc, '\0');
 }
 
 
@@ -115,7 +119,7 @@ void interface(I& io, Args... args) {
     if (command == _LIST_REQ) {
       rpcPrint(io, _PROTOCOL, '\0');
       rpcPrint(io, _VERSION[0], _VERSION[1], _VERSION[2]);
-      rpcPrint(io, hardwareDefs(), '\0');
+      rpcPrint(io, "<H", '\0');
       _describe(io, args...);
       rpcPrint(io, '\0');
       return;
@@ -144,6 +148,5 @@ void interface(Tuple<Membs...> t, Args... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }
-
 
 #endif

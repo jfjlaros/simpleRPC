@@ -1,6 +1,7 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
+#include "collect.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
 
@@ -12,88 +13,88 @@
  *
  * \param - Value.
  *
- * \return Encoded type of `Value`.
+ * \col.add(Encoded type of `Value`.
  */
-inline String rpcTypeOf(bool) {
-  return "?";
+inline void rpcTypeOf(Collection& col, bool) {
+  col.add("?");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(char) {
-  return "c";
+inline void rpcTypeOf(Collection& col, char) {
+  col.add("c");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(signed char) {
-  return "b";
+inline void rpcTypeOf(Collection& col, signed char) {
+  col.add("b");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(unsigned char) {
-  return "B";
+inline void rpcTypeOf(Collection& col, unsigned char) {
+  col.add("B");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(short int) {
-  return "h";
+inline void rpcTypeOf(Collection& col, short int) {
+  col.add("h");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(unsigned short int) {
-  return "H";
+inline void rpcTypeOf(Collection& col, unsigned short int) {
+  col.add("H");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(long int) {
-  return "l";
+inline void rpcTypeOf(Collection& col, long int) {
+  col.add("l");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(unsigned long int) {
-  return "L";
+inline void rpcTypeOf(Collection& col, unsigned long int) {
+  col.add("L");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(long long int) {
-  return "q";
+inline void rpcTypeOf(Collection& col, long long int) {
+  col.add("q");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(unsigned long long int) {
-  return "Q";
+inline void rpcTypeOf(Collection& col, unsigned long long int) {
+  col.add("Q");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(float) {
-  return "f";
+inline void rpcTypeOf(Collection& col, float) {
+  col.add("f");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(String&) {
-  return "s";
+inline void rpcTypeOf(Collection& col, String&) {
+  col.add("s");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(char*) {
-  return "s";
+inline void rpcTypeOf(Collection& col, char*) {
+  col.add("s");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(char const*) {
-  return "s";
+inline void rpcTypeOf(Collection& col, char const*) {
+  col.add("s");
 }
 
 /*
@@ -103,35 +104,38 @@ inline String rpcTypeOf(char const*) {
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(int) {
+inline void rpcTypeOf(Collection& col, int) {
   if (sizeof(int) == 2) {
-    return "h";
+    col.add("h");
+    return;
   }
-  return "i";
+  col.add("i");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(unsigned int) {
+inline void rpcTypeOf(Collection& col, unsigned int) {
   if (sizeof(unsigned int) == 2) {
-    return "H";
+    col.add("H");
+    return;
   }
-  return "I";
+  col.add("I");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
-inline String rpcTypeOf(double) {
+inline void rpcTypeOf(Collection& col, double) {
   if (sizeof(double) == 4) {
-    return "f";
+    col.add("f");
+    return;
   }
-  return "d";
+  col.add("d");
 }
 
 
 //! Recursion terminator for `rpcTypeOf(Tuple&)`.
-inline String rpcTypeOf(Tuple<>&) {
-  return "";
+inline void rpcTypeOf(Collection& col, Tuple<>&) {
+  col.add("");
 }
 
 /*! \ingroup types
@@ -139,11 +143,12 @@ inline String rpcTypeOf(Tuple<>&) {
  *
  * \param t Tuple.
  *
- * \return Tuple member types.
+ * \col.add(Tuple member types.
  */
 template <class... Membs>
-String rpcTypeOf(Tuple<Membs...>& t) {
-  return rpcTypeOf(t.head) + rpcTypeOf(t.tail);
+void rpcTypeOf(Collection& col, Tuple<Membs...>& t) {
+  rpcTypeOf(col, t.head);
+  rpcTypeOf(col, t.tail);
 }
 
 
@@ -152,45 +157,54 @@ String rpcTypeOf(Tuple<Membs...>& t) {
  *
  * \param t Object.
  *
- * \return Object member types.
+ * \col.add(Object member types.
  */
 template <class... Membs>
-String rpcTypeOf(Object<Membs...>& o) {
-  return "(" + rpcTypeOf((Tuple<Membs...>&)o) + ")";
+void rpcTypeOf(Collection& col, Object<Membs...>& o) {
+  col.add("(");
+  rpcTypeOf(col, (Tuple<Membs...>&)o);
+  col.add(")");
 }
 
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
 template <class T>
-String rpcTypeOf(Vector<T>&) {
+void rpcTypeOf(Collection& col, Vector<T>&) {
   T x;
 
-  return "[" + rpcTypeOf(x) + "]";
+  col.add("[");
+  rpcTypeOf(col, x);
+  col.add("]");
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(bool) */
 template <class T>
-String rpcTypeOf(T*) {
+void rpcTypeOf(Collection& col, T*) {
   T x;
 
-  return "[" + rpcTypeOf(x) + "]";
+  col.add("[");
+  rpcTypeOf(col, x);
+  col.add("]");
 }
 
 
 /*! \ingroup types
  * Determine endianness and type of `size_t`.
  *
- * \return Endianness and type of `size_t`.
+ * \col.add(Endianness and type of `size_t`.
  */
-inline String hardwareDefs(void) {
+inline void hardwareDefs(Collection& col) {
   size_t i = 0xff;
 
   if (((uint8_t*)&i)[0] == 0xff) {
-    return "<" + rpcTypeOf(i);
+    col.add("<");
+    rpcTypeOf(col, i);
+    return;
   }
-  return ">" + rpcTypeOf(i);
+  col.add(">");
+  rpcTypeOf(col, i);
 }
 
 #endif

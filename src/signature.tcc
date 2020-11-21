@@ -7,8 +7,8 @@
 
 
 //! Recursion terminator for `_parameterTypes()`.
-inline String _parameterTypes(void (*)(void)) {
-  return "";
+inline void _parameterTypes(Collection& col, void (*)(void)) {
+  col.add("");
 }
 
 /*!
@@ -19,7 +19,7 @@ inline String _parameterTypes(void (*)(void)) {
  * \return Space separated parameter types.
  */
 template <class H, class... Tail>
-String _parameterTypes(void (*f_)(H, Tail...)) {
+void _parameterTypes(Collection& col, void (*f_)(H, Tail...)) {
   /*
    * The first parameter type `H` is isolated from function pointer `*f_`. This
    * type is used to instantiate the variable `data`, which is passed to
@@ -28,13 +28,15 @@ String _parameterTypes(void (*f_)(H, Tail...)) {
    */
   H data;
 
-  return " " + rpcTypeOf(data) + _parameterTypes((void (*)(Tail...))f_);
+  col.add(" ");
+  rpcTypeOf(col, data);
+  _parameterTypes(col, (void (*)(Tail...))f_);
 }
 
 //! \copydoc _parameterTypes(void (*)(H, Tail...))
 template <class H, class... Tail>
-String _parameterTypes(void (*f_)(H&, Tail...)) {
-  return _parameterTypes((void (*)(H, Tail...))f_);
+void _parameterTypes(Collection& col, void (*f_)(H&, Tail...)) {
+  _parameterTypes(col, (void (*)(H, Tail...))f_);
 }
 
 
@@ -46,7 +48,7 @@ String _parameterTypes(void (*f_)(H&, Tail...)) {
  * \return Function signature.
  */
 template <class R, class... FArgs>
-String signature(R (*f)(FArgs...)) {
+void signature(Collection& col, R (*f)(FArgs...)) {
   /* 
    * A dummy function pointer is prepared, referred to as `f_` in the template
    * functions above, which will be used to isolate parameter types. The return
@@ -55,28 +57,31 @@ String signature(R (*f)(FArgs...)) {
    */
   R data;
 
-  return rpcTypeOf(data) + ":" + _parameterTypes((void (*)(FArgs...))f);
+  rpcTypeOf(col, data);
+  col.add(":");
+  _parameterTypes(col, (void (*)(FArgs...))f);
 }
 
 /*! \ingroup signature
  * \copydoc signature(R (*)(FArgs...)) */
 template <class R, class C, class... FArgs>
-String signature(R (C::*f)(FArgs...)) {
-  return signature((R (*)(FArgs...))f);
+void signature(Collection& col, R (C::*f)(FArgs...)) {
+  signature(col, (R (*)(FArgs...))f);
 }
 
 /*! \ingroup signature
  * \copydoc signature(R (*)(FArgs...)) */
 template <class... FArgs>
-String signature(void (*f)(FArgs...)) {
-  return ":" + _parameterTypes(f);
+void signature(Collection& col, void (*f)(FArgs...)) {
+  col.add(":");
+  _parameterTypes(col, f);
 }
 
 /*! \ingroup signature
  * \copydoc signature(R (*)(FArgs...)) */
 template <class C, class... FArgs>
-String signature(void (C::*f)(FArgs...)) {
-  return signature((void (*)(FArgs...))f);
+void signature(Collection& col, void (C::*f)(FArgs...)) {
+  signature(col, (void (*)(FArgs...))f);
 }
 
 #endif
