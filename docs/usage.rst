@@ -198,5 +198,25 @@ that these objects, like any higher order data structure should be passed by
 reference.
 
 
+C arrays
+--------
+
+Passing a C array as a parameter is supported, but since in general it is not
+possible to deduce the size or internal structure of an object it is not
+possible to return a C array. The closely related Vector should be used in this
+case.
+
+In the following example, an integer C array is passed to a function.
+
+.. code-block:: cpp
+
+    void readArray(int* a) {}
+
+Multidimensional arrays are implemented as ``NULL`` terminated arrays of
+pointers. This allows for structures that do not have a fixed length in any
+dimension, e.g., a two-dimensional array ``int**`` does not have to be
+rectangular.
+
+
 .. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example
 .. _progmem: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/
