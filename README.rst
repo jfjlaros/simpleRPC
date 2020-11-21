@@ -38,6 +38,7 @@ which is then able to generate an API interface.
 - Support for PROGMEM_'s ``F()`` macro to reduce memory footprint.
 - Support for compound data structures like Tuples, Objects (Tuples with
   internal structure), Vectors and arbitrary combinations of these.
+- Support for reading multidimensional C arrays (e.g., ``int**``).
 - Support for different types of I/O interfaces via plugins, e.g.,
 
   - Hardware serial.

@@ -2,7 +2,7 @@
 
 #include "../src/del.tcc"
 #include "../src/read.tcc"
-#include "../src/plugins/hardwareserial/io.h"
+#include "../src/plugins/stream/io.h"
 
 extern HardwareSerialIO io;
 
