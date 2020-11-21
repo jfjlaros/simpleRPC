@@ -1,7 +1,6 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
-#include "collect.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
 
@@ -11,88 +10,103 @@
 /*! \ingroup types
  * Type encoding.
  *
+ * \param io Input / output object.
  * \param - Value.
  */
-inline void rpcTypeOf(Collector& col, bool) {
-  col.add("?");
+template <class I>
+void rpcTypeOf(I& io, bool) {
+  rpcPrint(io, "?");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, char) {
-  col.add("c");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, char) {
+  rpcPrint(io, "c");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, signed char) {
-  col.add("b");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, signed char) {
+  rpcPrint(io, "b");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, unsigned char) {
-  col.add("B");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, unsigned char) {
+  rpcPrint(io, "B");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, short int) {
-  col.add("h");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, short int) {
+  rpcPrint(io, "h");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, unsigned short int) {
-  col.add("H");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, unsigned short int) {
+  rpcPrint(io, "H");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, long int) {
-  col.add("l");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, long int) {
+  rpcPrint(io, "l");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, unsigned long int) {
-  col.add("L");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, unsigned long int) {
+  rpcPrint(io, "L");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, long long int) {
-  col.add("q");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, long long int) {
+  rpcPrint(io, "q");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, unsigned long long int) {
-  col.add("Q");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, unsigned long long int) {
+  rpcPrint(io, "Q");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, float) {
-  col.add("f");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, float) {
+  rpcPrint(io, "f");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, String&) {
-  col.add("s");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, String&) {
+  rpcPrint(io, "s");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, char*) {
-  col.add("s");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, char*) {
+  rpcPrint(io, "s");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, char const*) {
-  col.add("s");
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, char const*) {
+  rpcPrint(io, "s");
 }
 
 /*
@@ -101,100 +115,110 @@ inline void rpcTypeOf(Collector& col, char const*) {
  */
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, int) {
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, int) {
   if (sizeof(int) == 2) {
-    col.add("h");
+    rpcPrint(io, "h");
     return;
   }
-  col.add("i");
+  rpcPrint(io, "i");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, unsigned int) {
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, unsigned int) {
   if (sizeof(unsigned int) == 2) {
-    col.add("H");
+    rpcPrint(io, "H");
     return;
   }
-  col.add("I");
+  rpcPrint(io, "I");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-inline void rpcTypeOf(Collector& col, double) {
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I>
+void rpcTypeOf(I& io, double) {
   if (sizeof(double) == 4) {
-    col.add("f");
+    rpcPrint(io, "f");
     return;
   }
-  col.add("d");
+  rpcPrint(io, "d");
 }
 
 
 //! Recursion terminator for `rpcTypeOf(Tuple&)`.
-inline void rpcTypeOf(Collector&, Tuple<>&) {}
+template <class I>
+void rpcTypeOf(I&, Tuple<>&) {}
 
 /*! \ingroup types
  * Get the types of all members of a Tuple.
  *
+ * \param io Input / output object.
  * \param t Tuple.
  */
-template <class... Membs>
-void rpcTypeOf(Collector& col, Tuple<Membs...>& t) {
-  rpcTypeOf(col, t.head);
-  rpcTypeOf(col, t.tail);
+template <class I, class... Membs>
+void rpcTypeOf(I& io, Tuple<Membs...>& t) {
+  rpcTypeOf(io, t.head);
+  rpcTypeOf(io, t.tail);
 }
 
 
 /*! \ingroup types
  * Get the types of all members of an Object.
  *
+ * \param io Input / output object.
  * \param t Object.
  */
-template <class... Membs>
-void rpcTypeOf(Collector& col, Object<Membs...>& o) {
-  col.add("(");
-  rpcTypeOf(col, (Tuple<Membs...>&)o);
-  col.add(")");
+template <class I, class... Membs>
+void rpcTypeOf(I& io, Object<Membs...>& o) {
+  rpcPrint(io, "(");
+  rpcTypeOf(io, (Tuple<Membs...>&)o);
+  rpcPrint(io, ")");
 }
 
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-template <class T>
-void rpcTypeOf(Collector& col, Vector<T>&) {
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I, class T>
+void rpcTypeOf(I& io, Vector<T>&) {
   T x;
 
-  col.add("[");
-  rpcTypeOf(col, x);
-  col.add("]");
+  rpcPrint(io, "[");
+  rpcTypeOf(io, x);
+  rpcPrint(io, "]");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(bool) */
-template <class T>
-void rpcTypeOf(Collector& col, T*) {
+ * \copydoc rpcTypeOf(I&, bool) */
+template <class I, class T>
+void rpcTypeOf(I& io, T*) {
+  // TODO: Merge with Vector?
   T x;
 
-  col.add("[");
-  rpcTypeOf(col, x);
-  col.add("]");
+  rpcPrint(io, "[");
+  rpcTypeOf(io, x);
+  rpcPrint(io, "]");
 }
 
 
 /*! \ingroup types
  * Determine endianness and type of `size_t`.
+ *
+ * \param io Input / output object.
  */
-inline void hardwareDefs(Collector& col) {
+template <class I>
+void hardwareDefs(I& io) {
   size_t i = 0xff;
 
   if (((uint8_t*)&i)[0] == 0xff) {
-    col.add("<");
-    rpcTypeOf(col, i);
-    return;
+    rpcPrint(io, "<");
   }
-  col.add(">");
-  rpcTypeOf(col, i);
+  else {
+    rpcPrint(io, ">");
+  }
+  rpcTypeOf(io, i);
 }
 
 #endif

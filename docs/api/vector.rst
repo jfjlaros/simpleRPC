@@ -48,7 +48,7 @@ Element retrieval and assignment is done in the usual way.
 
     v[11] = 9;
 
-Note that a Vector, like any higher order data structure should be passed by
+Note that a Vector, like any higher order data structure, should be passed by
 reference.
 
 Class definition

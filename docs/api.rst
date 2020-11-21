@@ -14,4 +14,3 @@ API documentation
    api/signature
    api/call
    api/del
-   api/collect
