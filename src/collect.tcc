@@ -3,10 +3,15 @@
 
 #include "print.tcc"
 
-class Collection {
+//! \defgroup collector
+
+/*! \ingroup collector
+ * String collector.
+ */
+class Collector {
   public:
-    Collection(void) {}
-    ~Collection(void);
+    Collector(void) {}
+    ~Collector(void);
     void add(char const*);
     template <class I>
       void print(I&);
@@ -16,22 +21,37 @@ class Collection {
 };
 
 
-Collection::~Collection(void) {
+//! Destructor.
+Collector::~Collector(void) {
   free(_data);
 }
 
-void Collection::add(char const* str) {
+/*!
+ * Add a string.
+ *
+ * \param str String.
+ */
+void Collector::add(char const* str) {
   _size++;
   _data = (char const**)realloc(
     (void*)_data, _size * sizeof(char const*));
   _data[_size - 1] = str;
 }
 
+/*!
+ * Write collected data.
+ *
+ * \param io Input / output object.
+ */
 template <class I>
-void Collection::print(I& io) {
+void Collector::print(I& io) {
   for (size_t i = 0; i < _size; i++) {
     rpcPrint(io, _data[i]);
   }
+
+  free(_data);
+  _data = NULL;
+  _size = 0;
 }
 
 #endif

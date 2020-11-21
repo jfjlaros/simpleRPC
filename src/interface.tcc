@@ -19,14 +19,13 @@
 /*!
  * Write the signature and documentation of a function.
  *
+ * \param col String collector.
  * \param io Input / output object.
  * \param f Function pointer.
  * \param doc Function documentation.
  */
 template <class I, class F, class D>
-void _writeDescription(I& io, F f, D doc) {
-  Collection col;
-
+void _writeDescription(Collector& col, I& io, F f, D doc) {
   signature(col, f);
   col.print(io);
   rpcPrint(io, ';', doc, '\0');
@@ -35,32 +34,33 @@ void _writeDescription(I& io, F f, D doc) {
 
 //! Recursion terminator for `_describe()`.
 template <class I>
-void _describe(I&) {}
+void _describe(Collector&, I&) {}
 
 /*!
  * Describe a list of functions.
  *
+ * \param col String collector.
  * \param io Input / output object.
  * \param f Function pointer.
  * \param doc Function documentation.
  * \param args Remaining parameters.
  */
 template <class I, class F, class D, class... Args>
-void _describe(I& io, F f, D doc, Args... args) {
+void _describe(Collector& col, I& io, F f, D doc, Args... args) {
   /*
    * The first two parameters `f` and `doc` are isolated and passed to
    * `_writeDescription()`. Then a recursive call to process the remaining
    * parameters is made.
    */
-  _writeDescription(io, f, doc);
-  _describe(io, args...);
+  _writeDescription(col, io, f, doc);
+  _describe(col, io, args...);
 }
 
 //! \copydoc _describe(I&, F, D, Args...)
 template <class I, class U, class V, class D, class... Args>
-void _describe(I& io, Tuple<U, V> t, D doc, Args... args) {
-  _writeDescription(io, t.tail.head, doc);
-  _describe(io, args...);
+void _describe(Collector& col, I& io, Tuple<U, V> t, D doc, Args... args) {
+  _writeDescription(col, io, t.tail.head, doc);
+  _describe(col, io, args...);
 }
 
 
@@ -119,8 +119,12 @@ void interface(I& io, Args... args) {
     if (command == _LIST_REQ) {
       rpcPrint(io, _PROTOCOL, '\0');
       rpcPrint(io, _VERSION[0], _VERSION[1], _VERSION[2]);
-      rpcPrint(io, "<H", '\0');
-      _describe(io, args...);
+
+      Collector col;
+      hardwareDefs(col);
+      col.print(io);
+      rpcPrint(io, '\0');
+      _describe(col, io, args...);
       rpcPrint(io, '\0');
       return;
     }
