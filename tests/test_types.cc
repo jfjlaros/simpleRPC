@@ -3,6 +3,9 @@
 #include <Arduino.h>
 
 #include "../src/types.tcc"
+#include "../src/plugins/stream/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Basic types 1", "[types][basic]") {
@@ -18,17 +21,19 @@ TEST_CASE("Basic types 1", "[types][basic]") {
   unsigned long long int ulli;
   float f;
 
-  REQUIRE(rpcTypeOf(b) == "?");
-  REQUIRE(rpcTypeOf(c) == "c");
-  REQUIRE(rpcTypeOf(sc) == "b");
-  REQUIRE(rpcTypeOf(uc) == "B");
-  REQUIRE(rpcTypeOf(si) == "h");
-  REQUIRE(rpcTypeOf(usi) == "H");
-  REQUIRE(rpcTypeOf(li) == "l");
-  REQUIRE(rpcTypeOf(uli) == "L");
-  REQUIRE(rpcTypeOf(lli) == "q");
-  REQUIRE(rpcTypeOf(ulli) == "Q");
-  REQUIRE(rpcTypeOf(f) == "f");
+  Serial.reset();
+  rpcTypeOf(io, b);
+  rpcTypeOf(io, c);
+  rpcTypeOf(io, sc);
+  rpcTypeOf(io, uc);
+  rpcTypeOf(io, si);
+  rpcTypeOf(io, usi);
+  rpcTypeOf(io, li);
+  rpcTypeOf(io, uli);
+  rpcTypeOf(io, lli);
+  rpcTypeOf(io, ulli);
+  rpcTypeOf(io, f);
+  REQUIRE(Serial.inspect<String>() == "?cbBhHlLqQf");
 }
 
 TEST_CASE("Basic types 2", "[types][basic]") {
@@ -37,19 +42,23 @@ TEST_CASE("Basic types 2", "[types][basic]") {
   double d;
 
   // Basic types of which the size may differ between platforms.
+  Serial.reset();
+  rpcTypeOf(io, i);
+  rpcTypeOf(io, ui);
   if (sizeof(int) == 2) {
-    REQUIRE(rpcTypeOf(i) == "h");
-    REQUIRE(rpcTypeOf(ui) == "H");
+    REQUIRE(Serial.inspect<String>() == "hH");
   }
   else {
-    REQUIRE(rpcTypeOf(i) == "i");
-    REQUIRE(rpcTypeOf(ui) == "I");
+    REQUIRE(Serial.inspect<String>() == "iI");
   }
+
+  Serial.reset();
+  rpcTypeOf(io, d);
   if (sizeof(double) == 4) {
-    REQUIRE(rpcTypeOf(d) == "f");
+    REQUIRE(Serial.inspect<String>() == "f");
   }
   else {
-    REQUIRE(rpcTypeOf(d) == "d");
+    REQUIRE(Serial.inspect<String>() == "d");
   }
 }
 
@@ -58,17 +67,21 @@ TEST_CASE("String type", "[types][string]") {
   char* s1;
   char const* s2;
 
-  REQUIRE(rpcTypeOf(s0) == "s");
-  REQUIRE(rpcTypeOf(s1) == "s");
-  REQUIRE(rpcTypeOf(s2) == "s");
+  Serial.reset();
+  rpcTypeOf(io, s0);
+  rpcTypeOf(io, s1);
+  rpcTypeOf(io, s2);
+  REQUIRE(Serial.inspect<String>() == "sss");
 }
 
 TEST_CASE("Tuple types", "[types][tuple]") {
   Tuple<int, char> ic;
   Tuple<int, signed char, unsigned long> iscul;
 
-  REQUIRE(rpcTypeOf(ic) == "ic");
-  REQUIRE(rpcTypeOf(iscul) == "ibL");
+  Serial.reset();
+  rpcTypeOf(io, ic);
+  rpcTypeOf(io, iscul);
+  REQUIRE(Serial.inspect<String>() == "icibL");
 }
 
 TEST_CASE("Object types", "[types][object]") {
@@ -82,8 +95,10 @@ TEST_CASE("Object types", "[types][object]") {
       Object<char, char>,
       Object<char>>> o1;
 
-  REQUIRE(rpcTypeOf(o0) == "((ci)L)");
-  REQUIRE(rpcTypeOf(o1) == "(((ccc)c)c((cc)(c)))");
+  Serial.reset();
+  rpcTypeOf(io, o0);
+  rpcTypeOf(io, o1);
+  REQUIRE(Serial.inspect<String>() == "((ci)L)(((ccc)c)c((cc)(c)))");
 }
 
 TEST_CASE("Vector", "[types][vector]") {
@@ -92,10 +107,12 @@ TEST_CASE("Vector", "[types][vector]") {
   Vector<signed char> v2;
   Vector<Vector<int>> v3;
 
-  REQUIRE(rpcTypeOf(v0) == "[i]");
-  REQUIRE(rpcTypeOf(v1) == "[f]");
-  REQUIRE(rpcTypeOf(v2) == "[b]");
-  REQUIRE(rpcTypeOf(v3) == "[[i]]");
+  Serial.reset();
+  rpcTypeOf(io, v0);
+  rpcTypeOf(io, v1);
+  rpcTypeOf(io, v2);
+  rpcTypeOf(io, v3);
+  REQUIRE(Serial.inspect<String>() == "[i][f][b][[i]]");
 }
 
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
@@ -103,17 +120,21 @@ TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
   Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1;
   Tuple<Object<int, char>, Vector<int>> t2;
 
-  REQUIRE(rpcTypeOf(t0) == "[i]c");
-  REQUIRE(rpcTypeOf(t1) == "icBf");
-  REQUIRE(rpcTypeOf(t2) == "(ic)[i]");
+  Serial.reset();
+  rpcTypeOf(io, t0);
+  rpcTypeOf(io, t1);
+  rpcTypeOf(io, t2);
+  REQUIRE(Serial.inspect<String>() == "[i]cicBf(ic)[i]");
 }
 
 TEST_CASE("Complex object types", "[types][object][complex]") {
   Object<Vector<Object<int, char>>, Object<float>> o0;
   Object<Tuple<int, char>, Object<char>> o1;
 
-  REQUIRE(rpcTypeOf(o0) == "([(ic)](f))");
-  REQUIRE(rpcTypeOf(o1) == "(ic(c))");
+  Serial.reset();
+  rpcTypeOf(io, o0);
+  rpcTypeOf(io, o1);
+  REQUIRE(Serial.inspect<String>() == "([(ic)](f))(ic(c))");
 }
 
 TEST_CASE("Complex vector types", "[types][vector][complex]") {
@@ -121,7 +142,9 @@ TEST_CASE("Complex vector types", "[types][vector][complex]") {
   Vector<Object<int, Vector<char>>> v1;
   Vector<Tuple<char, Object<int, char>>> v2;
 
-  REQUIRE(rpcTypeOf(v0) == "[ic]");
-  REQUIRE(rpcTypeOf(v1) == "[(i[c])]");
-  REQUIRE(rpcTypeOf(v2) == "[c(ic)]");
+  Serial.reset();
+  rpcTypeOf(io, v0);
+  rpcTypeOf(io, v1);
+  rpcTypeOf(io, v2);
+  REQUIRE(Serial.inspect<String>() == "[ic][(i[c])][c(ic)]");
 }

@@ -3,14 +3,19 @@
 #include <Arduino.h>
 
 #include "../src/signature.tcc"
+#include "../src/plugins/stream/io.h"
+
+extern HardwareSerialIO io;
 
 
 TEST_CASE("Function pointer types", "[signature][basic]") {
   short int (*f0)(char, float);
   void (*f1)(char, float);
 
-  REQUIRE(signature(f0) == "h: c f");
-  REQUIRE(signature(f1) == ": c f");
+  Serial.reset();
+  signature(io, f0);
+  signature(io, f1);
+  REQUIRE(Serial.inspect<String>() == "h: c f: c f");
 }
 
 TEST_CASE("Class member function pointer types", "[signature][class]") {
@@ -22,24 +27,30 @@ TEST_CASE("Class member function pointer types", "[signature][class]") {
       void f1(char, float) {}
   };
 
-  REQUIRE(signature(&C::f0) == "h: c f");
-  REQUIRE(signature(&C::f1) == ": c f");
+  Serial.reset();
+  signature(io, &C::f0);
+  signature(io, &C::f1);
+  REQUIRE(Serial.inspect<String>() == "h: c f: c f");
 }
 
 TEST_CASE("Tuples", "[signature][tuple]") {
   void (*f0)(Tuple<int, char>, float);
   Tuple<int, char> (*f1)(float);
 
-  REQUIRE(signature(f0) == ": ic f");
-  REQUIRE(signature(f1) == "ic: f");
+  Serial.reset();
+  signature(io, f0);
+  signature(io, f1);
+  REQUIRE(Serial.inspect<String>() == ": ic fic: f");
 }
 
 TEST_CASE("Objects", "[signature][object]") {
   void (*f0)(Object<int, char>, float);
   Object<int, char> (*f1)(float);
 
-  REQUIRE(signature(f0) == ": (ic) f");
-  REQUIRE(signature(f1) == "(ic): f");
+  Serial.reset();
+  signature(io, f0);
+  signature(io, f1);
+  REQUIRE(Serial.inspect<String>() == ": (ic) f(ic): f");
 }
 
 TEST_CASE("Vectors", "[signature][vector]") {
@@ -47,9 +58,11 @@ TEST_CASE("Vectors", "[signature][vector]") {
   Vector<int> (*f1)(float);
   int (*f2)(Vector<signed char>&, int);
 
-  REQUIRE(signature(f0) == ": [i] f");
-  REQUIRE(signature(f1) == "[i]: f");
-  REQUIRE(signature(f2) == "i: [b] i");
+  Serial.reset();
+  signature(io, f0);
+  signature(io, f1);
+  signature(io, f2);
+  REQUIRE(Serial.inspect<String>() == ": [i] f[i]: fi: [b] i");
 }
 
 TEST_CASE("C vectors", "[signature][vector]") {
@@ -58,8 +71,10 @@ TEST_CASE("C vectors", "[signature][vector]") {
   int (*f2)(signed char*, int);
   void (*f3)(int**);
 
-  REQUIRE(signature(f0) == ": [i] f");
-  REQUIRE(signature(f1) == "[i]: f");
-  REQUIRE(signature(f2) == "i: [b] i");
-  REQUIRE(signature(f3) == ": [[i]]");
+  Serial.reset();
+  signature(io, f0);
+  signature(io, f1);
+  signature(io, f2);
+  signature(io, f3);
+  REQUIRE(Serial.inspect<String>() == ": [i] f[i]: fi: [b] i: [[i]]");
 }

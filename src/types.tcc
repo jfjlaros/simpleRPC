@@ -1,6 +1,7 @@
 #ifndef SIMPLE_RPC_TYPES_TCC_
 #define SIMPLE_RPC_TYPES_TCC_
 
+#include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
 
@@ -194,7 +195,6 @@ void rpcTypeOf(I& io, Vector<T>&) {
  * \copydoc rpcTypeOf(I&, bool) */
 template <class I, class T>
 void rpcTypeOf(I& io, T*) {
-  // TODO: Merge with Vector?
   T x;
 
   rpcPrint(io, "[");
