@@ -219,6 +219,7 @@ void hardwareDefs(I& io) {
     rpcPrint(io, ">");
   }
   rpcTypeOf(io, i);
+  rpcPrint(io, '\0');
 }
 
 #endif
