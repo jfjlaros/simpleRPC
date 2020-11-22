@@ -32,7 +32,9 @@ void _writeDescription(I& io, F f, D doc) {
 
 //! Recursion terminator for `_describe()`.
 template <class I>
-void _describe(I&) {}
+void _describe(I& io) {
+  rpcPrint(io, '\0');
+}
 
 /*!
  * Describe a list of functions.
@@ -114,12 +116,9 @@ void interface(I& io, Args... args) {
     rpcRead(io, &command);
 
     if (command == _LIST_REQ) {
-      rpcPrint(io, _PROTOCOL, '\0');
-      rpcPrint(io, _VERSION[0], _VERSION[1], _VERSION[2]);
+      rpcPrint(io, _PROTOCOL, '\0', _VERSION[0], _VERSION[1], _VERSION[2]);
       hardwareDefs(io);
-      rpcPrint(io, '\0');
       _describe(io, args...);
-      rpcPrint(io, '\0');
       return;
     }
     _select(io, command, 0, args...);

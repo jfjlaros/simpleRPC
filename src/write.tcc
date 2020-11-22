@@ -24,8 +24,7 @@ void rpcWrite(I& io, T* data) {
  * \copydoc rpcWrite(I&, T*) */
 template <class I>
 void rpcWrite(I& io, char** data) {
-  rpcPrint(io, *data);
-  rpcPrint(io, '\0');
+  rpcPrint(io, *data, '\0');
 }
 
 /*! \ingroup write
@@ -39,8 +38,7 @@ void rpcWrite(I& io, char const** data) {
  * \copydoc rpcWrite(I&, T*) */
 template <class I>
 void rpcWrite(I& io, String* data) {
-  rpcPrint(io, *data);
-  rpcPrint(io, '\0');
+  rpcPrint(io, *data, '\0');
 }
 
 
