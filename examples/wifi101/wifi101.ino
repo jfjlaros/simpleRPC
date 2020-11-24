@@ -3,9 +3,10 @@
 #include <WiFi101.h>
 #include "arduino_secrets.h"
 
-WiFi101IO io;
 char ssid[] = SECRET_SSID;    // your network SSID (name)
 char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
+WiFiClient wc;
+WiFi101IO io;
 
 byte ping(byte data) {
   return data;
@@ -18,6 +19,8 @@ void setup(void) {
     delay(10);
   }
   printWiFiStatus();
+  wc.connect(IPAddress("192.168.1.218"), 11511);
+  io.begin(wc);
 }
 
 void connectWiFi() {
