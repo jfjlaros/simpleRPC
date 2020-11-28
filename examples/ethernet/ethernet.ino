@@ -2,7 +2,7 @@
 #include <Ethernet.h>
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192, 168, 1, 151);
+IPAddress ip(192, 168, 1, 50);
 EthernetServer server(10000);
 
 byte ping(byte data) {
@@ -12,7 +12,7 @@ byte ping(byte data) {
 void connectEthernet() {
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     while (true) {
-      delay(1); // do nothing, no point running without Ethernet hardware
+      delay(1);  // do nothing, no point running without Ethernet hardware
     }
   }
 }
@@ -29,8 +29,8 @@ void setup(void) {
   Serial.begin(9600);
   Ethernet.begin(mac, ip);
   connectEthernet();
-  server.begin();
   printEthernetStatus(Serial);
+  server.begin();
 }
 
 void loop(void) {
@@ -44,6 +44,6 @@ void loop(void) {
       }
     }
     delay(1);       // give the client time to receive data
-    client.stop();  // close the connection
+    client.stop();
   }
 }
