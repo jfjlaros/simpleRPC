@@ -11,36 +11,20 @@ byte ping(byte data) {
   return data;
 }
 
-void connectWifi(const char* ssid, const char* password) {
-  static int status = WL_IDLE_STATUS;
-  if (WiFi.status() == WL_NO_SHIELD) {
-    while(true) {
-      delay(1);  // do nothing, no point running without WiFi hardware
-    }
+void connectWifi(const char* ssid, const char* password, const IPAddress& ip) {
+  while (WiFi.status() == WL_NO_SHIELD) {
+    delay(1);  // do nothing, no point running without WiFi hardware
   }
-  while (status != WL_CONNECTED) {
-    status = WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    WiFi.begin(ssid, password);
+    delay(1);  // wait for wifi connection
   }
-}
-
-void printWifiStatus(Print& print) {
-  print.print("SSID: ");
-  print.println(WiFi.SSID());
-  IPAddress ip = WiFi.localIP();
-  print.print("IP Address: ");
-  print.println(ip);
-  long rssi = WiFi.RSSI();
-  print.print("signal strength (RSSI):");
-  print.print(rssi);
-  print.println(" dBm");
+  WiFi.config(ip);
 }
 
 void setup(void) {
-  Serial.begin(9600);
   WiFi.setPins(8,7,4,2);
-  connectWifi(ssid, pass);
-  WiFi.config(ip);
-  printWifiStatus(Serial);
+  connectWifi(ssid, pass, ip);
   server.begin();
 }
 
@@ -48,12 +32,11 @@ void loop(void) {
   WiFiClient client = server.available();
   if (client) {
     while (client.connected()) {
-      if (client.available()) {
-        interface(
-          client,
-          ping, F("ping: Echo a value. @data: Value. @return: Value of data."));
-      }
+      interface(
+        client,
+        ping, F("ping: Echo a value. @data: Value. @return: Value of data."));
     }
+    client.flush(); // wait for data transmission to complete
     delay(1);       // give the client time to receive data
     client.stop();
   }

@@ -9,27 +9,18 @@ byte ping(byte data) {
   return data;
 }
 
-void connectEthernet() {
-  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
-    while (true) {
-      delay(1);  // do nothing, no point running without Ethernet hardware
-    }
+void connectEthernet(byte* mac, const IPAddress& ip) {
+  Ethernet.begin(mac, ip);
+  while (Ethernet.hardwareStatus() == EthernetNoHardware) {
+    delay(1);  // do nothing, no point running without Ethernet hardware
   }
-}
-
-void printEthernetStatus(Print& print) {
-  print.print("IP Address: ");
-  print.println(ip);
-  if (Ethernet.linkStatus() == LinkOFF) {
-    print.println("Ethernet cable is not connected.");
+  while (Ethernet.linkStatus() == LinkOFF) {
+    delay(1);  // wait for ethernet connection
   }
 }
 
 void setup(void) {
-  Serial.begin(9600);
-  Ethernet.begin(mac, ip);
-  connectEthernet();
-  printEthernetStatus(Serial);
+  connectEthernet(mac, ip);
   server.begin();
 }
 
@@ -37,12 +28,11 @@ void loop(void) {
   EthernetClient client = server.available();
   if (client) {
     while (client.connected()) {
-      if (client.available()) {
-        interface(
-          client,
-          ping, F("ping: Echo a value. @data: Value. @return: Value of data."));
-      }
+      interface(
+        client,
+        ping, F("ping: Echo a value. @data: Value. @return: Value of data."));
     }
+    client.flush(); // wait for data transmission to complete
     delay(1);       // give the client time to receive data
     client.stop();
   }
