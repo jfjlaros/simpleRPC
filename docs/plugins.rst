@@ -2,7 +2,47 @@ Plugins
 =======
 
 The library supports I/O plugins in order to enable RPC communication over a
-range of interfaces. This is accomplished by inheriting from the Stream class
+range of interfaces. Currently, the following plugins are implemented.
+
+.. list-table:: Plugins.
+   :header-rows: 1
+
+   * - name
+     - description
+     - status
+   * - ``Serial``
+     - The standard Arduino serial interface.
+     - working
+   * - ``EthernetClient``
+     - Arduino ethernet interface.
+     - untested
+   * - ``WiFiClient``
+     - Arduino WiFi101 interface.
+     - tested
+   * - ``Wire``
+     - I2C / TWI interface.
+     - untested
+
+Any new plugins must inherit from the Stream class and override the following methods.
+
+.. list-table:: Methods.
+   :header-rows: 1
+
+   * - name
+     - description
+   * -
+     - Constructor.
+   * - ``int available()``
+     - Number of bytes available for reading.
+   * - ``int read()``
+     - Read a single byte. Return -1 upon error.
+   * - ``int peek()``
+     - Preview the next byte.
+   * - ``size_t write(uint8_t)``
+     - Write a single byte. Return number of bytes written.
+
+Usually, the I/O plugin is declared as a global object instance in the sketch
+and initialized in the ``setup()`` function.
 
 
 Multiple I/O interfaces
@@ -56,5 +96,4 @@ Finally, it is possible to combine both of the strategies described above.
 
 
 .. _Serial: https://www.arduino.cc/en/Reference/Serial
-.. _SoftwareSerial: https://www.arduino.cc/en/Reference/SoftwareSerial
 .. _Wire: https://www.arduino.cc/en/Reference/Wire
