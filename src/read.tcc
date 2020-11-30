@@ -16,7 +16,7 @@
  */
 template <class I, class T>
 void rpcRead(I& io, T* data) {
-  io.read((uint8_t*)data, sizeof(T));
+  io.readBytes((char*)data, sizeof(T));
 }
 
 

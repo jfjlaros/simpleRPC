@@ -9,7 +9,7 @@ size_t StreamIO::available(void) {
   return (size_t)_ss->available();
 }
 
-size_t StreamIO::read(byte* buffer, size_t size) {
+size_t StreamIO::readBytes(byte* buffer, size_t size) {
   return _ss->readBytes((char*)buffer, size);
 }
 

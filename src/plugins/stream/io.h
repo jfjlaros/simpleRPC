@@ -8,7 +8,7 @@ class StreamIO {
     StreamIO(void) {}
     void begin(Stream&);
     size_t available(void);
-    size_t read(byte*, size_t);
+    size_t readBytes(byte*, size_t);
     size_t write(byte*, size_t);
   private:
     Stream* _ss;

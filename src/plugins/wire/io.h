@@ -8,7 +8,7 @@ class WireIO {
     WireIO(void) {}
     void begin(TwoWire&);
     size_t available(void);
-    size_t read(uint8_t*, size_t);
+    size_t readBytes(uint8_t*, size_t);
     size_t write(uint8_t*, size_t);
   private:
     TwoWire* _tw;
