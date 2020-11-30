@@ -9,7 +9,7 @@ size_t WireIO::available(void) {
   return (size_t)_tw->available();
 }
 
-size_t WireIO::read(uint8_t* buffer, size_t size) {
+size_t WireIO::readBytes(uint8_t* buffer, size_t size) {
   size_t i;
 
   for (i = 0; i < size; i++) {
