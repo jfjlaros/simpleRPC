@@ -8,23 +8,14 @@ Include the header file to use the simpleRPC library.
     #include <simpleRPC.h>
 
 The library provides the ``interface()`` function, which is responsible for all
-communication with the host. To use this function, first define which interface
-to use by instantiating one of the plugins, ``HardwareSerialIO`` for
-example.
-
-.. code-block:: cpp
-
-    HardwareSerialIO io;
-
-This particular plugin needs to be initialised with the standard ``Serial``
-class instance to enable communication using the hardware serial interface.
-This is done using the ``begin()`` method in the ``setup()`` body.
+communication with the host. To use this function, first initialize the standard
+``Serial`` class instance to enable communication using the hardware serial
+interface. This is done using the ``begin()`` method in the ``setup()`` body.
 
 .. code-block:: cpp
 
     void setup(void) {
       Serial.begin(9600);
-      io.begin(Serial);
     }
 
 Please see the :doc:`plugins` section for using other I/O interfaces.
