@@ -3,8 +3,4 @@
 
 #include "interface.tcc"
 
-// I/O plugins.
-#include "plugins/stream/io.h"
-#include "plugins/wire/io.h"
-
 #endif

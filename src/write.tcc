@@ -14,38 +14,35 @@
  * \param io Input / output object.
  * \param data Data.
  */
-template <class I, class T>
-void rpcWrite(I& io, T* data) {
+template <class T>
+void rpcWrite(Stream& io, T* data) {
   io.write((uint8_t*)data, sizeof(T));
 }
 
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I>
-void rpcWrite(I& io, char** data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+inline void rpcWrite(Stream& io, char** data) {
   rpcPrint(io, *data, '\0');
 }
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I>
-void rpcWrite(I& io, char const** data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+inline void rpcWrite(Stream& io, char const** data) {
   rpcWrite(io, (char**)data);
 }
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I>
-void rpcWrite(I& io, String* data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+inline void rpcWrite(Stream& io, String* data) {
   rpcPrint(io, *data, '\0');
 }
 
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I, class T>
-void rpcWrite(I& io, Vector<T>* data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T>
+void rpcWrite(Stream& io, Vector<T>* data) {
   rpcWrite(io, &(*data).size);
 
   for (size_t i = 0; i < (*data).size; i++) {
@@ -55,22 +52,21 @@ void rpcWrite(I& io, Vector<T>* data) {
 
 
 //! Recursion terminator for `rpcWrite(Tuple*)()`.
-template <class I>
-void rpcWrite(I&, Tuple<>*) {}
+inline void rpcWrite(Stream&, Tuple<>*) {}
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I, class... Membs>
-void rpcWrite(I& io, Tuple<Membs...>* data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class... Membs>
+void rpcWrite(Stream& io, Tuple<Membs...>* data) {
   rpcWrite(io, &(*data).head);
   rpcWrite(io, &(*data).tail);
 }
 
 
 /*! \ingroup write
- * \copydoc rpcWrite(I&, T*) */
-template <class I, class... Membs>
-void rpcWrite(I& io, Object<Membs...>* data) {
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class... Membs>
+void rpcWrite(Stream& io, Object<Membs...>* data) {
   rpcWrite(io, (Tuple<Membs...>*)data);
 }
 

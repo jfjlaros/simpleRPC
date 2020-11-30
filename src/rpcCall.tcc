@@ -16,8 +16,8 @@
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
  */
-template <class I, class R, class... FArgs, class... Args>
-void _call(I& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
+template <class R, class... FArgs, class... Args>
+void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
   /*
    * All parameters have been collected since function pointer `*f_` has no
    * parameter types. All values are now present in the `args` parameter pack.
@@ -36,24 +36,26 @@ void _call(I& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
  *   to a class method.
  * \param args Parameter pack for `f`.
  */
-template <class I, class C, class P, class R, class... FArgs, class... Args>
+template <class C, class P, class R, class... FArgs, class... Args>
 void _call(
-    I& io, void (*)(void), Tuple<C*, R (P::*)(FArgs...)> t, Args&... args) {
+    Stream& io, void (*)(void), Tuple<C*, R (P::*)(FArgs...)> t,
+    Args&... args) {
   R data = (*t.head.*t.tail.head)(args...);
 
   rpcWrite(io, &data);
 }
 
-//! \copydoc _call(I&, void (*)(void), R (*)(FArgs...), Args&...)
-template <class I, class... FArgs, class... Args>
-void _call(I&, void (*)(void), void (*f)(FArgs...), Args&... args) {
+//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+template <class... FArgs, class... Args>
+void _call(Stream&, void (*)(void), void (*f)(FArgs...), Args&... args) {
   f(args...);
 }
 
-//! \copydoc _call(I&, void (*)(void), R (*)(FArgs...), Args&...)
-template <class I, class C, class P, class... FArgs, class... Args>
+//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+template <class C, class P, class... FArgs, class... Args>
 void _call(
-    I&, void (*)(void), Tuple<C*, void (P::*)(FArgs...)> t, Args&... args) {
+    Stream&, void (*)(void), Tuple<C*, void (P::*)(FArgs...)> t,
+    Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 
@@ -66,8 +68,8 @@ void _call(
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
  */
-template <class I, class H, class... Tail, class F, class... Args>
-void _call(I& io, void (*f_)(H, Tail...), F f, Args&... args) {
+template <class H, class... Tail, class F, class... Args>
+void _call(Stream& io, void (*f_)(H, Tail...), F f, Args&... args) {
   /* 
    * The first parameter type `T` is isolated from function pointer `*f_`. This
    * type is used to instantiate the variable `data`, which is used to receive
@@ -82,9 +84,9 @@ void _call(I& io, void (*f_)(H, Tail...), F f, Args&... args) {
   rpcDel(&data);
 }
 
-//! \copydoc _call(I&, void (*)(H, Tail...), F, Args&...)
-template <class I, class H, class... Tail, class F, class... Args>
-void _call(I& io, void (*f_)(H&, Tail...), F f, Args&... args) {
+//! \copydoc _call(Stream&, void (*)(H, Tail...), F, Args&...)
+template <class H, class... Tail, class F, class... Args>
+void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
   _call(io, (void (*)(H, Tail...))f_, f, args...);
 }
 
@@ -98,8 +100,8 @@ void _call(I& io, void (*f_)(H&, Tail...), F f, Args&... args) {
  * \param io Input / output object.
  * \param f Function pointer.
  */
-template <class I, class R, class... FArgs>
-void rpcCall(I& io, R (*f)(FArgs...)) {
+template <class R, class... FArgs>
+void rpcCall(Stream& io, R (*f)(FArgs...)) {
   /*
    * A dummy function pointer is prepared, referred to as `f_` in the template
    * functions above, which will be used to isolate parameter types. The return
@@ -112,14 +114,14 @@ void rpcCall(I& io, R (*f)(FArgs...)) {
 /*! \ingroup call
  * Call a class method.
  *
- * \sa rpcCall(I&, R (*)(FArgs...))
+ * \sa rpcCall(Stream&, R (*)(FArgs...))
  *
  * \param io Input / output object.
  * \param t Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
  */
-template <class I, class C, class P ,class R, class... FArgs>
-void rpcCall(I& io, Tuple<C*, R (P::*)(FArgs...)> t) {
+template <class C, class P ,class R, class... FArgs>
+void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
   _call(io, (void (*)(FArgs...))t.tail.head, t);
 }
 

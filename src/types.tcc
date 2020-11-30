@@ -14,99 +14,85 @@
  * \param io Input / output object.
  * \param - Value.
  */
-template <class I>
-void rpcTypeOf(I& io, bool) {
+inline void rpcTypeOf(Stream& io, bool) {
   rpcPrint(io, "?");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, char) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, char) {
   rpcPrint(io, "c");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, signed char) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, signed char) {
   rpcPrint(io, "b");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, unsigned char) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, unsigned char) {
   rpcPrint(io, "B");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, short int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, short int) {
   rpcPrint(io, "h");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, unsigned short int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, unsigned short int) {
   rpcPrint(io, "H");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, long int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, long int) {
   rpcPrint(io, "l");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, unsigned long int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, unsigned long int) {
   rpcPrint(io, "L");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, long long int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, long long int) {
   rpcPrint(io, "q");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, unsigned long long int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, unsigned long long int) {
   rpcPrint(io, "Q");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, float) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, float) {
   rpcPrint(io, "f");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, String&) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, String&) {
   rpcPrint(io, "s");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, char*) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, char*) {
   rpcPrint(io, "s");
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, char const*) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, char const*) {
   rpcPrint(io, "s");
 }
 
@@ -116,9 +102,8 @@ void rpcTypeOf(I& io, char const*) {
  */
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, int) {
   if (sizeof(int) == 2) {
     rpcPrint(io, "h");
     return;
@@ -127,9 +112,8 @@ void rpcTypeOf(I& io, int) {
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, unsigned int) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, unsigned int) {
   if (sizeof(unsigned int) == 2) {
     rpcPrint(io, "H");
     return;
@@ -138,9 +122,8 @@ void rpcTypeOf(I& io, unsigned int) {
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I>
-void rpcTypeOf(I& io, double) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+inline void rpcTypeOf(Stream& io, double) {
   if (sizeof(double) == 4) {
     rpcPrint(io, "f");
     return;
@@ -150,8 +133,7 @@ void rpcTypeOf(I& io, double) {
 
 
 //! Recursion terminator for `rpcTypeOf(Tuple&)`.
-template <class I>
-void rpcTypeOf(I&, Tuple<>&) {}
+inline void rpcTypeOf(Stream&, Tuple<>&) {}
 
 /*! \ingroup types
  * Get the types of all members of a Tuple.
@@ -159,8 +141,8 @@ void rpcTypeOf(I&, Tuple<>&) {}
  * \param io Input / output object.
  * \param t Tuple.
  */
-template <class I, class... Membs>
-void rpcTypeOf(I& io, Tuple<Membs...>& t) {
+template <class... Membs>
+void rpcTypeOf(Stream& io, Tuple<Membs...>& t) {
   rpcTypeOf(io, t.head);
   rpcTypeOf(io, t.tail);
 }
@@ -172,8 +154,8 @@ void rpcTypeOf(I& io, Tuple<Membs...>& t) {
  * \param io Input / output object.
  * \param t Object.
  */
-template <class I, class... Membs>
-void rpcTypeOf(I& io, Object<Membs...>& o) {
+template <class... Membs>
+void rpcTypeOf(Stream& io, Object<Membs...>& o) {
   rpcPrint(io, "(");
   rpcTypeOf(io, (Tuple<Membs...>&)o);
   rpcPrint(io, ")");
@@ -181,9 +163,9 @@ void rpcTypeOf(I& io, Object<Membs...>& o) {
 
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I, class T>
-void rpcTypeOf(I& io, Vector<T>&) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+template <class T>
+void rpcTypeOf(Stream& io, Vector<T>&) {
   T x;
 
   rpcPrint(io, "[");
@@ -192,9 +174,9 @@ void rpcTypeOf(I& io, Vector<T>&) {
 }
 
 /*! \ingroup types
- * \copydoc rpcTypeOf(I&, bool) */
-template <class I, class T>
-void rpcTypeOf(I& io, T*) {
+ * \copydoc rpcTypeOf(Stream&, bool) */
+template <class T>
+void rpcTypeOf(Stream& io, T*) {
   T x;
 
   rpcPrint(io, "[");
@@ -208,8 +190,7 @@ void rpcTypeOf(I& io, T*) {
  *
  * \param io Input / output object.
  */
-template <class I>
-void hardwareDefs(I& io) {
+inline void hardwareDefs(Stream& io) {
   size_t i = 0xff;
 
   if (((uint8_t*)&i)[0] == 0xff) {
