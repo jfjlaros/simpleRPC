@@ -3,9 +3,8 @@
 #include <Arduino.h>
 
 #include "../src/signature.tcc"
-#include "../src/plugins/stream/io.h"
 
-extern HardwareSerialIO io;
+extern Stream Serial;
 
 
 TEST_CASE("Function pointer types", "[signature][basic]") {
@@ -13,8 +12,8 @@ TEST_CASE("Function pointer types", "[signature][basic]") {
   void (*f1)(char, float);
 
   Serial.reset();
-  signature(io, f0);
-  signature(io, f1);
+  signature(Serial, f0);
+  signature(Serial, f1);
   REQUIRE(Serial.inspect<String>() == "h: c f: c f");
 }
 
@@ -28,8 +27,8 @@ TEST_CASE("Class member function pointer types", "[signature][class]") {
   };
 
   Serial.reset();
-  signature(io, &C::f0);
-  signature(io, &C::f1);
+  signature(Serial, &C::f0);
+  signature(Serial, &C::f1);
   REQUIRE(Serial.inspect<String>() == "h: c f: c f");
 }
 
@@ -38,8 +37,8 @@ TEST_CASE("Tuples", "[signature][tuple]") {
   Tuple<int, char> (*f1)(float);
 
   Serial.reset();
-  signature(io, f0);
-  signature(io, f1);
+  signature(Serial, f0);
+  signature(Serial, f1);
   REQUIRE(Serial.inspect<String>() == ": ic fic: f");
 }
 
@@ -48,8 +47,8 @@ TEST_CASE("Objects", "[signature][object]") {
   Object<int, char> (*f1)(float);
 
   Serial.reset();
-  signature(io, f0);
-  signature(io, f1);
+  signature(Serial, f0);
+  signature(Serial, f1);
   REQUIRE(Serial.inspect<String>() == ": (ic) f(ic): f");
 }
 
@@ -59,9 +58,9 @@ TEST_CASE("Vectors", "[signature][vector]") {
   int (*f2)(Vector<signed char>&, int);
 
   Serial.reset();
-  signature(io, f0);
-  signature(io, f1);
-  signature(io, f2);
+  signature(Serial, f0);
+  signature(Serial, f1);
+  signature(Serial, f2);
   REQUIRE(Serial.inspect<String>() == ": [i] f[i]: fi: [b] i");
 }
 
@@ -72,9 +71,9 @@ TEST_CASE("C vectors", "[signature][vector]") {
   void (*f3)(int**);
 
   Serial.reset();
-  signature(io, f0);
-  signature(io, f1);
-  signature(io, f2);
-  signature(io, f3);
+  signature(Serial, f0);
+  signature(Serial, f1);
+  signature(Serial, f2);
+  signature(Serial, f3);
   REQUIRE(Serial.inspect<String>() == ": [i] f[i]: fi: [b] i: [[i]]");
 }
