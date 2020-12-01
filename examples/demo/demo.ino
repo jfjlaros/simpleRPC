@@ -1,7 +1,5 @@
 #include <simpleRPC.h>
 
-HardwareSerialIO io;
-
 
 byte ping(byte data) {
   return data;
@@ -52,12 +50,11 @@ Vector<float> cVector(int* v) {
 
 void setup(void) {
   Serial.begin(9600);
-  io.begin(Serial);
 }
 
 void loop(void) {
   interface(
-    io,
+    Serial,
     ping, F("ping: Echo a value. @data: Value. @return: Value of data."),
     inc, F("inc: Increment a value. @a: Value. @return: a + 1."),
     setLed, F("set_led: Set LED brightness. @brightness: Brightness."),

@@ -14,16 +14,15 @@
  * \param io Input / output object.
  * \param data Data.
  */
-template <class I, class T>
-void rpcRead(I& io, T* data) {
+template <class T>
+void rpcRead(Stream& io, T* data) {
   io.readBytes((char*)data, sizeof(T));
 }
 
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I>
-void rpcRead(I& io, char** data) {
+ * \copydoc rpcRead(Stream&, T*) */
+inline void rpcRead(Stream& io, char** data) {
   *data = (char*)malloc(sizeof(char));
   rpcRead(io, &(*data)[0]);
 
@@ -34,16 +33,14 @@ void rpcRead(I& io, char** data) {
 }
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I>
-void rpcRead(I& io, char const** data) {
+ * \copydoc rpcRead(Stream&, T*) */
+inline void rpcRead(Stream& io, char const** data) {
   rpcRead(io, (char**)data);
 }
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I>
-void rpcRead(I& io, String* data) {
+ * \copydoc rpcRead(Stream&, T*) */
+inline void rpcRead(Stream& io, String* data) {
   char character;
 
   rpcRead(io, &character);
@@ -56,9 +53,9 @@ void rpcRead(I& io, String* data) {
 
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I, class T>
-void rpcRead(I& io, Vector<T>* data) {
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, Vector<T>* data) {
   size_t size;
 
   rpcRead(io, &size);
@@ -70,9 +67,9 @@ void rpcRead(I& io, Vector<T>* data) {
 }
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I, class T>
-void rpcRead(I& io, T** data) {
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, T** data) {
   size_t size;
 
   rpcRead(io, &size);
@@ -84,9 +81,9 @@ void rpcRead(I& io, T** data) {
 }
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I, class T>
-void rpcRead(I& io, T*** data) {
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, T*** data) {
   size_t size;
 
   rpcRead(io, &size);
@@ -100,22 +97,21 @@ void rpcRead(I& io, T*** data) {
 
 
 //! Recursion terminator for `rpcRead(Tuple*)`.
-template <class I>
-void rpcRead(I&, Tuple<>*) {}
+inline void rpcRead(Stream&, Tuple<>*) {}
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I, class... Membs>
-void rpcRead(I& io, Tuple<Membs...>* data) {
+ * \copydoc rpcRead(Stream&, T*) */
+template <class... Membs>
+void rpcRead(Stream& io, Tuple<Membs...>* data) {
   rpcRead(io, &(*data).head);
   rpcRead(io, &(*data).tail);
 }
 
 
 /*! \ingroup read
- * \copydoc rpcRead(I&, T*) */
-template <class I, class... Membs>
-void rpcRead(I& io, Object<Membs...>* data) {
+ * \copydoc rpcRead(Stream&, T*) */
+template <class... Membs>
+void rpcRead(Stream& io, Object<Membs...>* data) {
   rpcRead(io, (Tuple<Membs...>*)data);
 }
 
