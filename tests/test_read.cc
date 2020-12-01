@@ -2,9 +2,8 @@
 
 #include "../src/del.tcc"
 #include "../src/read.tcc"
-#include "../src/plugins/stream/io.h"
 
-extern HardwareSerialIO io;
+extern Stream Serial;
 
 
 TEST_CASE("Read basic types", "[read][basic]") {
@@ -13,8 +12,8 @@ TEST_CASE("Read basic types", "[read][basic]") {
 
   Serial.reset();
   Serial.prepare(1234, 'x');
-  rpcRead(io, &i);
-  rpcRead(io, &c);
+  rpcRead(Serial, &i);
+  rpcRead(Serial, &c);
   REQUIRE(i == 1234);
   REQUIRE(c == 'x');
 }
@@ -24,7 +23,7 @@ TEST_CASE("Read String", "[read][string]") {
 
   Serial.reset();
   Serial.prepare("xyz");
-  rpcRead(io, &s);
+  rpcRead(Serial, &s);
   REQUIRE(s == "xyz");
 }
 
@@ -33,7 +32,7 @@ TEST_CASE("Read string of type char*", "[read][string]") {
 
   Serial.reset();
   Serial.prepare("xyz");
-  rpcRead(io, &s);
+  rpcRead(Serial, &s);
   REQUIRE((String)s == "xyz");
   rpcDel(&s);
 }
@@ -43,7 +42,7 @@ TEST_CASE("Read string of type char const*", "[read][string]") {
 
   Serial.reset();
   Serial.prepare("xyz");
-  rpcRead(io, &s);
+  rpcRead(Serial, &s);
   REQUIRE((String)s == "xyz");
   rpcDel(&s);
 }
@@ -53,7 +52,7 @@ TEST_CASE("Read tuple", "[read][tuple]") {
 
   Serial.reset();
   Serial.prepare(1234, 'x');
-  rpcRead(io, &t);
+  rpcRead(Serial, &t);
   REQUIRE(t.head == 1234);
   REQUIRE(t.tail.head == 'x');
 }
@@ -63,7 +62,7 @@ TEST_CASE("Read object", "[read][object]") {
 
   Serial.reset();
   Serial.prepare(1234, 'x');
-  rpcRead(io, &o);
+  rpcRead(Serial, &o);
   REQUIRE(o.head == 1234);
   REQUIRE(o.tail.head == 'x');
 }
@@ -73,7 +72,7 @@ TEST_CASE("Read vector", "[read][vector]") {
 
   Serial.reset();
   Serial.prepare((size_t)3, 1234, 2345, 3456);
-  rpcRead(io, &v);
+  rpcRead(Serial, &v);
   REQUIRE(v.size == 3);
   REQUIRE(v[0] == 1234);
   REQUIRE(v[1] == 2345);
@@ -85,7 +84,7 @@ TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
-  rpcRead(io, &t);
+  rpcRead(Serial, &t);
   REQUIRE(t.head[0] == 1234);
   REQUIRE(t.head[1] == 2345);
   REQUIRE(t.tail.head == 'x');
@@ -96,7 +95,7 @@ TEST_CASE("Read complex object", "[read][object][complex]") {
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 2345, 'x');
-  rpcRead(io, &o);
+  rpcRead(Serial, &o);
   REQUIRE(o.head[0] == 1234);
   REQUIRE(o.head[1] == 2345);
   REQUIRE(o.tail.head == 'x');
@@ -107,7 +106,7 @@ TEST_CASE("Read nested vector", "[read][vector][complex]") {
 
   Serial.reset();
   Serial.prepare((size_t)2, (size_t)2, 1234, 2345, (size_t)2, 3456, 4567);
-  rpcRead(io, &v);
+  rpcRead(Serial, &v);
   REQUIRE(v[0][0] == 1234);
   REQUIRE(v[0][1] == 2345);
   REQUIRE(v[1][0] == 3456);
@@ -119,7 +118,7 @@ TEST_CASE("Read complex vector", "[read][vector][complex]") {
 
   Serial.reset();
   Serial.prepare((size_t)2, 1234, 'x', 2345, 'y');
-  rpcRead(io, &v);
+  rpcRead(Serial, &v);
   REQUIRE(v[0].head == 1234);
   REQUIRE(v[0].tail.head.head == 'x');
   REQUIRE(v[1].head == 2345);

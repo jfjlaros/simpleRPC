@@ -7,8 +7,7 @@
 
 
 //! Recursion terminator for `_parameterTypes()`.
-template <class I>
-void _parameterTypes(I&, void (*)(void)) {}
+inline void _parameterTypes(Stream&, void (*)(void)) {}
 
 /*!
  * Get the types of all function parameters.
@@ -18,8 +17,8 @@ void _parameterTypes(I&, void (*)(void)) {}
  *
  * \return Space separated parameter types.
  */
-template <class I, class H, class... Tail>
-void _parameterTypes(I& io, void (*f_)(H, Tail...)) {
+template <class H, class... Tail>
+void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
   /*
    * The first parameter type `H` is isolated from function pointer `*f_`. This
    * type is used to instantiate the variable `data`, which is passed to
@@ -33,9 +32,9 @@ void _parameterTypes(I& io, void (*f_)(H, Tail...)) {
   _parameterTypes(io, (void (*)(Tail...))f_);
 }
 
-//! \copydoc _parameterTypes(I&, void (*)(H, Tail...))
-template <class I, class H, class... Tail>
-void _parameterTypes(I& io, void (*f_)(H&, Tail...)) {
+//! \copydoc _parameterTypes(Stream&, void (*)(H, Tail...))
+template <class H, class... Tail>
+void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
   _parameterTypes(io, (void (*)(H, Tail...))f_);
 }
 
@@ -48,8 +47,8 @@ void _parameterTypes(I& io, void (*f_)(H&, Tail...)) {
  *
  * \return Function signature.
  */
-template <class I, class R, class... FArgs>
-void signature(I& io, R (*f)(FArgs...)) {
+template <class R, class... FArgs>
+void signature(Stream& io, R (*f)(FArgs...)) {
   /* 
    * A dummy function pointer is prepared, referred to as `f_` in the template
    * functions above, which will be used to isolate parameter types. The return
@@ -64,24 +63,24 @@ void signature(I& io, R (*f)(FArgs...)) {
 }
 
 /*! \ingroup signature
- * \copydoc signature(I&, R (*)(FArgs...)) */
-template <class I, class R, class C, class... FArgs>
-void signature(I& io, R (C::*f)(FArgs...)) {
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class R, class C, class... FArgs>
+void signature(Stream& io, R (C::*f)(FArgs...)) {
   signature(io, (R (*)(FArgs...))f);
 }
 
 /*! \ingroup signature
- * \copydoc signature(I&, R (*)(FArgs...)) */
-template <class I, class... FArgs>
-void signature(I& io, void (*f)(FArgs...)) {
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class... FArgs>
+void signature(Stream& io, void (*f)(FArgs...)) {
   rpcPrint(io, ":");
   _parameterTypes(io, f);
 }
 
 /*! \ingroup signature
- * \copydoc signature(I&, R (*)(FArgs...)) */
-template <class I, class C, class... FArgs>
-void signature(I& io, void (C::*f)(FArgs...)) {
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class C, class... FArgs>
+void signature(Stream& io, void (C::*f)(FArgs...)) {
   signature(io, (void (*)(FArgs...))f);
 }
 

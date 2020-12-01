@@ -23,16 +23,15 @@
  * \param f Function pointer.
  * \param doc Function documentation.
  */
-template <class I, class F, class D>
-void _writeDescription(I& io, F f, D doc) {
+template <class F, class D>
+void _writeDescription(Stream& io, F f, D doc) {
   signature(io, f);
   rpcPrint(io, ';', doc, '\0');
 }
 
 
 //! Recursion terminator for `_describe()`.
-template <class I>
-void _describe(I& io) {
+inline void _describe(Stream& io) {
   rpcPrint(io, '\0');
 }
 
@@ -44,8 +43,8 @@ void _describe(I& io) {
  * \param doc Function documentation.
  * \param args Remaining parameters.
  */
-template <class I, class F, class D, class... Args>
-void _describe(I& io, F f, D doc, Args... args) {
+template <class F, class D, class... Args>
+void _describe(Stream& io, F f, D doc, Args... args) {
   /*
    * The first two parameters `f` and `doc` are isolated and passed to
    * `_writeDescription()`. Then a recursive call to process the remaining
@@ -55,17 +54,16 @@ void _describe(I& io, F f, D doc, Args... args) {
   _describe(io, args...);
 }
 
-//! \copydoc _describe(I&, F, D, Args...)
-template <class I, class U, class V, class D, class... Args>
-void _describe(I& io, Tuple<U, V> t, D doc, Args... args) {
+//! \copydoc _describe(Stream&, F, D, Args...)
+template <class U, class V, class D, class... Args>
+void _describe(Stream& io, Tuple<U, V> t, D doc, Args... args) {
   _writeDescription(io, t.tail.head, doc);
   _describe(io, args...);
 }
 
 
 //! Recursion terminator for `_select()`.
-template <class I>
-void _select(I&, uint8_t, uint8_t) {}
+inline void _select(Stream&, uint8_t, uint8_t) {}
 
 /*!
  * Select and call a function indexed by `number`.
@@ -77,8 +75,8 @@ void _select(I&, uint8_t, uint8_t) {}
  * \param - Function documentation.
  * \param args Remaining parameters.
  */
-template <class I, class F, class D, class... Args>
-void _select(I& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
+template <class F, class D, class... Args>
+void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -103,8 +101,8 @@ void _select(I& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
  * \param io Input / output object.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class I, class... Args>
-void interface(I& io, Args... args) {
+template <class... Args>
+void interface(Stream& io, Args... args) {
   /*
    * One byte is read into `command`, if the value equals `_LIST_REQ`, the list
    * of functions is described. Otherwise, the function indexed by `command` is
@@ -135,7 +133,7 @@ void interface(Tuple<>, Args...) {}
  * Similar to the standard interface , but with support for multiple I/O
  * interfaces, passed as Tuple `t`.
  *
- * \sa interface(I&, Args...)
+ * \sa interface(Stream&, Args...)
  *
  * \param t Tuple of input / output objects.
  * \param args Parameter pairs (function pointer, documentation).
