@@ -43,8 +43,10 @@ which is then able to generate an API interface.
 
   - Hardware serial.
   - Software serial (untested).
-  - Wire (untested).
+  - RS485 serial.
   - Ethernet (untested).
+  - WiFi.
+  - Wire (untested).
 
 - Support for using multiple interfaces at the same time.
 
@@ -64,15 +66,12 @@ Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
 
     #include <simpleRPC.h>
 
-    HardwareSerialIO io;
-
     void setup(void) {
       Serial.begin(9600);
-      io.begin(Serial);
     }
 
     void loop(void) {
-      interface(io, digitalRead, "", digitalWrite, "");
+      interface(Serial, digitalRead, "", digitalWrite, "");
     }
 
 These functions are now available on the host under names ``method0()`` and
