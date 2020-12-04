@@ -13,12 +13,15 @@ range of interfaces. Currently, the following plugins are implemented.
    * - ``Serial``
      - The standard Arduino serial interface.
      - working
+   * - ``HalfDuplexStream``
+     - RS485 serial interface.
+     - working
    * - ``EthernetClient``
      - Arduino ethernet interface.
      - untested
    * - ``WiFiClient``
-     - Arduino WiFi101 interface.
-     - tested
+     - Arduino WiFi interface.
+     - working
    * - ``Wire``
      - I2C / TWI interface.
      - untested
@@ -42,7 +45,8 @@ Any new plugins must inherit from the Stream class and override the following me
      - Write a single byte. Return number of bytes written.
 
 Usually, the I/O plugin is declared as a global object instance in the sketch
-and initialized in the ``setup()`` function.
+and initialized in the ``setup()`` function. Refer to `examples/rs485.ino` for an
+example that uses a custom I/O plugin.
 
 
 Multiple I/O interfaces
