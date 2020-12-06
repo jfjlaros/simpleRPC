@@ -27,8 +27,8 @@ byte ping(byte data) {
 
 
 void setup(void) {
-  WiFi.setPins(8,7,4,2);
-  connectWifi(SECRET_SSID, SECRET_PASS, pass, ip);
+  WiFi.setPins(8, 7, 4, 2);
+  connectWifi(SECRET_SSID, SECRET_PASS, ip);
   server.begin();
 }
 
