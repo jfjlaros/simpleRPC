@@ -13,9 +13,9 @@ range of interfaces. Currently, the following plugins are implemented.
    * - ``Serial``
      - The standard Arduino Serial_ interface.
      - working
-     - untested
-   * - ``Serial``
+   * - ``SoftwareSerial``
      - The Arduino SoftwareSerial_ interface.
+     - untested
    * - ``HalfDuplexStream``
      - RS485 serial interface.
      - working
