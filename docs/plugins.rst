@@ -11,22 +11,26 @@ range of interfaces. Currently, the following plugins are implemented.
      - description
      - status
    * - ``Serial``
-     - The standard Arduino serial interface.
+     - The standard Arduino Serial_ interface.
      - working
+     - untested
+   * - ``Serial``
+     - The Arduino SoftwareSerial_ interface.
    * - ``HalfDuplexStream``
      - RS485 serial interface.
      - working
    * - ``EthernetClient``
-     - Arduino ethernet interface.
+     - Arduino Ethernet_ interface.
      - untested
    * - ``WiFiClient``
-     - Arduino WiFi interface.
+     - Arduino WiFi_ interface.
      - working
    * - ``Wire``
-     - I2C / TWI interface.
+     - I2C / TWI Wire_ interface.
      - untested
 
-Any new plugins must inherit from the Stream class and override the following methods.
+A plugin inherits from ``Stream`` and should override the following
+methods.
 
 .. list-table:: Methods.
    :header-rows: 1
@@ -38,14 +42,14 @@ Any new plugins must inherit from the Stream class and override the following me
    * - ``int available()``
      - Number of bytes available for reading.
    * - ``int read()``
-     - Read a single byte. Return -1 upon error.
+     - Read a single byte or ``-1`` upon error.
    * - ``int peek()``
      - Preview the next byte.
    * - ``size_t write(uint8_t)``
-     - Write a single byte. Return number of bytes written.
+     - Write a single byte, return the number of bytes written.
 
 Usually, the I/O plugin is declared as a global object instance in the sketch
-and initialized in the ``setup()`` function. Refer to `examples/rs485.ino` for an
+and initialized in the ``setup()`` function. See the RS485_ sketch for an
 example that uses a custom I/O plugin.
 
 
@@ -99,5 +103,9 @@ pointers to these interfaces with the ``pack()`` function as follows.
 Finally, it is possible to combine both of the strategies described above.
 
 
+.. _Ethernet: https://www.arduino.cc/en/Reference/Ethernet
+.. _RS485: https://github.com/jfjlaros/simpleRPC/blob/master/examples/rs485/rs485.ino
 .. _Serial: https://www.arduino.cc/en/Reference/Serial
+.. _SoftwareSerial: https://www.arduino.cc/en/Reference/SoftwareSerial
+.. _WiFi: https://www.arduino.cc/en/Reference/WiFi101
 .. _Wire: https://www.arduino.cc/en/Reference/Wire
