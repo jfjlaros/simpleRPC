@@ -108,7 +108,7 @@ Exporting these functions goes as follows:
 
     void loop(void) {
       interface(
-        io,
+        Serial,
         inc, "inc: Increment a value. @a: Value. @return: a + 1.",
         setLed, "set_led: Set LED brightness. @brightness: Brightness.");
     }
@@ -156,7 +156,7 @@ Exporting this class method goes as follows:
 
       void loop(void) {
         interface(
-          io,
+          Serial,
           pack(&led, &LED::setBrightness),
             "set_led: Set LED brightness. @brightness: Brightness.");
       }

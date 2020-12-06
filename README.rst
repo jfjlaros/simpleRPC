@@ -41,10 +41,11 @@ which is then able to generate an API interface.
 - Support for reading multidimensional C arrays (e.g., ``int**``).
 - Support for different types of I/O interfaces via plugins, e.g.,
 
-  - Hardware serial.
-  - Software serial (untested).
-  - RS485 serial.
   - Ethernet (untested).
+  - Hardware serial.
+  - RS485 serial.
+  - Software serial (untested).
+  - USB serial.
   - WiFi.
   - Wire (untested).
 
@@ -82,7 +83,7 @@ The documentation string can be used to name and describe the method.
 .. code-block:: cpp
 
     interface(
-      io,
+      Serial,
       digitalRead,
         "digital_read: Read digital pin. @pin: Pin number. @return: Pin value.",
       digitalWrite,

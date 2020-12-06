@@ -1,14 +1,18 @@
-#include "stream.h"
 #include <Arduino.h>
 
+#include "stream.h"
 
-HalfDuplexStream::HalfDuplexStream(Stream& stream, int transmit_pin, unsigned long transmit_delay_microseconds) :
-_stream(&stream), _transmit_pin(transmit_pin), _transmit_delay_microseconds(transmit_delay_microseconds) {
+
+HalfDuplexStream::HalfDuplexStream(
+    Stream& stream, uint8_t pin, unsigned long delay) {
+  _stream = &stream;
+  _pin = pin;
+  _delay = delay;
 }
 
 void HalfDuplexStream::begin() {
-  pinMode(_transmit_pin, OUTPUT);
-  digitalWrite(_transmit_pin, LOW);
+  pinMode(_pin, OUTPUT);
+  digitalWrite(_pin, LOW);
 }
 
 int HalfDuplexStream::available() {
@@ -27,11 +31,14 @@ size_t HalfDuplexStream::write(uint8_t b) {
   return _stream->write(b);
 }
 
-size_t HalfDuplexStream::write(const uint8_t *buffer, size_t size) {
-  digitalWrite(_transmit_pin, HIGH);
+size_t HalfDuplexStream::write(uint8_t const* buffer, size_t size) {
+  digitalWrite(_pin, HIGH);
+
   int result = _stream->write(buffer, size);
   _stream->flush();
-  delayMicroseconds(_transmit_delay_microseconds);
-  digitalWrite(_transmit_pin, LOW);
+  delayMicroseconds(_delay);
+
+  digitalWrite(_pin, LOW);
+
   return result;
 }
