@@ -1,4 +1,5 @@
 *.o
 *.swp
-examples/demo/.build/
+examples/*/build/
+examples/*/sketch.json
 tests/run_tests
