@@ -41,6 +41,7 @@ which is then able to generate an API interface.
 - Support for reading multidimensional C arrays (e.g., ``int**``).
 - Support for different types of I/O interfaces via plugins, e.g.,
 
+  - Bluetooth.
   - Ethernet (untested).
   - Hardware serial.
   - RS485 serial.
