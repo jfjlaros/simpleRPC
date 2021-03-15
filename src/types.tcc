@@ -15,85 +15,85 @@
  * \param - Value.
  */
 inline void rpcTypeOf(Stream& io, bool) {
-  rpcPrint(io, "?");
+  rpcPrint(io, '?');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char) {
-  rpcPrint(io, "c");
+  rpcPrint(io, 'c');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, signed char) {
-  rpcPrint(io, "b");
+  rpcPrint(io, 'b');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned char) {
-  rpcPrint(io, "B");
+  rpcPrint(io, 'B');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, short int) {
-  rpcPrint(io, "h");
+  rpcPrint(io, 'h');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned short int) {
-  rpcPrint(io, "H");
+  rpcPrint(io, 'H');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, long int) {
-  rpcPrint(io, "l");
+  rpcPrint(io, 'l');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned long int) {
-  rpcPrint(io, "L");
+  rpcPrint(io, 'L');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, long long int) {
-  rpcPrint(io, "q");
+  rpcPrint(io, 'q');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned long long int) {
-  rpcPrint(io, "Q");
+  rpcPrint(io, 'Q');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, float) {
-  rpcPrint(io, "f");
+  rpcPrint(io, 'f');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, String&) {
-  rpcPrint(io, "s");
+  rpcPrint(io, 's');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char*) {
-  rpcPrint(io, "s");
+  rpcPrint(io, 's');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char const*) {
-  rpcPrint(io, "s");
+  rpcPrint(io, 's');
 }
 
 /*
@@ -105,30 +105,30 @@ inline void rpcTypeOf(Stream& io, char const*) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, int) {
   if (sizeof(int) == 2) {
-    rpcPrint(io, "h");
+    rpcPrint(io, 'h');
     return;
   }
-  rpcPrint(io, "i");
+  rpcPrint(io, 'i');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned int) {
   if (sizeof(unsigned int) == 2) {
-    rpcPrint(io, "H");
+    rpcPrint(io, 'H');
     return;
   }
-  rpcPrint(io, "I");
+  rpcPrint(io, 'I');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, double) {
   if (sizeof(double) == 4) {
-    rpcPrint(io, "f");
+    rpcPrint(io, 'f');
     return;
   }
-  rpcPrint(io, "d");
+  rpcPrint(io, 'd');
 }
 
 
@@ -156,9 +156,9 @@ void rpcTypeOf(Stream& io, Tuple<Membs...>& t) {
  */
 template <class... Membs>
 void rpcTypeOf(Stream& io, Object<Membs...>& o) {
-  rpcPrint(io, "(");
+  rpcPrint(io, '(');
   rpcTypeOf(io, (Tuple<Membs...>&)o);
-  rpcPrint(io, ")");
+  rpcPrint(io, ')');
 }
 
 
@@ -168,9 +168,9 @@ template <class T>
 void rpcTypeOf(Stream& io, Vector<T>&) {
   T x;
 
-  rpcPrint(io, "[");
+  rpcPrint(io, '[');
   rpcTypeOf(io, x);
-  rpcPrint(io, "]");
+  rpcPrint(io, ']');
 }
 
 /*! \ingroup types
@@ -179,9 +179,9 @@ template <class T>
 void rpcTypeOf(Stream& io, T*) {
   T x;
 
-  rpcPrint(io, "[");
+  rpcPrint(io, '[');
   rpcTypeOf(io, x);
-  rpcPrint(io, "]");
+  rpcPrint(io, ']');
 }
 
 
@@ -194,10 +194,10 @@ inline void hardwareDefs(Stream& io) {
   size_t i = 0xff;
 
   if (((uint8_t*)&i)[0] == 0xff) {
-    rpcPrint(io, "<");
+    rpcPrint(io, '<');
   }
   else {
-    rpcPrint(io, ">");
+    rpcPrint(io, '>');
   }
   rpcTypeOf(io, i);
   rpcPrint(io, '\0');

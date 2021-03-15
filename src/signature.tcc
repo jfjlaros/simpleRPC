@@ -27,7 +27,7 @@ void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
    */
   H data;
 
-  rpcPrint(io, " ");
+  rpcPrint(io, ' ');
   rpcTypeOf(io, data);
   _parameterTypes(io, (void (*)(Tail...))f_);
 }
@@ -58,7 +58,7 @@ void signature(Stream& io, R (*f)(FArgs...)) {
   R data;
 
   rpcTypeOf(io, data);
-  rpcPrint(io, ":");
+  rpcPrint(io, ':');
   _parameterTypes(io, (void (*)(FArgs...))f);
 }
 
@@ -73,7 +73,7 @@ void signature(Stream& io, R (C::*f)(FArgs...)) {
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class... FArgs>
 void signature(Stream& io, void (*f)(FArgs...)) {
-  rpcPrint(io, ":");
+  rpcPrint(io, ':');
   _parameterTypes(io, f);
 }
 
