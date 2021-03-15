@@ -71,10 +71,10 @@ void _call(
 template <class H, class... Tail, class F, class... Args>
 void _call(Stream& io, void (*f_)(H, Tail...), F f, Args&... args) {
   /* 
-   * The first parameter type `T` is isolated from function pointer `*f_`. This
+   * The first parameter type `H` is isolated from function pointer `*f_`. This
    * type is used to instantiate the variable `data`, which is used to receive
-   * `sizeof(T)` bytes. This value is passed recursively to `_call()` function,
-   * adding it to the `args` parameter pack. The first parameter type `T` is
+   * `sizeof(H)` bytes. This value is passed recursively to `_call()` function,
+   * adding it to the `args` parameter pack. The first parameter type `H` is
    * removed from function pointer `*f_` in the recursive call.
    */ 
   H data;
