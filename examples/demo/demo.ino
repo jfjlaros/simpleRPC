@@ -58,8 +58,8 @@ void loop(void) {
     ping, F("ping: Echo a value. @data: Value. @return: Value of data."),
     inc, F("inc: Increment a value. @a: Value. @return: a + 1."),
     setLed, F("set_led: Set LED brightness. @brightness: Brightness."),
-    milliTime, F("time: Report the system time. @return: System time."),
+    milliTime, F("milli_time: Report the system time. @return: System time."),
     object, F("object: Example with objects. @o: Object. @return: Object."),
-    vector, F("vector: Example with vectors. @v: Vector. @return: Vector."),
+    vector, F("cpp_vector: Example with vectors. @v: Vector. @return: Vector."),
     cVector, F("c_vector: Example with C vectors. @v: C vector. @return: Vector."));
 }
