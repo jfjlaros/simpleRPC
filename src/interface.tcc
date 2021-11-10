@@ -19,7 +19,7 @@
 /*!
  * Write the signature and documentation of a function.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f Function pointer.
  * \param doc Function documentation.
  */
@@ -38,7 +38,7 @@ inline void _describe(Stream& io) {
 /*!
  * Describe a list of functions.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f Function pointer.
  * \param doc Function documentation.
  * \param args Remaining parameters.
@@ -68,7 +68,7 @@ inline void _select(Stream&, uint8_t, uint8_t) {}
 /*!
  * Select and call a function indexed by `number`.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param number Function index.
  * \param depth Current index.
  * \param f Function pointer.
@@ -98,7 +98,7 @@ void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
  * documentation). The documentation string can be of type `char const*`, or
  * the PROGMEM `F()` macro can be used to reduce memory footprint.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param args Parameter pairs (function pointer, documentation).
  */
 template <class... Args>

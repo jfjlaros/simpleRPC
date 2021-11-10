@@ -12,7 +12,7 @@ inline void _parameterTypes(Stream&, void (*)(void)) {}
 /*!
  * Get the types of all function parameters.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f_ Dummy function pointer.
  *
  * \return Space separated parameter types.
@@ -42,7 +42,7 @@ void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
 /*! \ingroup signature
  * Get the signature of a function.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f Function pointer.
  *
  * \return Function signature.

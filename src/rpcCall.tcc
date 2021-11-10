@@ -11,7 +11,7 @@
 /*!
  * Execute a plain function.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param - Dummy function pointer.
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
@@ -30,7 +30,7 @@ void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
 /*!
  * Execute a class method.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param - Dummy function pointer.
  * \param t Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
@@ -63,7 +63,7 @@ void _call(
 /*!
  * Collect parameters of a function.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f_ Dummy function pointer.
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
@@ -97,7 +97,7 @@ void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
  * Parameter values for `f` are read from `io`, after which `f` is called. Any
  * return value is written back to `io`.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param f Function pointer.
  */
 template <class R, class... FArgs>
@@ -116,7 +116,7 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
  *
  * \sa rpcCall(Stream&, R (*)(FArgs...))
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param t Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
  */

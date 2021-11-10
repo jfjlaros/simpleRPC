@@ -72,7 +72,7 @@ A Tuple type is encoded as a compound type, e.g., ``hB`` (a 16-bit integer and
 a byte). It can be recognised by the absence of a space between the type
 signatures. Note that a concatenated or nested Tuple type can not be recognised
 from its signature, e.g., ``hB`` concatenated with ``ff`` is indistinguishable
-from ``hBff``
+from ``hBff``.
 
 An Object type is encoded as a compound type like a Tuple, but its type
 signature is enclosed in parentheses ``(`` and ``)``, which makes it possible

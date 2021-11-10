@@ -7,9 +7,9 @@
 
 
 /*! \ingroup print
- * Print a value to an Input / output object.
+ * Print a value to a stream.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param data Data.
  */
 template <class T>
@@ -58,7 +58,7 @@ inline void rpcPrint(Stream& io, __FlashStringHelper const* data) {
 /*! \ingroup print
  * Print any number of values.
  *
- * \param io Stream / output object.
+ * \param io Stream.
  * \param data Value to be printed.
  * \param args Remaining values.
  */

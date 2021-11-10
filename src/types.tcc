@@ -11,7 +11,7 @@
 /*! \ingroup types
  * Type encoding.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param - Value.
  */
 inline void rpcTypeOf(Stream& io, bool) {
@@ -138,7 +138,7 @@ inline void rpcTypeOf(Stream&, Tuple<>&) {}
 /*! \ingroup types
  * Get the types of all members of a Tuple.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param t Tuple.
  */
 template <class... Membs>
@@ -151,7 +151,7 @@ void rpcTypeOf(Stream& io, Tuple<Membs...>& t) {
 /*! \ingroup types
  * Get the types of all members of an Object.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param t Object.
  */
 template <class... Membs>
@@ -188,7 +188,7 @@ void rpcTypeOf(Stream& io, T*) {
 /*! \ingroup types
  * Determine endianness and type of `size_t`.
  *
- * \param io Input / output object.
+ * \param io Stream.
  */
 inline void hardwareDefs(Stream& io) {
   size_t i = 0xff;

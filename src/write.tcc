@@ -9,9 +9,9 @@
 
 
 /*! \ingroup write
- * Write a value to an Input / output object.
+ * Write a value to an stream.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param data Data.
  */
 template <class T>

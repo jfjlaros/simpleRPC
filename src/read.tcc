@@ -9,9 +9,9 @@
 
 
 /*! \ingroup read
- * Read a value from an Input / output object.
+ * Read a value from an stream.
  *
- * \param io Input / output object.
+ * \param io Stream.
  * \param data Data.
  */
 template <class T>
