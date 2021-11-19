@@ -7,15 +7,29 @@
 /*! \ingroup STLRead
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, std::string* data) {
-  rpcRead(io, (String*)data);
+  char character;
+
+  rpcRead(io, &character);
+
+  while (character) {
+    *data += character;
+    rpcRead(io, &character);
+  }
 }
 
 
-/*! \ingroup STLRead
+//! Recursion terminator for `rpcRead(std::tuple*)`.
+template<std::size_t i = 0, class... Membs>
+typename std::enable_if<i == sizeof...(Membs), void>::type
+    rpcRead(Stream&, std::tuple<Membs...>*) {}
+
+/*! \ingroup STLread
  * \copydoc rpcRead(Stream&, T*) */
-template <class... Membs>
-void rpcRead(Stream& io, std::tuple<Membs...>* data) {
-  rpcRead(io, (Tuple<Membs...>*)data);
+template<std::size_t i = 0, class... Membs>
+typename std::enable_if<i < sizeof...(Membs), void>::type
+    rpcRead(Stream& io, std::tuple<Membs...>* data) {
+  rpcRead(io, &std::get<i>(*data));
+  rpcRead<i + 1, Membs...>(io, data);
 }
 
 
@@ -23,7 +37,14 @@ void rpcRead(Stream& io, std::tuple<Membs...>* data) {
  * \copydoc rpcRead(Stream&, T*) */
 template <class T>
 void rpcRead(Stream& io, std::vector<T>* data) {
-  rpcRead(io, (Vector<T>*)data);
+  size_t size;
+
+  rpcRead(io, &size);
+  (*data).resize(size);
+
+  for (size_t i = 0; i < (*data).size(); i++) {
+    rpcRead(io, &(*data)[i]);
+  }
 }
 
 /*! \ingroup STLRead

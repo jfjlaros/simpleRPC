@@ -7,15 +7,22 @@
 /*! \ingroup STLWrite
  * \copydoc rpcWrite(Stream&, T*) */
 inline void rpcWrite(Stream& io, std::string* data) {
-  rpcWrite(io, (String*)data);
+  rpcPrint(io, *data, '\0');
 }
 
 
-/*! \ingroup STLWrite
+//! Recursion terminator for `rpcWrite(std::tuple*)`.
+template<std::size_t i = 0, class... Membs>
+typename std::enable_if<i == sizeof...(Membs), void>::type
+    rpcWrite(Stream&, std::tuple<Membs...>*) {}
+
+/*! \ingroup STLread
  * \copydoc rpcWrite(Stream&, T*) */
-template <class... Membs>
-void rpcWrite(Stream& io, std::tuple<Membs...>* data) {
-  rpcWrite(io, (Tuple<Membs...>*)data);
+template<std::size_t i = 0, class... Membs>
+typename std::enable_if<i < sizeof...(Membs), void>::type
+    rpcWrite(Stream& io, std::tuple<Membs...>* data) {
+  rpcWrite(io, &std::get<i>(*data));
+  rpcWrite<i + 1, Membs...>(io, data);
 }
 
 
@@ -23,7 +30,13 @@ void rpcWrite(Stream& io, std::tuple<Membs...>* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class T>
 void rpcWrite(Stream& io, std::vector<T>* data) {
-  rpcWrite(io, (Vector<T>*)data);
+  size_t size = (*data).size();
+
+  rpcWrite(io, &size);
+
+  for (size_t i = 0; i < (*data).size(); i++) {
+    rpcWrite(io, &(*data)[i]);
+  }
 }
 
 /*! \ingroup STLWrite

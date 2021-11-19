@@ -7,7 +7,7 @@
 /*! \ingroup STLTypes
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, std::string& t) {
-  rpcPrint(io, (String&)t);
+  rpcTypeOf(io, (String&)t);
 }
 
 
