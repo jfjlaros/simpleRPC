@@ -46,6 +46,16 @@ std::vector<std::tuple<int, char>>
   return v;
 }
 
+std::array<float, 4> stdArray(std::array<int, 4>& v) {
+  std::array<float, 4> r;
+
+  for (size_t i = 0; i < v.size(); i++) {
+    r[i] = float(v[i]) + 0.4;
+  }
+
+  return r;
+}
+
 
 void setup() {
   Serial.begin(9600);
@@ -58,6 +68,7 @@ void loop() {
     vector, "",
     stdVector, "",
     tupleVector, "",
-    stdTupleVector, ""
+    stdTupleVector, "",
+    stdArray, ""
   );
 }

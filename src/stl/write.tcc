@@ -43,7 +43,13 @@ void rpcWrite(Stream& io, std::vector<T>* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class T, std::size_t N>
 void rpcWrite(Stream& io, std::array<T, N>* data) {
-  rpcWrite(io, (Vector<T>*)data);
+  size_t size = (*data).size();
+
+  rpcWrite(io, &size);
+
+  for (size_t i = 0; i < (*data).size(); i++) {
+    rpcWrite(io, &(*data)[i]);
+  }
 }
 
 #endif
