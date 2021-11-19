@@ -40,6 +40,7 @@ which is then able to generate an API interface.
   internal structure), Vectors and arbitrary combinations of these.
 - Support for reading multidimensional C arrays (e.g., ``int**``).
 - Support for different types of I/O interfaces via plugins, e.g.,
+- Support for the C++ Standard Template Library.
 
   - Bluetooth.
   - Ethernet (untested).

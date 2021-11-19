@@ -1,4 +1,4 @@
-INPUT                  = ../src/
+INPUT                  = ../src/ ../src/stl/
 
 GENERATE_HTML          = NO
 GENERATE_LATEX         = NO

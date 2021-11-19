@@ -30,6 +30,14 @@ Functions
 .. doxygengroup:: print
    :content-only:
 
+STL functions
+^^^^^^^^^^^^^
+
+The following functions are only available for cores that have support for the
+C++ STL. See the :doc:`stl` section for more information.
+
+.. doxygengroup:: STLPrint
+   :content-only:
 
 Reading
 -------
@@ -46,6 +54,14 @@ Functions
 .. doxygengroup:: read
    :content-only:
 
+STL functions
+^^^^^^^^^^^^^
+
+The following functions are only available for cores that have support for the
+C++ STL. See the :doc:`stl` section for more information.
+
+.. doxygengroup:: STLRead
+   :content-only:
 
 Writing
 -------
@@ -60,4 +76,13 @@ Functions
 ~~~~~~~~~
 
 .. doxygengroup:: write
+   :content-only:
+
+STL functions
+^^^^^^^^^^^^^
+
+The following functions are only available for cores that have support for the
+C++ STL. See the :doc:`stl` section for more information.
+
+.. doxygengroup:: STLWrite
    :content-only:

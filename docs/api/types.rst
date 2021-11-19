@@ -38,5 +38,14 @@ Functions
 .. doxygengroup:: types
    :content-only:
 
+STL functions
+^^^^^^^^^^^^^
+
+The following functions are only available for cores that have support for the
+C++ STL. See the :doc:`stl` section for more information.
+
+.. doxygengroup:: STLTypes
+   :content-only:
+
 
 .. _struct: https://docs.python.org/3.5/library/struct.html#format-strings
