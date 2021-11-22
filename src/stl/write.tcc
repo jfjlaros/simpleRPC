@@ -87,4 +87,37 @@ void rpcWrite(Stream& io, std::forward_list<T>* data) {
   }
 }
 
+
+/*! \ingroup STLWrite
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T>
+void rpcWrite(Stream& io, std::set<T>* data) {
+  size_t size = (*data).size();
+
+  rpcWrite(io, &size);
+
+  T element;
+  typename std::set<T>::iterator it;
+  for (it = (*data).begin(); it != (*data).end(); it++) {
+    element = *it;
+    rpcWrite(io, &element);
+  }
+}
+
+/*! \ingroup STLWrite
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T>
+void rpcWrite(Stream& io, std::unordered_set<T>* data) {
+  size_t size = (*data).size();
+
+  rpcWrite(io, &size);
+
+  T element;
+  typename std::unordered_set<T>::iterator it;
+  for (it = (*data).begin(); it != (*data).end(); it++) {
+    element = *it;
+    rpcWrite(io, &element);
+  }
+}
+
 #endif

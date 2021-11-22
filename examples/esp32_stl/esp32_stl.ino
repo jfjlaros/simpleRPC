@@ -77,6 +77,26 @@ std::forward_list<float> stdForwardList(std::forward_list<int>& l) {
   return r;
 }
 
+std::set<int> stdSet(std::set<int>& s) {
+  std::set<int> r;
+
+  for (std::set<int>::iterator it = s.begin(); it != s.end(); it++) {
+    r.insert(*it + 1);
+  }
+
+  return r;
+}
+
+std::unordered_set<int> stdUnorderedSet(std::unordered_set<int>& s) {
+  std::unordered_set<int> r;
+
+  for (std::unordered_set<int>::iterator it = s.begin(); it != s.end(); it++) {
+    r.insert(*it + 1);
+  }
+
+  return r;
+}
+
 
 void setup() {
   Serial.begin(9600);
@@ -92,6 +112,8 @@ void loop() {
     stdTupleVector, "",
     stdArray, "",
     stdList, "",
-    stdForwardList, ""
+    stdForwardList, "",
+    stdSet, "",
+    stdUnorderedSet, ""
   );
 }

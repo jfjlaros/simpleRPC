@@ -93,4 +93,37 @@ void rpcRead(Stream& io, std::forward_list<T>* data) {
   }
 }
 
+
+/*! \ingroup STLRead
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, std::set<T>* data) {
+  size_t size;
+
+  rpcRead(io, &size);
+
+  for (size_t _ = 0; _ < size; _++) {
+    T element;
+
+    rpcRead(io, &element);
+    (*data).insert(element);
+  }
+}
+
+/*! \ingroup STLRead
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, std::unordered_set<T>* data) {
+  size_t size;
+
+  rpcRead(io, &size);
+
+  for (size_t _ = 0; _ < size; _++) {
+    T element;
+
+    rpcRead(io, &element);
+    (*data).insert(element);
+  }
+}
+
 #endif
