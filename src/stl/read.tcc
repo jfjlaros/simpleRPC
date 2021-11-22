@@ -55,8 +55,41 @@ void rpcRead(Stream& io, std::array<T, N>* data) {
 
   rpcRead(io, &size);
 
-  for (size_t i = 0; i < (*data).size(); i++) {
+  for (size_t i = 0; i < size; i++) {
     rpcRead(io, &(*data)[i]);
+  }
+}
+
+/*! \ingroup STLRead
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, std::list<T>* data) {
+  size_t size;
+
+  rpcRead(io, &size);
+
+  for (size_t _ = 0; _ < size; _++) {
+    T element;
+
+    rpcRead(io, &element);
+    (*data).push_back(element);
+  }
+}
+
+/*! \ingroup STLRead
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, std::forward_list<T>* data) {
+  size_t size;
+
+  rpcRead(io, &size);
+
+  typename std::forward_list<T>::iterator it = (*data).before_begin();
+  for (size_t _ = 0; _ < size; _++) {
+    T element;
+
+    rpcRead(io, &element);
+    it = (*data).insert_after(it, element);
   }
 }
 

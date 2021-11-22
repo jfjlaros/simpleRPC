@@ -56,6 +56,27 @@ std::array<float, 4> stdArray(std::array<int, 4>& v) {
   return r;
 }
 
+std::list<float> stdList(std::list<int>& l) {
+  std::list<float> r;
+
+  for (std::list<int>::iterator i = l.begin(); i != l.end(); i++) {
+    r.push_back(*i + 0.4);
+  }
+
+  return r;
+}
+
+std::forward_list<float> stdForwardList(std::forward_list<int>& l) {
+  std::forward_list<float> r;
+  std::forward_list<float>::iterator it = r.before_begin();
+
+  for (std::forward_list<int>::iterator i = l.begin(); i != l.end(); i++) {
+    it = r.insert_after(it, *i + 0.4);
+  }
+
+  return r;
+}
+
 
 void setup() {
   Serial.begin(9600);
@@ -69,6 +90,8 @@ void loop() {
     stdVector, "",
     tupleVector, "",
     stdTupleVector, "",
-    stdArray, ""
+    stdArray, "",
+    stdList, "",
+    stdForwardList, ""
   );
 }

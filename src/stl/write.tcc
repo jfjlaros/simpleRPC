@@ -52,4 +52,39 @@ void rpcWrite(Stream& io, std::array<T, N>* data) {
   }
 }
 
+/*! \ingroup STLWrite
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T>
+void rpcWrite(Stream& io, std::list<T>* data) {
+  size_t size = (*data).size();
+
+  rpcWrite(io, &size);
+
+  typename std::list<T>::iterator it;
+  T element;
+  for (it = (*data).begin(); it != (*data).end(); it++) {
+    element = *it;
+    rpcWrite(io, &element);
+  }
+}
+
+/*! \ingroup STLWrite
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T>
+void rpcWrite(Stream& io, std::forward_list<T>* data) {
+  size_t size = 0;
+
+  typename std::forward_list<T>::iterator it;
+  for (it = (*data).begin(); it != (*data).end(); it++) {
+    size++;
+  }
+  rpcWrite(io, &size);
+
+  T element;
+  for (it = (*data).begin(); it != (*data).end(); it++) {
+    element = *it;
+    rpcWrite(io, &element);
+  }
+}
+
 #endif
