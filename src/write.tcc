@@ -51,13 +51,13 @@ void rpcWrite(Stream& io, Vector<T>* data) {
 }
 
 
-//! Recursion terminator for `rpcWrite(Tuple*)()`.
-inline void rpcWrite(Stream&, Tuple<>*) {}
+//! Recursion terminator for `rpcWrite(_Tuple*)()`.
+inline void rpcWrite(Stream&, _Tuple<>*) {}
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
 template <class... Membs>
-void rpcWrite(Stream& io, Tuple<Membs...>* data) {
+void rpcWrite(Stream& io, _Tuple<Membs...>* data) {
   rpcWrite(io, &(*data).head);
   rpcWrite(io, &(*data).tail);
 }
@@ -66,8 +66,8 @@ void rpcWrite(Stream& io, Tuple<Membs...>* data) {
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
 template <class... Membs>
-void rpcWrite(Stream& io, Object<Membs...>* data) {
-  rpcWrite(io, (Tuple<Membs...>*)data);
+void rpcWrite(Stream& io, Tuple<Membs...>* data) {
+  rpcWrite(io, (_Tuple<Membs...>*)data);
 }
 
 #endif

@@ -32,9 +32,9 @@ TEST_CASE("Class member function pointer types", "[signature][class]") {
   REQUIRE(Serial.inspect<String>() == "h: c f: c f");
 }
 
-TEST_CASE("Tuples", "[signature][tuple]") {
-  void (*f0)(Tuple<int, char>, float);
-  Tuple<int, char> (*f1)(float);
+TEST_CASE("Inernal tuples", "[signature][tuple]") {
+  void (*f0)(_Tuple<int, char>, float);
+  _Tuple<int, char> (*f1)(float);
 
   Serial.reset();
   signature(Serial, f0);
@@ -42,9 +42,9 @@ TEST_CASE("Tuples", "[signature][tuple]") {
   REQUIRE(Serial.inspect<String>() == ": ic fic: f");
 }
 
-TEST_CASE("Objects", "[signature][object]") {
-  void (*f0)(Object<int, char>, float);
-  Object<int, char> (*f1)(float);
+TEST_CASE("Tuples", "[signature][tuple]") {
+  void (*f0)(Tuple<int, char>, float);
+  Tuple<int, char> (*f1)(float);
 
   Serial.reset();
   signature(Serial, f0);

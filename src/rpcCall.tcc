@@ -32,13 +32,13 @@ void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
  *
  * \param io Stream.
  * \param - Dummy function pointer.
- * \param t Tuple consisting of a pointer to a class instance and a pointer
- *   to a class method.
+ * \param t Internal Tuple consisting of a pointer to a class instance and a
+ *   pointer to a class method.
  * \param args Parameter pack for `f`.
  */
 template <class C, class P, class R, class... FArgs, class... Args>
 void _call(
-    Stream& io, void (*)(void), Tuple<C*, R (P::*)(FArgs...)> t,
+    Stream& io, void (*)(void), _Tuple<C*, R (P::*)(FArgs...)> t,
     Args&... args) {
   R data = (*t.head.*t.tail.head)(args...);
 
@@ -54,7 +54,7 @@ void _call(Stream&, void (*)(void), void (*f)(FArgs...), Args&... args) {
 //! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
 template <class C, class P, class... FArgs, class... Args>
 void _call(
-    Stream&, void (*)(void), Tuple<C*, void (P::*)(FArgs...)> t,
+    Stream&, void (*)(void), _Tuple<C*, void (P::*)(FArgs...)> t,
     Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
@@ -117,11 +117,11 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
  * \sa rpcCall(Stream&, R (*)(FArgs...))
  *
  * \param io Stream.
- * \param t Tuple consisting of a pointer to a class instance and a pointer
- *   to a class method.
+ * \param t Internal Tuple consisting of a pointer to a class instance and a
+ *   pointer to a class method.
  */
 template <class C, class P ,class R, class... FArgs>
-void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
+void rpcCall(Stream& io, _Tuple<C*, R (P::*)(FArgs...)> t) {
   _call(io, (void (*)(FArgs...))t.tail.head, t);
 }
 

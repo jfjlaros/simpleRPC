@@ -65,27 +65,28 @@ follows.
     : B;set_led: Set LED brightness. @brightness: Brightness.\0
     \0
 
-For more complex objects, like Tuples, Objects and Vectors, some more syntax is
+For more complex objects, like Tuples and Vectors, some more syntax is
 needed to communicate their structure to the host.
 
-A Tuple type is encoded as a compound type, e.g., ``hB`` (a 16-bit integer and
-a byte). It can be recognised by the absence of a space between the type
-signatures. Note that a concatenated or nested Tuple type can not be recognised
-from its signature, e.g., ``hB`` concatenated with ``ff`` is indistinguishable
-from ``hBff``.
+An internal Tuple type is encoded as a compound type, e.g., ``hB`` (a 16-bit
+integer and a byte). It can be recognised by the absence of a space between the
+type signatures. Note that a concatenated or nested Tuple type can not be
+recognised from its signature, e.g., ``hB`` concatenated with ``ff`` is
+indistinguishable from ``hBff``. This type is for internal use only, it is not
+recommended for use in RPC calls.
 
-An Object type is encoded as a compound type like a Tuple, but its type
+A Tuple type is encoded as a compound type like an internal Tuple, but its type
 signature is enclosed in parentheses ``(`` and ``)``, which makes it possible
 to communicate its structure to the host, e.g., the concatenation of ``(hB)``
-and ``(ff)`` is ``(hB)(ff)`` and the type signature of a nested Object may look
+and ``(ff)`` is ``(hB)(ff)`` and the type signature of a nested Tuple may look
 like this ``((hB)(ff))``.
 
 A Vector type signature is enclosed in brackets ``[`` and ``]``. So a vector of
 16-bit integers will have as type signature ``[h]``.
 
-Finally, any arbitrary combination of Tuples, Objects and Vectors can be made,
-resulting in type signatures like ``[((hB)f)]``, i.e., a Vector of Objects that
-contain a Tuple of which the first element is an other Object ``(hB)`` and
+Finally, any arbitrary combination of Tuples and Vectors can be made,
+resulting in type signatures like ``[((hB)f)]``, i.e., a Vector of Tuples that
+contain a Tuple of which the first element is an other Tuple ``(hB)`` and
 the second element is a float ``f``.
 
 
@@ -99,7 +100,7 @@ parameters, their values are written to the I/O device. After the parameter
 values have been received, the device executes the method and writes its return
 value (if any) back to the I/O device.
 
-All native C types (``int``, ``float``, ``double``, etc.), Tuples, Objects,
+All native C types (``int``, ``float``, ``double``, etc.), Tuples,
 Vectors and any combination of these are currently supported. The host is
 responsible for packing and unpacking of the values.
 

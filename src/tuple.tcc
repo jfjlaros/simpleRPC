@@ -4,41 +4,40 @@
 #include "helper.tcc"
 
 //! \defgroup tuple
-//! \defgroup object
 //! \defgroup tuplehelper
 
 
 /*! \ingroup tuple
- * Empty Tuple.
+ * Empty internal Tuple.
  */
 template <class... Membs>
-struct Tuple {};
+struct _Tuple {};
 
 /*! \ingroup tuple
- * Non-empty Tuple.
+ * Non-empty internal Tuple.
  */
 template <class H, class... Tail>
-struct Tuple<H, Tail...> {
-  H head;              //!< First element.
-  Tuple<Tail...> tail; //!< Remaining elements.
+struct _Tuple<H, Tail...> {
+  H head;               //!< First element.
+  _Tuple<Tail...> tail; //!< Remaining elements.
 };
 
-/*! \ingroup object
- * Object.
+/*! \ingroup tuple
+ * Tuple.
  */
 template <class... Membs>
-struct Object : Tuple<Membs...> {
+struct Tuple : _Tuple<Membs...> {
   /*
-   * Preferably this would have been an alias, but this is not supported in the
-   * current version of Arduino C++.
+   * Preferably this would have been an alias, but this is not supported in
+   * the current version of Arduino C++.
    */
-  Object(void) {}
-  Object(Membs... args) : Tuple<Membs...>({args...}) {}
+  Tuple(void) {}
+  Tuple(Membs... args) : _Tuple<Membs...>({args...}) {}
 };
 
 
 /*!
- * Access the type of the *k*-th element in a Tuple.
+ * Access the type of the *k*-th element in an internal Tuple.
  *
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
  */
@@ -47,69 +46,69 @@ struct _ElemTypeHolder;
 
 //! \copydoc _ElemTypeHolder
 template <class H, class... Tail>
-struct _ElemTypeHolder<0, Tuple<H, Tail...> > {
+struct _ElemTypeHolder<0, _Tuple<H, Tail...> > {
   typedef H type;
 };
 
 //! \copydoc _ElemTypeHolder
 template <size_t k, class H, class... Tail>
-struct _ElemTypeHolder<k, Tuple<H, Tail...> > {
-  typedef typename _ElemTypeHolder<k - 1, Tuple<Tail...> >::type type;
+struct _ElemTypeHolder<k, _Tuple<H, Tail...> > {
+  typedef typename _ElemTypeHolder<k - 1, _Tuple<Tail...> >::type type;
 };
 
 
 /*! \ingroup tuplehelper
- * Get the *k*-th element of a Tuple or Object.
+ * Get the *k*-th element of an internal Tuple.
  *
  * This can be used for both retrieval as well as assignment.
  *
- * \param t A Tuple.
+ * \param t An internal Tuple.
  *
  * \return Reference to the *k*-th element in `t`.
  */
 template <size_t k, class... Membs>
 //! \cond
 typename enableIf<
-    k == 0, typename _ElemTypeHolder<0, Tuple<Membs...> >::type&>::type
+    k == 0, typename _ElemTypeHolder<0, _Tuple<Membs...> >::type&>::type
 //! \endcond
-    get(Tuple<Membs...>& t) {
+    get(_Tuple<Membs...>& t) {
   return t.head;
 }
 
 template <size_t k, class... Membs>
 //! \cond
 typename enableIf<
-    k != 0, typename _ElemTypeHolder<k, Tuple<Membs...> >::type&>::type
+    k != 0, typename _ElemTypeHolder<k, _Tuple<Membs...> >::type&>::type
 //! \endcond
-    get(Tuple<Membs...>& t) {
+    get(_Tuple<Membs...>& t) {
   return get<k - 1>(t.tail);
 }
 
 
 /*! \ingroup tuplehelper
- * Make a Tuple from a parameter pack.
+ * Make an internal Tuple from a parameter pack.
  *
- * \param args Values to store in a Tuple.
+ * \param args Values to store in an internal Tuple.
  *
- * \return Tuple containing `args`.
+ * \return Internal Tuple containing `args`.
  */
 template <class... Args>
-Tuple<Args...> pack(Args... args) {
-  Tuple<Args...> t = {args...};
+_Tuple<Args...> pack(Args... args) {
+  _Tuple<Args...> t = {args...};
 
   return t;
 }
 
 /*! \ingroup tuplehelper
- * Cast a `struct` to a Tuple.
+ * Cast a `struct` to an internal Tuple.
  *
  * \param s Struct.
  *
- * \return Tuple representation of `s`.
+ * \return Internal Tuple representation of `s`.
  */
 template <class... Membs, class T>
-Tuple<Membs...> castStruct(T& s) {
-  Tuple<Membs...>* t = (Tuple<Membs...>*)&s;
+_Tuple<Membs...> castStruct(T& s) {
+  _Tuple<Membs...>* t = (_Tuple<Membs...>*)&s;
 
   return *t;
 }

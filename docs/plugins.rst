@@ -82,8 +82,8 @@ follows.
     }
 
 Alternatively, it is possible to serve the same set of methods on multiple
-interfaces. This can be done by passing a Tuple of pointers to the interfaces
-as the first parameter of the ``interface()`` function.
+interfaces. This can be done by passing an internal Tuple of pointers to the
+interfaces as the first parameter of the ``interface()`` function.
 
 Example
 ^^^^^^^

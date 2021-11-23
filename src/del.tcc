@@ -48,13 +48,13 @@ void rpcDel(T const*** data) {
 }
 
 
-//! Recursion terminator for `rpcDel(Tuple*)`.
-inline void rpcDel(Tuple<>*) {}
+//! Recursion terminator for `rpcDel(_Tuple*)`.
+inline void rpcDel(_Tuple<>*) {}
 
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
 template <class... Membs>
-void rpcDel(Tuple<Membs...>* data) {
+void rpcDel(_Tuple<Membs...>* data) {
   rpcDel(&(*data).head);
   rpcDel(&(*data).tail);
 }
@@ -63,8 +63,8 @@ void rpcDel(Tuple<Membs...>* data) {
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
 template <class... Membs>
-void rpcDel(Object<Membs...>* data) {
-  rpcDel((Tuple<Membs...>*)data);
+void rpcDel(Tuple<Membs...>* data) {
+  rpcDel((_Tuple<Membs...>*)data);
 }
 
 #endif

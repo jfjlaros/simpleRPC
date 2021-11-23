@@ -17,8 +17,8 @@ int inc(int a) {
   return a + 1;
 }
 
-Object<char, Object<int, char> > object(Object<char, Object<int, char> >& o) {
-  Object<char, Object<int, char> > r;
+Tuple<char, Tuple<int, char> > tuple(Tuple<char, Tuple<int, char> >& o) {
+  Tuple<char, Tuple<int, char> > r;
 
   get<0>(r) = get<0>(o) + 1;
   get<0>(get<1>(r)) = get<0>(get<1>(o)) + 1;
@@ -59,7 +59,7 @@ void loop(void) {
     inc, F("inc: Increment a value. @a: Value. @return: a + 1."),
     setLed, F("set_led: Set LED brightness. @brightness: Brightness."),
     milliTime, F("milli_time: Report the system time. @return: System time."),
-    object, F("object: Example with objects. @o: Object. @return: Object."),
+    tuple, F("tuple: Example with tuples. @o: Tuple. @return: Tuple."),
     vector, F("cpp_vector: Example with vectors. @v: Vector. @return: Vector."),
     cVector, F("c_vector: Example with C vectors. @v: C vector. @return: Vector."));
 }

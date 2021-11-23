@@ -56,7 +56,7 @@ void _describe(Stream& io, F f, D doc, Args... args) {
 
 //! \copydoc _describe(Stream&, F, D, Args...)
 template <class U, class V, class D, class... Args>
-void _describe(Stream& io, Tuple<U, V> t, D doc, Args... args) {
+void _describe(Stream& io, _Tuple<U, V> t, D doc, Args... args) {
   _writeDescription(io, t.tail.head, doc);
   _describe(io, args...);
 }
@@ -125,21 +125,21 @@ void interface(Stream& io, Args... args) {
 
 //! Recursion terminator for `interface()`.
 template <class... Args>
-void interface(Tuple<>, Args...) {}
+void interface(_Tuple<>, Args...) {}
 
 /*! \ingroup interface
  * Multiple RPC interfaces.
  *
  * Similar to the standard interface , but with support for multiple I/O
- * interfaces, passed as Tuple `t`.
+ * interfaces, passed as internal Tuple `t`.
  *
  * \sa interface(Stream&, Args...)
  *
- * \param t Tuple of input / output objects.
+ * \param t Internal Tuple of streams.
  * \param args Parameter pairs (function pointer, documentation).
  */
 template <class... Membs, class... Args>
-void interface(Tuple<Membs...> t, Args... args) {
+void interface(_Tuple<Membs...> t, Args... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }

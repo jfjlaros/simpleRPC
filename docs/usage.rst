@@ -173,8 +173,8 @@ Arbitrary combinations of these higher order objects can be made to construct
 complex objects.
 
 In the following example, we create a 2-dimensional matrix of integers, a
-Vector of Tuples and an Object containing an integer, a Vector and an other
-Object respectively.
+Vector of Tuples and a Tuple containing an integer, a Vector and an other
+Tuple respectively.
 
 .. code-block:: cpp
 
@@ -182,7 +182,7 @@ Object respectively.
 
     Vector<Tuple<int, char> > v;
 
-    Object<int, Vector<int>, Object<char, long> > o;
+    Tuple<int, Vector<int>, Tuple<char, long> > t;
 
 These objects can be used for parameters as well as for return values. Note
 that these objects, like any higher order data structure should be passed by

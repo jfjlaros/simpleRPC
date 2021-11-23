@@ -22,12 +22,9 @@ Get a struct_ formatted representation of the type of a value.
    * - ``char const*``
      - ``s``
      - String.
-   * - ``Tuple<int, signed char, unsigned long>``
-     - ``ibL``
-     - Tuple (no internal structure).
-   * - ``Object<Object<char, int>, unsigned long>``
+   * - ``Tuple<Tuple<char, int>, unsigned long>``
      - ``((ci)L)``
-     - Object (internal structure is preserved).
+     - Tuple.
    * - ``Vector<int>``
      - ``[i]``
      - Vector.

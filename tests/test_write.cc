@@ -40,8 +40,8 @@ TEST_CASE("Write C string of type char const*", "[write][string]") {
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
-TEST_CASE("Write tuple", "[write][tuple]") {
-  Tuple<int, char> t = {1234, 'x'};
+TEST_CASE("Write internal tuple", "[write][tuple]") {
+  _Tuple<int, char> t = {1234, 'x'};
 
   Serial.reset();
   rpcWrite(Serial, &t);
@@ -50,8 +50,8 @@ TEST_CASE("Write tuple", "[write][tuple]") {
 }
 
 
-TEST_CASE("Write object", "[write][object]") {
-  Object<int, char> o;
+TEST_CASE("Write tuple", "[write][tuple]") {
+  Tuple<int, char> o;
 
   o.head = 1234;
   o.tail.head = 'x';
@@ -74,8 +74,8 @@ TEST_CASE("Write vector", "[write][vector]") {
   REQUIRE(Serial.inspect<int>() == 2345);
 }
 
-TEST_CASE("Write complex tuple", "[write][tuple][complex]") {
-  Tuple<Vector<int>, char> t;
+TEST_CASE("Write complex internal tuple", "[write][tuple][complex]") {
+  _Tuple<Vector<int>, char> t;
 
   t.head.resize(2);
   t.head[0] = 1234;
@@ -90,8 +90,8 @@ TEST_CASE("Write complex tuple", "[write][tuple][complex]") {
   REQUIRE(Serial.inspect<char>() == 'x');
 }
 
-TEST_CASE("Write complex object", "[write][object][complex]") {
-  Object<Vector<int>, char> o;
+TEST_CASE("Write complex tuple", "[write][tuple][complex]") {
+  Tuple<Vector<int>, char> o;
 
   o.head.resize(2);
   o.head[0] = 1234;
@@ -128,7 +128,7 @@ TEST_CASE("Write nested vector", "[write][vector][complex]") {
 }
 
 TEST_CASE("Write complex vector", "[write][vector][complex]") {
-  Vector<Object<int, Object<char>>> v(2);
+  Vector<Tuple<int, Tuple<char>>> v(2);
 
   v[0].head = 1234;
   v[0].tail.head.head = 'x';

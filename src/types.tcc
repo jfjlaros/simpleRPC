@@ -132,8 +132,21 @@ inline void rpcTypeOf(Stream& io, double) {
 }
 
 
-//! Recursion terminator for `rpcTypeOf(Tuple&)`.
-inline void rpcTypeOf(Stream&, Tuple<>&) {}
+//! Recursion terminator for `rpcTypeOf(_Tuple&)`.
+inline void rpcTypeOf(Stream&, _Tuple<>&) {}
+
+/*! \ingroup types
+ * Get the types of all members of an intnernal Tuple.
+ *
+ * \param io Stream.
+ * \param t Internal Tuple.
+ */
+template <class... Membs>
+void rpcTypeOf(Stream& io, _Tuple<Membs...>& t) {
+  rpcTypeOf(io, t.head);
+  rpcTypeOf(io, t.tail);
+}
+
 
 /*! \ingroup types
  * Get the types of all members of a Tuple.
@@ -142,22 +155,9 @@ inline void rpcTypeOf(Stream&, Tuple<>&) {}
  * \param t Tuple.
  */
 template <class... Membs>
-void rpcTypeOf(Stream& io, Tuple<Membs...>& t) {
-  rpcTypeOf(io, t.head);
-  rpcTypeOf(io, t.tail);
-}
-
-
-/*! \ingroup types
- * Get the types of all members of an Object.
- *
- * \param io Stream.
- * \param t Object.
- */
-template <class... Membs>
-void rpcTypeOf(Stream& io, Object<Membs...>& o) {
+void rpcTypeOf(Stream& io, Tuple<Membs...>& o) {
   rpcPrint(io, '(');
-  rpcTypeOf(io, (Tuple<Membs...>&)o);
+  rpcTypeOf(io, (_Tuple<Membs...>&)o);
   rpcPrint(io, ')');
 }
 

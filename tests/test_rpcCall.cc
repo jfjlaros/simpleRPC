@@ -244,25 +244,25 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
   REQUIRE(Serial.rx == sizeof(int) + 8);
 }
 
-TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
+TEST_CASE("RPC call function with internal tuple types", "[call][tuple]") {
   struct S {
-    static void f0(Tuple<int, char>) {}
-    static Tuple<int, char> f1(void) {
-      Tuple<int, char> t = {1234, 'x'};
+    static void f0(_Tuple<int, char>) {}
+    static _Tuple<int, char> f1(void) {
+      _Tuple<int, char> t = {1234, 'x'};
 
       return t;
     }
-    static void f2(Tuple<int, Vector<char>>&) {}
+    static void f2(_Tuple<int, Vector<char>>&) {}
   };
 
-  // Void function, parameter is of type Tuple.
+  // Void function, parameter is of type internal Tuple.
   Serial.reset();
   Serial.prepare(1234, 'x');
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == 0);
 
-  // Function with return type Tuple.
+  // Function with return type internal Tuple.
   Serial.reset();
   rpcCall(Serial, S::f1);
   REQUIRE(Serial.inspect<int>() == 1234);
@@ -277,24 +277,24 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   REQUIRE(Serial.tx == 0);
 }
 
-TEST_CASE("RPC call function with Object types", "[call][object]") {
+TEST_CASE("RPC call function with tuple types", "[call][tuple]") {
   struct S {
-    static void f0(Object<int, char>&) {}
-    static Object<int, char> f1(void) {
-      Object<int, char> o = {1234, 'x'};
+    static void f0(Tuple<int, char>&) {}
+    static Tuple<int, char> f1(void) {
+      Tuple<int, char> o = {1234, 'x'};
 
       return o;
     }
   };
 
-  // Void function, parameter is of type Object.
+  // Void function, parameter is of type Tuple.
   Serial.reset();
   Serial.prepare(1234, 'x');
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == 0);
 
-  // Function with return type Object.
+  // Function with return type Tuple.
   Serial.reset();
   rpcCall(Serial, S::f1);
   REQUIRE(Serial.inspect<int>() == 1234);
@@ -319,7 +319,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
 
       return v;
     }
-    static void f2(Object<Vector<int>, char>&) {}
+    static void f2(Tuple<Vector<int>, char>&) {}
     static int f3(Vector<signed char>&, int i) {
       return 1;
     }
@@ -430,7 +430,7 @@ TEST_CASE("Executing a function", "[call]") {
     static short int f1(int i, char c) {
       return i + c + 1;
     }
-    static String f2(Object<String, char*, char const*>& o) {
+    static String f2(Tuple<String, char*, char const*>& o) {
       return get<0>(o) + get<1>(o) + get<2>(o);
     }
   };

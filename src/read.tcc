@@ -96,13 +96,13 @@ void rpcRead(Stream& io, T*** data) {
 }
 
 
-//! Recursion terminator for `rpcRead(Tuple*)`.
-inline void rpcRead(Stream&, Tuple<>*) {}
+//! Recursion terminator for `rpcRead(_Tuple*)`.
+inline void rpcRead(Stream&, _Tuple<>*) {}
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 template <class... Membs>
-void rpcRead(Stream& io, Tuple<Membs...>* data) {
+void rpcRead(Stream& io, _Tuple<Membs...>* data) {
   rpcRead(io, &(*data).head);
   rpcRead(io, &(*data).tail);
 }
@@ -111,8 +111,8 @@ void rpcRead(Stream& io, Tuple<Membs...>* data) {
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 template <class... Membs>
-void rpcRead(Stream& io, Object<Membs...>* data) {
-  rpcRead(io, (Tuple<Membs...>*)data);
+void rpcRead(Stream& io, Tuple<Membs...>* data) {
+  rpcRead(io, (_Tuple<Membs...>*)data);
 }
 
 #endif

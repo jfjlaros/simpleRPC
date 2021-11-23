@@ -17,12 +17,9 @@ Function Signatures
    * - ``void f(char, float)``
      - ``: c f``
      - Function that does not return a value.
-   * - ``void f(Tuple<int, char>&, float)``
-     - ``: ic f``
-     - A Tuple parameter.
-   * - ``Object<int, char> f(float)``
+   * - ``Tuple<int, char> f(float)``
      - ``(ic): f``
-     - Returning an Object.
+     - Returning an Tuple.
    * - ``int f(Vector<signed char>&, int)``
      - ``i: [b] i``
      -  A Vector parameter.
