@@ -111,9 +111,6 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
   _call(io, (void (*)(FArgs...))f, f);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpmf-conversions"
-
 /*! \ingroup call
  * Call a class method.
  *
@@ -127,7 +124,5 @@ template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
   _call(io, (void (*)(FArgs...))t.tail.head, t);
 }
-
-#pragma GCC diagnostic pop
 
 #endif

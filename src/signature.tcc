@@ -62,17 +62,12 @@ void signature(Stream& io, R (*f)(FArgs...)) {
   _parameterTypes(io, (void (*)(FArgs...))f);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpmf-conversions"
-
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class R, class C, class... FArgs>
 void signature(Stream& io, R (C::*f)(FArgs...)) {
   signature(io, (R (*)(FArgs...))f);
 }
-
-#pragma GCC diagnostic pop
 
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
@@ -82,16 +77,11 @@ void signature(Stream& io, void (*f)(FArgs...)) {
   _parameterTypes(io, f);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpmf-conversions"
-
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class C, class... FArgs>
 void signature(Stream& io, void (C::*f)(FArgs...)) {
   signature(io, (void (*)(FArgs...))f);
 }
-
-#pragma GCC diagnostic pop
 
 #endif
