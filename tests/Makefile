@@ -6,7 +6,7 @@ FIXTURES := arduino-serial-fixture/src/Arduino
 
 
 CC := g++
-CC_ARGS := -std=c++11 \
+CC_ARGS := -std=c++11 -Wno-pmf-conversions \
   -I arduino-serial-fixture/src -I plugins
 
 
