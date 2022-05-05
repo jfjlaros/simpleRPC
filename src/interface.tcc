@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_INTERFACE_TCC_
-#define SIMPLE_RPC_INTERFACE_TCC_
+#pragma once
 
 /*
  * Template library for exporting native C and C++ functions as remote
@@ -143,5 +142,3 @@ void interface(Tuple<Membs...> t, Args... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }
-
-#endif

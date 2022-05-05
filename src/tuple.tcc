@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_TUPLE_TCC_
-#define SIMPLE_RPC_TUPLE_TCC_
+#pragma once
 
 #include "helper.tcc"
 
@@ -113,5 +112,3 @@ Tuple<Membs...> castStruct(T& s) {
 
   return *t;
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_DEL_TCC_
-#define SIMPLE_RPC_DEL_TCC_
+#pragma once
 
 #include "tuple.tcc"
 
@@ -66,5 +65,3 @@ template <class... Membs>
 void rpcDel(Object<Membs...>* data) {
   rpcDel((Tuple<Membs...>*)data);
 }
-
-#endif

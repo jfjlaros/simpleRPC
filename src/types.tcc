@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_TYPES_TCC_
-#define SIMPLE_RPC_TYPES_TCC_
+#pragma once
 
 #include "print.tcc"
 #include "tuple.tcc"
@@ -202,5 +201,3 @@ inline void hardwareDefs(Stream& io) {
   rpcTypeOf(io, i);
   rpcPrint(io, '\0');
 }
-
-#endif

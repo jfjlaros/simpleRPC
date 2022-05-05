@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_READ_TCC_
-#define SIMPLE_RPC_READ_TCC_
+#pragma once
 
 #include "defs.h"
 #include "tuple.tcc"
@@ -114,5 +113,3 @@ template <class... Membs>
 void rpcRead(Stream& io, Object<Membs...>* data) {
   rpcRead(io, (Tuple<Membs...>*)data);
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_PRINT_TCC_
-#define SIMPLE_RPC_PRINT_TCC_
+#pragma once
 
 #include "defs.h"
 
@@ -67,5 +66,3 @@ void rpcPrint(Stream& io, H data, Tail... args) {
   rpcPrint(io, data);
   rpcPrint(io, args...);
 }
-
-#endif

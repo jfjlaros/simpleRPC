@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_RPCCALL_TCC_
-#define SIMPLE_RPC_RPCCALL_TCC_
+#pragma once
 
 #include "del.tcc"
 #include "read.tcc"
@@ -124,5 +123,3 @@ template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
   _call(io, (void (*)(FArgs...))t.tail.head, t);
 }
-
-#endif

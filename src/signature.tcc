@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_SIGNATURE_TCC_
-#define SIMPLE_RPC_SIGNATURE_TCC_
+#pragma once
 
 #include "types.tcc"
 
@@ -83,5 +82,3 @@ template <class C, class... FArgs>
 void signature(Stream& io, void (C::*f)(FArgs...)) {
   signature(io, (void (*)(FArgs...))f);
 }
-
-#endif

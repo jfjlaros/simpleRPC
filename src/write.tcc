@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_WRITE_TCC_
-#define SIMPLE_RPC_WRITE_TCC_
+#pragma once
 
 #include "print.tcc"
 #include "tuple.tcc"
@@ -69,5 +68,3 @@ template <class... Membs>
 void rpcWrite(Stream& io, Object<Membs...>* data) {
   rpcWrite(io, (Tuple<Membs...>*)data);
 }
-
-#endif

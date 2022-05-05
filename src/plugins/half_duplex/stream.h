@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_HALF_DUPLEX_STREAM_H_
-#define SIMPLE_RPC_HALF_DUPLEX_STREAM_H_
+#pragma once
 
 #include <Stream.h>
 
@@ -18,5 +17,3 @@ class HalfDuplexStream : public Stream {
     uint8_t _pin;
     unsigned long _delay;
 };
-
-#endif

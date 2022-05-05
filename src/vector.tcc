@@ -1,5 +1,4 @@
-#ifndef SIMPLE_RPC_VECTOR_TCC_
-#define SIMPLE_RPC_VECTOR_TCC_
+#pragma once
 
 //! \defgroup vector
 
@@ -91,5 +90,3 @@ void Vector<T>::resize(size_t size) {
 
   this->size = size;
 }
-
-#endif
