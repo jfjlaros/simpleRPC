@@ -25,7 +25,7 @@ void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
    * `rpcTypeOf()` to encode its type. The first parameter type `H` is removed
    * from function pointer `*f_` in the recursive call.
    */
-  H data;
+  H data{};
 
   rpcPrint(io, ' ');
   rpcTypeOf(io, data);
@@ -49,13 +49,13 @@ void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
  */
 template <class R, class... FArgs>
 void signature(Stream& io, R (*f)(FArgs...)) {
-  /* 
+  /*
    * A dummy function pointer is prepared, referred to as `f_` in the template
    * functions above, which will be used to isolate parameter types. The return
    * type of this function pointer is removed to avoid unneeded template
    * expansion.
    */
-  R data;
+  R data{};
 
   rpcTypeOf(io, data);
   rpcPrint(io, ':');

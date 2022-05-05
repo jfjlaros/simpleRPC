@@ -177,7 +177,7 @@ void rpcTypeOf(Stream& io, Vector<T>&) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, T*) {
-  T x;
+  T x{};
 
   rpcPrint(io, '[');
   rpcTypeOf(io, x);
