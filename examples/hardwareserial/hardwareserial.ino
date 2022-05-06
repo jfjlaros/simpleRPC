@@ -6,11 +6,11 @@ byte ping(byte data) {
 }
 
 
-void setup(void) {
+void setup() {
   Serial.begin(9600);
 }
 
-void loop(void) {
+void loop() {
   interface(
     Serial,
     ping, F("ping: Echo a value. @data: Value. @return: Value of data."));

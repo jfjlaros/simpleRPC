@@ -72,7 +72,7 @@ follows.
 
 .. code-block:: cpp
 
-    void loop(void) {
+    void loop() {
       interface(
         Serial,
         inc, F("inc: Increment a value. @a: Value. @return: a + 1."));
@@ -94,7 +94,7 @@ pointers to these interfaces with the ``pack()`` function as follows.
 
 .. code-block:: cpp
 
-    void loop(void) {
+    void loop() {
       interface(
         pack(&Serial, &SerialUSB),
         inc, F("inc: Increment a value. @a: Value. @return: a + 1."));

@@ -25,12 +25,12 @@ byte ping(byte data) {
 }
 
 
-void setup(void) {
+void setup() {
   connectEthernet(mac, ip);
   server.begin();
 }
 
-void loop(void) {
+void loop() {
   EthernetClient client = server.available();
   if (client) {
     while (client.connected()) {

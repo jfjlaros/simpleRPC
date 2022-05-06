@@ -31,7 +31,7 @@ struct Object : Tuple<Membs...> {
    * Preferably this would have been an alias, but this is not supported in the
    * current version of Arduino C++.
    */
-  Object(void) {}
+  Object() {}
   Object(Membs... args) : Tuple<Membs...>({args...}) {}
 };
 

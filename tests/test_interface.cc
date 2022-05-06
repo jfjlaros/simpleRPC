@@ -6,7 +6,7 @@ extern Stream Serial;
 
 
 TEST_CASE("Describe function", "[describe][basic]") {
-  void (*f)(void);
+  void (*f)();
 
   // Empty description.
   Serial.reset();
@@ -22,7 +22,7 @@ TEST_CASE("Describe function", "[describe][basic]") {
 TEST_CASE("Describe class member function", "[describe][class]") {
   class C {
     public:
-      void f(void) {}
+      void f() {}
   };
 
   C c;
@@ -41,10 +41,10 @@ TEST_CASE("Describe class member function", "[describe][class]") {
 TEST_CASE("Multiple functions", "[describe][class]") {
   class C {
     public:
-      void f(void) {}
+      void f() {}
   };
 
-  void (*f)(void);
+  void (*f)();
   C c;
 
   // Normal function first.
@@ -62,10 +62,10 @@ TEST_CASE("Multiple functions", "[describe][class]") {
 
 TEST_CASE("Select by number", "[describe][select]") {
   struct S {
-    static short int f0(void) {
+    static short int f0() {
       return 1;
     }
-    static short int f1(void) {
+    static short int f1() {
       return 2;
     }
   };
@@ -83,10 +83,10 @@ TEST_CASE("Select by number", "[describe][select]") {
 
 TEST_CASE("RPC interface", "[describe][interface]") {
   struct S {
-    static short int f0(void) {
+    static short int f0() {
       return 1;
     }
-    static short int f1(void) {
+    static short int f1() {
       return 2;
     }
   };

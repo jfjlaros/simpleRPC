@@ -9,7 +9,7 @@ void setLed(byte brightness) {
   analogWrite(LED_BUILTIN, brightness);
 }
 
-unsigned long milliTime(void) {
+unsigned long milliTime() {
   return millis();
 }
 
@@ -48,11 +48,11 @@ Vector<float> cVector(int* v) {
 }
 
 
-void setup(void) {
+void setup() {
   Serial.begin(9600);
 }
 
-void loop(void) {
+void loop() {
   interface(
     Serial,
     ping, F("ping: Echo a value. @data: Value. @return: Value of data."),

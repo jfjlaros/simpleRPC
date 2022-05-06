@@ -14,7 +14,7 @@ interface. This is done using the ``begin()`` method in the ``setup()`` body.
 
 .. code-block:: cpp
 
-    void setup(void) {
+    void setup() {
       Serial.begin(9600);
     }
 
@@ -106,7 +106,7 @@ Exporting these functions goes as follows:
 
 .. code-block:: cpp
 
-    void loop(void) {
+    void loop() {
       interface(
         Serial,
         inc, "inc: Increment a value. @a: Value. @return: a + 1.",
@@ -154,7 +154,7 @@ Exporting this class method goes as follows:
 
 .. code-block:: cpp
 
-      void loop(void) {
+      void loop() {
         interface(
           Serial,
           pack(&led, &LED::setBrightness),

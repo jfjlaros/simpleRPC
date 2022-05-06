@@ -7,11 +7,11 @@ extern Stream Serial;
 
 TEST_CASE("RPC call function", "[call][basic]") {
   struct S {
-    static void f0(void) {}
+    static void f0() {}
     static void f1(int) {}
     static void f2(int, char) {}
     static void f3(int, char, float) {}
-    static short int f4(void) {
+    static short int f4() {
       return 1;
     }
     static short int f5(int) {
@@ -20,7 +20,7 @@ TEST_CASE("RPC call function", "[call][basic]") {
     static short int f6(int, char) {
       return 3;
     }
-    static float f7(void) {
+    static float f7() {
       return 1.0F;
     }
     static float f8(int) {
@@ -102,7 +102,7 @@ TEST_CASE("RPC call function with String types", "[call][string]") {
   struct S {
     static void f0(String&, int) {}
     static void f1(int, String&) {}
-    static String f2(void) {
+    static String f2() {
       return "xyz";
     }
     static void f3(int, String&, String const&) {}
@@ -170,10 +170,10 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
   struct S {
     static void f0(char*, int) {}
     static void f1(int, char*) {}
-    static char* f2(void) {
+    static char* f2() {
       return (char*)"xyz";
     }
-    static char const* f3(void) {
+    static char const* f3() {
       return "xyz";
     }
     static void f4(int, char*, char const*) {}
@@ -247,7 +247,7 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
 TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   struct S {
     static void f0(Tuple<int, char>) {}
-    static Tuple<int, char> f1(void) {
+    static Tuple<int, char> f1() {
       Tuple<int, char> t = {1234, 'x'};
 
       return t;
@@ -280,7 +280,7 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
 TEST_CASE("RPC call function with Object types", "[call][object]") {
   struct S {
     static void f0(Object<int, char>&) {}
-    static Object<int, char> f1(void) {
+    static Object<int, char> f1() {
       Object<int, char> o = {1234, 'x'};
 
       return o;
@@ -311,7 +311,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
       }
       return true;
     }
-    static Vector<int> f1(void) {
+    static Vector<int> f1() {
       Vector<int> v(2);
 
       v[0] = 1234;

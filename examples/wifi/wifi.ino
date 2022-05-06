@@ -26,13 +26,13 @@ byte ping(byte data) {
 }
 
 
-void setup(void) {
+void setup() {
   WiFi.setPins(8, 7, 4, 2);
   connectWifi(SECRET_SSID, SECRET_PASS, ip);
   server.begin();
 }
 
-void loop(void) {
+void loop() {
   WiFiClient client = server.available();
   if (client) {
     while (client.connected()) {

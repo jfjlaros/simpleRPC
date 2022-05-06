@@ -16,7 +16,7 @@
  * \param args Parameter pack for `f`.
  */
 template <class R, class... FArgs, class... Args>
-void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
+void _call(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
   /*
    * All parameters have been collected since function pointer `*f_` has no
    * parameter types. All values are now present in the `args` parameter pack.
@@ -37,24 +37,22 @@ void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
  */
 template <class C, class P, class R, class... FArgs, class... Args>
 void _call(
-    Stream& io, void (*)(void), Tuple<C*, R (P::*)(FArgs...)> t,
-    Args&... args) {
+    Stream& io, void (*)(), Tuple<C*, R (P::*)(FArgs...)> t, Args&... args) {
   R data = (*t.head.*t.tail.head)(args...);
 
   rpcWrite(io, &data);
 }
 
-//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+//! \copydoc _call(Stream&, void (*)(), R (*)(FArgs...), Args&...)
 template <class... FArgs, class... Args>
-void _call(Stream&, void (*)(void), void (*f)(FArgs...), Args&... args) {
+void _call(Stream&, void (*)(), void (*f)(FArgs...), Args&... args) {
   f(args...);
 }
 
-//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+//! \copydoc _call(Stream&, void (*)(), R (*)(FArgs...), Args&...)
 template <class C, class P, class... FArgs, class... Args>
 void _call(
-    Stream&, void (*)(void), Tuple<C*, void (P::*)(FArgs...)> t,
-    Args&... args) {
+    Stream&, void (*)(), Tuple<C*, void (P::*)(FArgs...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 

@@ -8,10 +8,10 @@
 template <class T>
 class Vector {
   public:
-    Vector(void) {}
+    Vector() {}
     Vector(size_t);
     Vector(size_t, T*, bool=true);
-    ~Vector(void);
+    ~Vector();
     void resize(size_t);
     T& operator[](size_t);
     size_t size = 0;     //!< Number of elements.
@@ -47,7 +47,7 @@ Vector<T>::Vector(size_t size, T* data, bool destroy) {
 
 //! Destructor.
 template <class T>
-Vector<T>::~Vector(void) {
+Vector<T>::~Vector() {
   if (destroy) {
     for (size_t i = 0; i < size; i++) {
       _data[i].T::~T();

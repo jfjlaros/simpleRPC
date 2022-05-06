@@ -68,11 +68,11 @@ Export any function e.g., ``digitalRead()`` and ``digitalWrite()`` using the
 
     #include <simpleRPC.h>
 
-    void setup(void) {
+    void setup() {
       Serial.begin(9600);
     }
 
-    void loop(void) {
+    void loop() {
       interface(Serial, digitalRead, "", digitalWrite, "");
     }
 

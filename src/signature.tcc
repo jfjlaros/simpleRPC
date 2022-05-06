@@ -6,7 +6,7 @@
 
 
 //! Recursion terminator for `_parameterTypes()`.
-inline void _parameterTypes(Stream&, void (*)(void)) {}
+inline void _parameterTypes(Stream&, void (*)()) {}
 
 /*!
  * Get the types of all function parameters.

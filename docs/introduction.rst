@@ -14,11 +14,11 @@ procedure calls.
 
 .. code-block:: cpp
 
-    int testInt(void) {
+    int testInt() {
       return 1;
     }
 
-    float testFloat(void) {
+    float testFloat() {
       return 1.6180339887;
     }
 
@@ -38,7 +38,7 @@ A typical implementation of such an approach is shown below.
 
 .. code-block:: cpp
 
-    void loop(void) {
+    void loop() {
       int iValue, iParamA, iParamB;
       float fValue;
 

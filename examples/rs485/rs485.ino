@@ -12,12 +12,12 @@ byte ping(byte data) {
 }
 
 
-void setup(void) {
+void setup() {
   Serial.begin(9600);
   RS485Serial.begin();
 }
 
-void loop(void) {
+void loop() {
   interface(
     RS485Serial,
     ping, F("ping: Echo a value. @data: Value. @return: Value of data."));
