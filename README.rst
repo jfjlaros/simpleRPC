@@ -99,7 +99,7 @@ documentation, contains an example_ on how this works.
 Further reading
 ---------------
 
-Please read :doc:`usage` for more information about exporting normal
+Please read section :doc:`usage` for more information about exporting normal
 functions, class member functions and documentation conventions.
 
 If you want to create your own host library implementation for other
