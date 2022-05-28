@@ -11,7 +11,7 @@
  * \param data Data.
  */
 template <class T>
-void rpcDel(T* data) {}
+void rpcDel(T*) {}
 
 
 /*! \ingroup del
