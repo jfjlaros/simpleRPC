@@ -22,19 +22,6 @@ struct Tuple<H, Tail...> {
   Tuple<Tail...> tail; //!< Remaining elements.
 };
 
-/*! \ingroup object
- * Object.
- */
-template <class... Membs>
-struct Object : Tuple<Membs...> {
-  /*
-   * Preferably this would have been an alias, but this is not supported in the
-   * current version of Arduino C++.
-   */
-  Object() {}
-  Object(Membs... args) : Tuple<Membs...>({args...}) {}
-};
-
 
 /*!
  * Access the type of the *k*-th element in a Tuple.
@@ -85,6 +72,23 @@ typename enableIf<
 }
 
 
+//! Recursion terminator for `fill()`.
+inline void fill(Tuple<>) {}
+
+/*!
+ * Fill a Tuple.
+ *
+ * \param t Tuple.
+ * \param head First element.
+ * \param tail Remaining elements.
+ */
+template <class H, class... Tail>
+void fill(Tuple<H, Tail...>& t, H head, Tail... tail) {
+  t.head = head;
+  fill(t.tail, tail...);
+}
+
+
 /*! \ingroup tuplehelper
  * Make a Tuple from a parameter pack.
  *
@@ -94,7 +98,8 @@ typename enableIf<
  */
 template <class... Args>
 Tuple<Args...> pack(Args... args) {
-  Tuple<Args...> t = {args...};
+  Tuple<Args...> t;
+  fill(t, args...);
 
   return t;
 }
@@ -112,3 +117,19 @@ Tuple<Membs...> castStruct(T& s) {
 
   return *t;
 }
+
+
+/*! \ingroup object
+ * Object.
+ */
+template <class... Membs>
+struct Object : Tuple<Membs...> {
+  /*
+   * Preferably this would have been an alias, but this is not supported in the
+   * current version of Arduino C++.
+   */
+  Object() {}
+  Object(Membs... args) : Tuple<Membs...>() {
+    fill(*(Tuple<Membs...>*)this, args...);
+  }
+};

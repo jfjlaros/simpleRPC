@@ -6,7 +6,7 @@ FIXTURES := arduino-serial-fixture/src/Arduino
 
 
 CC := g++
-CC_ARGS := -std=c++11 -Wno-pmf-conversions \
+CC_ARGS := -std=c++11 -Wall -Wextra -pedantic -Wno-pmf-conversions \
   -I arduino-serial-fixture/src -I plugins
 
 
@@ -27,7 +27,7 @@ $(EXEC): $(MAIN).cc $(OBJS)
 	$(CC) $(CC_ARGS) -o $@ -c $<
 
 check: all
-	valgrind ./$(EXEC)
+	valgrind --error-exitcode=1 --track-origins=yes ./$(EXEC)
 
 clean:
 	rm -f $(OBJS)

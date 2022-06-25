@@ -41,7 +41,7 @@ TEST_CASE("Write C string of type char const*", "[write][string]") {
 }
 
 TEST_CASE("Write tuple", "[write][tuple]") {
-  Tuple<int, char> t = {1234, 'x'};
+  Tuple<int, char> t = pack(1234, 'x');
 
   Serial.reset();
   rpcWrite(Serial, &t);

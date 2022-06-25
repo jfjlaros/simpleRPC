@@ -3,8 +3,10 @@
 #include "../src/tuple.tcc"
 
 
-TEST_CASE("Tuple initialiser list", "[tuple]") {
-  Tuple<char, int> t = {'x', 1};
+TEST_CASE("Tuple fill", "[tuple]") {
+  Tuple<char, int> t{};
+
+  fill(t, 'x', 1);
 
   REQUIRE(t.head == 'x');
   REQUIRE(t.tail.head == 1);

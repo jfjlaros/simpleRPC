@@ -28,13 +28,13 @@ void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
 
   rpcPrint(io, ' ');
   rpcTypeOf(io, data);
-  _parameterTypes(io, (void (*)(Tail...))f_);
+  _parameterTypes(io, *(void (**)(Tail...))&f_);
 }
 
 //! \copydoc _parameterTypes(Stream&, void (*)(H, Tail...))
 template <class H, class... Tail>
 void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
-  _parameterTypes(io, (void (*)(H, Tail...))f_);
+  _parameterTypes(io, *(void (**)(H, Tail...))&f_);
 }
 
 
@@ -58,14 +58,14 @@ void signature(Stream& io, R (*f)(FArgs...)) {
 
   rpcTypeOf(io, data);
   rpcPrint(io, ':');
-  _parameterTypes(io, (void (*)(FArgs...))f);
+  _parameterTypes(io, *(void (**)(FArgs...))&f);
 }
 
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class R, class C, class... FArgs>
 void signature(Stream& io, R (C::*f)(FArgs...)) {
-  signature(io, (R (*)(FArgs...))f);
+  signature(io, *(R (**)(FArgs...))&f);
 }
 
 /*! \ingroup signature
@@ -80,5 +80,5 @@ void signature(Stream& io, void (*f)(FArgs...)) {
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class C, class... FArgs>
 void signature(Stream& io, void (C::*f)(FArgs...)) {
-  signature(io, (void (*)(FArgs...))f);
+  signature(io, *(void (**)(FArgs...))&f);
 }

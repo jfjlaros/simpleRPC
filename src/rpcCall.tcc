@@ -77,14 +77,14 @@ void _call(Stream& io, void (*f_)(H, Tail...), F f, Args&... args) {
   H data;
 
   rpcRead(io, &data);
-  _call(io, (void (*)(Tail...))f_, f, args..., data);
+  _call(io, *(void (**)(Tail...))&f_, f, args..., data);
   rpcDel(&data);
 }
 
 //! \copydoc _call(Stream&, void (*)(H, Tail...), F, Args&...)
 template <class H, class... Tail, class F, class... Args>
 void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
-  _call(io, (void (*)(H, Tail...))f_, f, args...);
+  _call(io, *(void (**)(H, Tail...))&f_, f, args...);
 }
 
 
@@ -105,7 +105,7 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
    * type of this function pointer is removed to avoid unneeded template
    * expansion.
    */
-  _call(io, (void (*)(FArgs...))f, f);
+  _call(io, *(void (**)(FArgs...))&f, f);
 }
 
 /*! \ingroup call
@@ -119,5 +119,5 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
  */
 template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
-  _call(io, (void (*)(FArgs...))t.tail.head, t);
+  _call(io, *(void (**)(FArgs...))&t.tail.head, t);
 }
