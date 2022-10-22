@@ -54,5 +54,5 @@ reference.
 Class definition
 ----------------
 
-.. doxygengroup:: vector
-   :content-only:
+.. doxygenclass:: Vector
+   :members:
