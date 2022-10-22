@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#define _PROTOCOL "simpleRPC"
-#define _VERSION "\3\0\0"
+char const _PROTOCOL[] = "simpleRPC";
+char const _VERSION[] = "\x03\x00\x00";
 
-#define _LIST_REQ (uint8_t)0xff
+uint8_t const _LIST_REQ = 0xff;
