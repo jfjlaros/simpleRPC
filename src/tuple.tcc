@@ -30,18 +30,18 @@ struct Tuple<H, Tail...> {
  * https://eli.thegreenplace.net/2014/variadic-templates-in-c/#id5
  */
 template <size_t, class>
-struct _ElemTypeHolder;
+struct ElemTypeHolder_;
 
-//! \copydoc _ElemTypeHolder
+//! \copydoc ElemTypeHolder_
 template <class H, class... Tail>
-struct _ElemTypeHolder<0, Tuple<H, Tail...> > {
+struct ElemTypeHolder_<0, Tuple<H, Tail...> > {
   typedef H type;
 };
 
-//! \copydoc _ElemTypeHolder
+//! \copydoc ElemTypeHolder_
 template <size_t k, class H, class... Tail>
-struct _ElemTypeHolder<k, Tuple<H, Tail...> > {
-  typedef typename _ElemTypeHolder<k - 1, Tuple<Tail...> >::type type;
+struct ElemTypeHolder_<k, Tuple<H, Tail...> > {
+  typedef typename ElemTypeHolder_<k - 1, Tuple<Tail...> >::type type;
 };
 
 
@@ -57,7 +57,7 @@ struct _ElemTypeHolder<k, Tuple<H, Tail...> > {
 template <size_t k, class... Membs>
 //! \cond
 typename enableIf<
-    k == 0, typename _ElemTypeHolder<0, Tuple<Membs...> >::type&>::type
+    k == 0, typename ElemTypeHolder_<0, Tuple<Membs...> >::type&>::type
 //! \endcond
     get(Tuple<Membs...>& t) {
   return t.head;
@@ -66,7 +66,7 @@ typename enableIf<
 template <size_t k, class... Membs>
 //! \cond
 typename enableIf<
-    k != 0, typename _ElemTypeHolder<k, Tuple<Membs...> >::type&>::type
+    k != 0, typename ElemTypeHolder_<k, Tuple<Membs...> >::type&>::type
 //! \endcond
     get(Tuple<Membs...>& t) {
   return get<k - 1>(t.tail);

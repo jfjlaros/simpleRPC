@@ -15,7 +15,7 @@ public:
   virtual size_t write(uint8_t const*, size_t);
 
 private:
-  Stream* _stream;
-  uint8_t _pin;
-  unsigned long _delay;
+  Stream* stream_;
+  uint8_t pin_;
+  unsigned long delay_;
 };

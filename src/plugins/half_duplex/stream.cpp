@@ -5,40 +5,40 @@
 
 HalfDuplexStream::HalfDuplexStream(
     Stream& stream, uint8_t pin, unsigned long delay) {
-  _stream = &stream;
-  _pin = pin;
-  _delay = delay;
+  stream_ = &stream;
+  pin_ = pin;
+  delay_ = delay;
 }
 
 void HalfDuplexStream::begin() {
-  pinMode(_pin, OUTPUT);
-  digitalWrite(_pin, LOW);
+  pinMode(pin_, OUTPUT);
+  digitalWrite(pin_, LOW);
 }
 
 int HalfDuplexStream::available() {
-  return _stream->available();
+  return stream_->available();
 }
 
 int HalfDuplexStream::peek() {
-  return _stream->peek();
+  return stream_->peek();
 }
 
 int HalfDuplexStream::read() {
-  return _stream->read();
+  return stream_->read();
 }
 
 size_t HalfDuplexStream::write(uint8_t b) {
-  return _stream->write(b);
+  return stream_->write(b);
 }
 
 size_t HalfDuplexStream::write(uint8_t const* buffer, size_t size) {
-  digitalWrite(_pin, HIGH);
+  digitalWrite(pin_, HIGH);
 
-  int result = _stream->write(buffer, size);
-  _stream->flush();
-  delayMicroseconds(_delay);
+  int result = stream_->write(buffer, size);
+  stream_->flush();
+  delayMicroseconds(delay_);
 
-  digitalWrite(_pin, LOW);
+  digitalWrite(pin_, LOW);
 
   return result;
 }

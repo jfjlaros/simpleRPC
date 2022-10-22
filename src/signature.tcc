@@ -5,8 +5,8 @@
 //! \defgroup signature
 
 
-//! Recursion terminator for `_parameterTypes()`.
-inline void _parameterTypes(Stream&, void (*)()) {}
+//! Recursion terminator for `parameterTypes_()`.
+inline void parameterTypes_(Stream&, void (*)()) {}
 
 /*!
  * Get the types of all function parameters.
@@ -17,7 +17,7 @@ inline void _parameterTypes(Stream&, void (*)()) {}
  * \return Space separated parameter types.
  */
 template <class H, class... Tail>
-void _parameterTypes(Stream& io, void (*)(H, Tail...)) {
+void parameterTypes_(Stream& io, void (*)(H, Tail...)) {
   /*
    * The first parameter type `H` is isolated from function pointer. This type
    * is used to instantiate the variable `data`, which is passed to
@@ -29,14 +29,14 @@ void _parameterTypes(Stream& io, void (*)(H, Tail...)) {
   rpcTypeOf(io, data);
 
   void (*f_)(Tail...){};
-  _parameterTypes(io, f_);
+  parameterTypes_(io, f_);
 }
 
-//! \copydoc _parameterTypes(Stream&, void (*)(H, Tail...))
+//! \copydoc parameterTypes_(Stream&, void (*)(H, Tail...))
 template <class H, class... Tail>
-void _parameterTypes(Stream& io, void (*)(H&, Tail...)) {
+void parameterTypes_(Stream& io, void (*)(H&, Tail...)) {
   void (*f_)(H, Tail...){};
-  _parameterTypes(io, f_);
+  parameterTypes_(io, f_);
 }
 
 
@@ -60,7 +60,7 @@ void signature(Stream& io, R (*)(FArgs...)) {
   rpcPrint(io, ':');
 
   void (*f_)(FArgs...){};
-  _parameterTypes(io, f_);
+  parameterTypes_(io, f_);
 }
 
 /*! \ingroup signature
@@ -76,7 +76,7 @@ void signature(Stream& io, R (C::*)(FArgs...)) {
 template <class... FArgs>
 void signature(Stream& io, void (*f)(FArgs...)) {
   rpcPrint(io, ':');
-  _parameterTypes(io, f);
+  parameterTypes_(io, f);
 }
 
 /*! \ingroup signature

@@ -23,14 +23,14 @@
  * \param doc Function documentation.
  */
 template <class F, class D>
-void _writeDescription(Stream& io, F f, D doc) {
+void writeDescription_(Stream& io, F f, D doc) {
   signature(io, f);
   rpcPrint(io, ';', doc, '\0');
 }
 
 
-//! Recursion terminator for `_describe()`.
-inline void _describe(Stream& io) {
+//! Recursion terminator for `describe_()`.
+inline void describe_(Stream& io) {
   rpcPrint(io, '\0');
 }
 
@@ -43,26 +43,26 @@ inline void _describe(Stream& io) {
  * \param args Remaining parameters.
  */
 template <class F, class D, class... Args>
-void _describe(Stream& io, F f, D doc, Args... args) {
+void describe_(Stream& io, F f, D doc, Args... args) {
   /*
    * The first two parameters `f` and `doc` are isolated and passed to
-   * `_writeDescription()`. Then a recursive call to process the remaining
+   * `writeDescription_()`. Then a recursive call to process the remaining
    * parameters is made.
    */
-  _writeDescription(io, f, doc);
-  _describe(io, args...);
+  writeDescription_(io, f, doc);
+  describe_(io, args...);
 }
 
-//! \copydoc _describe(Stream&, F, D, Args...)
+//! \copydoc describe_(Stream&, F, D, Args...)
 template <class U, class V, class D, class... Args>
-void _describe(Stream& io, Tuple<U, V> t, D doc, Args... args) {
-  _writeDescription(io, t.tail.head, doc);
-  _describe(io, args...);
+void describe_(Stream& io, Tuple<U, V> t, D doc, Args... args) {
+  writeDescription_(io, t.tail.head, doc);
+  describe_(io, args...);
 }
 
 
-//! Recursion terminator for `_select()`.
-inline void _select(Stream&, uint8_t, uint8_t) {}
+//! Recursion terminator for `select_()`.
+inline void select_(Stream&, uint8_t, uint8_t) {}
 
 /*!
  * Select and call a function indexed by `number`.
@@ -75,7 +75,7 @@ inline void _select(Stream&, uint8_t, uint8_t) {}
  * \param args Remaining parameters.
  */
 template <class F, class D, class... Args>
-void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
+void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -86,7 +86,7 @@ void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
     rpcCall(io, f);
     return;
   }
-  _select(io, number, depth + 1, args...);
+  select_(io, number, depth + 1, args...);
 }
 
 
@@ -103,7 +103,7 @@ void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
 template <class... Args>
 void interface(Stream& io, Args... args) {
   /*
-   * One byte is read into `command`, if the value equals `_LIST_REQ`, the list
+   * One byte is read into `command`, if the value equals `LIST_REQ_`, the list
    * of functions is described. Otherwise, the function indexed by `command` is
    * called.
    */
@@ -112,13 +112,13 @@ void interface(Stream& io, Args... args) {
 
     rpcRead(io, &command);
 
-    if (command == _LIST_REQ) {
-      rpcPrint(io, _PROTOCOL, '\0', _VERSION[0], _VERSION[1], _VERSION[2]);
+    if (command == LIST_REQ_) {
+      rpcPrint(io, PROTOCOL_, '\0', VERSION_[0], VERSION_[1], VERSION_[2]);
       hardwareDefs(io);
-      _describe(io, args...);
+      describe_(io, args...);
       return;
     }
-    _select(io, command, 0, args...);
+    select_(io, command, 0, args...);
   }
 }
 

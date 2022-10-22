@@ -10,12 +10,12 @@ TEST_CASE("Describe function", "[describe][basic]") {
 
   // Empty description.
   Serial.reset();
-  _describe(Serial, f, "");
+  describe_(Serial, f, "");
   REQUIRE(Serial.inspect<String>() == ":;");
 
   // Non-empty description.
   Serial.reset();
-  _describe(Serial, f, "Function description.");
+  describe_(Serial, f, "Function description.");
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
@@ -29,12 +29,12 @@ TEST_CASE("Describe class member function", "[describe][class]") {
 
   // Empty description.
   Serial.reset();
-  _describe(Serial, pack(&c, &C::f), "");
+  describe_(Serial, pack(&c, &C::f), "");
   REQUIRE(Serial.inspect<String>() == ":;");
 
   // Non-empty description.
   Serial.reset();
-  _describe(Serial, pack(&c, &C::f), "Function description.");
+  describe_(Serial, pack(&c, &C::f), "Function description.");
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
@@ -49,13 +49,13 @@ TEST_CASE("Multiple functions", "[describe][class]") {
 
   // Normal function first.
   Serial.reset();
-  _describe(Serial, f, "f", pack(&c, &C::f), "C::f");
+  describe_(Serial, f, "f", pack(&c, &C::f), "C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
 
   // Class member function first.
   Serial.reset();
-  _describe(Serial, pack(&c, &C::f), "C::f", f, "f");
+  describe_(Serial, pack(&c, &C::f), "C::f", f, "f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
 }
@@ -72,12 +72,12 @@ TEST_CASE("Select by number", "[describe][select]") {
 
   // Select first function.
   Serial.reset();
-  _select(Serial, 0, 0, S::f0, "", S::f1, "");
+  select_(Serial, 0, 0, S::f0, "", S::f1, "");
   REQUIRE(Serial.inspect<short int>() == 1);
 
   // Select second function.
   Serial.reset();
-  _select(Serial, 1, 0, S::f0, "", S::f1, "");
+  select_(Serial, 1, 0, S::f0, "", S::f1, "");
   REQUIRE(Serial.inspect<short int>() == 2);
 }
 
@@ -93,12 +93,12 @@ TEST_CASE("RPC interface", "[describe][interface]") {
 
   // Describe interface.
   Serial.reset();
-  Serial.prepare(_LIST_REQ);
+  Serial.prepare(LIST_REQ_);
   interface(Serial, S::f0, "f", S::f1, "g");
-  REQUIRE(Serial.inspect<String>() == (String)_PROTOCOL);
-  REQUIRE(Serial.inspect<byte>() == _VERSION[0]);
-  REQUIRE(Serial.inspect<byte>() == _VERSION[1]);
-  REQUIRE(Serial.inspect<byte>() == _VERSION[2]);
+  REQUIRE(Serial.inspect<String>() == PROTOCOL_);
+  REQUIRE(Serial.inspect<byte>() == VERSION_[0]);
+  REQUIRE(Serial.inspect<byte>() == VERSION_[1]);
+  REQUIRE(Serial.inspect<byte>() == VERSION_[2]);
   REQUIRE(Serial.inspect<String>().size() == 2);
   REQUIRE(Serial.inspect<String>() == "h:;f");
   REQUIRE(Serial.inspect<String>() == "h:;g");

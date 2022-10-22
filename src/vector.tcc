@@ -17,8 +17,8 @@ public:
   T& operator[](size_t) const;
 
 private:
-  bool _destroy = true; //!< Free memory when destructor is called.
-  T* _data = nullptr;
+  bool destroy_ = true; //!< Free memory when destructor is called.
+  T* data_ = nullptr;
 };
 
 
@@ -42,19 +42,19 @@ Vector<T>::Vector(size_t const size) {
 template <class T>
 Vector<T>::Vector(size_t const size, T* const data, bool const destroy) {
   this->size = size;
-  this->_destroy = destroy;
-  _data = data;
+  this->destroy_ = destroy;
+  data_ = data;
 }
 
 //! Destructor.
 template <class T>
 Vector<T>::~Vector() {
-  if (_destroy) {
+  if (destroy_) {
     for (size_t i = 0; i < size; i++) {
-      _data[i].T::~T();
+      data_[i].T::~T();
     }
 
-    free(_data);
+    free(data_);
   }
 }
 
@@ -69,7 +69,7 @@ Vector<T>::~Vector() {
  */
 template <class T>
 T& Vector<T>::operator[](size_t const index) const {
-  return _data[index];
+  return data_[index];
 }
 
 /*!
@@ -80,14 +80,14 @@ T& Vector<T>::operator[](size_t const index) const {
 template <class T>
 void Vector<T>::resize(size_t const size) {
   for (size_t i = size; i < this->size; i++) {
-    _data[i].T::~T();
+    data_[i].T::~T();
   }
 
-  _data = static_cast<T*>(realloc(
-    static_cast<void*>(_data), size * sizeof(T)));
+  data_ = static_cast<T*>(realloc(
+    static_cast<void*>(data_), size * sizeof(T)));
 
   for (size_t i = this->size; i < size; i++) {
-    _data[i] = T();
+    data_[i] = T();
   }
 
   this->size = size;

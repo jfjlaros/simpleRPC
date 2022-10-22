@@ -16,7 +16,7 @@
  * \param args Parameter pack for `f`.
  */
 template <class R, class... FArgs, class... Args>
-void _call(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
+void call_(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
   /*
    * All parameters have been collected since function pointer `*f_` has no
    * parameter types. All values are now present in the `args` parameter pack.
@@ -36,22 +36,22 @@ void _call(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
  * \param args Parameter pack for `f`.
  */
 template <class C, class P, class R, class... FArgs, class... Args>
-void _call(
+void call_(
     Stream& io, void (*)(), Tuple<C*, R (P::*)(FArgs...)> t, Args&... args) {
   R data = (*t.head.*t.tail.head)(args...);
 
   rpcWrite(io, &data);
 }
 
-//! \copydoc _call(Stream&, void (*)(), R (*)(FArgs...), Args&...)
+//! \copydoc call_(Stream&, void (*)(), R (*)(FArgs...), Args&...)
 template <class... FArgs, class... Args>
-void _call(Stream&, void (*)(), void (*f)(FArgs...), Args&... args) {
+void call_(Stream&, void (*)(), void (*f)(FArgs...), Args&... args) {
   f(args...);
 }
 
-//! \copydoc _call(Stream&, void (*)(), R (*)(FArgs...), Args&...)
+//! \copydoc call_(Stream&, void (*)(), R (*)(FArgs...), Args&...)
 template <class C, class P, class... FArgs, class... Args>
-void _call(
+void call_(
     Stream&, void (*)(), Tuple<C*, void (P::*)(FArgs...)> t, Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
@@ -66,11 +66,11 @@ void _call(
  * \param args Parameter pack for `f`.
  */
 template <class H, class... Tail, class F, class... Args>
-void _call(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
+void call_(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
   /* 
    * The first parameter type `H` is isolated from the function pointer. This
    * type is used to instantiate the variable `data`, which is used to receive
-   * `sizeof(H)` bytes. This value is passed recursively to `_call()` function,
+   * `sizeof(H)` bytes. This value is passed recursively to `call_()` function,
    * adding it to the `args` parameter pack. The first parameter type `H` is
    * removed from the function pointer in the recursive call.
    */ 
@@ -78,15 +78,15 @@ void _call(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
   rpcRead(io, &data);
 
   void (*f_)(Tail...){};
-  _call(io, f_, f, args..., data);
+  call_(io, f_, f, args..., data);
   rpcDel(&data);
 }
 
-//! \copydoc _call(Stream&, void (*)(H, Tail...), F, Args&...)
+//! \copydoc call_(Stream&, void (*)(H, Tail...), F, Args&...)
 template <class H, class... Tail, class F, class... Args>
-void _call(Stream& io, void (*)(H&, Tail...), F f, Args&... args) {
+void call_(Stream& io, void (*)(H&, Tail...), F f, Args&... args) {
   void (*f_)(H, Tail...){};
-  _call(io, f_, f, args...);
+  call_(io, f_, f, args...);
 }
 
 
@@ -107,7 +107,7 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
    * avoid unneeded template expansion.
    */
   void (*f_)(FArgs...){};
-  _call(io, f_, f);
+  call_(io, f_, f);
 }
 
 /*! \ingroup call
@@ -122,5 +122,5 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
 template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
   void (*f_)(FArgs...){};
-  _call(io, f_, t);
+  call_(io, f_, t);
 }
