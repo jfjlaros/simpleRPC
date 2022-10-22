@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defs.h"
 #include "helper.tcc"
 
 //! \defgroup tuple
@@ -112,10 +113,11 @@ Tuple<Args...> pack(Args... args) {
  * \return Tuple representation of `s`.
  */
 template <class... Membs, class T>
-Tuple<Membs...> castStruct(T& s) {
-  Tuple<Membs...>* t = (Tuple<Membs...>*)&s;
+Tuple<Membs...> castStruct(T& s) {  // TODO: Name is wrong now.
+  Tuple<Membs...> t;
+  memcpy(&t, &s, sizeof(T));
 
-  return *t;
+  return t;
 }
 
 
@@ -125,11 +127,11 @@ Tuple<Membs...> castStruct(T& s) {
 template <class... Membs>
 struct Object : Tuple<Membs...> {
   /*
-   * Preferably this would have been an alias, but this is not supported in the
-   * current version of Arduino C++.
+   * Preferably this would have been an alias, but this is not supported in
+   * C++11.
    */
   Object() {}
   Object(Membs... args) : Tuple<Membs...>() {
-    fill(*(Tuple<Membs...>*)this, args...);
+    fill(*dynamic_cast<Tuple<Membs...>*>(this), args...);
   }
 };

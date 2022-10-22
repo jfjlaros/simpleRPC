@@ -13,7 +13,9 @@
  */
 template <class T>
 void rpcPrint(Stream& io, T data) {
-  io.write((uint8_t*)&data, sizeof(T));
+  uint8_t data_[sizeof(T)];
+  memcpy(data_, &data, sizeof(T));
+  io.write(data_, sizeof(T));
 }
 
 
@@ -31,7 +33,7 @@ inline void rpcPrint(Stream& io, char* data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, char const* data) {
-  rpcPrint(io, (char*)data);
+  rpcPrint(io, const_cast<char*>(data));
 }
 
 /*! \ingroup print
@@ -43,7 +45,7 @@ inline void rpcPrint(Stream& io, String& data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, __FlashStringHelper const* data) {
-  char const* p = (char const*)data;
+  char const* p = reinterpret_cast<char const*>(data);
   uint8_t c = pgm_read_byte(p);
 
   while (c) {

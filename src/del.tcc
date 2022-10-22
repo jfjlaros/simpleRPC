@@ -25,7 +25,7 @@ void rpcDel(T** data) {
  * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(T const** data) {
-  rpcDel((T**)data);
+  rpcDel(const_cast<T**>(data));
 }
 
 /*! \ingroup del
@@ -43,7 +43,7 @@ void rpcDel(T*** data) {
  * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(T const*** data) {
-  rpcDel((T***)data);
+  rpcDel(const_cast<T***>(data));
 }
 
 
@@ -63,5 +63,5 @@ void rpcDel(Tuple<Membs...>* data) {
  * \copydoc rpcDel(T*) */
 template <class... Membs>
 void rpcDel(Object<Membs...>* data) {
-  rpcDel((Tuple<Membs...>*)data);
+  rpcDel(dynamic_cast<Tuple<Membs...>*>(data));
 }

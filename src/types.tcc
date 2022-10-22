@@ -156,7 +156,7 @@ void rpcTypeOf(Stream& io, Tuple<Membs...>& t) {
 template <class... Membs>
 void rpcTypeOf(Stream& io, Object<Membs...>& o) {
   rpcPrint(io, '(');
-  rpcTypeOf(io, (Tuple<Membs...>&)o);
+  rpcTypeOf(io, dynamic_cast<Tuple<Membs...>&>(o));
   rpcPrint(io, ')');
 }
 
@@ -192,12 +192,15 @@ void rpcTypeOf(Stream& io, T*) {
 inline void hardwareDefs(Stream& io) {
   size_t i = 0xff;
 
-  if (((uint8_t*)&i)[0] == 0xff) {
+  uint8_t b;
+  memcpy(&b, &i, 1);
+  if (b == 0xff) {
     rpcPrint(io, '<');
   }
   else {
     rpcPrint(io, '>');
   }
+
   rpcTypeOf(io, i);
   rpcPrint(io, '\0');
 }

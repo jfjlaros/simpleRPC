@@ -12,29 +12,31 @@ inline void _parameterTypes(Stream&, void (*)()) {}
  * Get the types of all function parameters.
  *
  * \param io Stream.
- * \param f_ Dummy function pointer.
+ * \param - Dummy function pointer.
  *
  * \return Space separated parameter types.
  */
 template <class H, class... Tail>
-void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
+void _parameterTypes(Stream& io, void (*)(H, Tail...)) {
   /*
-   * The first parameter type `H` is isolated from function pointer `*f_`. This
-   * type is used to instantiate the variable `data`, which is passed to
+   * The first parameter type `H` is isolated from function pointer. This type
+   * is used to instantiate the variable `data`, which is passed to
    * `rpcTypeOf()` to encode its type. The first parameter type `H` is removed
-   * from function pointer `*f_` in the recursive call.
+   * from the function pointer in the recursive call.
    */
   H data{};
-
   rpcPrint(io, ' ');
   rpcTypeOf(io, data);
-  _parameterTypes(io, *(void (**)(Tail...))&f_);
+
+  void (*f_)(Tail...){};
+  _parameterTypes(io, f_);
 }
 
 //! \copydoc _parameterTypes(Stream&, void (*)(H, Tail...))
 template <class H, class... Tail>
-void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
-  _parameterTypes(io, *(void (**)(H, Tail...))&f_);
+void _parameterTypes(Stream& io, void (*)(H&, Tail...)) {
+  void (*f_)(H, Tail...){};
+  _parameterTypes(io, f_);
 }
 
 
@@ -42,30 +44,31 @@ void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
  * Get the signature of a function.
  *
  * \param io Stream.
- * \param f Function pointer.
+ * \param - Function pointer.
  *
  * \return Function signature.
  */
 template <class R, class... FArgs>
-void signature(Stream& io, R (*f)(FArgs...)) {
+void signature(Stream& io, R (*)(FArgs...)) {
   /*
-   * A dummy function pointer is prepared, referred to as `f_` in the template
-   * functions above, which will be used to isolate parameter types. The return
-   * type of this function pointer is removed to avoid unneeded template
-   * expansion.
+   * A dummy function pointer is prepared, which will be used to isolate
+   * parameter types. The return type of this function pointer is removed to
+   * avoid unneeded template expansion.
    */
   R data{};
-
   rpcTypeOf(io, data);
   rpcPrint(io, ':');
-  _parameterTypes(io, *(void (**)(FArgs...))&f);
+
+  void (*f_)(FArgs...){};
+  _parameterTypes(io, f_);
 }
 
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class R, class C, class... FArgs>
-void signature(Stream& io, R (C::*f)(FArgs...)) {
-  signature(io, *(R (**)(FArgs...))&f);
+void signature(Stream& io, R (C::*)(FArgs...)) {
+  R (*f_)(FArgs...){};
+  signature(io, f_);
 }
 
 /*! \ingroup signature
@@ -79,6 +82,7 @@ void signature(Stream& io, void (*f)(FArgs...)) {
 /*! \ingroup signature
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class C, class... FArgs>
-void signature(Stream& io, void (C::*f)(FArgs...)) {
-  signature(io, *(void (**)(FArgs...))&f);
+void signature(Stream& io, void (C::*)(FArgs...)) {
+  void (*f_)(FArgs...){};
+  signature(io, f_);
 }

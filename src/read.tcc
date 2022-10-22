@@ -15,26 +15,36 @@
  */
 template <class T>
 void rpcRead(Stream& io, T* data) {
-  io.readBytes((char*)data, sizeof(T));
+  char data_[sizeof(T)];
+  io.readBytes(data_, sizeof(T));
+  memcpy(data, data_, sizeof(T));
+}
+
+/*! \ingroup read
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+inline void rpcRead(Stream& io, T const* data) {  // TODO write analogue?
+  rpcRead(io, const_cast<T*>(data));
 }
 
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, char** data) {
-  *data = (char*)malloc(sizeof(char));
-  rpcRead(io, &(*data)[0]);
+  *data = static_cast<char*>(malloc(sizeof(char)));
+  rpcRead(io, *data);
 
   for (size_t size = 1; (*data)[size - 1]; size++) {
-    *data = (char*)realloc((void*)(*data), (size + 1) * sizeof(char));
-    rpcRead(io, &(*data)[size]);
+    *data = static_cast<char*>(realloc(*data, (size + 1) * sizeof(char)));
+
+    rpcRead(io, *data + size);
   }
 }
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, char const** data) {
-  rpcRead(io, (char**)data);
+  rpcRead(io, const_cast<char**>(data));
 }
 
 /*! \ingroup read
@@ -72,10 +82,11 @@ void rpcRead(Stream& io, T** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = (T*)malloc(size * sizeof(T));
+  *data = static_cast<T*>(malloc(size * sizeof(T)));
+  //*data = new T{};
 
   for (size_t i = 0; i < size; i++) {
-    rpcRead(io, &(*data)[i]);
+    rpcRead(io, *data + i);
   }
 }
 
@@ -86,12 +97,13 @@ void rpcRead(Stream& io, T*** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = (T**)malloc((size + 1) * sizeof(T*));
+  *data = static_cast<T**>(malloc((size + 1) * sizeof(T*)));
+  //*data = new T*{};
 
   for (size_t i = 0; i < size; i++) {
-    rpcRead(io, &(*data)[i]);
+    rpcRead(io, *data + i);
   }
-  (*data)[size] = NULL;
+  (*data)[size] = nullptr;
 }
 
 
@@ -111,5 +123,5 @@ void rpcRead(Stream& io, Tuple<Membs...>* data) {
  * \copydoc rpcRead(Stream&, T*) */
 template <class... Membs>
 void rpcRead(Stream& io, Object<Membs...>* data) {
-  rpcRead(io, (Tuple<Membs...>*)data);
+  rpcRead(io, dynamic_cast<Tuple<Membs...>*>(data));
 }

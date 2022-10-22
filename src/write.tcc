@@ -15,7 +15,9 @@
  */
 template <class T>
 void rpcWrite(Stream& io, T* data) {
-  io.write((uint8_t*)data, sizeof(T));
+  uint8_t data_[sizeof(T)];
+  memcpy(data_, data, sizeof(T));
+  io.write(data_, sizeof(T));
 }
 
 
@@ -28,7 +30,7 @@ inline void rpcWrite(Stream& io, char** data) {
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
 inline void rpcWrite(Stream& io, char const** data) {
-  rpcWrite(io, (char**)data);
+  rpcWrite(io, const_cast<char**>(data));
 }
 
 /*! \ingroup write
@@ -66,5 +68,5 @@ void rpcWrite(Stream& io, Tuple<Membs...>* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class... Membs>
 void rpcWrite(Stream& io, Object<Membs...>* data) {
-  rpcWrite(io, (Tuple<Membs...>*)data);
+  rpcWrite(io, dynamic_cast<Tuple<Membs...>*>(data));
 }

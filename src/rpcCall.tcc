@@ -61,30 +61,32 @@ void _call(
  * Collect parameters of a function.
  *
  * \param io Stream.
- * \param f_ Dummy function pointer.
+ * \param - Dummy function pointer.
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
  */
 template <class H, class... Tail, class F, class... Args>
-void _call(Stream& io, void (*f_)(H, Tail...), F f, Args&... args) {
+void _call(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
   /* 
-   * The first parameter type `H` is isolated from function pointer `*f_`. This
+   * The first parameter type `H` is isolated from the function pointer. This
    * type is used to instantiate the variable `data`, which is used to receive
    * `sizeof(H)` bytes. This value is passed recursively to `_call()` function,
    * adding it to the `args` parameter pack. The first parameter type `H` is
-   * removed from function pointer `*f_` in the recursive call.
+   * removed from the function pointer in the recursive call.
    */ 
   H data;
-
   rpcRead(io, &data);
-  _call(io, *(void (**)(Tail...))&f_, f, args..., data);
+
+  void (*f_)(Tail...){};
+  _call(io, f_, f, args..., data);
   rpcDel(&data);
 }
 
 //! \copydoc _call(Stream&, void (*)(H, Tail...), F, Args&...)
 template <class H, class... Tail, class F, class... Args>
-void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
-  _call(io, *(void (**)(H, Tail...))&f_, f, args...);
+void _call(Stream& io, void (*)(H&, Tail...), F f, Args&... args) {
+  void (*f_)(H, Tail...){};
+  _call(io, f_, f, args...);
 }
 
 
@@ -100,12 +102,12 @@ void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
 template <class R, class... FArgs>
 void rpcCall(Stream& io, R (*f)(FArgs...)) {
   /*
-   * A dummy function pointer is prepared, referred to as `f_` in the template
-   * functions above, which will be used to isolate parameter types. The return
-   * type of this function pointer is removed to avoid unneeded template
-   * expansion.
+   * A dummy function pointer is prepared, which will be used to isolate
+   * parameter types. The return type of this function pointer is removed to
+   * avoid unneeded template expansion.
    */
-  _call(io, *(void (**)(FArgs...))&f, f);
+  void (*f_)(FArgs...){};
+  _call(io, f_, f);
 }
 
 /*! \ingroup call
@@ -119,5 +121,6 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
  */
 template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
-  _call(io, *(void (**)(FArgs...))&t.tail.head, t);
+  void (*f_)(FArgs...){};
+  _call(io, f_, t);
 }
