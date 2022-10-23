@@ -105,13 +105,13 @@ TEST_CASE("RPC interface", "[describe][interface]") {
 
   // Select first function.
   Serial.reset();
-  Serial.prepare((byte)0x00);
+  Serial.prepare('\x00');
   interface(Serial, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 1);
 
   // Select second function.
   Serial.reset();
-  Serial.prepare((byte)0x01);
+  Serial.prepare('\x01');
   interface(Serial, S::f0, "f0", S::f1, "f1");
   REQUIRE(Serial.inspect<short int>() == 2);
 }

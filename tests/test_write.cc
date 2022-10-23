@@ -25,7 +25,7 @@ TEST_CASE("Write String", "[write][string]") {
 }
 
 TEST_CASE("Write C string of type char*", "[write][string]") {
-  char* s = (char*)"xyz";
+  char* s = const_cast<char*>("xyz");
 
   Serial.reset();
   rpcWrite(Serial, &s);
