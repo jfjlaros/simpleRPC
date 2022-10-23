@@ -18,7 +18,7 @@ void rpcDel(T*) {}
  * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(T** data) {
-  free(*data);
+  delete[] *data;
 }
 
 /*! \ingroup del
@@ -36,7 +36,7 @@ void rpcDel(T*** data) {
     rpcDel(&(*data)[i]);
   }
 
-  free(*data);
+  delete[] *data;
 }
 
 /*! \ingroup del

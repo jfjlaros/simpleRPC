@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Arduino.h>
+
 /*!
  * Generic Vector.
  */
@@ -50,11 +52,7 @@ Vector<T>::Vector(size_t const size, T* const data, bool const destroy) {
 template <class T>
 Vector<T>::~Vector() {
   if (destroy_) {
-    for (size_t i = 0; i < size; i++) {
-      data_[i].T::~T();
-    }
-
-    free(data_);
+    delete[] data_;
   }
 }
 
@@ -79,16 +77,14 @@ T& Vector<T>::operator[](size_t const index) const {
  */
 template <class T>
 void Vector<T>::resize(size_t const size) {
-  for (size_t i = size; i < this->size; i++) {
-    data_[i].T::~T();
+  T* newData = new T[size];
+
+  for (size_t i = 0; i < min(this->size, size); i++) {
+    newData[i] = data_[i];
   }
 
-  data_ = static_cast<T*>(realloc(
-    static_cast<void*>(data_), size * sizeof(T)));
-
-  for (size_t i = this->size; i < size; i++) {
-    data_[i] = T();
-  }
+  delete[] data_;
+  data_ = newData;
 
   this->size = size;
 }

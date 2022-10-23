@@ -16,18 +16,18 @@ TEST_CASE("Initialisation, size parameter.", "[vector]") {
 }
 
 TEST_CASE("Initialisation, pointer parameter.", "[vector]") {
-  int* data = (int*)malloc(sizeof(int) * 10);
+  int* data = new int[10];
   Vector<int> v(10, data);
 
   REQUIRE(v.size == 10);
 }
 
 TEST_CASE("Initialisation, pointer parameter, no free.", "[vector]") {
-  int* data = (int*)malloc(sizeof(int) * 10);
+  int* data = new int[10];
   Vector<int> v(10, data, false);
 
   REQUIRE(v.size == 10);
-  free(data);
+  delete[] data;
 }
 
 TEST_CASE("Resize.", "[vector]") {

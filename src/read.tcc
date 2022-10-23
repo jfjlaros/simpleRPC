@@ -31,11 +31,14 @@ inline void rpcRead(Stream& io, T const* data) {  // TODO write analogue?
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, char** data) {
-  *data = static_cast<char*>(malloc(sizeof(char)));
+  *data = new char[1];
   rpcRead(io, *data);
 
   for (size_t size = 1; (*data)[size - 1]; size++) {
-    *data = static_cast<char*>(realloc(*data, (size + 1) * sizeof(char)));
+    char* data_ = new char[size + 1]{};
+    memcpy(data_, *data, size);
+    delete[] *data;
+    *data = data_;
 
     rpcRead(io, *data + size);
   }
@@ -82,8 +85,7 @@ void rpcRead(Stream& io, T** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = static_cast<T*>(malloc(size * sizeof(T)));
-  //*data = new T{};
+  *data = new T[size]{};
 
   for (size_t i = 0; i < size; i++) {
     rpcRead(io, *data + i);
@@ -97,8 +99,7 @@ void rpcRead(Stream& io, T*** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = static_cast<T**>(malloc((size + 1) * sizeof(T*)));
-  //*data = new T*{};
+  *data = new T*[size + 1]{};
 
   for (size_t i = 0; i < size; i++) {
     rpcRead(io, *data + i);
