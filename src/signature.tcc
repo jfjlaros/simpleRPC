@@ -24,18 +24,18 @@ void parameterTypes_(Stream& io, void (*)(H, Tail...)) {
    * `rpcTypeOf()` to encode its type. The first parameter type `H` is removed
    * from the function pointer in the recursive call.
    */
-  H data{};
+  H data {};
   rpcPrint(io, ' ');
   rpcTypeOf(io, data);
 
-  void (*f_)(Tail...){};
+  void (*f_)(Tail...) {};
   parameterTypes_(io, f_);
 }
 
 //! \copydoc parameterTypes_(Stream&, void (*)(H, Tail...))
 template <class H, class... Tail>
 void parameterTypes_(Stream& io, void (*)(H&, Tail...)) {
-  void (*f_)(H, Tail...){};
+  void (*f_)(H, Tail...) {};
   parameterTypes_(io, f_);
 }
 
@@ -55,11 +55,11 @@ void signature(Stream& io, R (*)(FArgs...)) {
    * parameter types. The return type of this function pointer is removed to
    * avoid unneeded template expansion.
    */
-  R data{};
+  R data {};
   rpcTypeOf(io, data);
   rpcPrint(io, ':');
 
-  void (*f_)(FArgs...){};
+  void (*f_)(FArgs...) {};
   parameterTypes_(io, f_);
 }
 
@@ -67,7 +67,7 @@ void signature(Stream& io, R (*)(FArgs...)) {
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class R, class C, class... FArgs>
 void signature(Stream& io, R (C::*)(FArgs...)) {
-  R (*f_)(FArgs...){};
+  R (*f_)(FArgs...) {};
   signature(io, f_);
 }
 
@@ -83,6 +83,6 @@ void signature(Stream& io, void (*f)(FArgs...)) {
  * \copydoc signature(Stream&, R (*)(FArgs...)) */
 template <class C, class... FArgs>
 void signature(Stream& io, void (C::*)(FArgs...)) {
-  void (*f_)(FArgs...){};
+  void (*f_)(FArgs...) {};
   signature(io, f_);
 }

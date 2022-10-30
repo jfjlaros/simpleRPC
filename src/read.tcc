@@ -34,8 +34,8 @@ inline void rpcRead(Stream& io, char** data) {
   *data = new char[1];
   rpcRead(io, *data);
 
-  for (size_t size = 1; (*data)[size - 1]; size++) {
-    char* data_ = new char[size + 1]{};
+  for (size_t size {1}; (*data)[size - 1]; size++) {
+    char* data_ {new char[size + 1]};
     memcpy(data_, *data, size);
     delete[] *data;
     *data = data_;
@@ -73,7 +73,7 @@ void rpcRead(Stream& io, Vector<T>* data) {
   rpcRead(io, &size);
   (*data).resize(size);
 
-  for (size_t i = 0; i < (*data).size; i++) {
+  for (size_t i {0}; i < (*data).size; i++) {
     rpcRead(io, &(*data)[i]);
   }
 }
@@ -85,11 +85,18 @@ void rpcRead(Stream& io, T** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = new T[size]{};
+  *data = new T[size];
 
-  for (size_t i = 0; i < size; i++) {
+  for (size_t i {0}; i < size; i++) {
     rpcRead(io, *data + i);
   }
+}
+
+/*! \ingroup read
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T>
+void rpcRead(Stream& io, T const** data) {
+  rpcRead(io, const_cast<T**>(data));
 }
 
 /*! \ingroup read
@@ -99,9 +106,9 @@ void rpcRead(Stream& io, T*** data) {
   size_t size;
 
   rpcRead(io, &size);
-  *data = new T*[size + 1]{};
+  *data = new T*[size + 1];
 
-  for (size_t i = 0; i < size; i++) {
+  for (size_t i {0}; i < size; i++) {
     rpcRead(io, *data + i);
   }
   (*data)[size] = nullptr;

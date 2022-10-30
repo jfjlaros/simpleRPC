@@ -46,7 +46,7 @@ template <class T>
 void rpcWrite(Stream& io, Vector<T>* data) {
   rpcWrite(io, &(*data).size);
 
-  for (size_t i = 0; i < (*data).size; i++) {
+  for (size_t i {0}; i < (*data).size; i++) {
     rpcWrite(io, &(*data)[i]);
   }
 }

@@ -165,7 +165,7 @@ void rpcTypeOf(Stream& io, Object<Membs...>& o) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, Vector<T>&) {
-  T x{};
+  T x {};
 
   rpcPrint(io, '[');
   rpcTypeOf(io, x);
@@ -176,7 +176,7 @@ void rpcTypeOf(Stream& io, Vector<T>&) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, T*) {
-  T x{};
+  T x {};
 
   rpcPrint(io, '[');
   rpcTypeOf(io, x);
@@ -190,7 +190,7 @@ void rpcTypeOf(Stream& io, T*) {
  * \param io Stream.
  */
 inline void hardwareDefs(Stream& io) {
-  size_t i = 0xff;
+  size_t i {0xff};
 
   uint8_t b;
   memcpy(&b, &i, 1);

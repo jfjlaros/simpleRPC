@@ -4,7 +4,7 @@
 
 
 TEST_CASE("Tuple fill", "[tuple]") {
-  Tuple<char, int> t{};
+  Tuple<char, int> t {};
 
   fill(t, 'x', 1);
 
@@ -33,7 +33,7 @@ TEST_CASE("Tuple write by index", "[tuple]") {
 }
 
 TEST_CASE("Object initialiser list", "[object]") {
-  Object<char, int> o = {'x', 1};
+  Object<char, int> o {'x', 1};
 
   REQUIRE(o.head == 'x');
   REQUIRE(o.tail.head == 1);
@@ -67,7 +67,7 @@ TEST_CASE("Object write by index", "[object]") {
 }
 
 TEST_CASE("Pack values", "[tuple]") {
-  Tuple<char, int> t = pack('x', 1);
+  Tuple<char, int> t {pack('x', 1)};
 
   REQUIRE(t.head == 'x');
   REQUIRE(t.tail.head == 1);
@@ -79,8 +79,8 @@ TEST_CASE("Cast struct to tuple", "[tuple]") {
     int i;
   };
 
-  S s = {'x', 1};
-  Tuple<char, int> t = castStruct<char, int>(s);
+  S s {'x', 1};
+  Tuple<char, int> t {castStruct<char, int>(s)};
 
   REQUIRE(t.head == 'x');
   REQUIRE(t.tail.head == 1);

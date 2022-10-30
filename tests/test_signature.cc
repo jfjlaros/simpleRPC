@@ -8,8 +8,8 @@ extern Stream Serial;
 
 
 TEST_CASE("Function pointer types", "[signature][basic]") {
-  short int (*f0)(char, float){};
-  void (*f1)(char, float){};
+  short int (*f0)(char, float) {};
+  void (*f1)(char, float) {};
 
   Serial.reset();
   signature(Serial, f0);
@@ -33,8 +33,8 @@ TEST_CASE("Class member function pointer types", "[signature][class]") {
 }
 
 TEST_CASE("Tuples", "[signature][tuple]") {
-  void (*f0)(Tuple<int, char>, float){};
-  Tuple<int, char> (*f1)(float){};
+  void (*f0)(Tuple<int, char>, float) {};
+  Tuple<int, char> (*f1)(float) {};
 
   Serial.reset();
   signature(Serial, f0);
@@ -43,8 +43,8 @@ TEST_CASE("Tuples", "[signature][tuple]") {
 }
 
 TEST_CASE("Objects", "[signature][object]") {
-  void (*f0)(Object<int, char>, float){};
-  Object<int, char> (*f1)(float){};
+  void (*f0)(Object<int, char>, float) {};
+  Object<int, char> (*f1)(float) {};
 
   Serial.reset();
   signature(Serial, f0);
@@ -53,9 +53,9 @@ TEST_CASE("Objects", "[signature][object]") {
 }
 
 TEST_CASE("Vectors", "[signature][vector]") {
-  void (*f0)(Vector<int>, float){};
-  Vector<int> (*f1)(float){};
-  int (*f2)(Vector<signed char>&, int){};
+  void (*f0)(Vector<int>, float) {};
+  Vector<int> (*f1)(float) {};
+  int (*f2)(Vector<signed char>&, int) {};
 
   Serial.reset();
   signature(Serial, f0);
@@ -65,10 +65,10 @@ TEST_CASE("Vectors", "[signature][vector]") {
 }
 
 TEST_CASE("C vectors", "[signature][vector]") {
-  void (*f0)(int*, float){};
-  int* (*f1)(float){};
-  int (*f2)(signed char*, int){};
-  void (*f3)(int**){};
+  void (*f0)(int*, float) {};
+  int* (*f1)(float) {};
+  int (*f2)(signed char*, int) {};
+  void (*f3)(int**) {};
 
   Serial.reset();
   signature(Serial, f0);

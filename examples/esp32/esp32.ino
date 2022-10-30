@@ -22,7 +22,7 @@ void setup() {
 }
 
 void loop() {
-  WiFiClient client = server.available();
+  WiFiClient client {server.available()};
 
   if (client) {
     while (client.connected()) {

@@ -8,17 +8,17 @@ extern Stream Serial;
 
 
 TEST_CASE("Basic types 1", "[types][basic]") {
-  bool b{};
-  char c{};
-  signed char sc{};
-  unsigned char uc{};
-  short int si{};
-  unsigned short int usi{};
-  long int li{};
-  unsigned long int uli{};
-  long long int lli{};
-  unsigned long long int ulli{};
-  float f{};
+  bool b {};
+  char c {};
+  signed char sc {};
+  unsigned char uc {};
+  short int si {};
+  unsigned short int usi {};
+  long int li {};
+  unsigned long int uli {};
+  long long int lli {};
+  unsigned long long int ulli {};
+  float f {};
 
   Serial.reset();
   rpcTypeOf(Serial, b);
@@ -36,9 +36,9 @@ TEST_CASE("Basic types 1", "[types][basic]") {
 }
 
 TEST_CASE("Basic types 2", "[types][basic]") {
-  int i{};
-  unsigned int ui{};
-  double d{};
+  int i {};
+  unsigned int ui {};
+  double d {};
 
   // Basic types of which the size may differ between platforms.
   Serial.reset();
@@ -62,9 +62,9 @@ TEST_CASE("Basic types 2", "[types][basic]") {
 }
 
 TEST_CASE("String type", "[types][string]") {
-  String s0{};
-  char* s1{};
-  char const* s2{};
+  String s0 {};
+  char* s1 {};
+  char const* s2 {};
 
   Serial.reset();
   rpcTypeOf(Serial, s0);
@@ -74,8 +74,8 @@ TEST_CASE("String type", "[types][string]") {
 }
 
 TEST_CASE("Tuple types", "[types][tuple]") {
-  Tuple<int, char> ic{};
-  Tuple<int, signed char, unsigned long> iscul{};
+  Tuple<int, char> ic {};
+  Tuple<int, signed char, unsigned long> iscul {};
 
   Serial.reset();
   rpcTypeOf(Serial, ic);
@@ -84,7 +84,7 @@ TEST_CASE("Tuple types", "[types][tuple]") {
 }
 
 TEST_CASE("Object types", "[types][object]") {
-  Object<Object<char, int>, unsigned long> o0{};
+  Object<Object<char, int>, unsigned long> o0 {};
   Object<
     Object<
       Object<char, char, char>,
@@ -92,7 +92,7 @@ TEST_CASE("Object types", "[types][object]") {
     char,
     Object<
       Object<char, char>,
-      Object<char>>> o1{};
+      Object<char>>> o1 {};
 
   Serial.reset();
   rpcTypeOf(Serial, o0);
@@ -101,10 +101,10 @@ TEST_CASE("Object types", "[types][object]") {
 }
 
 TEST_CASE("Vector", "[types][vector]") {
-  Vector<int> v0{};
-  Vector<float> v1{};
-  Vector<signed char> v2{};
-  Vector<Vector<int>> v3{};
+  Vector<int> v0 {};
+  Vector<float> v1 {};
+  Vector<signed char> v2 {};
+  Vector<Vector<int>> v3 {};
 
   Serial.reset();
   rpcTypeOf(Serial, v0);
@@ -115,9 +115,9 @@ TEST_CASE("Vector", "[types][vector]") {
 }
 
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
-  Tuple<Vector<int>, char> t0{};
-  Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1{};
-  Tuple<Object<int, char>, Vector<int>> t2{};
+  Tuple<Vector<int>, char> t0 {};
+  Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1 {};
+  Tuple<Object<int, char>, Vector<int>> t2 {};
 
   Serial.reset();
   rpcTypeOf(Serial, t0);
@@ -127,8 +127,8 @@ TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
 }
 
 TEST_CASE("Complex object types", "[types][object][complex]") {
-  Object<Vector<Object<int, char>>, Object<float>> o0{};
-  Object<Tuple<int, char>, Object<char>> o1{};
+  Object<Vector<Object<int, char>>, Object<float>> o0 {};
+  Object<Tuple<int, char>, Object<char>> o1 {};
 
   Serial.reset();
   rpcTypeOf(Serial, o0);
@@ -137,9 +137,9 @@ TEST_CASE("Complex object types", "[types][object][complex]") {
 }
 
 TEST_CASE("Complex vector types", "[types][vector][complex]") {
-  Vector<Tuple<int, char>> v0{};
-  Vector<Object<int, Vector<char>>> v1{};
-  Vector<Tuple<char, Object<int, char>>> v2{};
+  Vector<Tuple<int, char>> v0 {};
+  Vector<Object<int, Vector<char>>> v1 {};
+  Vector<Tuple<char, Object<int, char>>> v2 {};
 
   Serial.reset();
   rpcTypeOf(Serial, v0);

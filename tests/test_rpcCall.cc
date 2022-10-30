@@ -248,7 +248,7 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   struct S {
     static void f0(Tuple<int, char>) {}
     static Tuple<int, char> f1() {
-      Tuple<int, char> t = pack(1234, 'x');
+      Tuple<int, char> t {pack(1234, 'x')};
 
       return t;
     }
@@ -281,7 +281,7 @@ TEST_CASE("RPC call function with Object types", "[call][object]") {
   struct S {
     static void f0(Object<int, char>&) {}
     static Object<int, char> f1() {
-      Object<int, char> o = {1234, 'x'};
+      Object<int, char> o {1234, 'x'};
 
       return o;
     }

@@ -6,8 +6,8 @@ extern Stream Serial;
 
 
 TEST_CASE("Write basic types", "[write][basic]") {
-  int i = 1234;
-  char c = 'x';
+  int i {1234};
+  char c {'x'};
 
   Serial.reset();
   rpcWrite(Serial, &i);
@@ -17,7 +17,7 @@ TEST_CASE("Write basic types", "[write][basic]") {
 }
 
 TEST_CASE("Write String", "[write][string]") {
-  String s = "xyz";
+  String s {"xyz"};
 
   Serial.reset();
   rpcWrite(Serial, &s);
@@ -25,7 +25,7 @@ TEST_CASE("Write String", "[write][string]") {
 }
 
 TEST_CASE("Write C string of type char*", "[write][string]") {
-  char* s = const_cast<char*>("xyz");
+  char* s {const_cast<char*>("xyz")};
 
   Serial.reset();
   rpcWrite(Serial, &s);
@@ -33,7 +33,7 @@ TEST_CASE("Write C string of type char*", "[write][string]") {
 }
 
 TEST_CASE("Write C string of type char const*", "[write][string]") {
-  char const* s = "xyz";
+  char const* s {"xyz"};
 
   Serial.reset();
   rpcWrite(Serial, &s);
@@ -41,7 +41,7 @@ TEST_CASE("Write C string of type char const*", "[write][string]") {
 }
 
 TEST_CASE("Write tuple", "[write][tuple]") {
-  Tuple<int, char> t = pack(1234, 'x');
+  Tuple<int, char> t {pack(1234, 'x')};
 
   Serial.reset();
   rpcWrite(Serial, &t);

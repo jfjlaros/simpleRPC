@@ -32,7 +32,7 @@ void rpcDel(T const** data) {
  * \copydoc rpcDel(T*) */
 template <class T>
 void rpcDel(T*** data) {
-  for (size_t i = 0; (*data)[i]; i++) {
+  for (size_t i {0}; (*data)[i]; i++) {
     rpcDel(&(*data)[i]);
   }
 

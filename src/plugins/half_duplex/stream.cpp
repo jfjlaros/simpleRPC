@@ -34,7 +34,7 @@ size_t HalfDuplexStream::write(uint8_t b) {
 size_t HalfDuplexStream::write(uint8_t const* buffer, size_t size) {
   digitalWrite(pin_, HIGH);
 
-  int result = stream_->write(buffer, size);
+  size_t result {stream_->write(buffer, size)};
   stream_->flush();
   delayMicroseconds(delay_);
 

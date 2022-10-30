@@ -22,7 +22,7 @@ void rpcPrint(Stream& io, T data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, char* data) {
-  size_t i = 0;
+  size_t i {0};
 
   while (data[i]) {
     rpcPrint(io, data[i]);
@@ -45,8 +45,8 @@ inline void rpcPrint(Stream& io, String& data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, __FlashStringHelper const* data) {
-  char const* p = reinterpret_cast<char const*>(data);
-  uint8_t c = pgm_read_byte(p);
+  char const* p {reinterpret_cast<char const*>(data)};
+  uint8_t c {pgm_read_byte(p)};
 
   while (c) {
     rpcPrint(io, c);

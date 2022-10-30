@@ -8,7 +8,7 @@
 template <class T>
 class Vector {
 public:
-  size_t size = 0;     //!< Number of elements.
+  size_t size {0};     //!< Number of elements.
 
   Vector() {}
   Vector(size_t const);
@@ -19,8 +19,8 @@ public:
   T& operator[](size_t) const;
 
 private:
-  bool destroy_ = true; //!< Free memory when destructor is called.
-  T* data_ = nullptr;
+  bool destroy_ {true}; //!< Free memory when destructor is called.
+  T* data_ {nullptr};
 };
 
 
@@ -51,9 +51,10 @@ Vector<T>::Vector(size_t const size, T* const data, bool const destroy) {
 //! Destructor.
 template <class T>
 Vector<T>::~Vector() {
-  if (destroy_) {
-    delete[] data_;
+  if (not destroy_) {
+    return;
   }
+  delete[] data_;
 }
 
 /*!
@@ -77,12 +78,10 @@ T& Vector<T>::operator[](size_t const index) const {
  */
 template <class T>
 void Vector<T>::resize(size_t const size) {
-  T* newData = new T[size];
-
-  for (size_t i = 0; i < min(this->size, size); i++) {
+  T* newData {new T[size]};
+  for (size_t i {0}; i < min(this->size, size); i++) {
     newData[i] = data_[i];
   }
-
   delete[] data_;
   data_ = newData;
 

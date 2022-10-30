@@ -1,10 +1,9 @@
 #include <simpleRPC.h>
 
-#define TRANSMIT_PIN 9
-#define TRANSMIT_DELAY_MICROSECONDS 1000  // Increase for slow connections.
+uint8_t const txPin {9};
+unsigned long const txDelay {1000}; // Increase for slow connections.
 
-HalfDuplexStream RS485Serial(
-  Serial, TRANSMIT_PIN, TRANSMIT_DELAY_MICROSECONDS);
+HalfDuplexStream RS485Serial(Serial, txPin, txDelay);
 
 
 byte ping(byte data) {

@@ -6,7 +6,7 @@ extern Stream Serial;
 
 
 TEST_CASE("Describe function", "[describe][basic]") {
-  void (*f)(){};
+  void (*f)() {};
 
   // Empty description.
   Serial.reset();
@@ -44,7 +44,7 @@ TEST_CASE("Multiple functions", "[describe][class]") {
       void f() {}
   };
 
-  void (*f)(){};
+  void (*f)() {};
   C c;
 
   // Normal function first.

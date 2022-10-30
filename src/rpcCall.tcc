@@ -21,7 +21,7 @@ void call_(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
    * All parameters have been collected since function pointer `*f_` has no
    * parameter types. All values are now present in the `args` parameter pack.
    */
-  R data = f(args...);
+  R data {f(args...)};
 
   rpcWrite(io, &data);
 }
@@ -38,7 +38,7 @@ void call_(Stream& io, void (*)(), R (*f)(FArgs...), Args&... args) {
 template <class C, class P, class R, class... FArgs, class... Args>
 void call_(
     Stream& io, void (*)(), Tuple<C*, R (P::*)(FArgs...)> t, Args&... args) {
-  R data = (*t.head.*t.tail.head)(args...);
+  R data {(*t.head.*t.tail.head)(args...)};
 
   rpcWrite(io, &data);
 }
@@ -77,7 +77,7 @@ void call_(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
   H data;
   rpcRead(io, &data);
 
-  void (*f_)(Tail...){};
+  void (*f_)(Tail...) {};
   call_(io, f_, f, args..., data);
   rpcDel(&data);
 }
@@ -85,7 +85,7 @@ void call_(Stream& io, void (*)(H, Tail...), F f, Args&... args) {
 //! \copydoc call_(Stream&, void (*)(H, Tail...), F, Args&...)
 template <class H, class... Tail, class F, class... Args>
 void call_(Stream& io, void (*)(H&, Tail...), F f, Args&... args) {
-  void (*f_)(H, Tail...){};
+  void (*f_)(H, Tail...) {};
   call_(io, f_, f, args...);
 }
 
@@ -106,7 +106,7 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
    * parameter types. The return type of this function pointer is removed to
    * avoid unneeded template expansion.
    */
-  void (*f_)(FArgs...){};
+  void (*f_)(FArgs...) {};
   call_(io, f_, f);
 }
 
@@ -121,6 +121,6 @@ void rpcCall(Stream& io, R (*f)(FArgs...)) {
  */
 template <class C, class P ,class R, class... FArgs>
 void rpcCall(Stream& io, Tuple<C*, R (P::*)(FArgs...)> t) {
-  void (*f_)(FArgs...){};
+  void (*f_)(FArgs...) {};
   call_(io, f_, t);
 }
