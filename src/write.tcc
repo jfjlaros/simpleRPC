@@ -42,9 +42,9 @@ inline void rpcWrite(Stream& io, String* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class T>
 void rpcWrite(Stream& io, Vector<T>* data) {
-  rpcWrite(io, &(*data).size);
-
-  for (size_t i {0}; i < (*data).size; i++) {
+  size_t size {(*data).size()};
+  rpcWrite(io, &size);
+  for (size_t i {0}; i < size; i++) {
     rpcWrite(io, &(*data)[i]);
   }
 }

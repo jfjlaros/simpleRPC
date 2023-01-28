@@ -73,7 +73,7 @@ TEST_CASE("Read vector", "[read][vector]") {
   Serial.reset();
   Serial.prepare(3ul, 1234, 2345, 3456);
   rpcRead(Serial, &v);
-  REQUIRE(v.size == 3);
+  REQUIRE(v.size() == 3);
   REQUIRE(v[0] == 1234);
   REQUIRE(v[1] == 2345);
   REQUIRE(v[2] == 3456);

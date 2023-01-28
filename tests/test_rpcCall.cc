@@ -306,7 +306,7 @@ TEST_CASE("RPC call function with Object types", "[call][object]") {
 TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   struct S {
     static bool f0(Vector<int>& v) {
-      if (v.size != 2 || v[0] != 1234 || v[1] != 2345) {
+      if (v.size() != 2 || v[0] != 1234 || v[1] != 2345) {
         return false;
       }
       return true;

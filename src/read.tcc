@@ -71,7 +71,7 @@ void rpcRead(Stream& io, Vector<T>* data) {
   rpcRead(io, &size);
   (*data).resize(size);
 
-  for (size_t i {0}; i < (*data).size; i++) {
+  for (size_t i {0}; i < (*data).size(); i++) {
     rpcRead(io, &(*data)[i]);
   }
 }
