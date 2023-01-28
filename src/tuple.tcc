@@ -19,8 +19,8 @@ struct Tuple {};
  */
 template <class H, class... Tail>
 struct Tuple<H, Tail...> {
-  H head;              //!< First element.
-  Tuple<Tail...> tail; //!< Remaining elements.
+  H head {};               //!< First element.
+  Tuple<Tail...> tail {};  //!< Remaining elements.
 };
 
 
@@ -101,21 +101,6 @@ template <class... Args>
 Tuple<Args...> pack(Args... args) {
   Tuple<Args...> t;
   fill(t, args...);
-
-  return t;
-}
-
-/*! \ingroup tuplehelper
- * Cast a `struct` to a Tuple.
- *
- * \param s Struct.
- *
- * \return Tuple representation of `s`.
- */
-template <class... Membs, class T>
-Tuple<Membs...> castStruct(T& s) {  // TODO: Name is wrong now.
-  Tuple<Membs...> t;
-  memcpy(&t, &s, sizeof(T));
 
   return t;
 }

@@ -13,7 +13,7 @@ TEST_CASE("Tuple fill", "[tuple]") {
 }
 
 TEST_CASE("Tuple read by index", "[tuple]") {
-  Tuple<char, int> t;
+  Tuple<char, int> t {};
 
   t.head = 'x';
   t.tail.head = 1;
@@ -23,7 +23,7 @@ TEST_CASE("Tuple read by index", "[tuple]") {
 }
 
 TEST_CASE("Tuple write by index", "[tuple]") {
-  Tuple<char, int> t;
+  Tuple<char, int> t {};
 
   get<0>(t) = 'x';
   get<1>(t) = 1;
@@ -68,19 +68,6 @@ TEST_CASE("Object write by index", "[object]") {
 
 TEST_CASE("Pack values", "[tuple]") {
   Tuple<char, int> t {pack('x', 1)};
-
-  REQUIRE(t.head == 'x');
-  REQUIRE(t.tail.head == 1);
-}
-
-TEST_CASE("Cast struct to tuple", "[tuple]") {
-  struct S {
-    char c;
-    int i;
-  };
-
-  S s {'x', 1};
-  Tuple<char, int> t {castStruct<char, int>(s)};
 
   REQUIRE(t.head == 'x');
   REQUIRE(t.tail.head == 1);
