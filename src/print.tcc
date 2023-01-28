@@ -13,9 +13,7 @@
  */
 template <class T>
 void rpcPrint(Stream& io, T data) {
-  uint8_t data_[sizeof(T)];
-  memcpy(data_, &data, sizeof(T));
-  io.write(data_, sizeof(T));
+  io.write(reinterpret_cast<uint8_t*>(&data), sizeof(T));
 }
 
 

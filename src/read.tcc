@@ -15,9 +15,7 @@
  */
 template <class T>
 void rpcRead(Stream& io, T* data) {
-  char data_[sizeof(T)];
-  io.readBytes(data_, sizeof(T));
-  memcpy(data, data_, sizeof(T));
+  io.readBytes(reinterpret_cast<char*>(data), sizeof(T));
 }
 
 /*! \ingroup read
