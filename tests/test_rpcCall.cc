@@ -427,7 +427,7 @@ TEST_CASE("RPC call class member functions", "[call][class]") {
 
 TEST_CASE("Executing a function", "[call]") {
   struct S {
-    static short int f1(int i, char c) {
+    static int f1(short int i, char c) {
       return i + c + 1;
     }
     static String f2(Object<String, char*, char const*>& o) {
@@ -436,11 +436,11 @@ TEST_CASE("Executing a function", "[call]") {
   };
 
   Serial.reset();
-  Serial.prepare(1234, '\3');
+  Serial.prepare(static_cast<short int>(1234), '\3');
   rpcCall(Serial, S::f1);
-  REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == sizeof(short int));
-  REQUIRE(Serial.inspect<short int>() == 1238);
+  REQUIRE(Serial.rx == sizeof(short int) + sizeof(char));
+  REQUIRE(Serial.tx == sizeof(int));
+  REQUIRE(Serial.inspect<int>() == 1238);
 
   Serial.reset();
   Serial.prepare("a", "bc", "def");
