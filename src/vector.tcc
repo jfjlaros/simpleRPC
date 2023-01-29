@@ -2,68 +2,6 @@
 
 #include <Arduino.h>
 
-/*!
- * Generic Vector.
- */
-template <class T>
-class Vector {
-public:
-  Vector() {}
-
-  /*! Create a Vector with `size` elements.
-   *
-   * \param size Size of the Vector.
-   */
-  Vector(size_t const);
-
-  /*!
-   * Create a Vector with `size` elements from a C array.
-   *
-   * \param size Size of the Vector.
-   * \param data Pointer to data.
-   */
-  Vector(size_t const, T* const);
-
-  Vector(Vector const& v);
-
-  ~Vector();
-
-  Vector& operator=(Vector);
-
-
-  /*!
-   * Get a reference to an element.
-   *
-   * This can be used for both retrieval as well as assignment.
-   *
-   * \param index Index.
-   *
-   * \return Reference to element at index `index`.
-   */
-  T& operator[](size_t) const;
-
-  size_t size() const {
-    return size_;
-  }
-  /*!
-   * Resize the Vector.
-   *
-   * \param size New size of the Vector.
-   */
-  void resize(size_t);
-
-  template <class U>
-    friend void swap(Vector<U>&, Vector<U>&) noexcept;
-
-  //T* begin();
-  //T* end();
-  //T const* begin() const;
-  //T const* end() const;
-
-private:
-  size_t size_ {0};
-  T* data_ {nullptr};
-};
 
 template <class T>
 void swap_(T& a, T& b) noexcept {
@@ -72,30 +10,117 @@ void swap_(T& a, T& b) noexcept {
   b = tmp;
 }
 
-template <class U>
-void swap(Vector<U>& a, Vector<U>& b) noexcept {
-  swap_(a.size_, b.size_);
-  swap_(a.data_, b.data_);
-}
+
+/*!
+ * Generic Vector.
+ */
+template <class T>
+class Vector {
+public:
+  Vector() = default;
+  Vector(Vector const& v);
+
+  /*! Create a Vector with `size` elements.
+   *
+   * \param size Vector size.
+   */
+  Vector(size_t const);
+
+  /*!
+   * Create a Vector with `size` elements from a C array.
+   *
+   * \param data C array.
+   */
+  template <size_t n>
+    Vector(T const (&)[n]);
+
+  /*!
+   * Create a Vector with `size` elements from a block of raw memory.
+   *
+   * \param data Pointer to data, Vector takes ownership.
+   * \param size Vector size.
+   */
+  Vector(T* const, size_t const);
+
+  ~Vector();
+
+  Vector& operator=(Vector);
+  T& operator[](size_t const);
+  T const& operator [](size_t const) const;
+
+  T* begin();
+  T* end();
+  T const* begin() const;
+  T const* end() const;
+
+  /*!
+   * Get the underlying data.
+   *
+   * \return data.
+   */
+  T* data() const;
+
+  /*!
+   * Get the number of elements.
+   *
+   * \return Vector size.
+   */
+  size_t size() const;
+
+  /*!
+   * Set the number of elements.
+   *
+   * \param size Vector size.
+   */
+  void resize(size_t const);
+
+  /*! Clear the contents. */
+  void clear();
+
+  /*!
+   * Add an element to the back.
+   *
+   * \param el Element.
+   */
+  void push_back(T const&);
+
+  /*!
+   * Remove an element from the back.
+   *
+   * \return Element.
+   */
+  T pop_back();
+
+  template <class U>
+    friend void swap(Vector<U>&, Vector<U>&) noexcept;
+
+private:
+  void copy_(T const* const);
+
+  size_t size_ {0};
+  T* data_ {nullptr};
+};
 
 
 template <class T>
-Vector<T>::Vector(size_t const size) {
-  resize(size);
+Vector<T>::Vector(Vector const& other)
+    : size_ {other.size_}, data_ {new T[other.size_]} {
+  copy_(other.data_);
 }
 
 template <class T>
-Vector<T>::Vector(size_t const size, T* const data) {
-  this->size_ = size;
-  data_ = data;
-}
+Vector<T>::Vector(size_t const size)
+    : size_ {size}, data_ {new T[size]} {}
 
 template <class T>
-Vector<T>::Vector(Vector const& v) : size_ {v.size_} {
-  data_ = new T[size_];
-  for (size_t i {0}; i < size_; i++) {
-    data_[i] = v.data_[i];
-  }
+Vector<T>::Vector(T* const data, size_t const size)
+    : size_ {size}, data_ {data} {}
+
+template <class T>
+template <size_t n>
+Vector<T>::Vector(T const (&data)[n])
+    : size_ {n}, data_ {new T[n]} {
+  copy_(data);
 }
 
 template <class T>
@@ -103,26 +128,98 @@ Vector<T>::~Vector() {
   delete[] data_;
 }
 
+
 template <class T>
-Vector<T>& Vector<T>::operator=(Vector v) {
-  swap(*this, v);
+Vector<T>& Vector<T>::operator=(Vector<T> other) {
+  swap(*this, other);
   return *this;
+}
+
+template <class T>
+T& Vector<T>::operator[](size_t const idx) {
+  return data_[idx];
+}
+
+template <class T>
+T const& Vector<T>::operator[](size_t const idx) const {
+  return data_[idx];
 }
 
 
 template <class T>
-T& Vector<T>::operator[](size_t const index) const {
-  return data_[index];
+T* Vector<T>::begin() {
+  return data_;
+}
+
+template <class T>
+T* Vector<T>::end() {
+  return data_ + size_;
+}
+
+template <class T>
+T const* Vector<T>::begin() const {
+  return data_;
+}
+
+template <class T>
+T const* Vector<T>::end() const {
+  return data_ + size_;
+}
+
+
+template <class T>
+T* Vector<T>::data() const {
+  return data_;
+}
+
+template <class T>
+size_t Vector<T>::size() const {
+  return size_;
 }
 
 template <class T>
 void Vector<T>::resize(size_t const size) {
-  T* newData {new T[size]};
-  for (size_t i {0}; i < min(this->size_, size); i++) {
-    newData[i] = data_[i];
-  }
-  delete[] data_;
-  data_ = newData;
+  size_ = min(size_, size);
 
-  this->size_ = size;
+  T* data {new T[size]};
+  swap_(data_, data);
+  copy_(data);
+  delete[] data;
+
+  size_ = size;
+}
+
+template <class T>
+void Vector<T>::clear() {
+  size_ = 0;
+  delete[] data_;
+  data_ = nullptr;
+}
+
+template <class T>
+void Vector<T>::push_back(T const& el) {
+  resize(++size_);
+  data_[size_ - 1] = el;
+}
+
+template <class T>
+T Vector<T>::pop_back() {
+  T el {data_[size_ - 1]};
+  resize(--size_);
+  return el;
+}
+
+
+template <class T>
+void Vector<T>::copy_(T const* const data) {
+  for (size_t i {0}; i < size_; ++i) {
+    data_[i] = data[i];
+  }
+}
+
+
+template <class U>
+void swap(Vector<U>& a, Vector<U>& b) noexcept {
+  swap_(a.size_, b.size_);
+  swap_(a.data_, b.data_);
 }
