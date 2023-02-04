@@ -114,6 +114,16 @@ TEST_CASE("Vector", "[types][vector]") {
   REQUIRE(Serial.inspect<String>() == "[i][f][b][[i]]");
 }
 
+TEST_CASE("Array", "[types][array]") {
+  Array<int, 2> a {};
+
+  Serial.reset();
+  rpcTypeOf(Serial, a);
+  REQUIRE(Serial.inspect<char>() == '[');
+  REQUIRE(Serial.inspect<size_t>() == 2);
+  REQUIRE(Serial.inspect<String>() == "i]");
+}
+
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
   Tuple<Vector<int>, char> t0 {};
   Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1 {};

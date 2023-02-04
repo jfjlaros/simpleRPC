@@ -49,26 +49,21 @@ TEST_CASE("Write tuple", "[write][tuple]") {
   REQUIRE(Serial.inspect<char>() == 'x');
 }
 
-
-TEST_CASE("Write object", "[write][object]") {
-  Object<int, char> o;
-
-  o.head = 1234;
-  o.tail.head = 'x';
-
-  Serial.reset();
-  rpcWrite(Serial, &o);
-  REQUIRE(Serial.inspect<int>() == 1234);
-  REQUIRE(Serial.inspect<char>() == 'x');
-}
 TEST_CASE("Write vector", "[write][vector]") {
-  Vector<int> v(2);
-
-  v[0] = 1234;
-  v[1] = 2345;
+  Vector<int> v {{1234, 2345}};
 
   Serial.reset();
   rpcWrite(Serial, &v);
+  REQUIRE(Serial.inspect<size_t>() == 2);
+  REQUIRE(Serial.inspect<int>() == 1234);
+  REQUIRE(Serial.inspect<int>() == 2345);
+}
+
+TEST_CASE("Write array", "[write][array]") {
+  Array<int, 2> a {{1234, 2345}};
+
+  Serial.reset();
+  rpcWrite(Serial, &a);
   REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
   REQUIRE(Serial.inspect<int>() == 2345);

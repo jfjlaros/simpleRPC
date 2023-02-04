@@ -3,6 +3,7 @@
 #include "defs.h"
 #include "tuple.tcc"
 #include "vector.tcc"
+#include "array.tcc"
 
 //! \defgroup read
 
@@ -67,10 +68,9 @@ inline void rpcRead(Stream& io, String* data) {
 template <class T>
 void rpcRead(Stream& io, Vector<T>* data) {
   size_t size;
-
   rpcRead(io, &size);
-  (*data).resize(size);
 
+  (*data).resize(size);
   for (size_t i {0}; i < (*data).size(); i++) {
     rpcRead(io, &(*data)[i]);
   }
@@ -81,12 +81,23 @@ void rpcRead(Stream& io, Vector<T>* data) {
 template <class T>
 void rpcRead(Stream& io, T** data) {
   size_t size;
-
   rpcRead(io, &size);
-  *data = new T[size];
 
+  *data = new T[size];
   for (size_t i {0}; i < size; i++) {
     rpcRead(io, *data + i);
+  }
+}
+
+/*! \ingroup read
+ * \copydoc rpcRead(Stream&, T*) */
+template <class T, size_t n>
+void rpcRead(Stream& io, Array<T, n>* data) {
+  size_t size;
+  rpcRead(io, &size);
+
+  for (size_t i {0}; i < min(size, n); i++) {
+    rpcRead(io, &(*data)[i]);
   }
 }
 

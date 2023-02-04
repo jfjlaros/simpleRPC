@@ -3,12 +3,13 @@
 #include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
+#include "array.tcc"
 
 //! \defgroup write
 
 
 /*! \ingroup write
- * Write a value to an stream.
+ * Write a value to a stream.
  *
  * \param io Stream.
  * \param data Data.
@@ -42,6 +43,17 @@ inline void rpcWrite(Stream& io, String* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class T>
 void rpcWrite(Stream& io, Vector<T>* data) {
+  size_t size {(*data).size()};
+  rpcWrite(io, &size);
+  for (size_t i {0}; i < size; i++) {
+    rpcWrite(io, &(*data)[i]);
+  }
+}
+
+/*! \ingroup write
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T, size_t n>
+void rpcWrite(Stream& io, Array<T, n>* data) {
   size_t size {(*data).size()};
   rpcWrite(io, &size);
   for (size_t i {0}; i < size; i++) {

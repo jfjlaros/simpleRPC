@@ -3,6 +3,7 @@
 #include "print.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
+#include "array.tcc"
 
 //! \defgroup types
 
@@ -165,9 +166,20 @@ void rpcTypeOf(Stream& io, Object<Membs...>& o) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, Vector<T>&) {
-  T x {};
-
   rpcPrint(io, '[');
+  T x {};
+  rpcTypeOf(io, x);
+  rpcPrint(io, ']');
+}
+
+/*! \ingroup types
+ * \copydoc rpcTypeOf(Stream&, bool) */
+template <class T, size_t n>
+void rpcTypeOf(Stream& io, Array<T, n>&) {
+  rpcPrint(io, '[');
+  size_t n_ {n};
+  rpcPrint(io, n_);
+  T x {};
   rpcTypeOf(io, x);
   rpcPrint(io, ']');
 }
@@ -176,12 +188,13 @@ void rpcTypeOf(Stream& io, Vector<T>&) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, T*) {
-  T x {};
-
   rpcPrint(io, '[');
+  T x {};
   rpcTypeOf(io, x);
   rpcPrint(io, ']');
 }
+
+// TODO: References to arrays can be returned, e.g., int (&test())[10] {}
 
 
 /*! \ingroup types

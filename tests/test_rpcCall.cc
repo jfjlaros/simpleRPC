@@ -355,7 +355,23 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   REQUIRE(Serial.tx == sizeof(int));
 }
 
-TEST_CASE("RPC call function with C vector types", "[call][vector]") {
+TEST_CASE("RPC call function with Array types", "[call][array]") {
+  struct S {
+    static Array<int, 2> f() {
+      return {{1234, 2345}};
+    }
+  };
+
+  Serial.reset();
+  rpcCall(Serial, S::f);
+  REQUIRE(Serial.inspect<size_t>() == 2);
+  REQUIRE(Serial.inspect<int>() == 1234);
+  REQUIRE(Serial.inspect<int>() == 2345);
+  REQUIRE(Serial.rx == 0);
+  REQUIRE(Serial.tx == sizeof(size_t) + 2 * sizeof(int));
+}
+
+TEST_CASE("RPC call function with C array types", "[call][array]") {
   struct S {
     static void f0(int*) {}
     static void f1(int**) {}

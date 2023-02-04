@@ -29,7 +29,7 @@ public:
   /*!
    * Create a Vector with `size` elements from a C array.
    *
-   * \param data C array.
+   * \param arr C array.
    */
   template <size_t n>
     Vector(T const (&)[n]);
@@ -37,7 +37,7 @@ public:
   /*!
    * Create a Vector with `size` elements from a block of raw memory.
    *
-   * \param data Pointer to data, Vector takes ownership.
+   * \param ptr Pointer to data, Vector takes ownership.
    * \param size Vector size.
    */
   Vector(T* const, size_t const);
@@ -113,14 +113,14 @@ Vector<T>::Vector(size_t const size)
     : size_ {size}, data_ {new T[size]} {}
 
 template <class T>
-Vector<T>::Vector(T* const data, size_t const size)
-    : size_ {size}, data_ {data} {}
+Vector<T>::Vector(T* const ptr, size_t const size)
+    : size_ {size}, data_ {ptr} {}
 
 template <class T>
 template <size_t n>
-Vector<T>::Vector(T const (&data)[n])
+Vector<T>::Vector(T const (&arr)[n])
     : size_ {n}, data_ {new T[n]} {
-  copy_(data);
+  copy_(arr);
 }
 
 template <class T>
