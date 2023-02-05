@@ -42,8 +42,8 @@ inline void describe_(Stream& io) {
  * \param doc Function documentation.
  * \param args Remaining parameters.
  */
-template <class F, class D, class... Args>
-void describe_(Stream& io, F f, D doc, Args... args) {
+template <class F, class D, class... Ts>
+void describe_(Stream& io, F f, D doc, Ts... args) {
   /*
    * The first two parameters `f` and `doc` are isolated and passed to
    * `writeDescription_()`. Then a recursive call to process the remaining
@@ -53,9 +53,9 @@ void describe_(Stream& io, F f, D doc, Args... args) {
   describe_(io, args...);
 }
 
-//! \copydoc describe_(Stream&, F, D, Args...)
-template <class U, class V, class D, class... Args>
-void describe_(Stream& io, Tuple<U, V> t, D doc, Args... args) {
+//! \copydoc describe_(Stream&, F, D, Ts...)
+template <class U, class V, class D, class... Ts>
+void describe_(Stream& io, Tuple<U, V> t, D doc, Ts... args) {
   writeDescription_(io, t.tail.head, doc);
   describe_(io, args...);
 }
@@ -74,8 +74,8 @@ inline void select_(Stream&, uint8_t, uint8_t) {}
  * \param - Function documentation.
  * \param args Remaining parameters.
  */
-template <class F, class D, class... Args>
-void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
+template <class F, class D, class... Ts>
+void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -100,8 +100,8 @@ void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
  * \param io Stream.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class... Args>
-void interface(Stream& io, Args... args) {
+template <class... Ts>
+void interface(Stream& io, Ts... args) {
   /*
    * One byte is read into `command`, if the value equals `LIST_REQ_`, the list
    * of functions is described. Otherwise, the function indexed by `command` is
@@ -123,8 +123,8 @@ void interface(Stream& io, Args... args) {
 }
 
 //! Recursion terminator for `interface()`.
-template <class... Args>
-void interface(Tuple<>, Args...) {}
+template <class... Ts>
+void interface(Tuple<>, Ts...) {}
 
 /*! \ingroup interface
  * Multiple RPC interfaces.
@@ -132,13 +132,13 @@ void interface(Tuple<>, Args...) {}
  * Similar to the standard interface , but with support for multiple I/O
  * interfaces, passed as Tuple `t`.
  *
- * \sa interface(Stream&, Args...)
+ * \sa interface(Stream&, Ts...)
  *
  * \param t Tuple of input / output objects.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class... Ts, class... Args>
-void interface(Tuple<Ts...> t, Args... args) {
+template <class... Ts, class... Us>
+void interface(Tuple<Ts...> t, Us... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }

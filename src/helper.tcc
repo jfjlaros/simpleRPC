@@ -10,5 +10,5 @@ struct enableIf {};
 
 template <class T>
 struct enableIf<true, T> {
-  typedef T type;
+  using type = T;
 };

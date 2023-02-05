@@ -1,7 +1,7 @@
 EXEC := run_tests
 MAIN := test_lib
-TESTS := test_tuple test_vector test_print test_read test_write test_types \
-  test_signature test_interface test_rpcCall
+TESTS := test_tuple test_vector test_array test_print test_read test_write \
+  test_types test_signature test_interface test_rpcCall
 FIXTURES := arduino-serial-fixture/src/Arduino
 
 

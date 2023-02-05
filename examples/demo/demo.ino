@@ -17,12 +17,12 @@ int inc(int a) {
   return a + 1;
 }
 
-Tuple<char, Tuple<int, char> > tuple(Tuple<char, Tuple<int, char> >& o) {
+Tuple<char, Tuple<int, char> > tuple(Tuple<char, Tuple<int, char> >& t) {
   Tuple<char, Tuple<int, char> > r;
 
-  get<0>(r) = get<0>(o) + 1;
-  get<0>(get<1>(r)) = get<0>(get<1>(o)) + 1;
-  get<1>(get<1>(r)) = get<1>(get<1>(o)) + 1;
+  get<0>(r) = get<0>(t) + 1;
+  get<0>(get<1>(r)) = get<0>(get<1>(t)) + 1;
+  get<1>(get<1>(r)) = get<1>(get<1>(t)) + 1;
 
   return r;
 }
@@ -30,7 +30,7 @@ Tuple<char, Tuple<int, char> > tuple(Tuple<char, Tuple<int, char> >& o) {
 Vector<float> vector(Vector<int>& v) {
   Vector<float> r(v.size());
 
-  for (size_t i {0}; i < v.size(); i++) {
+  for (size_t i {0}; i < v.size(); ++i) {
     r[i] = float(v[i]) + 0.4;
   }
 

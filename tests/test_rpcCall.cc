@@ -286,11 +286,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
       return true;
     }
     static Vector<int> f1() {
-      Vector<int> v(2);
-
-      v[0] = 1234;
-      v[1] = 2345;
-
+      Vector<int> v {{1234, 2345}};
       return v;
     }
     static void f2(Tuple<Vector<int>, char>&) {}

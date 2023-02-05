@@ -20,11 +20,8 @@ void rpcPrint(Stream& io, T data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, char* data) {
-  size_t i {0};
-
-  while (data[i]) {
+  for (size_t i {0}; data[i]; ++i) {
     rpcPrint(io, data[i]);
-    i++;
   }
 }
 
@@ -44,12 +41,8 @@ inline void rpcPrint(Stream& io, String& data) {
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, __FlashStringHelper const* data) {
   char const* p {reinterpret_cast<char const*>(data)};
-  uint8_t c {pgm_read_byte(p)};
-
-  while (c) {
+  for (uint8_t c {pgm_read_byte(p)}; c; c = pgm_read_byte(++p)) {
     rpcPrint(io, c);
-    p++;
-    c = pgm_read_byte(p);
   }
 }
 
@@ -61,8 +54,8 @@ inline void rpcPrint(Stream& io, __FlashStringHelper const* data) {
  * \param data Value to be printed.
  * \param args Remaining values.
  */
-template <class H, class... Tail>
-void rpcPrint(Stream& io, H data, Tail... args) {
+template <class T, class... Ts>
+void rpcPrint(Stream& io, T data, Ts... args) {
   rpcPrint(io, data);
   rpcPrint(io, args...);
 }

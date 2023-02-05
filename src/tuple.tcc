@@ -15,7 +15,7 @@ template <class...>
 class Tuple {};
 
 /*! \ingroup tuple
- * Non-empty Tuple.
+ * Tuple.
  */
 template <class T, class... Ts>
 class Tuple<T, Ts...> {
@@ -43,13 +43,13 @@ struct ElemTypeHolder_;
 //! \copydoc ElemTypeHolder_
 template <class T, class... Ts>
 struct ElemTypeHolder_<0, Tuple<T, Ts...> > {
-  typedef T type;
+  using type = T;
 };
 
 //! \copydoc ElemTypeHolder_
 template <size_t k, class T, class... Ts>
 struct ElemTypeHolder_<k, Tuple<T, Ts...> > {
-  typedef typename ElemTypeHolder_<k - 1, Tuple<Ts...> >::type type;
+  using type = typename ElemTypeHolder_<k - 1, Tuple<Ts...> >::type;
 };
 
 
@@ -88,8 +88,8 @@ typename enableIf<
  *
  * \return Tuple containing `args`.
  */
-template <class... Args>
-Tuple<Args...> makeTuple(Args... args) {
-  Tuple<Args...> t {args...};
+template <class... Ts>
+Tuple<Ts...> makeTuple(Ts... args) {
+  Tuple<Ts...> t {args...};
   return t;
 }
