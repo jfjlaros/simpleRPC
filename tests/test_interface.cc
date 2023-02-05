@@ -29,12 +29,12 @@ TEST_CASE("Describe class member function", "[describe][class]") {
 
   // Empty description.
   Serial.reset();
-  describe_(Serial, pack(&c, &C::f), "");
+  describe_(Serial, makeTuple(&c, &C::f), "");
   REQUIRE(Serial.inspect<String>() == ":;");
 
   // Non-empty description.
   Serial.reset();
-  describe_(Serial, pack(&c, &C::f), "Function description.");
+  describe_(Serial, makeTuple(&c, &C::f), "Function description.");
   REQUIRE(Serial.inspect<String>() == ":;Function description.");
 }
 
@@ -49,13 +49,13 @@ TEST_CASE("Multiple functions", "[describe][class]") {
 
   // Normal function first.
   Serial.reset();
-  describe_(Serial, f, "f", pack(&c, &C::f), "C::f");
+  describe_(Serial, f, "f", makeTuple(&c, &C::f), "C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
 
   // Class member function first.
   Serial.reset();
-  describe_(Serial, pack(&c, &C::f), "C::f", f, "f");
+  describe_(Serial, makeTuple(&c, &C::f), "C::f", f, "f");
   REQUIRE(Serial.inspect<String>() == ":;C::f");
   REQUIRE(Serial.inspect<String>() == ":;f");
 }
@@ -135,7 +135,7 @@ TEST_CASE("RPC call function x", "[call][basic]") {
   Serial.reset();
   Serial.prepare('\0');
   Serial.prepare('\0');
-  interface(pack(&Serial, &Serial), S::f, "");
+  interface(makeTuple(&Serial, &Serial), S::f, "");
   REQUIRE(Serial.inspect<short int>() == 2);
   REQUIRE(Serial.inspect<short int>() == 2);
   REQUIRE(Serial.rx == 2 * (sizeof(byte) + sizeof(int)));

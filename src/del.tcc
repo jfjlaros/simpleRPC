@@ -52,16 +52,8 @@ inline void rpcDel(Tuple<>*) {}
 
 /*! \ingroup del
  * \copydoc rpcDel(T*) */
-template <class... Membs>
-void rpcDel(Tuple<Membs...>* data) {
+template <class... Ts>
+void rpcDel(Tuple<Ts...>* data) {
   rpcDel(&(*data).head);
   rpcDel(&(*data).tail);
-}
-
-
-/*! \ingroup del
- * \copydoc rpcDel(T*) */
-template <class... Membs>
-void rpcDel(Object<Membs...>* data) {
-  rpcDel(dynamic_cast<Tuple<Membs...>*>(data));
 }

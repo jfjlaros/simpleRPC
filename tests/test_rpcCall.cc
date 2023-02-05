@@ -248,7 +248,7 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   struct S {
     static void f0(Tuple<int, char>) {}
     static Tuple<int, char> f1() {
-      Tuple<int, char> t {pack(1234, 'x')};
+      Tuple<int, char> t {1234, 'x'};
 
       return t;
     }
@@ -277,32 +277,6 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   REQUIRE(Serial.tx == 0);
 }
 
-TEST_CASE("RPC call function with Object types", "[call][object]") {
-  struct S {
-    static void f0(Object<int, char>&) {}
-    static Object<int, char> f1() {
-      Object<int, char> o {1234, 'x'};
-
-      return o;
-    }
-  };
-
-  // Void function, parameter is of type Object.
-  Serial.reset();
-  Serial.prepare(1234, 'x');
-  rpcCall(Serial, S::f0);
-  REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == 0);
-
-  // Function with return type Object.
-  Serial.reset();
-  rpcCall(Serial, S::f1);
-  REQUIRE(Serial.inspect<int>() == 1234);
-  REQUIRE(Serial.inspect<char>() == 'x');
-  REQUIRE(Serial.rx == 0);
-  REQUIRE(Serial.tx == sizeof(int) + sizeof(char));
-}
-
 TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   struct S {
     static bool f0(Vector<int>& v) {
@@ -319,7 +293,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
 
       return v;
     }
-    static void f2(Object<Vector<int>, char>&) {}
+    static void f2(Tuple<Vector<int>, char>&) {}
     static int f3(Vector<signed char>&, int) {
       return 1;
     }
@@ -429,13 +403,13 @@ TEST_CASE("RPC call class member functions", "[call][class]") {
 
   // Void function.
   Serial.reset();
-  rpcCall(Serial, pack(&c, &C::f0));
+  rpcCall(Serial, makeTuple(&c, &C::f0));
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == 0);
 
   // Non-void function.
   Serial.reset();
-  rpcCall(Serial, pack(&c, &C::f1));
+  rpcCall(Serial, makeTuple(&c, &C::f1));
   REQUIRE(Serial.inspect<short int>() == 1);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
   REQUIRE(Serial.tx == sizeof(short int));
@@ -446,7 +420,7 @@ TEST_CASE("Executing a function", "[call]") {
     static int f1(short int i, char c) {
       return i + c + 1;
     }
-    static String f2(Object<String, char*, char const*>& o) {
+    static String f2(Tuple<String, char*, char const*>& o) {
       return get<0>(o) + get<1>(o) + get<2>(o);
     }
   };

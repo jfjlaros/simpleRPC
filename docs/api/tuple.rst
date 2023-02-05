@@ -1,5 +1,5 @@
-Tuples and Objects
-==================
+Tuples
+======
 
 .. code-block:: cpp
 
@@ -19,7 +19,7 @@ Initialisation of a Tuple can be done with a brace-initializer-list as follows.
 
 .. code-block:: cpp
 
-    Tuple<int, char> t = {10, 'c'};
+    Tuple<int, char> t {10, 'c'};
 
 Element retrieval and assignment is described below in the :ref:`Helper
 functions` section.
@@ -34,39 +34,11 @@ Class definitions
    :content-only:
 
 
-Objects
--------
-
-An Object is functionally equivalent to a Tuple, except that its internal
-structure is preserved after serialisation. More on serialisation of Objects
-can be found in the :ref:`method_discovery` section.
-
-Initialisation of an Object can be done with a brace-initializer-list as
-follows.
-
-.. code-block:: cpp
-
-    Object<int, char> o(10, 'c');
-
-Element retrieval and assignment is described below in the :ref:`Helper
-functions` section.
-
-Note that an Object, like any higher order data structure, should be passed by
-reference.
-
-Class definitions
-~~~~~~~~~~~~~~~~~
-
-.. doxygengroup:: object
-   :content-only:
-
-
 Helper functions
 ----------------
 
-Elements of a Tuple or Object can be retrieved in two ways, either via the
-``head`` and ``tail`` member variables, or using with the ``get<>()`` helper
-function.
+Elements of a Tuple can be retrieved in two ways, either via the ``head`` and
+``tail`` member variables, or using with the ``get<>()`` helper function.
 
 .. code-block:: cpp
 
@@ -89,12 +61,12 @@ the ``get<>()`` helper function.
 
 There are additional helper functions available for the creation of Tuples.
 
-The function ``pack()`` can be used to create a temporary Tuple to be used in a
+The function ``makeTuple()`` can be used to create a temporary Tuple to be used in a
 function call.
 
 .. code-block:: cpp
 
-    function(pack('a', 'b', 10));
+    function(makeTuple('a', 'b', 10));
 
 
 Functions

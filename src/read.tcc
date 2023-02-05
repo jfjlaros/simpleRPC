@@ -129,16 +129,8 @@ inline void rpcRead(Stream&, Tuple<>*) {}
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-template <class... Membs>
-void rpcRead(Stream& io, Tuple<Membs...>* data) {
+template <class... Ts>
+void rpcRead(Stream& io, Tuple<Ts...>* data) {
   rpcRead(io, &(*data).head);
   rpcRead(io, &(*data).tail);
-}
-
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-template <class... Membs>
-void rpcRead(Stream& io, Object<Membs...>* data) {
-  rpcRead(io, dynamic_cast<Tuple<Membs...>*>(data));
 }

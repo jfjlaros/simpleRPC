@@ -67,16 +67,8 @@ inline void rpcWrite(Stream&, Tuple<>*) {}
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
-template <class... Membs>
-void rpcWrite(Stream& io, Tuple<Membs...>* data) {
+template <class... Ts>
+void rpcWrite(Stream& io, Tuple<Ts...>* data) {
   rpcWrite(io, &(*data).head);
   rpcWrite(io, &(*data).tail);
-}
-
-
-/*! \ingroup write
- * \copydoc rpcWrite(Stream&, T*) */
-template <class... Membs>
-void rpcWrite(Stream& io, Object<Membs...>* data) {
-  rpcWrite(io, dynamic_cast<Tuple<Membs...>*>(data));
 }

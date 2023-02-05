@@ -57,16 +57,6 @@ TEST_CASE("Read tuple", "[read][tuple]") {
   REQUIRE(t.tail.head == 'x');
 }
 
-TEST_CASE("Read object", "[read][object]") {
-  Object<int, char> o;
-
-  Serial.reset();
-  Serial.prepare(1234, 'x');
-  rpcRead(Serial, &o);
-  REQUIRE(o.head == 1234);
-  REQUIRE(o.tail.head == 'x');
-}
-
 TEST_CASE("Read vector", "[read][vector]") {
   Vector<int> v;
 
@@ -102,17 +92,6 @@ TEST_CASE("Read complex tuple", "[read][tuple][complex]") {
   REQUIRE(t.tail.head == 'x');
 }
 
-TEST_CASE("Read complex object", "[read][object][complex]") {
-  Object<Vector<int>, char> o;
-
-  Serial.reset();
-  Serial.prepare(2ul, 1234, 2345, 'x');
-  rpcRead(Serial, &o);
-  REQUIRE(o.head[0] == 1234);
-  REQUIRE(o.head[1] == 2345);
-  REQUIRE(o.tail.head == 'x');
-}
-
 TEST_CASE("Read nested vector", "[read][vector][complex]") {
   Vector<Vector<int>> v;
 
@@ -126,7 +105,7 @@ TEST_CASE("Read nested vector", "[read][vector][complex]") {
 }
 
 TEST_CASE("Read complex vector", "[read][vector][complex]") {
-  Vector<Object<int, Object<char>>> v;
+  Vector<Tuple<int, Tuple<char>>> v;
 
   Serial.reset();
   Serial.prepare(2ul, 1234, 'x', 2345, 'y');

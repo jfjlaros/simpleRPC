@@ -137,8 +137,8 @@ void interface(Tuple<>, Args...) {}
  * \param t Tuple of input / output objects.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class... Membs, class... Args>
-void interface(Tuple<Membs...> t, Args... args) {
+template <class... Ts, class... Args>
+void interface(Tuple<Ts...> t, Args... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }

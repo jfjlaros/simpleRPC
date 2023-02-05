@@ -80,19 +80,19 @@ TEST_CASE("Tuple types", "[types][tuple]") {
   Serial.reset();
   rpcTypeOf(Serial, ic);
   rpcTypeOf(Serial, iscul);
-  REQUIRE(Serial.inspect<String>() == "icibL");
+  REQUIRE(Serial.inspect<String>() == "(ic)(ibL)");
 }
 
-TEST_CASE("Object types", "[types][object]") {
-  Object<Object<char, int>, unsigned long> o0 {};
-  Object<
-    Object<
-      Object<char, char, char>,
+TEST_CASE("Complex Tuple types", "[types][object]") {
+  Tuple<Tuple<char, int>, unsigned long> o0 {};
+  Tuple<
+    Tuple<
+      Tuple<char, char, char>,
       char>,
     char,
-    Object<
-      Object<char, char>,
-      Object<char>>> o1 {};
+    Tuple<
+      Tuple<char, char>,
+      Tuple<char>>> o1 {};
 
   Serial.reset();
   rpcTypeOf(Serial, o0);
@@ -127,33 +127,33 @@ TEST_CASE("Array", "[types][array]") {
 TEST_CASE("Complex tuple types", "[types][tuple][complex]") {
   Tuple<Vector<int>, char> t0 {};
   Tuple<Tuple<int, char>, Tuple<unsigned char, float>> t1 {};
-  Tuple<Object<int, char>, Vector<int>> t2 {};
+  Tuple<Tuple<int, char>, Vector<int>> t2 {};
 
   Serial.reset();
   rpcTypeOf(Serial, t0);
   rpcTypeOf(Serial, t1);
   rpcTypeOf(Serial, t2);
-  REQUIRE(Serial.inspect<String>() == "[i]cicBf(ic)[i]");
+  REQUIRE(Serial.inspect<String>() == "([i]c)((ic)(Bf))((ic)[i])");
 }
 
 TEST_CASE("Complex object types", "[types][object][complex]") {
-  Object<Vector<Object<int, char>>, Object<float>> o0 {};
-  Object<Tuple<int, char>, Object<char>> o1 {};
+  Tuple<Vector<Tuple<int, char>>, Tuple<float>> o0 {};
+  Tuple<Tuple<int, char>, Tuple<char>> o1 {};
 
   Serial.reset();
   rpcTypeOf(Serial, o0);
   rpcTypeOf(Serial, o1);
-  REQUIRE(Serial.inspect<String>() == "([(ic)](f))(ic(c))");
+  REQUIRE(Serial.inspect<String>() == "([(ic)](f))((ic)(c))");
 }
 
 TEST_CASE("Complex vector types", "[types][vector][complex]") {
   Vector<Tuple<int, char>> v0 {};
-  Vector<Object<int, Vector<char>>> v1 {};
-  Vector<Tuple<char, Object<int, char>>> v2 {};
+  Vector<Tuple<int, Vector<char>>> v1 {};
+  Vector<Tuple<char, Tuple<int, char>>> v2 {};
 
   Serial.reset();
   rpcTypeOf(Serial, v0);
   rpcTypeOf(Serial, v1);
   rpcTypeOf(Serial, v2);
-  REQUIRE(Serial.inspect<String>() == "[ic][(i[c])][c(ic)]");
+  REQUIRE(Serial.inspect<String>() == "[(ic)][(i[c])][(c(ic))]");
 }
