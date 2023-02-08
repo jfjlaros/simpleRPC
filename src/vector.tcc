@@ -85,6 +85,13 @@ public:
   void push_back(T const&);
 
   /*!
+   * Add an element to the back.
+   *
+   * \param el Element.
+   */
+  void push_back(T const&&);
+
+  /*!
    * Remove an element from the back.
    *
    * \return Element.
@@ -95,7 +102,7 @@ public:
     friend void swap(Vector<U>&, Vector<U>&) noexcept;
 
 private:
-  void copy_(T const* const);
+  void copy_(T const* const, size_t const size);
 
   size_t size_ {0};
   T* data_ {nullptr};
@@ -105,7 +112,7 @@ private:
 template <class T>
 Vector<T>::Vector(Vector const& other)
     : size_ {other.size_}, data_ {new T[other.size_]} {
-  copy_(other.data_);
+  copy_(other.data_, other.size_);
 }
 
 template <class T>
@@ -120,7 +127,7 @@ template <class T>
 template <size_t n>
 Vector<T>::Vector(T const (&arr)[n])
     : size_ {n}, data_ {new T[n]} {
-  copy_(arr);
+  copy_(arr, n);
 }
 
 template <class T>
@@ -179,11 +186,9 @@ size_t Vector<T>::size() const {
 
 template <class T>
 void Vector<T>::resize(size_t const size) {
-  size_ = min(size_, size);
-
   T* data {new T[size]};
   swap_(data_, data);
-  copy_(data);
+  copy_(data, min(size_, size));
   delete[] data;
 
   size_ = size;
@@ -198,21 +203,27 @@ void Vector<T>::clear() {
 
 template <class T>
 void Vector<T>::push_back(T const& el) {
-  resize(++size_);
+  resize(size_ + 1);
+  data_[size_ - 1] = el;
+}
+
+template <class T>
+void Vector<T>::push_back(T const&& el) {
+  resize(size_ + 1);
   data_[size_ - 1] = el;
 }
 
 template <class T>
 T Vector<T>::pop_back() {
   T el {data_[size_ - 1]};
-  resize(--size_);
+  resize(size_ - 1);
   return el;
 }
 
 
 template <class T>
-void Vector<T>::copy_(T const* const data) {
-  for (size_t i {0}; i < size_; ++i) {
+void Vector<T>::copy_(T const* const data, size_t const size) {
+  for (size_t i {0}; i < size; ++i) {
     data_[i] = data[i];
   }
 }

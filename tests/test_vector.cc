@@ -150,10 +150,32 @@ TEST_CASE("Vector push element.", "[vector]") {
   REQUIRE(v.size() == 0);
   REQUIRE(not v.data());
 
+  int el {1};
+  v.push_back(el);
+  REQUIRE(v.size() == 1);
+  REQUIRE(v.data());
+  REQUIRE(v[0] == 1);
+
+  el = 2;
+  v.push_back(el);
+  REQUIRE(v.size() == 2);
+  REQUIRE(v[1] == 2);
+}
+
+TEST_CASE("Vector push moveable element.", "[vector]") {
+  Vector<int> v {};
+
+  REQUIRE(v.size() == 0);
+  REQUIRE(not v.data());
+
   v.push_back(1);
   REQUIRE(v.size() == 1);
   REQUIRE(v.data());
   REQUIRE(v[0] == 1);
+
+  v.push_back(2);
+  REQUIRE(v.size() == 2);
+  REQUIRE(v[1] == 2);
 }
 
 TEST_CASE("Vector pop element.", "[vector]") {
@@ -164,6 +186,10 @@ TEST_CASE("Vector pop element.", "[vector]") {
   int el {v.pop_back()};
   REQUIRE(v.size() == 1);
   REQUIRE(el == 2);
+
+  el = v.pop_back();
+  REQUIRE(v.size() == 0);
+  REQUIRE(el == 1);
 }
 
 
