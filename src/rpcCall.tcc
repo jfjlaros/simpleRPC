@@ -9,6 +9,10 @@
 /*!
  * Execute a plain function.
  *
+ * \tparam T Function pointer return type.
+ * \tparam Ts... Function pointer parameter types.
+ * \tparam Us... Function argument types.
+ *
  * \param io Stream.
  * \param - Dummy function pointer.
  * \param f Function pointer.
@@ -18,7 +22,8 @@ template <class T, class... Ts, class... Us>
 void call_(Stream& io, void (*)(), T (*f)(Ts...), Us&... args) {
   /*
    * All parameters have been collected since function pointer `*f_` has no
-   * parameter types. All values are now present in the `args` parameter pack.
+   * parameter types. All values are now present in the `args` parameter
+   * pack.
    */
   T data {f(args...)};
   rpcWrite(io, &data);
@@ -26,6 +31,11 @@ void call_(Stream& io, void (*)(), T (*f)(Ts...), Us&... args) {
 
 /*! TODO: const member functions.
  * Execute a class method.
+ *
+ * \tparam C Class instance type.
+ * \tparam P Class instance parent type.
+ * \tparam T Class member function pointer return type.
+ * \tparam Ts... Class member function pointer parameter types.
  *
  * \param io Stream.
  * \param - Dummy function pointer.
@@ -57,6 +67,11 @@ void call_(
 /*!
  * Collect parameters of a function.
  *
+ * \tparam T Function pointer return type.
+ * \tparam Ts... Function pointer parameter types.
+ * \tparam F Function pointer type.
+ * \tparam Us... Function argument types.
+ *
  * \param io Stream.
  * \param - Dummy function pointer.
  * \param f Function pointer.
@@ -66,10 +81,10 @@ template <class T, class... Ts, class F, class... Us>
 void call_(Stream& io, void (*)(T, Ts...), F f, Us&... args) {
   /* 
    * The first parameter type `T` is isolated from the function pointer. This
-   * type is used to instantiate the variable `data`, which is used to receive
-   * `sizeof(T)` bytes. This value is passed recursively to `call_()` function,
-   * adding it to the `args` parameter pack. The first parameter type `T` is
-   * removed from the function pointer in the recursive call.
+   * type is used to instantiate the variable `data`, which is used to
+   * receive `sizeof(T)` bytes. This value is passed recursively to `call_()`
+   * function, adding it to the `args` parameter pack. The first parameter
+   * type `T` is removed from the function pointer in the recursive call.
    */ 
   T data;
   rpcRead(io, &data);
@@ -107,8 +122,11 @@ void call_(Stream& io, void (*)(T*, Ts...), F f, Us&... args) {
 /*! \ingroup call
  * Call a function.
  *
- * Parameter values for `f` are read from `io`, after which `f` is called. Any
- * return value is written back to `io`.
+ * Parameter values for `f` are read from `io`, after which `f` is called.
+ * Any return value is written back to `io`.
+ *
+ * \tparam T Function pointer return type.
+ * \tparam Ts... Function pointer parameter types.
  *
  * \param io Stream.
  * \param f Function pointer.
@@ -128,6 +146,11 @@ void rpcCall(Stream& io, T (*f)(Ts...)) {
  * Call a class method.
  *
  * \sa rpcCall(Stream&, T (*)(Ts...))
+ *
+ * \tparam C Class instance type.
+ * \tparam P Class instance parent type.
+ * \tparam T Class member function pointer return type.
+ * \tparam Ts... Class member function pointer parameter types.
  *
  * \param io Stream.
  * \param t Tuple consisting of a pointer to a class instance and a pointer

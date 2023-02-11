@@ -11,6 +11,9 @@ inline void parameterTypes_(Stream&, void (*)()) {}
 /*!
  * Get the types of all function parameters.
  *
+ * \tparam T First function pointer parameter type.
+ * \tparam Ts... Remaining function pointer parameters types.
+ *
  * \param io Stream.
  * \param - Dummy function pointer.
  *
@@ -19,10 +22,10 @@ inline void parameterTypes_(Stream&, void (*)()) {}
 template <class T, class... Ts>
 void parameterTypes_(Stream& io, void (*)(T, Ts...)) {
   /*
-   * The first parameter type `T` is isolated from function pointer. This type
-   * is used to instantiate the variable `data`, which is passed to
-   * `rpcTypeOf()` to encode its type. The first parameter type `T` is removed
-   * from the function pointer in the recursive call.
+   * The first parameter type `T` is isolated from function pointer. This
+   * type is used to instantiate the variable `data`, which is passed to
+   * `rpcTypeOf()` to encode its type. The first parameter type `T` is
+   * removed from the function pointer in the recursive call.
    */
   T data {};
   rpcWrite(io, ' ');
@@ -42,6 +45,9 @@ void parameterTypes_(Stream& io, void (*)(T&, Ts...)) {
 
 /*! \ingroup signature
  * Get the signature of a function.
+ *
+ * \tparam T Function pointer return type.
+ * \tparam Ts... Function pointer parameter types.
  *
  * \param io Stream.
  * \param - Function pointer.

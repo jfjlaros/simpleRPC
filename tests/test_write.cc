@@ -39,10 +39,11 @@ TEST_CASE("Write String", "[write][string]") {
 }
 
 TEST_CASE("Write C string of type char*", "[write][string]") {
-  char* s {const_cast<char*>("xyz")};
+  char s[] {'x', 'y', 'z', 0};
+  char* p {s};
 
   Serial.reset();
-  rpcWrite(Serial, &s);
+  rpcWrite(Serial, &p);
   REQUIRE(Serial.inspect<size_t>() == 4);
   REQUIRE(Serial.inspect<String>() == "xyz");
 }

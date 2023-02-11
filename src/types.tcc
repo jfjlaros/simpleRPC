@@ -187,8 +187,6 @@ void rpcTypeOf(Stream& io, T*) {
   rpcWrite(io, ']');
 }
 
-// TODO: References to arrays can be returned, e.g., int (&test())[10] {}
-
 
 /*! \ingroup types
  * Determine endianness and type of `size_t`.

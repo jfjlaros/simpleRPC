@@ -1,5 +1,11 @@
 #pragma once
 
+/*!
+ * Generic array.
+ *
+ * \tparam T Element type.
+ * \tparam n Array size.
+ */
 template <class T, size_t n>
 class Array {
 public:
@@ -8,10 +14,12 @@ public:
   /*!
    * Create an array using an initialiser list.
    *
+   * \tparam Ts... Data types.
+   *
    * \param data... Data.
    */
   template <class... Ts>
-    Array(Ts...);
+  Array(Ts...);
 
   /*!
    * Create an Array using a C array.

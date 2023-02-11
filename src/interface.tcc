@@ -12,11 +12,18 @@
 #include "rpcCall.tcc"
 #include "signature.tcc"
 
+char const PROTOCOL_[] {"simpleRPC"};
+uint8_t const VERSION_[] {4, 0, 0};
+uint8_t const LIST_REQ_ {0xff};
+
 //! \defgroup interface
 
 
 /*!
  * Write the signature and documentation of a function.
+ *
+ * \tparam F Function pointer type.
+ * \tparam D Documentation type.
  *
  * \param io Stream.
  * \param f Function pointer.
@@ -37,6 +44,10 @@ inline void describe_(Stream& io) {
 
 /*!
  * Describe a list of functions.
+ *
+ * \tparam F Function pointer type.
+ * \tparam D Documentation type.
+ * \tparam Ts... Remaining parameters types.
  *
  * \param io Stream.
  * \param f Function pointer.
@@ -68,6 +79,10 @@ inline void select_(Stream&, uint8_t, uint8_t) {}
 /*!
  * Select and call a function indexed by `number`.
  *
+ * \tparam F Function pointer type.
+ * \tparam D Documentation type.
+ * \tparam Ts... Remaining parameters types.
+ *
  * \param io Stream.
  * \param number Function index.
  * \param depth Current index.
@@ -98,15 +113,17 @@ void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
  * documentation). The documentation string can be of type `char const*`, or
  * the PROGMEM `F()` macro can be used to reduce memory footprint.
  *
+ * \tparam Ts... Parameter pairs types.
+ *
  * \param io Stream.
  * \param args Parameter pairs (function pointer, documentation).
  */
 template <class... Ts>
 void interface(Stream& io, Ts... args) {
   /*
-   * One byte is read into `command`, if the value equals `LIST_REQ_`, the list
-   * of functions is described. Otherwise, the function indexed by `command` is
-   * called.
+   * One byte is read into `command`, if the value equals `LIST_REQ_`, the
+   * list of functions is described. Otherwise, the function indexed by
+   * `command` is called.
    */
   if (io.available()) {
     uint8_t command;
@@ -138,7 +155,7 @@ void interface(Tuple<>, Ts...) {}
  *
  * \sa interface(Stream&, Ts...)
  *
- * \param t Tuple of input / output objects.
+ * \param t Tuple of streams.
  * \param args Parameter pairs (function pointer, documentation).
  */
 template <class... Ts, class... Us>

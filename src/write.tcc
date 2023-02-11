@@ -10,6 +10,8 @@
 /*! \ingroup write
  * Write a value to a stream.
  *
+ * \tparam Data type.
+ *
  * \param io Stream.
  * \param data Data.
  */
@@ -74,10 +76,9 @@ inline void rpcWrite(Stream& io, String* data) {
  * \copydoc rpcWrite(Stream&, T) */
 template <class T>
 void rpcWrite(Stream& io, Vector<T>* data) {
-  size_t size {(*data).size()};
-  rpcWrite(io, &size);
-  for (size_t i {0}; i < size; ++i) {
-    rpcWrite(io, &(*data)[i]);
+  rpcWrite(io, (*data).size());
+  for (T& el: *data) {
+    rpcWrite(io, &el);
   }
 }
 
@@ -87,8 +88,8 @@ template <class T, size_t n>
 void rpcWrite(Stream& io, Array<T, n>* data) {
   size_t size {(*data).size()};
   rpcWrite(io, &size);
-  for (size_t i {0}; i < size; ++i) {
-    rpcWrite(io, &(*data)[i]);
+  for (T& el: *data) {
+    rpcWrite(io, &el);
   }
 }
 

@@ -12,7 +12,9 @@ void swap_(T& a, T& b) noexcept {
 
 
 /*!
- * Generic Vector.
+ * Generic vector.
+ *
+ * \tparam T Element type.
  */
 template <class T>
 class Vector {
@@ -29,10 +31,12 @@ public:
   /*!
    * Create a Vector with `size` elements from a C array.
    *
+   * \tparam n Array size.
+   *
    * \param arr C array.
    */
   template <size_t n>
-    Vector(T const (&)[n]);
+  Vector(T const (&)[n]);
 
   ~Vector();
 
@@ -91,7 +95,7 @@ public:
   T pop_back();
 
   template <class U>
-    friend void swap(Vector<U>&, Vector<U>&) noexcept;
+  friend void swap(Vector<U>&, Vector<U>&) noexcept;
 
 private:
   void copy_(T const* const, size_t const size);

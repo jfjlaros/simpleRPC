@@ -1,6 +1,5 @@
 #pragma once
 
-#include "defs.h"
 #include "helper.tcc"
 
 //! \defgroup tuple
@@ -16,6 +15,9 @@ class Tuple {};
 
 /*! \ingroup tuple
  * Tuple.
+ *
+ * \tparam T First element type.
+ * \tparam Ts... Remaining elements types.
  */
 template <class T, class... Ts>
 class Tuple<T, Ts...> {
@@ -58,6 +60,9 @@ struct ElemTypeHolder_<k, Tuple<T, Ts...> > {
  *
  * This can be used for both retrieval as well as assignment.
  *
+ * \tparam k Element index.
+ * \tparam Ts... Elements types.
+ *
  * \param t A Tuple.
  *
  * \return Reference to the *k*-th element in `t`.
@@ -65,7 +70,7 @@ struct ElemTypeHolder_<k, Tuple<T, Ts...> > {
 template <size_t k, class... Ts>
 //! \cond
 typename enableIf<
-    k == 0, typename ElemTypeHolder_<0, Tuple<Ts...> >::type&>::type
+    not k, typename ElemTypeHolder_<0, Tuple<Ts...> >::type&>::type
 //! \endcond
     get(Tuple<Ts...>& t) {
   return t.head;
@@ -74,7 +79,7 @@ typename enableIf<
 template <size_t k, class... Ts>
 //! \cond
 typename enableIf<
-    k != 0, typename ElemTypeHolder_<k, Tuple<Ts...> >::type&>::type
+    k, typename ElemTypeHolder_<k, Tuple<Ts...> >::type&>::type
 //! \endcond
     get(Tuple<Ts...>& t) {
   return get<k - 1>(t.tail);
@@ -83,6 +88,8 @@ typename enableIf<
 
 /*! \ingroup tuplehelper
  * Make a Tuple from a parameter pack.
+ *
+ * \tparam Ts... Elements types.
  *
  * \param args Values to store in a Tuple.
  *

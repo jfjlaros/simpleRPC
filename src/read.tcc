@@ -1,6 +1,5 @@
 #pragma once
 
-#include "defs.h"
 #include "tuple.tcc"
 #include "vector.tcc"
 #include "array.tcc"
@@ -10,6 +9,8 @@
 
 /*! \ingroup read
  * Read a value from a stream.
+ *
+ * \tparam T Data type.
  *
  * \param io Stream.
  * \param data Data.
@@ -25,8 +26,8 @@ void rpcRead(Stream& io, T* data) {
 inline void rpcRead(Stream& io, String* data) {
   size_t size;
   rpcRead(io, &size);
-  (*data).reserve(size);
 
+  (*data).reserve(size);
   for (size_t i {0}; i < size; ++i) {
     char c {};
     rpcRead(io, &c);
@@ -42,8 +43,8 @@ void rpcRead(Stream& io, Vector<T>* data) {
   rpcRead(io, &size);
 
   (*data).resize(size);
-  for (size_t i {0}; i < (*data).size(); ++i) {
-    rpcRead(io, &(*data)[i]);
+  for (T& el: *data) {
+    rpcRead(io, &el);
   }
 }
 
@@ -54,8 +55,8 @@ void rpcRead(Stream& io, Array<T, n>* data) {
   size_t size;
   rpcRead(io, &size);
 
-  for (size_t i {0}; i < min(size, n); ++i) {
-    rpcRead(io, &(*data)[i]);
+  for (T& el: *data) {
+    rpcRead(io, &el);
   }
 }
 

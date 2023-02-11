@@ -172,7 +172,8 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
     static void f0(char*, int) {}
     static void f1(int, char*) {}
     static char* f2() {
-      return const_cast<char*>("xyz");
+      static char arr[] {'x', 'y', 'z', '\0'};
+      return arr;
     }
     static char const* f3() {
       return "xyz";
@@ -322,7 +323,8 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   REQUIRE(Serial.tx == 0);
 
   Serial.reset();
-  Serial.prepare(2ul, (signed char)12, (signed char)23, 10);
+  Serial.prepare(
+    2ul, static_cast<signed char>(12), static_cast<signed char>(23), 10);
   rpcCall(Serial, S::f3);
   REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(signed char) + sizeof(int));
   REQUIRE(Serial.tx == sizeof(int));
