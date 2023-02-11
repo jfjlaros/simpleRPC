@@ -19,7 +19,7 @@ void rpcPrint(Stream& io, T data) {
 
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
-inline void rpcPrint(Stream& io, char* data) {
+inline void rpcPrint(Stream& io, char const* data) {
   for (size_t i {0}; data[i]; ++i) {
     rpcPrint(io, data[i]);
   }
@@ -27,8 +27,8 @@ inline void rpcPrint(Stream& io, char* data) {
 
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
-inline void rpcPrint(Stream& io, char const* data) {
-  rpcPrint(io, const_cast<char*>(data));
+inline void rpcPrint(Stream& io, char* data) {
+  rpcPrint(io, const_cast<char const*>(data));
 }
 
 /*! \ingroup print

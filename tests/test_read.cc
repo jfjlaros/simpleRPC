@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "../src/del.tcc"
 #include "../src/read.tcc"
 
 extern Stream Serial;
@@ -19,32 +18,12 @@ TEST_CASE("Read basic types", "[read][basic]") {
 }
 
 TEST_CASE("Read String", "[read][string]") {
+  Serial.reset();
+  Serial.prepare(4ul, "xyz");
+
   String s;
-
-  Serial.reset();
-  Serial.prepare("xyz");
   rpcRead(Serial, &s);
-  REQUIRE(s == "xyz");
-}
-
-TEST_CASE("Read string of type char*", "[read][string]") {
-  char* s;
-
-  Serial.reset();
-  Serial.prepare("xyz");
-  rpcRead(Serial, &s);
-  REQUIRE(not strcmp(s, "xyz"));
-  rpcDel(&s);
-}
-
-TEST_CASE("Read string of type char const*", "[read][string]") {
-  char const* s;
-
-  Serial.reset();
-  Serial.prepare("xyz");
-  rpcRead(Serial, &s);
-  REQUIRE(not strcmp(s, "xyz"));
-  rpcDel(&s);
+  REQUIRE(not strcmp(s.c_str(), "xyz"));
 }
 
 TEST_CASE("Read tuple", "[read][tuple]") {

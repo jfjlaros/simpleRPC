@@ -1,6 +1,5 @@
 #pragma once
 
-#include "del.tcc"
 #include "read.tcc"
 #include "write.tcc"
 
@@ -25,7 +24,7 @@ void call_(Stream& io, void (*)(), T (*f)(Ts...), Us&... args) {
   rpcWrite(io, &data);
 }
 
-/*!
+/*! TODO: const member functions.
  * Execute a class method.
  *
  * \param io Stream.
@@ -77,13 +76,30 @@ void call_(Stream& io, void (*)(T, Ts...), F f, Us&... args) {
 
   void (*f_)(Ts...) {};
   call_(io, f_, f, args..., data);
-  rpcDel(&data);
 }
 
 //! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
 template <class T, class... Ts, class F, class... Us>
 void call_(Stream& io, void (*)(T&, Ts...), F f, Us&... args) {
   void (*f_)(T, Ts...) {};
+  call_(io, f_, f, args...);
+}
+
+//! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
+template <class T, class... Ts, class F, class... Us>
+void call_(Stream& io, void (*)(T const*, Ts...), F f, Us&... args) {
+  Vector<T> data;
+  rpcRead(io, &data);
+
+  void (*f_)(Ts...) {};
+  T* data_ {data.data()};
+  call_(io, f_, f, args..., data_);
+}
+
+//! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
+template <class T, class... Ts, class F, class... Us>
+void call_(Stream& io, void (*)(T*, Ts...), F f, Us&... args) {
+  void (*f_)(T const*, Ts...) {};
   call_(io, f_, f, args...);
 }
 

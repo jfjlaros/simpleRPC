@@ -9,7 +9,7 @@
 
 
 /*! \ingroup read
- * Read a value from an stream.
+ * Read a value from a stream.
  *
  * \param io Stream.
  * \param data Data.
@@ -19,49 +19,20 @@ void rpcRead(Stream& io, T* data) {
   io.readBytes(reinterpret_cast<char*>(data), sizeof(T));
 }
 
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-template <class T>
-inline void rpcRead(Stream& io, T const* data) {  // TODO write analogue?
-  rpcRead(io, const_cast<T*>(data));
-}
-
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-inline void rpcRead(Stream& io, char** data) {
-  *data = new char[1];
-  rpcRead(io, *data);
-
-  for (size_t size {1}; (*data)[size - 1]; ++size) {
-    char* data_ {new char[size + 1]};
-    memcpy(data_, *data, size);
-    delete[] *data;
-    *data = data_;
-
-    rpcRead(io, *data + size);
-  }
-}
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-inline void rpcRead(Stream& io, char const** data) {
-  rpcRead(io, const_cast<char**>(data));
-}
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, String* data) {
-  char character;
+  size_t size;
+  rpcRead(io, &size);
+  (*data).reserve(size);
 
-  rpcRead(io, &character);
-
-  while (character) {
-    *data += character;
-    rpcRead(io, &character);
+  for (size_t i {0}; i < size; ++i) {
+    char c {};
+    rpcRead(io, &c);
+    (*data) += c;
   }
 }
-
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
@@ -78,19 +49,6 @@ void rpcRead(Stream& io, Vector<T>* data) {
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-template <class T>
-void rpcRead(Stream& io, T** data) {
-  size_t size;
-  rpcRead(io, &size);
-
-  *data = new T[size];
-  for (size_t i {0}; i < size; ++i) {
-    rpcRead(io, *data + i);
-  }
-}
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
 template <class T, size_t n>
 void rpcRead(Stream& io, Array<T, n>* data) {
   size_t size;
@@ -99,28 +57,6 @@ void rpcRead(Stream& io, Array<T, n>* data) {
   for (size_t i {0}; i < min(size, n); ++i) {
     rpcRead(io, &(*data)[i]);
   }
-}
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-template <class T>
-void rpcRead(Stream& io, T const** data) {
-  rpcRead(io, const_cast<T**>(data));
-}
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-template <class T>
-void rpcRead(Stream& io, T*** data) {
-  size_t size;
-
-  rpcRead(io, &size);
-  *data = new T*[size + 1];
-
-  for (size_t i {0}; i < size; ++i) {
-    rpcRead(io, *data + i);
-  }
-  (*data)[size] = nullptr;
 }
 
 

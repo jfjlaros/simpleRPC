@@ -22,20 +22,23 @@ void rpcWrite(Stream& io, T* data) {
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
-inline void rpcWrite(Stream& io, char** data) {
+inline void rpcWrite(Stream& io, char const** data) {
+  size_t size {strlen(*data) + 1};
+  rpcWrite(io, &size);
   rpcPrint(io, *data, '\0');
 }
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
-inline void rpcWrite(Stream& io, char const** data) {
-  rpcWrite(io, const_cast<char**>(data));
+inline void rpcWrite(Stream& io, char** data) {
+  rpcWrite(io, const_cast<char const**>(data));
 }
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
 inline void rpcWrite(Stream& io, String* data) {
-  rpcPrint(io, *data, '\0');
+  char const* data_ {(*data).c_str()};
+  rpcWrite(io, &data_);
 }
 
 
