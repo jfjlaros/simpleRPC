@@ -5,6 +5,19 @@
 extern Stream Serial;
 
 
+TEST_CASE("Write immediate", "[write][immediate]") {
+  Serial.reset();
+  rpcWrite(Serial, 1234ul);
+  REQUIRE(Serial.inspect<size_t>() == 1234);
+}
+
+TEST_CASE("Write immediate C string", "[write][immediate]") {
+  Serial.reset();
+  rpcWrite(Serial, "abc");
+  REQUIRE(Serial.inspect<String>() == "abc");
+}
+
+
 TEST_CASE("Write basic types", "[write][basic]") {
   int i {1234};
   char c {'x'};

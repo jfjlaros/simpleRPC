@@ -25,13 +25,14 @@
 template <class F, class D>
 void writeDescription_(Stream& io, F f, D doc) {
   signature(io, f);
-  rpcPrint(io, ';', doc, '\0');
+  rpcWrite(io, ';');
+  rpcWrite(io, doc);
 }
 
 
 //! Recursion terminator for `describe_()`.
 inline void describe_(Stream& io) {
-  rpcPrint(io, '\0');
+  rpcWrite(io, '\0');
 }
 
 /*!
@@ -113,7 +114,10 @@ void interface(Stream& io, Ts... args) {
     rpcRead(io, &command);
 
     if (command == LIST_REQ_) {
-      rpcPrint(io, PROTOCOL_, '\0', VERSION_[0], VERSION_[1], VERSION_[2]);
+      rpcWrite(io, PROTOCOL_);
+      rpcWrite(io, VERSION_[0]);
+      rpcWrite(io, VERSION_[1]);
+      rpcWrite(io, VERSION_[2]);
       hardwareDefs(io);
       describe_(io, args...);
       return;

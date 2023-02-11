@@ -1,9 +1,9 @@
 #pragma once
 
-#include "print.tcc"
+#include "array.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
-#include "array.tcc"
+#include "write.tcc"
 
 //! \defgroup types
 
@@ -15,85 +15,85 @@
  * \param - Value.
  */
 inline void rpcTypeOf(Stream& io, bool) {
-  rpcPrint(io, '?');
+  rpcWrite(io, '?');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char) {
-  rpcPrint(io, 'c');
+  rpcWrite(io, 'c');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, signed char) {
-  rpcPrint(io, 'b');
+  rpcWrite(io, 'b');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned char) {
-  rpcPrint(io, 'B');
+  rpcWrite(io, 'B');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, short int) {
-  rpcPrint(io, 'h');
+  rpcWrite(io, 'h');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned short int) {
-  rpcPrint(io, 'H');
+  rpcWrite(io, 'H');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, long int) {
-  rpcPrint(io, 'l');
+  rpcWrite(io, 'l');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned long int) {
-  rpcPrint(io, 'L');
+  rpcWrite(io, 'L');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, long long int) {
-  rpcPrint(io, 'q');
+  rpcWrite(io, 'q');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned long long int) {
-  rpcPrint(io, 'Q');
+  rpcWrite(io, 'Q');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, float) {
-  rpcPrint(io, 'f');
+  rpcWrite(io, 'f');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, String&) {
-  rpcPrint(io, 's');
+  rpcWrite(io, 's');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char*) {
-  rpcPrint(io, 's');
+  rpcWrite(io, 's');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, char const*) {
-  rpcPrint(io, 's');
+  rpcWrite(io, 's');
 }
 
 /*
@@ -105,30 +105,30 @@ inline void rpcTypeOf(Stream& io, char const*) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, int) {
   if (sizeof(int) == 2) {
-    rpcPrint(io, 'h');
+    rpcWrite(io, 'h');
     return;
   }
-  rpcPrint(io, 'i');
+  rpcWrite(io, 'i');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, unsigned int) {
   if (sizeof(unsigned int) == 2) {
-    rpcPrint(io, 'H');
+    rpcWrite(io, 'H');
     return;
   }
-  rpcPrint(io, 'I');
+  rpcWrite(io, 'I');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, double) {
   if (sizeof(double) == 4) {
-    rpcPrint(io, 'f');
+    rpcWrite(io, 'f');
     return;
   }
-  rpcPrint(io, 'd');
+  rpcWrite(io, 'd');
 }
 
 
@@ -149,9 +149,9 @@ void rpcTypeOf_(Stream& io, Tuple<Ts...>& t) {
 
 template <class... Ts>
 void rpcTypeOf(Stream& io, Tuple<Ts...>& t) {
-  rpcPrint(io, '(');
+  rpcWrite(io, '(');
   rpcTypeOf_(io, t);
-  rpcPrint(io, ')');
+  rpcWrite(io, ')');
 }
 
 
@@ -159,32 +159,32 @@ void rpcTypeOf(Stream& io, Tuple<Ts...>& t) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, Vector<T>&) {
-  rpcPrint(io, '[');
+  rpcWrite(io, '[');
   T x {};
   rpcTypeOf(io, x);
-  rpcPrint(io, ']');
+  rpcWrite(io, ']');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T, size_t n>
 void rpcTypeOf(Stream& io, Array<T, n>&) {
-  rpcPrint(io, '[');
+  rpcWrite(io, '[');
   size_t n_ {n};
-  rpcPrint(io, n_);
+  rpcWrite(io, n_);
   T x {};
   rpcTypeOf(io, x);
-  rpcPrint(io, ']');
+  rpcWrite(io, ']');
 }
 
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, T*) {
-  rpcPrint(io, '[');
+  rpcWrite(io, '[');
   T x {};
   rpcTypeOf(io, x);
-  rpcPrint(io, ']');
+  rpcWrite(io, ']');
 }
 
 // TODO: References to arrays can be returned, e.g., int (&test())[10] {}
@@ -199,12 +199,12 @@ inline void hardwareDefs(Stream& io) {
   size_t i {0xff};
 
   if (reinterpret_cast<uint8_t*>(&i)[0] == 0xff) {
-    rpcPrint(io, '<');
+    rpcWrite(io, '<');
   }
   else {
-    rpcPrint(io, '>');
+    rpcWrite(io, '>');
   }
 
   rpcTypeOf(io, i);
-  rpcPrint(io, '\0');
+  rpcWrite(io, '\0');
 }

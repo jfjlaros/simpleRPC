@@ -25,7 +25,7 @@ void parameterTypes_(Stream& io, void (*)(T, Ts...)) {
    * from the function pointer in the recursive call.
    */
   T data {};
-  rpcPrint(io, ' ');
+  rpcWrite(io, ' ');
   rpcTypeOf(io, data);
 
   void (*f_)(Ts...) {};
@@ -57,7 +57,7 @@ void signature(Stream& io, T (*)(Ts...)) {
    */
   T data {};
   rpcTypeOf(io, data);
-  rpcPrint(io, ':');
+  rpcWrite(io, ':');
 
   void (*f_)(Ts...) {};
   parameterTypes_(io, f_);
@@ -75,7 +75,7 @@ void signature(Stream& io, T (C::*)(Ts...)) {
  * \copydoc signature(Stream&, T (*)(Ts...)) */
 template <class... Ts>
 void signature(Stream& io, void (*f)(Ts...)) {
-  rpcPrint(io, ':');
+  rpcWrite(io, ':');
   parameterTypes_(io, f);
 }
 
