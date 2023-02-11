@@ -43,18 +43,6 @@ TEST_CASE("Vector initialisation, initialiser list parameter.", "[vector]") {
   REQUIRE(v[1] == 2);
 }
 
-TEST_CASE("Vector initialisation, pointer parameter.", "[vector]") {
-  int* data {new int[3]};
-  data[0] = 1;
-  data[1] = 2;
-  data[2] = 3;
-  Vector<int> v(data, 3);
-
-  REQUIRE(v.size() == 3);
-  REQUIRE(v.data());
-  REQUIRE(v[1] == 2);
-}
-
 
 TEST_CASE("Vector copy assign.", "[vector]") {
   Vector<int> v {{1234, 2345}};
@@ -105,10 +93,12 @@ TEST_CASE("Vector range loop.", "[vector]") {
 
 
 TEST_CASE("Vector data.", "[vector]") {
-  int* data {new int[3]};
-  Vector<int> v(data, 3);
+  int data[] {1, 2, 3};
+  Vector<int> v(data);
 
-  REQUIRE(v.data() == data);
+  for (size_t i {0}; i < 3; ++i) {
+    REQUIRE(v.data()[i] == data[i]);
+  }
 }
 
 TEST_CASE("Vector size.", "[vector]") {

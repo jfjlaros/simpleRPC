@@ -34,14 +34,6 @@ public:
   template <size_t n>
     Vector(T const (&)[n]);
 
-  /*!
-   * Create a Vector with `size` elements from a block of raw memory.
-   *
-   * \param ptr Pointer to data, Vector takes ownership.
-   * \param size Vector size.
-   */
-  Vector(T* const, size_t const);
-
   ~Vector();
 
   Vector& operator=(Vector);
@@ -118,10 +110,6 @@ Vector<T>::Vector(Vector const& other)
 template <class T>
 Vector<T>::Vector(size_t const size)
     : size_ {size}, data_ {new T[size]} {}
-
-template <class T>
-Vector<T>::Vector(T* const ptr, size_t const size)
-    : size_ {size}, data_ {ptr} {}
 
 template <class T>
 template <size_t n>
