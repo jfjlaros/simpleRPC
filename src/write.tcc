@@ -54,10 +54,9 @@ void rpcWrite(Stream& io, Vector<T>* data) {
  * \copydoc rpcWrite(Stream&, T*) */
 template <class T, size_t n>
 void rpcWrite(Stream& io, Array<T, n>* data) {
-  size_t size {(*data).size()};
+  size_t size {n};
   rpcWrite(io, &size);
-  size_t totalSize = size * sizeof(T);
-  io.write(reinterpret_cast<uint8_t*>(&(*data)[0]), totalSize);
+  io.write(&((*data)[0]), size * sizeof(T));
 }
 
 
