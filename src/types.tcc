@@ -170,8 +170,6 @@ void rpcTypeOf(Stream& io, Vector<T>&) {
 template <class T, size_t n>
 void rpcTypeOf(Stream& io, Array<T, n>&) {
   rpcPrint(io, '[');
-  size_t n_ {n};
-  rpcPrint(io, n_);
   T x {};
   rpcTypeOf(io, x);
   rpcPrint(io, ']');
