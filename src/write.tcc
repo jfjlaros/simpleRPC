@@ -56,9 +56,8 @@ template <class T, size_t n>
 void rpcWrite(Stream& io, Array<T, n>* data) {
   size_t size {(*data).size()};
   rpcWrite(io, &size);
-  for (size_t i {0}; i < size; ++i) {
-    rpcWrite(io, &(*data)[i]);
-  }
+  size_t totalSize = size * sizeof(T);
+  io.write(reinterpret_cast<uint8_t*>(&(*data)[0]), totalSize);
 }
 
 
