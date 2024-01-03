@@ -38,7 +38,7 @@ inline void rpcPrint(Stream& io, char const* data) {
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, String& data) {
-  rpcPrint(io, data.c_str(), data.length() + 1);
+  rpcPrint(io, data.c_str());
 }
 
 /*! \ingroup print
