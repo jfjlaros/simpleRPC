@@ -25,6 +25,10 @@ inline void rpcPrint(Stream& io, char* data) {
   }
 }
 
+inline void rpcPrint(Stream& io, const char* data, int len) {
+  io.write(data, len);
+}
+
 /*! \ingroup print
  * \copydoc rpcPrint(Stream&, T) */
 inline void rpcPrint(Stream& io, char const* data) {
