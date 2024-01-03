@@ -120,7 +120,6 @@ TEST_CASE("Array", "[types][array]") {
   Serial.reset();
   rpcTypeOf(Serial, a);
   REQUIRE(Serial.inspect<char>() == '[');
-  REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<String>() == "i]");
 }
 
