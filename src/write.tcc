@@ -1,12 +1,11 @@
 #pragma once
 
-#include "print.tcc"
+#include "rpcPrint.tcc"
 #include "tuple.tcc"
 #include "vector.tcc"
 #include "array.tcc"
 
 //! \defgroup write
-
 
 /*! \ingroup write
  * Write a value to a stream.
@@ -18,7 +17,6 @@ template <class T>
 void rpcWrite(Stream& io, T* data) {
   io.write(reinterpret_cast<uint8_t*>(data), sizeof(T));
 }
-
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */
@@ -38,6 +36,19 @@ inline void rpcWrite(Stream& io, String* data) {
   rpcPrint(io, *data, '\0');
 }
 
+/*! \ingroup write
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T, size_t S>
+void rpcWrite(Stream& io, RollingBuffer<T, S>* data)
+{
+  size_t size = data->begin_read();
+  rpcWrite(io, &size);
+  for (size_t i = 0; i < size; i++)
+  {
+    rpcWrite(io, (T*)data->pop());
+  }
+  data->end_read();
+}
 
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T*) */

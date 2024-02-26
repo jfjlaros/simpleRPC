@@ -1,191 +1,140 @@
 #pragma once
 
-#include "print.tcc"
+#include "rpcPrint.tcc"
+#include "atomic_types.tcc"
 #include "tuple.tcc"
-#include "vector.tcc"
 #include "array.tcc"
+#include "rolling_buffer.tcc"
+#include "PString.h"
+#include "TString.tcc"
 
 //! \defgroup types
 
-
-/*! \ingroup types
- * Type encoding.
- *
- * \param io Stream.
- * \param - Value.
- */
-inline void rpcTypeOf(Stream& io, bool) {
-  rpcPrint(io, '?');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, char) {
-  rpcPrint(io, 'c');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, signed char) {
-  rpcPrint(io, 'b');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, unsigned char) {
-  rpcPrint(io, 'B');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, short int) {
-  rpcPrint(io, 'h');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, unsigned short int) {
-  rpcPrint(io, 'H');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, long int) {
-  rpcPrint(io, 'l');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, unsigned long int) {
-  rpcPrint(io, 'L');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, long long int) {
-  rpcPrint(io, 'q');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, unsigned long long int) {
-  rpcPrint(io, 'Q');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, float) {
-  rpcPrint(io, 'f');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, String&) {
-  rpcPrint(io, 's');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, char*) {
-  rpcPrint(io, 's');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, char const*) {
-  rpcPrint(io, 's');
-}
-
-/*
- * The `int` and `double` type sizes vary between boards, see:
- * https://www.arduino.cc/reference/en/language/variables/data-types/
- */
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, int) {
-  if (sizeof(int) == 2) {
-    rpcPrint(io, 'h');
-    return;
+template<class T>
+struct RPCType
+{
+  static void print(Stream& io)
+  {
+    rpcPrint(io, RpcAtomicType<T>::getType());
   }
-  rpcPrint(io, 'i');
-}
+};
 
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, unsigned int) {
-  if (sizeof(unsigned int) == 2) {
-    rpcPrint(io, 'H');
-    return;
+template<class T, size_t S>
+struct RPCType<RollingBuffer<T,S>>
+{
+  static void print(Stream& io)
+  {
+    if(RpcAtomicTypeHelper<T>::isAtomicType()){
+      rpcPrint(io, "{");
+      RPCType<T>::print(io);
+      rpcPrint(io, "}");
+    } else {
+      rpcPrint(io, "[");
+      RPCType<T>::print(io);
+      rpcPrint(io, "]");
+    }
   }
-  rpcPrint(io, 'I');
-}
+};
 
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-inline void rpcTypeOf(Stream& io, double) {
-  if (sizeof(double) == 4) {
-    rpcPrint(io, 'f');
-    return;
+template<class T, size_t S>
+struct RPCType<RollingBuffer<T,S>&>
+{
+  static void print(Stream& io)
+  {
+    if(RpcAtomicTypeHelper<T>::isAtomicType()){
+      rpcPrint(io, "{");
+      RPCType<T>::print(io);
+      rpcPrint(io, "}");
+    } else {
+      rpcPrint(io, "[");
+      RPCType<T>::print(io);
+      rpcPrint(io, "]");
+    }
   }
-  rpcPrint(io, 'd');
-}
+};
+
+template<class T, size_t S>
+struct RPCType<Array<T,S>>
+{
+  static void print(Stream& io)
+  {
+    if(RpcAtomicTypeHelper<T>::isAtomicType()){
+      rpcPrint(io, "{");
+      RPCType<T>::print(io);
+      rpcPrint(io, "}");
+    } else {
+      rpcPrint(io, "[");
+      RPCType<T>::print(io);
+      rpcPrint(io, "]");
+    }
+  }
+};
+
+template<class T>
+struct RPCType<Vector<T>>
+{
+  static void print(Stream& io)
+  {
+    if(RpcAtomicTypeHelper<T>::isAtomicType()){
+      rpcPrint(io, "{");
+      RPCType<T>::print(io);
+      rpcPrint(io, "}");
+    } else {
+      rpcPrint(io, "[");
+      RPCType<T>::print(io);
+      rpcPrint(io, "]");
+    }
+  }
+};
+
+template<class T>
+struct RPCType<T*>
+{
+  static void print(Stream& io)
+  {
+    if(RpcAtomicTypeHelper<T>::isAtomicType()){
+      rpcPrint(io, "{");
+      RPCType<T>::print(io);
+      rpcPrint(io, "}");
+    } else {
+      rpcPrint(io, "[");
+      RPCType<T>::print(io);
+      rpcPrint(io, "]");
+    }
+  }
+};
+
+template<class H>
+struct RPCType<_Tuple<H>>
+{
+  static void print(Stream& io)
+  {
+    RPCType<H>::print(io);
+  }
+};
+
+template<class H, class... Membs>
+struct RPCType<_Tuple<H, Membs...>>
+{
+  static void print(Stream& io)
+  {
+    RPCType<H>::print(io);
+    RPCType<_Tuple<Membs...>>::print(io);
+  }
+};
+
+template<class... Membs>
+struct RPCType<Tuple<Membs...>>
+{
+  static void print(Stream& io)
+  {
+    rpcPrint(io, '(');
+    RPCType<_Tuple<Membs...>>::print(io);
+    rpcPrint(io, ')');
+  }
+};
 
 
-//! Recursion terminator for `rpcTypeOf_(Tuple&)`.
-inline void rpcTypeOf_(Stream&, Tuple<>&) {}
-
-/*! \ingroup types
- * Get the types of all members of a Tuple.
- *
- * \param io Stream.
- * \param t Tuple.
- */
-template <class... Ts>
-void rpcTypeOf_(Stream& io, Tuple<Ts...>& t) {
-  rpcTypeOf(io, t.head);
-  rpcTypeOf_(io, t.tail);
-}
-
-template <class... Ts>
-void rpcTypeOf(Stream& io, Tuple<Ts...>& t) {
-  rpcPrint(io, '(');
-  rpcTypeOf_(io, t);
-  rpcPrint(io, ')');
-}
-
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-template <class T>
-void rpcTypeOf(Stream& io, Vector<T>&) {
-  rpcPrint(io, '[');
-  T x {};
-  rpcTypeOf(io, x);
-  rpcPrint(io, ']');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-template <class T, size_t n>
-void rpcTypeOf(Stream& io, Array<T, n>&) {
-  rpcPrint(io, '[');
-  size_t n_ {n};
-  rpcPrint(io, n_);
-  T x {};
-  rpcTypeOf(io, x);
-  rpcPrint(io, ']');
-}
-
-/*! \ingroup types
- * \copydoc rpcTypeOf(Stream&, bool) */
-template <class T>
-void rpcTypeOf(Stream& io, T*) {
-  rpcPrint(io, '[');
-  T x {};
-  rpcTypeOf(io, x);
-  rpcPrint(io, ']');
-}
 
 // TODO: References to arrays can be returned, e.g., int (&test())[10] {}
 

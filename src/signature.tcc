@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.tcc"
+#include "helper.tcc"
 
 //! \defgroup signature
 
@@ -85,4 +86,28 @@ template <class C, class... Ts>
 void signature(Stream& io, void (C::*)(Ts...)) {
   void (*f_)(Ts...) {};
   signature(io, f_);
+}
+
+template <class R, size_t S, class... FArgs>
+void signature(Stream& io, const RollingBuffer<R, S>& (*f)(FArgs...))
+{
+  static_assert(always_false<R>::value, "Don't use const qualifier for RollingBuffer<T,S> as return type. use RollingBuffer<T,S>& fun(...)");
+}
+
+template <class R, size_t S, class... FArgs>
+void signature(Stream& io, RollingBuffer<R, S>* (*f)(FArgs...))
+{
+  static_assert(always_false<R>::value, "Return RollingBuffer<T,S> only as a reference type: RollingBuffer<T,S>& fun(...)");
+}
+
+template <class R, size_t S, class... FArgs>
+void signature(Stream& io, const RollingBuffer<R, S>* (*f)(FArgs...))
+{
+  static_assert(always_false<R>::value, "Return RollingBuffer<T,S> only as a reference type: RollingBuffer<T,S>& fun(...)");
+}
+
+template <class R, size_t S, class... FArgs>
+void signature(Stream& io, RollingBuffer<R, S> (*f)(FArgs...))
+{
+  static_assert(always_false<R>::value, "Return RollingBuffer<T,S> only as a reference type: RollingBuffer<T,S>& fun(...)");
 }
