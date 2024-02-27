@@ -4,59 +4,63 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 #include "array.tcc"
+#include "TString.tcc"
+#include "PString.h"
+#include "types.tcc"
+#include "atomic_types.tcc"
 
 //! \defgroup read
 
-
 /*! \ingroup read
- * Read a value from an stream.
+ * Read a value from an Input / output object.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param data Data.
  */
 template <class T>
-void rpcRead(Stream& io, T* data) {
-  io.readBytes(reinterpret_cast<char*>(data), sizeof(T));
+void rpcRead(Stream& io, T* data)
+{
+  io.readBytes((char*)data, sizeof(T));
 }
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-template <class T>
-inline void rpcRead(Stream& io, T const* data) {  // TODO write analogue?
-  rpcRead(io, const_cast<T*>(data));
-}
+inline void rpcRead(Stream& io, String* data)
+{
+  char character;
+  rpcRead(io, &character);
 
-
-/*! \ingroup read
- * \copydoc rpcRead(Stream&, T*) */
-inline void rpcRead(Stream& io, char** data) {
-  *data = new char[1];
-  rpcRead(io, *data);
-
-  for (size_t size {1}; (*data)[size - 1]; ++size) {
-    char* data_ {new char[size + 1]};
-    memcpy(data_, *data, size);
-    delete[] *data;
-    *data = data_;
-
-    rpcRead(io, *data + size);
+  while (character)
+  {
+    *data += character;
+    rpcRead(io, &character);
   }
 }
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-inline void rpcRead(Stream& io, char const** data) {
-  rpcRead(io, const_cast<char**>(data));
+template<size_t S>
+inline void rpcRead(Stream& io, TString<S>* data)
+{
+  char character;
+  rpcRead(io, &character);
+
+  while (character)
+  {
+    *data += character;
+    rpcRead(io, &character);
+  }
 }
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-inline void rpcRead(Stream& io, String* data) {
+inline void rpcRead(Stream& io, PString* data)
+{
   char character;
-
   rpcRead(io, &character);
 
-  while (character) {
+  while (character)
+  {
     *data += character;
     rpcRead(io, &character);
   }
@@ -71,7 +75,8 @@ void rpcRead(Stream& io, Vector<T>* data) {
   rpcRead(io, &size);
 
   (*data).resize(size);
-  for (size_t i {0}; i < (*data).size(); ++i) {
+
+  for (size_t i {0}; i < size; ++i) {
     rpcRead(io, &(*data)[i]);
   }
 }
@@ -84,6 +89,7 @@ void rpcRead(Stream& io, T** data) {
   rpcRead(io, &size);
 
   *data = new T[size];
+
   for (size_t i {0}; i < size; ++i) {
     rpcRead(io, *data + i);
   }
@@ -123,14 +129,23 @@ void rpcRead(Stream& io, T*** data) {
   (*data)[size] = nullptr;
 }
 
-
-//! Recursion terminator for `rpcRead(Tuple*)`.
-inline void rpcRead(Stream&, Tuple<>*) {}
+//! Recursion terminator for `rpcRead(_Tuple*)`.
+inline void rpcRead(Stream&, _Tuple<>*) {}
 
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
-template <class... Ts>
-void rpcRead(Stream& io, Tuple<Ts...>* data) {
+template <class... Membs>
+void rpcRead(Stream& io, _Tuple<Membs...>* data)
+{
   rpcRead(io, &(*data).head);
   rpcRead(io, &(*data).tail);
+}
+
+
+/*! \ingroup read
+ * \copydoc rpcRead(Stream&, T*) */
+template <class... Membs>
+void rpcRead(Stream& io, Tuple<Membs...>* data)
+{
+  rpcRead(io, (_Tuple<Membs...>*)data);
 }

@@ -18,64 +18,64 @@
 /*!
  * Write the signature and documentation of a function.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param f Function pointer.
  * \param doc Function documentation.
  */
 template <class F, class D>
-void writeDescription_(Stream& io, F f, D doc) {
+void _writeDescription(Stream& io, F f, D doc) {
   signature(io, f);
   rpcPrint(io, ';', doc, '\0');
 }
 
 
-//! Recursion terminator for `describe_()`.
-inline void describe_(Stream& io) {
+//! Recursion terminator for `_describe()`.
+inline void _describe(Stream& io) {
   rpcPrint(io, '\0');
 }
 
 /*!
  * Describe a list of functions.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param f Function pointer.
  * \param doc Function documentation.
  * \param args Remaining parameters.
  */
-template <class F, class D, class... Ts>
-void describe_(Stream& io, F f, D doc, Ts... args) {
+template <class F, class D, class... Args>
+void _describe(Stream& io, F f, D doc, Args... args) {
   /*
    * The first two parameters `f` and `doc` are isolated and passed to
-   * `writeDescription_()`. Then a recursive call to process the remaining
+   * `_writeDescription()`. Then a recursive call to process the remaining
    * parameters is made.
    */
-  writeDescription_(io, f, doc);
-  describe_(io, args...);
+  _writeDescription(io, f, doc);
+  _describe(io, args...);
 }
 
-//! \copydoc describe_(Stream&, F, D, Ts...)
-template <class U, class V, class D, class... Ts>
-void describe_(Stream& io, Tuple<U, V> t, D doc, Ts... args) {
-  writeDescription_(io, t.tail.head, doc);
-  describe_(io, args...);
+//! \copydoc _describe(Stream&, F, D, Args...)
+template <class U, class V, class D, class... Args>
+void _describe(Stream& io, _Tuple<U, V> t, D doc, Args... args) {
+  _writeDescription(io, t.tail.head, doc);
+  _describe(io, args...);
 }
 
 
-//! Recursion terminator for `select_()`.
-inline void select_(Stream&, uint8_t, uint8_t) {}
+//! Recursion terminator for `_select()`.
+inline void _select(Stream&, uint8_t, uint8_t) {}
 
 /*!
  * Select and call a function indexed by `number`.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param number Function index.
  * \param depth Current index.
  * \param f Function pointer.
  * \param - Function documentation.
  * \param args Remaining parameters.
  */
-template <class F, class D, class... Ts>
-void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
+template <class F, class D, class... Args>
+void _select(Stream& io, uint8_t number, uint8_t depth, F f, D, Args... args) {
   /*
    * The parameter `f` and its documentation string are isolated, discarding
    * the latter. If the selected function is encountered (i.e., if `depth`
@@ -86,7 +86,7 @@ void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
     rpcCall(io, f);
     return;
   }
-  select_(io, number, depth + 1, args...);
+  _select(io, number, depth + 1, args...);
 }
 
 
@@ -97,13 +97,13 @@ void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
  * documentation). The documentation string can be of type `char const*`, or
  * the PROGMEM `F()` macro can be used to reduce memory footprint.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class... Ts>
-void interface(Stream& io, Ts... args) {
+template <class... Args>
+void interface(Stream& io, Args... args) {
   /*
-   * One byte is read into `command`, if the value equals `LIST_REQ_`, the list
+   * One byte is read into `command`, if the value equals `_LIST_REQ`, the list
    * of functions is described. Otherwise, the function indexed by `command` is
    * called.
    */
@@ -112,33 +112,33 @@ void interface(Stream& io, Ts... args) {
 
     rpcRead(io, &command);
 
-    if (command == LIST_REQ_) {
-      rpcPrint(io, PROTOCOL_, '\0', VERSION_[0], VERSION_[1], VERSION_[2]);
+    if (command == _LIST_REQ) {
+      rpcPrint(io, _PROTOCOL, '\0', _VERSION[0], _VERSION[1], _VERSION[2]);
       hardwareDefs(io);
-      describe_(io, args...);
+      _describe(io, args...);
       return;
     }
-    select_(io, command, 0, args...);
+    _select(io, command, 0, args...);
   }
 }
 
 //! Recursion terminator for `interface()`.
-template <class... Ts>
-void interface(Tuple<>, Ts...) {}
+template <class... Args>
+void interface(_Tuple<>, Args...) {}
 
 /*! \ingroup interface
  * Multiple RPC interfaces.
  *
  * Similar to the standard interface , but with support for multiple I/O
- * interfaces, passed as Tuple `t`.
+ * interfaces, passed as _Tuple `t`.
  *
- * \sa interface(Stream&, Ts...)
+ * \sa interface(Stream&, Args...)
  *
- * \param t Tuple of input / output objects.
+ * \param t _Tuple of input / output objects.
  * \param args Parameter pairs (function pointer, documentation).
  */
-template <class... Ts, class... Us>
-void interface(Tuple<Ts...> t, Us... args) {
+template <class... Membs, class... Args>
+void interface(_Tuple<Membs...> t, Args... args) {
   interface(*t.head, args...);
   interface(t.tail, args...);
 }

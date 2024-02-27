@@ -10,47 +10,51 @@
 /*!
  * Execute a plain function.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param - Dummy function pointer.
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
  */
-template <class T, class... Ts, class... Us>
-void call_(Stream& io, void (*)(), T (*f)(Ts...), Us&... args) {
+template <class R, class... FArgs, class... Args>
+void _call(Stream& io, void (*)(void), R (*f)(FArgs...), Args&... args) {
   /*
    * All parameters have been collected since function pointer `*f_` has no
    * parameter types. All values are now present in the `args` parameter pack.
    */
-  T data {f(args...)};
+  R data = f(args...);
+
   rpcWrite(io, &data);
 }
 
 /*!
  * Execute a class method.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param - Dummy function pointer.
- * \param t Tuple consisting of a pointer to a class instance and a pointer
+ * \param t _Tuple consisting of a pointer to a class instance and a pointer
  *   to a class method.
  * \param args Parameter pack for `f`.
  */
-template <class C, class P, class T, class... Ts, class... Us>
-void call_(
-    Stream& io, void (*)(), Tuple<C*, T (P::*)(Ts...)> t, Us&... args) {
-  T data {(*t.head.*t.tail.head)(args...)};
+template <class C, class P, class R, class... FArgs, class... Args>
+void _call(
+    Stream& io, void (*)(void), _Tuple<C*, R (P::*)(FArgs...)> t,
+    Args&... args) {
+  R data = (*t.head.*t.tail.head)(args...);
+
   rpcWrite(io, &data);
 }
 
-//! \copydoc call_(Stream&, void (*)(), T (*)(Ts...), Us&...)
-template <class... Ts, class... Us>
-void call_(Stream&, void (*)(), void (*f)(Ts...), Us&... args) {
+//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+template <class... FArgs, class... Args>
+void _call(Stream&, void (*)(void), void (*f)(FArgs...), Args&... args) {
   f(args...);
 }
 
-//! \copydoc call_(Stream&, void (*)(), T (*)(Ts...), Us&...)
-template <class C, class P, class... Ts, class... Us>
-void call_(
-    Stream&, void (*)(), Tuple<C*, void (P::*)(Ts...)> t, Us&... args) {
+//! \copydoc _call(Stream&, void (*)(void), R (*)(FArgs...), Args&...)
+template <class C, class P, class... FArgs, class... Args>
+void _call(
+    Stream&, void (*)(void), _Tuple<C*, void (P::*)(FArgs...)> t,
+    Args&... args) {
   (*t.head.*t.tail.head)(args...);
 }
 
@@ -58,33 +62,30 @@ void call_(
 /*!
  * Collect parameters of a function.
  *
- * \param io Stream.
- * \param - Dummy function pointer.
+ * \param io Input / output object.
+ * \param f_ Dummy function pointer.
  * \param f Function pointer.
  * \param args Parameter pack for `f`.
  */
-template <class T, class... Ts, class F, class... Us>
-void call_(Stream& io, void (*)(T, Ts...), F f, Us&... args) {
+template <class H, class... Tail, class F, class... Args>
+void _call(Stream& io, void (*f_)(H, Tail...), F f, Args&... args) {
   /* 
-   * The first parameter type `T` is isolated from the function pointer. This
+   * The first parameter type `T` is isolated from function pointer `*f_`. This
    * type is used to instantiate the variable `data`, which is used to receive
-   * `sizeof(T)` bytes. This value is passed recursively to `call_()` function,
+   * `sizeof(T)` bytes. This value is passed recursively to `_call()` function,
    * adding it to the `args` parameter pack. The first parameter type `T` is
-   * removed from the function pointer in the recursive call.
+   * removed from function pointer `*f_` in the recursive call.
    */ 
-  T data;
+  H data;
   rpcRead(io, &data);
-
-  void (*f_)(Ts...) {};
-  call_(io, f_, f, args..., data);
+  _call(io, (void (*)(Tail...))f_, f, args..., data);
   rpcDel(&data);
 }
 
-//! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
-template <class T, class... Ts, class F, class... Us>
-void call_(Stream& io, void (*)(T&, Ts...), F f, Us&... args) {
-  void (*f_)(T, Ts...) {};
-  call_(io, f_, f, args...);
+//! \copydoc _call(Stream&, void (*)(H, Tail...), F, Args&...)
+template <class H, class... Tail, class F, class... Args>
+void _call(Stream& io, void (*f_)(H&, Tail...), F f, Args&... args) {
+  _call(io, (void (*)(H, Tail...))f_, f, args...);
 }
 
 
@@ -94,31 +95,31 @@ void call_(Stream& io, void (*)(T&, Ts...), F f, Us&... args) {
  * Parameter values for `f` are read from `io`, after which `f` is called. Any
  * return value is written back to `io`.
  *
- * \param io Stream.
+ * \param io Input / output object.
  * \param f Function pointer.
  */
-template <class T, class... Ts>
-void rpcCall(Stream& io, T (*f)(Ts...)) {
+template <class R, class... FArgs>
+void rpcCall(Stream& io, R (*f)(FArgs...)) {
   /*
-   * A dummy function pointer is prepared, which will be used to isolate
-   * parameter types. The return type of this function pointer is removed to
-   * avoid unneeded template expansion.
+   * A dummy function pointer is prepared, referred to as `f_` in the template
+   * functions above, which will be used to isolate parameter types. The return
+   * type of this function pointer is removed to avoid unneeded template
+   * expansion.
    */
-  void (*f_)(Ts...) {};
-  call_(io, f_, f);
+  _call(io, (void (*)(FArgs...))f, f);
 }
 
 /*! \ingroup call
  * Call a class method.
  *
- * \sa rpcCall(Stream&, T (*)(Ts...))
+ * \sa rpcCall(Stream&, R (*)(FArgs...))
  *
- * \param io Stream.
- * \param t Tuple consisting of a pointer to a class instance and a pointer
+ * \param io Input / output object.
+ * \param t TupleObject consisting of a pointer to a class instance and a pointer
  *   to a class method.
  */
-template <class C, class P, class T, class... Ts>
-void rpcCall(Stream& io, Tuple<C*, T (P::*)(Ts...)> t) {
-  void (*f_)(Ts...) {};
-  call_(io, f_, t);
+template <class C, class P ,class R, class... FArgs>
+void rpcCall(Stream& io, _Tuple<C*, R (P::*)(FArgs...)> t) {
+  void (*f)(FArgs...) {};
+  _call(io, f, t);
 }

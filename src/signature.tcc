@@ -3,89 +3,77 @@
 #include "types.tcc"
 #include "helper.tcc"
 
+
 //! \defgroup signature
 
 
-//! Recursion terminator for `parameterTypes_()`.
-inline void parameterTypes_(Stream&, void (*)()) {}
+//! Recursion terminator for `_parameterTypes()`.
+inline void _parameterTypes(Stream&, void (*)(void)) {}
 
 /*!
  * Get the types of all function parameters.
  *
- * \param io Stream.
- * \param - Dummy function pointer.
+ * \param io Input / output object.
+ * \param f_ Dummy function pointer.
  *
  * \return Space separated parameter types.
  */
-template <class T, class... Ts>
-void parameterTypes_(Stream& io, void (*)(T, Ts...)) {
+template <class H, class... Tail>
+void _parameterTypes(Stream& io, void (*f_)(H, Tail...)) {
   /*
-   * The first parameter type `T` is isolated from function pointer. This type
-   * is used to instantiate the variable `data`, which is passed to
-   * `rpcTypeOf()` to encode its type. The first parameter type `T` is removed
-   * from the function pointer in the recursive call.
+   * The first parameter type `H` is isolated from function pointer `*f_`. This
+   * type is used to instantiate the variable `data`, which is passed to
+   * `rpcTypeOf()` to encode its type. The first parameter type `H` is removed
+   * from function pointer `*f_` in the recursive call.
    */
-  T data {};
-  rpcPrint(io, ' ');
-  rpcTypeOf(io, data);
+  // H data{};
 
-  void (*f_)(Ts...) {};
-  parameterTypes_(io, f_);
+  RPCType<H>().print(io);
+  rpcPrint(io, " ");
+  // rpcTypeOf(io, data);
+  _parameterTypes(io, (void (*)(Tail...))f_);
 }
 
-//! \copydoc parameterTypes_(Stream&, void (*)(T, Ts...))
-template <class T, class... Ts>
-void parameterTypes_(Stream& io, void (*)(T&, Ts...)) {
-  void (*f_)(T, Ts...) {};
-  parameterTypes_(io, f_);
+//! \copydoc _parameterTypes(Stream&, void (*)(H, Tail...))
+template <class H, class... Tail>
+void _parameterTypes(Stream& io, void (*f_)(H&, Tail...)) {
+  _parameterTypes(io, (void (*)(H, Tail...))f_);
 }
 
 
 /*! \ingroup signature
  * Get the signature of a function.
  *
- * \param io Stream.
- * \param - Function pointer.
+ * \param io Input / output object.
+ * \param f Function pointer.
  *
  * \return Function signature.
  */
-template <class T, class... Ts>
-void signature(Stream& io, T (*)(Ts...)) {
-  /*
-   * A dummy function pointer is prepared, which will be used to isolate
-   * parameter types. The return type of this function pointer is removed to
-   * avoid unneeded template expansion.
+template <class R, class... FArgs>
+void signature(Stream& io, R (*f)(FArgs...)) {
+  /* 
+   * A dummy function pointer is prepared, referred to as `f_` in the template
+   * functions above, which will be used to isolate parameter types. The return
+   * type of this function pointer is removed to avoid unneeded template
+   * expansion.
    */
-  T data {};
-  rpcTypeOf(io, data);
-  rpcPrint(io, ':');
-
-  void (*f_)(Ts...) {};
-  parameterTypes_(io, f_);
+  RPCType<R>::print(io);
+  rpcPrint(io, ":");
+  _parameterTypes(io, (void (*)(FArgs...))f);
 }
 
-/*! \ingroup signature
- * \copydoc signature(Stream&, T (*)(Ts...)) */
-template <class T, class C, class... Ts>
-void signature(Stream& io, T (C::*)(Ts...)) {
-  T (*f_)(Ts...) {};
-  signature(io, f_);
-}
-
-/*! \ingroup signature
- * \copydoc signature(Stream&, T (*)(Ts...)) */
-template <class... Ts>
-void signature(Stream& io, void (*f)(Ts...)) {
-  rpcPrint(io, ':');
-  parameterTypes_(io, f);
-}
-
-/*! \ingroup signature
- * \copydoc signature(Stream&, T (*)(Ts...)) */
-template <class C, class... Ts>
-void signature(Stream& io, void (C::*)(Ts...)) {
-  void (*f_)(Ts...) {};
-  signature(io, f_);
+// specialization for reference return types
+template <class R, class... FArgs>
+void signature(Stream& io, R& (*f)(FArgs...)) {
+  /* 
+   * A dummy function pointer is prepared, referred to as `f_` in the template
+   * functions above, which will be used to isolate parameter types. The return
+   * type of this function pointer is removed to avoid unneeded template
+   * expansion.
+   */
+  RPCType<R>::print(io);
+  rpcPrint(io, ":");
+  _parameterTypes(io, (void (*)(FArgs...))f);
 }
 
 template <class R, size_t S, class... FArgs>
@@ -110,4 +98,28 @@ template <class R, size_t S, class... FArgs>
 void signature(Stream& io, RollingBuffer<R, S> (*f)(FArgs...))
 {
   static_assert(always_false<R>::value, "Return RollingBuffer<T,S> only as a reference type: RollingBuffer<T,S>& fun(...)");
+}
+
+/*! \ingroup signature
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class R, class C, class... FArgs>
+void signature(Stream& io, R (C::*)(FArgs...)) {
+  R (*f)(FArgs...) {};
+  signature(io, f);
+}
+
+/*! \ingroup signature
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class... FArgs>
+void signature(Stream& io, void (*f)(FArgs...)) {
+  rpcPrint(io, ":");
+  _parameterTypes(io, f);
+}
+
+/*! \ingroup signature
+ * \copydoc signature(Stream&, R (*)(FArgs...)) */
+template <class C, class... FArgs>
+void signature(Stream& io, void (C::*)(FArgs...)) {
+  void (*f)(FArgs...) {};
+  signature(io, f);
 }

@@ -136,24 +136,29 @@ struct RPCType<Tuple<Membs...>>
 
 
 
-// TODO: References to arrays can be returned, e.g., int (&test())[10] {}
+
+
+
 
 
 /*! \ingroup types
  * Determine endianness and type of `size_t`.
  *
- * \param io Stream.
+ * \param io Input / output object.
  */
-inline void hardwareDefs(Stream& io) {
-  size_t i {0xff};
+inline void hardwareDefs(Stream& io)
+{
+  size_t i = 0xff;
 
-  if (reinterpret_cast<uint8_t*>(&i)[0] == 0xff) {
-    rpcPrint(io, '<');
+  if (((uint8_t*)&i)[0] == 0xff)
+  {
+    rpcPrint(io, "<");
   }
-  else {
-    rpcPrint(io, '>');
+  else
+  {
+    rpcPrint(io, ">");
   }
 
-  rpcTypeOf(io, i);
+  RPCType<size_t>::print(io);
   rpcPrint(io, '\0');
 }

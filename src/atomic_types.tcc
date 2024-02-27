@@ -16,32 +16,6 @@ struct RpcAtomicType
   }
 };
 
-template<typename T>
-constexpr bool check_supported_rpc_type() {
-    return std::is_same<T, bool>::value ||
-           std::is_same<T, char>::value ||
-           std::is_same<T, int8_t>::value ||
-           std::is_same<T, uint8_t>::value ||
-           std::is_same<T, int16_t>::value ||
-           std::is_same<T, uint16_t>::value ||
-           std::is_same<T, int32_t>::value;
-           std::is_same<T, uint32_t>::value ||
-           std::is_same<T, int64_t>::value ||
-           std::is_same<T, uint64_t>::value ||
-           std::is_same<T, float>::value ||
-           std::is_same<T, double>::value ||
-           std::is_same<T, char*>::value ||
-           std::is_same<T, const char*>::value ||
-           std::is_same<T, String>::value ||
-           std::is_same<T, String&>::value ||
-           std::is_same<T, PString>::value ||
-           std::is_same<T, PString&>::value;
-            
-            }
-
-// Define a variable template for easier use.
-template<typename T>
-constexpr bool isAtomicType = check_supported_rpc_type<T>();
 
 // Helper type to check if getType() is valid for T
 template<typename T>
