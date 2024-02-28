@@ -4,6 +4,7 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 #include "array.tcc"
+#include "rolling_buffer.tcc"
 
 //! \defgroup types
 
@@ -181,6 +182,14 @@ void rpcTypeOf(Stream& io, Array<T, n>&) {
  * \copydoc rpcTypeOf(Stream&, bool) */
 template <class T>
 void rpcTypeOf(Stream& io, T*) {
+  rpcPrint(io, '[');
+  T x {};
+  rpcTypeOf(io, x);
+  rpcPrint(io, ']');
+}
+
+template<class T, size_t n>
+void rpcTypeOf(Stream& io, RollingBuffer<T, n>&) {
   rpcPrint(io, '[');
   T x {};
   rpcTypeOf(io, x);

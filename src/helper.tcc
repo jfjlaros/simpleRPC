@@ -12,3 +12,8 @@ template <class T>
 struct enableIf<true, T> {
   using type = T;
 };
+
+template< typename T >
+struct always_false { 
+    enum { value = false };  
+};
