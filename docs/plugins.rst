@@ -90,13 +90,13 @@ Example
 
 Suppose we have set up two I/O interfaces named ``Serial`` and
 ``SerialUSB``, we serve the same methods on both interfaces by grouping
-pointers to these interfaces with the ``pack()`` function as follows.
+pointers to these interfaces with the ``makeTuple()`` function as follows.
 
 .. code-block:: cpp
 
     void loop() {
       interface(
-        pack(&Serial, &SerialUSB),
+        makeTuple(&Serial, &SerialUSB),
         inc, F("inc: Increment a value. @a: Value. @return: a + 1."));
     }
 
