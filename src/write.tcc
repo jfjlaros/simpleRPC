@@ -4,6 +4,7 @@
 #include "tuple.tcc"
 #include "vector.tcc"
 #include "array.tcc"
+#include "rolling_buffer.tcc"
 
 //! \defgroup write
 
@@ -61,6 +62,19 @@ void rpcWrite(Stream& io, Array<T, n>* data) {
   }
 }
 
+/*! \ingroup write
+ * \copydoc rpcWrite(Stream&, T*) */
+template <class T, size_t S>
+void rpcWrite(Stream& io, RollingBuffer<T, S>* data)
+{
+  size_t size = data->begin_read();
+  rpcWrite(io, &size);
+  for (size_t i = 0; i < size; i++)
+  {
+    rpcWrite(io, (T*)data->pop());
+  }
+  data->end_read();
+}
 
 //! Recursion terminator for `rpcWrite(Tuple*)()`.
 inline void rpcWrite(Stream&, Tuple<>*) {}
