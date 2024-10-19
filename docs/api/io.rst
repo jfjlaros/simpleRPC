@@ -7,30 +7,6 @@ network interfaces like ethernet. An overview of the required methods of an I/O
 plugin is described in the :doc:`plugins` section.
 
 
-Printing
---------
-
-.. code-block:: cpp
-
-    #include "print.tcc"
-
-The following functions take care of serialisation of:
-
-- Values of basic types.
-- C strings (``char[]``, ``char*``, ``char const[]``, ``char const*``).
-- C++ Strings.
-- PROGMEM strings (``F()`` macro).
-
-Finally, a print function that takes an arbitrary amount of parameters is
-provided for convenience.
-
-Functions
-~~~~~~~~~
-
-.. doxygengroup:: print
-   :content-only:
-
-
 Reading
 -------
 

@@ -24,9 +24,6 @@ Initialisation of a Tuple can be done with a brace-initializer-list as follows.
 Element retrieval and assignment is described below in the :ref:`Helper
 functions` section.
 
-Note that a Tuple, like any higher order data structure, should be passed by
-reference.
-
 Class definitions
 ~~~~~~~~~~~~~~~~~
 

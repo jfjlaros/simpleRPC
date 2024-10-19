@@ -13,4 +13,3 @@ API documentation
    api/types
    api/signature
    api/call
-   api/del

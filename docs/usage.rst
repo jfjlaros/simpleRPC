@@ -184,9 +184,7 @@ Tuple respectively.
 
     Tuple<int, Vector<int>, Tuple<char, long> > t;
 
-These objects can be used as parameters as well as return values. Note that
-these objects, like any higher order data structure should be passed by
-reference.
+These objects can be used as parameters as well as return values.
 
 
 C arrays
