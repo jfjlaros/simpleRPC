@@ -1,7 +1,6 @@
 #pragma once
 
-/*!
- * Generic array.
+/*! Generic array.
  *
  * \tparam T Element type.
  * \tparam n Array size.
@@ -11,8 +10,7 @@ class Array {
 public:
   Array() = default;
 
-  /*!
-   * Create an array using an initialiser list.
+  /*! Create an array using an initialiser list.
    *
    * \tparam Ts... Data types.
    *
@@ -21,8 +19,7 @@ public:
   template <class... Ts>
   Array(Ts...);
 
-  /*!
-   * Create an Array using a C array.
+  /*! Create an Array using a C array.
    *
    * \param arr C array.
    */
@@ -36,8 +33,7 @@ public:
   T const* begin() const;
   T const* end() const;
 
-  /*!
-   * Get the number of elements.
+  /*! Get the number of elements.
    *
    * \return Array size.
    */

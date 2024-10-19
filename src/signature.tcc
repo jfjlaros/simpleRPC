@@ -8,8 +8,7 @@
 //! Recursion terminator for `parameterTypes_()`.
 inline void parameterTypes_(Stream&, void (*)()) {}
 
-/*!
- * Get the types of all function parameters.
+/*! Get the types of all function parameters.
  *
  * \tparam T First function pointer parameter type.
  * \tparam Ts... Remaining function pointer parameters types.

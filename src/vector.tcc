@@ -11,8 +11,7 @@ void swap_(T& a, T& b) noexcept {
 }
 
 
-/*!
- * Generic vector.
+/*! Generic vector.
  *
  * \tparam T Element type.
  */
@@ -28,8 +27,7 @@ public:
    */
   Vector(size_t const);
 
-  /*!
-   * Create a Vector with `size` elements from a C array.
+  /*! Create a Vector with `size` elements from a C array.
    *
    * \tparam n Array size.
    *
@@ -49,22 +47,19 @@ public:
   T const* begin() const;
   T const* end() const;
 
-  /*!
-   * Get the underlying data.
+  /*! Get the underlying data.
    *
    * \return data.
    */
   T* data() const;
 
-  /*!
-   * Get the number of elements.
+  /*! Get the number of elements.
    *
    * \return Vector size.
    */
   size_t size() const;
 
-  /*!
-   * Set the number of elements.
+  /*! Set the number of elements.
    *
    * \param size Vector size.
    */
@@ -73,22 +68,19 @@ public:
   /*! Clear the contents. */
   void clear();
 
-  /*!
-   * Add an element to the back.
+  /*! Add an element to the back.
    *
    * \param el Element.
    */
   void push_back(T const&);
 
-  /*!
-   * Add an element to the back.
+  /*! Add an element to the back.
    *
    * \param el Element.
    */
   void push_back(T const&&);
 
-  /*!
-   * Remove an element from the back.
+  /*! Remove an element from the back.
    *
    * \return Element.
    */

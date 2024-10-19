@@ -20,8 +20,7 @@ uint8_t const LIST_REQ_ {0xff};
 //! \defgroup interface
 
 
-/*!
- * Write the signature and documentation of a function.
+/*! Write the signature and documentation of a function.
  *
  * \tparam F Function pointer type.
  * \tparam D Documentation type.
@@ -43,8 +42,7 @@ inline void describe_(Stream& io) {
   rpcWrite(io, '\0');
 }
 
-/*!
- * Describe a list of functions.
+/*! Describe a list of functions.
  *
  * \tparam F Function pointer type.
  * \tparam D Documentation type.
@@ -77,8 +75,7 @@ void describe_(Stream& io, Tuple<U, V> t, D doc, Ts... args) {
 //! Recursion terminator for `select_()`.
 inline void select_(Stream&, uint8_t, uint8_t) {}
 
-/*!
- * Select and call a function indexed by `number`.
+/*! Select and call a function indexed by `number`.
  *
  * \tparam F Function pointer type.
  * \tparam D Documentation type.

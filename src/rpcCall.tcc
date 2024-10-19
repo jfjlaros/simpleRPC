@@ -6,8 +6,7 @@
 //! \defgroup call
 
 
-/*!
- * Execute a plain function.
+/*! Execute a plain function.
  *
  * \tparam T Function pointer return type.
  * \tparam Ts... Function pointer parameter types.
@@ -64,8 +63,7 @@ void call_(
 }
 
 
-/*!
- * Collect parameters of a function.
+/*! Collect parameters of a function.
  *
  * \tparam T Function pointer return type.
  * \tparam Ts... Function pointer parameter types.
@@ -79,13 +77,13 @@ void call_(
  */
 template <class T, class... Ts, class F, class... Us>
 void call_(Stream& io, void (*)(T, Ts...), F f, Us&... args) {
-  /* 
+  /*
    * The first parameter type `T` is isolated from the function pointer. This
    * type is used to instantiate the variable `data`, which is used to
    * receive `sizeof(T)` bytes. This value is passed recursively to `call_()`
    * function, adding it to the `args` parameter pack. The first parameter
    * type `T` is removed from the function pointer in the recursive call.
-   */ 
+   */
   T data;
   rpcRead(io, &data);
 

@@ -1,7 +1,6 @@
 #pragma once
 
-/*!
- * Compile-time switch for templates.
+/*! Compile-time switch for templates.
  *
  * https://www.boost.org/doc/libs/1_55_0/libs/utility/enable_if.html
  */
