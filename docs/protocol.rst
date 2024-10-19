@@ -92,7 +92,8 @@ I/O device of which the value maps to one of the exported methods (i.e., 0
 maps to the first method, 1 to the second, etc.). If this method takes any
 parameters, their values are written to the I/O device. After the parameter
 values have been received, the device executes the method and writes its return
-value (if any) back to the I/O device.
+value (if any) back to the I/O device. If the method does not return a value,
+one zero byte is written to indicate the method has finished.
 
 All native C types (``int``, ``float``, ``double``, etc.), Tuples, Vectors and
 any combination of these are currently supported. The host is responsible for

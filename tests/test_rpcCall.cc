@@ -35,25 +35,25 @@ TEST_CASE("RPC call function", "[call][basic]") {
   Serial.reset();
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == 0);
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Void function, one parameter.
   Serial.reset();
   rpcCall(Serial, S::f1);
   REQUIRE(Serial.rx == sizeof(int));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Void function, two parameters.
   Serial.reset();
   rpcCall(Serial, S::f2);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Void function, three parameters.
   Serial.reset();
   rpcCall(Serial, S::f3);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char) + sizeof(float));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Function of type short int, zero parameters.
   Serial.reset();
@@ -118,14 +118,14 @@ TEST_CASE("RPC call function with String types", "[call][string]") {
   Serial.prepare(4ul, "xyz", 1234);
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == sizeof(size_t) + 4 + sizeof(int));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Void function, second parameter is of type String.
   Serial.reset();
   Serial.prepare(1234, 4ul, "xxx");
   rpcCall(Serial, S::f1);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(size_t) + 4);
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Function with return type String.
   Serial.reset();
@@ -191,14 +191,14 @@ TEST_CASE("RPC call function with C string types", "[call][string]") {
   Serial.prepare(4ul, "xyz", 1234);
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == sizeof(size_t) + 4 + sizeof(int));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Void function, second parameter is of type char*.
   Serial.reset();
   Serial.prepare(1234, 4ul, "xxx");
   rpcCall(Serial, S::f1);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(size_t) + 4);
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Function with return type char*.
   Serial.reset();
@@ -264,7 +264,7 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   Serial.prepare(1234, 'x');
   rpcCall(Serial, S::f0);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Function with return type Tuple.
   Serial.reset();
@@ -278,7 +278,7 @@ TEST_CASE("RPC call function with Tuple types", "[call][tuple]") {
   Serial.prepare(1234, 2ul, 'x', 'y');
   rpcCall(Serial, S::f2);
   REQUIRE(Serial.rx == sizeof(int) + sizeof(size_t) + 2 * sizeof(char));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 }
 
 TEST_CASE("RPC call function with Vector types", "[call][vector]") {
@@ -320,7 +320,7 @@ TEST_CASE("RPC call function with Vector types", "[call][vector]") {
   Serial.prepare(2ul, 1234, 2345, 'c');
   rpcCall(Serial, S::f2);
   REQUIRE(Serial.rx == sizeof(size_t) + 2 * sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   Serial.reset();
   Serial.prepare(
@@ -379,7 +379,7 @@ TEST_CASE("RPC call class member functions", "[call][class]") {
   Serial.reset();
   rpcCall(Serial, makeTuple(&c, &C::f0));
   REQUIRE(Serial.rx == sizeof(int) + sizeof(char));
-  REQUIRE(Serial.tx == 0);
+  REQUIRE(Serial.tx == 1);
 
   // Non-void function.
   Serial.reset();

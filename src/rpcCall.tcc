@@ -51,15 +51,21 @@ void call_(
 
 //! \copydoc call_(Stream&, void (*)(), T (*)(Ts...), Us&...)
 template <class... Ts, class... Us>
-void call_(Stream&, void (*)(), void (*f)(Ts...), Us&... args) {
+void call_(Stream& io, void (*)(), void (*f)(Ts...), Us&... args) {
   f(args...);
+
+  uint8_t data {0};
+  rpcWrite(io, &data);
 }
 
 //! \copydoc call_(Stream&, void (*)(), T (*)(Ts...), Us&...)
 template <class C, class P, class... Ts, class... Us>
 void call_(
-    Stream&, void (*)(), Tuple<C*, void (P::*)(Ts...)> t, Us&... args) {
+    Stream& io, void (*)(), Tuple<C*, void (P::*)(Ts...)> t, Us&... args) {
   (*t.head.*t.tail.head)(args...);
+
+  uint8_t data {0};
+  rpcWrite(io, &data);
 }
 
 
