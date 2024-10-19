@@ -125,15 +125,15 @@ Exporting class methods
 Class methods are different from ordinary functions in the sense that they
 always operate on an object. This is why both a function pointer and a class
 instance need to be provided to the ``interface()`` function. To facilitate
-this, the ``pack()`` function can be used to combine a class instance and a
-function pointer before passing them to ``interface()``.
+this, the ``makeTuple()`` function can be used to combine a class instance and
+a function pointer before passing them to ``interface()``.
 
 For a class instance ``c`` of class ``C``, the class method ``f()``
 can be packed as follows:
 
 .. code-block:: cpp
 
-    pack(&c, &C::f)
+    makeTuple(&c, &C::f)
 
 The result can be passed to ``interface()``.
 
@@ -157,7 +157,7 @@ Exporting this class method goes as follows:
       void loop() {
         interface(
           Serial,
-          pack(&led, &LED::setBrightness),
+          makeTuple(&led, &LED::setBrightness),
             "set_led: Set LED brightness. @brightness: Brightness.");
       }
 
