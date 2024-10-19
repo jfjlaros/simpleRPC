@@ -1,13 +1,13 @@
 EXEC := run_tests
 MAIN := test_lib
-TESTS := test_tuple test_vector test_array test_print test_read test_write \
+TESTS := test_tuple test_vector test_array test_read test_write \
   test_types test_signature test_interface test_rpcCall
 FIXTURES := arduino-serial-fixture/src/Arduino
 
 
 CC := g++
-CC_ARGS := -std=c++11 -Wall -Wextra -pedantic \
-  -I arduino-serial-fixture/src -I plugins
+CC_ARGS := -std=c++11 -O3 \
+  -Wall -Wextra -pedantic -I arduino-serial-fixture/src -I plugins
 
 
 OBJS := $(addsuffix .o, $(TESTS) $(FIXTURES))

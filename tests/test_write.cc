@@ -81,7 +81,6 @@ TEST_CASE("Write array", "[write][array]") {
 
   Serial.reset();
   rpcWrite(Serial, &a);
-  REQUIRE(Serial.inspect<size_t>() == 2);
   REQUIRE(Serial.inspect<int>() == 1234);
   REQUIRE(Serial.inspect<int>() == 2345);
 }

@@ -52,9 +52,6 @@ void rpcRead(Stream& io, Vector<T>* data) {
  * \copydoc rpcRead(Stream&, T*) */
 template <class T, size_t n>
 void rpcRead(Stream& io, Array<T, n>* data) {
-  size_t size;
-  rpcRead(io, &size);
-
   for (T& el: *data) {
     rpcRead(io, &el);
   }

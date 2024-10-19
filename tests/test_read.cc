@@ -52,9 +52,8 @@ TEST_CASE("Read array", "[read][array]") {
   Array<int, 3> a;
 
   Serial.reset();
-  Serial.prepare(3ul, 1234, 2345, 3456);
+  Serial.prepare(1234, 2345, 3456);
   rpcRead(Serial, &a);
-  REQUIRE(a.size() == 3);
   REQUIRE(a[0] == 1234);
   REQUIRE(a[1] == 2345);
   REQUIRE(a[2] == 3456);
