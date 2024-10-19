@@ -209,5 +209,5 @@ dimension, e.g., a two-dimensional array ``int**`` does not have to be
 rectangular.
 
 
-.. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/library.html#example
+.. _example: https://arduino-simple-rpc.readthedocs.io/en/stable/library.html#example
 .. _progmem: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/

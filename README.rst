@@ -5,8 +5,8 @@ Simple RPC implementation for Arduino.
    :target: https://github.com/jfjlaros/simpleRPC/graphs/commit-activity
 .. image:: https://github.com/jfjlaros/simpleRPC/actions/workflows/arduino-package.yml/badge.svg
    :target: https://github.com/jfjlaros/simpleRPC/actions/workflows/arduino-package.yml
-.. image:: https://readthedocs.org/projects/simplerpc/badge/?version=latest
-   :target: https://simpleRPC.readthedocs.io/en/latest
+.. image:: https://readthedocs.org/projects/simplerpc/badge/?version=stable
+   :target: https://simpleRPC.readthedocs.io
 .. image:: https://img.shields.io/github/release-date/jfjlaros/simpleRPC.svg
    :target: https://github.com/jfjlaros/simpleRPC/releases
 .. image:: https://img.shields.io/github/release/jfjlaros/simpleRPC.svg
@@ -31,7 +31,7 @@ which is then able to generate an API interface.
 **Features:**
 
 - For each method, only one line of code is needed for exporting.
-- Automatic parameter- and return type inference.
+- Automatic parameter and return type inference.
 - Support for all native C types and strings.
 - Support for arbitrary functions and class methods.
 - Optional function and parameter naming and documentation.
@@ -54,6 +54,8 @@ which is then able to generate an API interface.
 
 The Arduino library is independent of any host implementation, a Python API
 client_ library is provided as a reference implementation.
+
+.. TODO: Add more client libraries (Java and Android).
 
 Please see ReadTheDocs_ for the latest documentation.
 
@@ -110,4 +112,4 @@ programming languages, the section :doc:`protocol` should help you on your way.
 .. _PROGMEM: https://www.arduino.cc/reference/en/language/variables/utilities/progmem/
 .. _ReadTheDocs: https://simpleRPC.readthedocs.io
 .. _client: https://arduino-simple-rpc.readthedocs.io
-.. _example: https://arduino-simple-rpc.readthedocs.io/en/latest/#quick-start
+.. _example: https://arduino-simple-rpc.readthedocs.io/en/stable/#quick-start
