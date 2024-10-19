@@ -4,10 +4,13 @@ build:
   os: "ubuntu-20.04"
   tools:
     python: "3.9"
-
-sphinx:
-  configuration: docs/conf.py
+  jobs:
+    pre_build:
+      - doxygen docs/Doxyfile
 
 python:
   install:
     - requirements: docs/requirements.txt
+
+sphinx:
+  configuration: docs/conf.py

@@ -1,6 +1,7 @@
-INPUT                  = ../src/
+INPUT                  = src/
+OUTPUT_DIRECTORY       = docs/
 
-GENERATE_HTML          = NO
+GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 GENERATE_XML           = YES
 
@@ -8,4 +9,4 @@ INLINE_GROUPED_CLASSES = YES
 INLINE_SIMPLE_STRUCTS  = YES
 
 EXTENSION_MAPPING      = tcc=C++
-FILE_PATTERNS          = *.c *.cc *.h *.tcc
+FILE_PATTERNS          = *.c *.cc *.cpp *.h *.tcc
