@@ -116,6 +116,34 @@ void call_(Stream& io, void (*)(T const*, Ts...), F f, Us&... args) {
 }
 
 //! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
+template <class... Ts, class F, class... Us>
+void call_(Stream& io, void (*)(char const*, Ts...), F f, Us&... args) {
+  String data;
+  rpcRead(io, &data);
+
+  void (*f_)(Ts...) {};
+  char const* data_ {data.c_str()};
+  call_(io, f_, f, args..., data_);
+}
+template <class... Ts, class F, class... Us> // WIP
+void call_(Stream& io, void (*)(char*, Ts...), F f, Us&... args) {
+  String data;
+  rpcRead(io, &data);
+
+  void (*f_)(Ts...) {};
+  char* data_ {const_cast<char*>(data.c_str())};
+  call_(io, f_, f, args..., data_);
+}
+template <class... Ts, class F, class... Us> // WIP
+void call_(Stream& io, void (*)(String&, Ts...), F f, Us&... args) {
+  String data;
+  rpcRead(io, &data);
+
+  void (*f_)(Ts...) {};
+  call_(io, f_, f, args..., data);
+}
+
+//! \copydoc call_(Stream&, void (*)(T, Ts...), F, Us&...)
 template <class T, class... Ts, class F, class... Us>
 void call_(Stream& io, void (*)(T*, Ts...), F f, Us&... args) {
   void (*f_)(T const*, Ts...) {};

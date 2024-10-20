@@ -52,7 +52,6 @@ void rpcWrite(Stream& io, T* data) {
  * \copydoc rpcWrite(Stream&, T) */
 inline void rpcWrite(Stream& io, char const** data) {
   size_t size {strlen(*data) + 1};
-  rpcWrite(io, &size);
   for (size_t i {0}; i < size; ++i) {
     rpcWrite(io, (*data)[i]);
   }

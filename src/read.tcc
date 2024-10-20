@@ -24,14 +24,12 @@ void rpcRead(Stream& io, T* data) {
 /*! \ingroup read
  * \copydoc rpcRead(Stream&, T*) */
 inline void rpcRead(Stream& io, String* data) {
-  size_t size;
-  rpcRead(io, &size);
+  char c {};
+  rpcRead(io, &c);
 
-  (*data).reserve(size);
-  for (size_t i {0}; i < size; ++i) {
-    char c {};
+  while (c) {
+    *data += c;
     rpcRead(io, &c);
-    (*data) += c;
   }
 }
 

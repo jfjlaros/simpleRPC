@@ -34,7 +34,6 @@ TEST_CASE("Write String", "[write][string]") {
 
   Serial.reset();
   rpcWrite(Serial, &s);
-  REQUIRE(Serial.inspect<size_t>() == 4);
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
@@ -44,7 +43,6 @@ TEST_CASE("Write C string of type char*", "[write][string]") {
 
   Serial.reset();
   rpcWrite(Serial, &p);
-  REQUIRE(Serial.inspect<size_t>() == 4);
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 
@@ -53,7 +51,6 @@ TEST_CASE("Write C string of type char const*", "[write][string]") {
 
   Serial.reset();
   rpcWrite(Serial, &s);
-  REQUIRE(Serial.inspect<size_t>() == 4);
   REQUIRE(Serial.inspect<String>() == "xyz");
 }
 

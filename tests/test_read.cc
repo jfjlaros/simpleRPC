@@ -19,7 +19,7 @@ TEST_CASE("Read basic types", "[read][basic]") {
 
 TEST_CASE("Read String", "[read][string]") {
   Serial.reset();
-  Serial.prepare(4ul, "xyz");
+  Serial.prepare("xyz");
 
   String s;
   rpcRead(Serial, &s);
