@@ -43,7 +43,7 @@ Elements of a Tuple can be retrieved in two ways, either via the ``head`` and
     char c = t.tail.head;
 
     int j = get<0>(t);
-    char d = get<1>(t)';
+    char d = get<1>(t);
 
 Likewise, assignment of an element can be done via its member variables or with
 the ``get<>()`` helper function.
@@ -55,8 +55,6 @@ the ``get<>()`` helper function.
 
     get<0>(t) = 11;
     get<1>(t) = 'd';
-
-There are additional helper functions available for the creation of Tuples.
 
 The function ``makeTuple()`` can be used to create a temporary Tuple to be used in a
 function call.
