@@ -1,15 +1,5 @@
 #pragma once
 
-/*
- * Template library for exporting native C and C++ functions as remote
- * procedure calls.
- *
- * For more information about (variadic) templates:
- * \li http://www.drdobbs.com/cpp/extracting-function-parameter-and-return/240000586
- * \li https://eli.thegreenplace.net/2014/variadic-templates-in-c/
- * \li https://en.cppreference.com/w/cpp/language/parameter_pack
- */
-
 #include "rpcCall.tcc"
 #include "signature.tcc"
 
@@ -55,11 +45,6 @@ inline void describe_(Stream& io) {
  */
 template <class F, class D, class... Ts>
 void describe_(Stream& io, F f, D doc, Ts... args) {
-  /*
-   * The first two parameters `f` and `doc` are isolated and passed to
-   * `writeDescription_()`. Then a recursive call to process the remaining
-   * parameters is made.
-   */
   writeDescription_(io, f, doc);
   describe_(io, args...);
 }
@@ -90,12 +75,6 @@ inline void select_(Stream&, uint8_t, uint8_t) {}
  */
 template <class F, class D, class... Ts>
 void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
-  /*
-   * The parameter `f` and its documentation string are isolated, discarding
-   * the latter. If the selected function is encountered (i.e., if `depth`
-   * equals `number`), function `f` is called. Otherwise, a new try is made
-   * recursively.
-   */
   if (depth == number) {
     rpcCall(io, f);
     return;
@@ -118,11 +97,6 @@ void select_(Stream& io, uint8_t number, uint8_t depth, F f, D, Ts... args) {
  */
 template <class... Ts>
 void interface(Stream& io, Ts... args) {
-  /*
-   * One byte is read into `command`, if the value equals `LIST_REQ_`, the
-   * list of functions is described. Otherwise, the function indexed by
-   * `command` is called.
-   */
   if (io.available()) {
     uint8_t command;
 

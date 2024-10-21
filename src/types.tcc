@@ -96,11 +96,6 @@ inline void rpcTypeOf(Stream& io, char const*) {
   rpcWrite(io, 's');
 }
 
-/*
- * The `int` and `double` type sizes vary between boards, see:
- * https://www.arduino.cc/reference/en/language/variables/data-types/
- */
-
 /*! \ingroup types
  * \copydoc rpcTypeOf(Stream&, bool) */
 inline void rpcTypeOf(Stream& io, int) {
