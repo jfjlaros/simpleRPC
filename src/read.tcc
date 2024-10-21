@@ -4,6 +4,8 @@
 #include "vector.tcc"
 #include "array.tcc"
 
+class String_ : public Vector<char> {};
+
 //! \defgroup read
 
 
@@ -29,6 +31,18 @@ inline void rpcRead(Stream& io, String* data) {
 
   while (c) {
     *data += c;
+    rpcRead(io, &c);
+  }
+}
+
+/*! \ingroup read
+ * \copydoc rpcRead(Stream&, T*) */
+inline void rpcRead(Stream& io, String_* data) {
+  char c {};
+  rpcRead(io, &c);
+
+  while (c) {
+    (*data).push_back(c);
     rpcRead(io, &c);
   }
 }
