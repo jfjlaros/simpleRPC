@@ -60,7 +60,8 @@ inline void rpcWrite(Stream& io, char const** data) {
 /*! \ingroup write
  * \copydoc rpcWrite(Stream&, T) */
 inline void rpcWrite(Stream& io, char** data) {
-  rpcWrite(io, const_cast<char const**>(data));
+  char const* data_ {*data};
+  rpcWrite(io, (&data_));
 }
 
 /*! \ingroup write
